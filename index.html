@@ -220,6 +220,12 @@ body{font-family:var(--font-sans);background:var(--bg-tertiary);color:var(--text
 mark{background:#FAEEDA;color:#633806;border-radius:2px;padding:0 2px;font-style:normal}
 @media(prefers-color-scheme:dark){mark{background:#2a1e08;color:#fac775}}
 .empty{text-align:center;padding:40px 16px;color:var(--text-tertiary);font-size:13px}
+.doc-link{
+  margin-left:auto;font-size:11px;color:var(--text-tertiary);
+  text-decoration:none;padding:2px 5px;border-radius:3px;
+  flex-shrink:0;line-height:1;transition:all 0.1s;white-space:nowrap;
+}
+.doc-link:hover{color:var(--blue-text);background:var(--blue-bg)}
 </style>
 </head>
 <body>
@@ -340,13 +346,13 @@ mark{background:#FAEEDA;color:#633806;border-radius:2px;padding:0 2px;font-style
         <div class="block-title">☑ 체크리스트</div>
         <div class="check-item" onclick="toggle(this)"><input type="checkbox"><label>클라이언트 계약서 및 온보딩 정보 수령 완료</label></div>
         <div class="check-item" onclick="toggle(this)"><input type="checkbox"><label>Salesforce 파트너 포털에서 Org 프로비저닝 요청</label></div>
-        <div class="check-item" onclick="toggle(this)"><input type="checkbox"><label>MCE 에디션 확인 (Basic / Pro / Corporate / Enterprise)</label></div>
+        <div class="check-item" onclick="toggle(this)"><input type="checkbox"><label>MCE 에디션 확인 (Basic / Pro / Corporate / Enterprise)</label><a class="doc-link" href="https://help.salesforce.com/s/articleView?id=sf.mc_overview_editions.htm" target="_blank" onclick="event.stopPropagation()" title="Salesforce 공식 문서">↗</a></div>
         <div class="check-item" onclick="toggle(this)"><input type="checkbox"><label>계약 채널 확인 (Email / SMS / MobileConnect / Push / WhatsApp)</label></div>
-        <div class="check-item" onclick="toggle(this)"><input type="checkbox"><label>SAP(Sender Authentication Package) 포함 여부 확인</label></div>
-        <div class="check-item" onclick="toggle(this)"><input type="checkbox"><label>전용 IP(Dedicated IP) 사용 여부 결정</label></div>
-        <div class="check-item" onclick="toggle(this)"><input type="checkbox"><label>Private Domain 사용 여부 및 도메인 확정</label></div>
+        <div class="check-item" onclick="toggle(this)"><input type="checkbox"><label>SAP(Sender Authentication Package) 포함 여부 확인</label><a class="doc-link" href="https://help.salesforce.com/s/articleView?id=sf.mc_es_sender_authentication_package.htm" target="_blank" onclick="event.stopPropagation()" title="Salesforce 공식 문서">↗</a></div>
+        <div class="check-item" onclick="toggle(this)"><input type="checkbox"><label>전용 IP(Dedicated IP) 사용 여부 결정</label><a class="doc-link" href="https://help.salesforce.com/s/articleView?id=sf.mc_es_dedicated_ip_addresses.htm" target="_blank" onclick="event.stopPropagation()" title="Salesforce 공식 문서">↗</a></div>
+        <div class="check-item" onclick="toggle(this)"><input type="checkbox"><label>Private Domain 사용 여부 및 도메인 확정</label><a class="doc-link" href="https://help.salesforce.com/s/articleView?id=sf.mc_es_private_domain_for_image_download.htm" target="_blank" onclick="event.stopPropagation()" title="Salesforce 공식 문서">↗</a></div>
         <div class="check-item" onclick="toggle(this)"><input type="checkbox"><label>DNS 담당자 연락처 확보 (SPF / DKIM / DMARC / CNAME 레코드 추가 필요)</label></div>
-        <div class="check-item" onclick="toggle(this)"><input type="checkbox"><label>발송 볼륨 및 IP Warming 계획 수립 (전용 IP 사용 시 필수)</label></div>
+        <div class="check-item" onclick="toggle(this)"><input type="checkbox"><label>발송 볼륨 및 IP Warming 계획 수립 (전용 IP 사용 시 필수)</label><a class="doc-link" href="https://help.salesforce.com/s/articleView?id=sf.mc_es_ip_warming.htm" target="_blank" onclick="event.stopPropagation()" title="Salesforce 공식 문서">↗</a></div>
         <div class="check-item" onclick="toggle(this)"><input type="checkbox"><label>수신거부 관리 방식 결정 (기본 Subscription Center vs 커스텀 페이지)</label></div>
         <div class="check-item" onclick="toggle(this)"><input type="checkbox"><label>CAN-SPAM / GDPR / 정보통신망법 준수 여부 및 물리적 주소 확인</label></div>
         <div class="check-item" onclick="toggle(this)"><input type="checkbox"><label>CRM 연동 여부 결정 (Marketing Cloud Connect 필요 시 사전 협의)</label></div>
@@ -408,15 +414,15 @@ mark{background:#FAEEDA;color:#633806;border-radius:2px;padding:0 2px;font-style
       </div>
       <div class="block">
         <div class="block-title">☑ 체크리스트</div>
-        <div class="check-item" onclick="toggle(this)"><input type="checkbox"><label>Admin &gt; Account &gt; Account Details — 회사명, 물리주소, 타임존, 문자셋 입력</label></div>
+        <div class="check-item" onclick="toggle(this)"><input type="checkbox"><label>Admin &gt; Account &gt; Account Details — 회사명, 물리주소, 타임존, 문자셋 입력</label><a class="doc-link" href="https://help.salesforce.com/s/articleView?id=sf.mc_overview_account_details.htm" target="_blank" onclick="event.stopPropagation()" title="Salesforce 공식 문서">↗</a></div>
         <div class="check-item" onclick="toggle(this)"><input type="checkbox"><label>문자셋 UTF-8 확인 (한국어 발송 필수)</label></div>
-        <div class="check-item" onclick="toggle(this)"><input type="checkbox"><label>Child BU 생성 및 네이밍 컨벤션 적용 ([브랜드명]_[채널] 형태 권장)</label></div>
+        <div class="check-item" onclick="toggle(this)"><input type="checkbox"><label>Child BU 생성 및 네이밍 컨벤션 적용 ([브랜드명]_[채널] 형태 권장)</label><a class="doc-link" href="https://help.salesforce.com/s/articleView?id=sf.mc_overview_business_units.htm" target="_blank" onclick="event.stopPropagation()" title="Salesforce 공식 문서">↗</a></div>
         <div class="check-item" onclick="toggle(this)"><input type="checkbox"><label>각 BU별 Default From Name / From Email 설정</label></div>
-        <div class="check-item" onclick="toggle(this)"><input type="checkbox"><label>Private Domain CNAME DNS 레코드 추가 (DNS 담당자 요청)</label></div>
+        <div class="check-item" onclick="toggle(this)"><input type="checkbox"><label>Private Domain CNAME DNS 레코드 추가 (DNS 담당자 요청)</label><a class="doc-link" href="https://help.salesforce.com/s/articleView?id=sf.mc_es_private_domain_for_image_download.htm" target="_blank" onclick="event.stopPropagation()" title="Salesforce 공식 문서">↗</a></div>
         <div class="check-item" onclick="toggle(this)"><input type="checkbox"><label>Admin &gt; Account &gt; Business Units에서 Private Domain 연결 및 인증 완료</label></div>
-        <div class="check-item" onclick="toggle(this)"><input type="checkbox"><label>SAP 링크 도메인 설정 (이미지 호스팅 및 클릭 추적 도메인)</label></div>
-        <div class="check-item" onclick="toggle(this)"><input type="checkbox"><label>Reply Mail Management (RMM) 설정 — 바운스/부재중 자동 처리 규칙 구성</label></div>
-        <div class="check-item" onclick="toggle(this)"><input type="checkbox"><label>Subscription Center URL 확인 및 커스텀 페이지 연결 (필요 시)</label></div>
+        <div class="check-item" onclick="toggle(this)"><input type="checkbox"><label>SAP 링크 도메인 설정 (이미지 호스팅 및 클릭 추적 도메인)</label><a class="doc-link" href="https://help.salesforce.com/s/articleView?id=sf.mc_es_sender_authentication_package.htm" target="_blank" onclick="event.stopPropagation()" title="Salesforce 공식 문서">↗</a></div>
+        <div class="check-item" onclick="toggle(this)"><input type="checkbox"><label>Reply Mail Management (RMM) 설정 — 바운스/부재중 자동 처리 규칙 구성</label><a class="doc-link" href="https://help.salesforce.com/s/articleView?id=sf.mc_es_reply_mail_management.htm" target="_blank" onclick="event.stopPropagation()" title="Salesforce 공식 문서">↗</a></div>
+        <div class="check-item" onclick="toggle(this)"><input type="checkbox"><label>Subscription Center URL 확인 및 커스텀 페이지 연결 (필요 시)</label><a class="doc-link" href="https://help.salesforce.com/s/articleView?id=sf.mc_es_subscription_center.htm" target="_blank" onclick="event.stopPropagation()" title="Salesforce 공식 문서">↗</a></div>
       </div>
 
       <div class="block">
@@ -467,14 +473,14 @@ mark{background:#FAEEDA;color:#633806;border-radius:2px;padding:0 2px;font-style
       </div>
       <div class="block">
         <div class="block-title">☑ 체크리스트</div>
-        <div class="check-item" onclick="toggle(this)"><input type="checkbox"><label>Setup &gt; Users &gt; Users — 관리자 계정 생성</label></div>
-        <div class="check-item" onclick="toggle(this)"><input type="checkbox"><label>Setup &gt; Security &gt; Multi-Factor Authentication — MFA 정책 활성화</label></div>
-        <div class="check-item" onclick="toggle(this)"><input type="checkbox"><label>System Role 배정 (Marketing Cloud Administrator 등 공식 5개 롤 중 선택)</label></div>
-        <div class="check-item" onclick="toggle(this)"><input type="checkbox"><label>Setup &gt; Users &gt; Roles — 커스텀 Role 생성 (클라이언트 요청 권한 기준)</label></div>
+        <div class="check-item" onclick="toggle(this)"><input type="checkbox"><label>Setup &gt; Users &gt; Users — 관리자 계정 생성</label><a class="doc-link" href="https://help.salesforce.com/s/articleView?id=sf.mc_es_create_a_user.htm" target="_blank" onclick="event.stopPropagation()" title="Salesforce 공식 문서">↗</a></div>
+        <div class="check-item" onclick="toggle(this)"><input type="checkbox"><label>Setup &gt; Security &gt; Multi-Factor Authentication — MFA 정책 활성화</label><a class="doc-link" href="https://help.salesforce.com/s/articleView?id=sf.mc_es_multifactor_authentication.htm" target="_blank" onclick="event.stopPropagation()" title="Salesforce 공식 문서">↗</a></div>
+        <div class="check-item" onclick="toggle(this)"><input type="checkbox"><label>System Role 배정 (Marketing Cloud Administrator 등 공식 5개 롤 중 선택)</label><a class="doc-link" href="https://help.salesforce.com/s/articleView?id=sf.mc_es_user_roles.htm" target="_blank" onclick="event.stopPropagation()" title="Salesforce 공식 문서">↗</a></div>
+        <div class="check-item" onclick="toggle(this)"><input type="checkbox"><label>Setup &gt; Users &gt; Roles — 커스텀 Role 생성 (클라이언트 요청 권한 기준)</label><a class="doc-link" href="https://help.salesforce.com/s/articleView?id=sf.mc_es_create_custom_roles.htm" target="_blank" onclick="event.stopPropagation()" title="Salesforce 공식 문서">↗</a></div>
         <div class="check-item" onclick="toggle(this)"><input type="checkbox"><label>BU별 접근 권한 매핑 (Business Unit Access 탭에서 설정)</label></div>
-        <div class="check-item" onclick="toggle(this)"><input type="checkbox"><label>SSO 설정 (Setup &gt; Platform Tools &gt; Apps &gt; SSO Settings, 필요 시)</label></div>
-        <div class="check-item" onclick="toggle(this)"><input type="checkbox"><label>API 통합용 서비스 계정 생성 및 Installed Package 발급 (Setup &gt; Platform Tools &gt; Apps &gt; Installed Packages)</label></div>
-        <div class="check-item" onclick="toggle(this)"><input type="checkbox"><label>비밀번호 정책 설정 확인 (Setup &gt; Security &gt; Security Settings)</label></div>
+        <div class="check-item" onclick="toggle(this)"><input type="checkbox"><label>SSO 설정 (Setup &gt; Platform Tools &gt; Apps &gt; SSO Settings, 필요 시)</label><a class="doc-link" href="https://help.salesforce.com/s/articleView?id=sf.mc_es_sso.htm" target="_blank" onclick="event.stopPropagation()" title="Salesforce 공식 문서">↗</a></div>
+        <div class="check-item" onclick="toggle(this)"><input type="checkbox"><label>API 통합용 서비스 계정 생성 및 Installed Package 발급 (Setup &gt; Platform Tools &gt; Apps &gt; Installed Packages)</label><a class="doc-link" href="https://help.salesforce.com/s/articleView?id=sf.mc_es_installed_packages.htm" target="_blank" onclick="event.stopPropagation()" title="Salesforce 공식 문서">↗</a></div>
+        <div class="check-item" onclick="toggle(this)"><input type="checkbox"><label>비밀번호 정책 설정 확인 (Setup &gt; Security &gt; Security Settings)</label><a class="doc-link" href="https://help.salesforce.com/s/articleView?id=sf.mc_es_security_settings.htm" target="_blank" onclick="event.stopPropagation()" title="Salesforce 공식 문서">↗</a></div>
       </div>
 
       <div class="block">
@@ -523,16 +529,16 @@ mark{background:#FAEEDA;color:#633806;border-radius:2px;padding:0 2px;font-style
       </div>
       <div class="block">
         <div class="block-title">☑ 체크리스트</div>
-        <div class="check-item" onclick="toggle(this)"><input type="checkbox"><label>DE 타입 결정 (Standard / Filtered / Random / Synchronized)</label></div>
-        <div class="check-item" onclick="toggle(this)"><input type="checkbox"><label>Master DE 스키마 정의 (필드명, 타입, 길이, Nullable, 기본값)</label></div>
-        <div class="check-item" onclick="toggle(this)"><input type="checkbox"><label>Sendable DE 지정 — Email Address 필드 설정 + Subscriber Key 연결 (All Subscribers)</label></div>
+        <div class="check-item" onclick="toggle(this)"><input type="checkbox"><label>DE 타입 결정 (Standard / Filtered / Random / Synchronized)</label><a class="doc-link" href="https://help.salesforce.com/s/articleView?id=sf.mc_es_data_extensions.htm" target="_blank" onclick="event.stopPropagation()" title="Salesforce 공식 문서">↗</a></div>
+        <div class="check-item" onclick="toggle(this)"><input type="checkbox"><label>Master DE 스키마 정의 (필드명, 타입, 길이, Nullable, 기본값)</label><a class="doc-link" href="https://help.salesforce.com/s/articleView?id=sf.mc_es_create_data_extension.htm" target="_blank" onclick="event.stopPropagation()" title="Salesforce 공식 문서">↗</a></div>
+        <div class="check-item" onclick="toggle(this)"><input type="checkbox"><label>Sendable DE 지정 — Email Address 필드 설정 + Subscriber Key 연결 (All Subscribers)</label><a class="doc-link" href="https://help.salesforce.com/s/articleView?id=sf.mc_es_sendable_data_extensions.htm" target="_blank" onclick="event.stopPropagation()" title="Salesforce 공식 문서">↗</a></div>
         <div class="check-item" onclick="toggle(this)"><input type="checkbox"><label>Primary Key 설정 (ContactKey 기준, 중복 방지)</label></div>
-        <div class="check-item" onclick="toggle(this)"><input type="checkbox"><label>데이터 보존 정책(Retention Policy) 설정 — 개별 레코드 또는 DE 전체 삭제 주기</label></div>
+        <div class="check-item" onclick="toggle(this)"><input type="checkbox"><label>데이터 보존 정책(Retention Policy) 설정 — 개별 레코드 또는 DE 전체 삭제 주기</label><a class="doc-link" href="https://help.salesforce.com/s/articleView?id=sf.mc_es_data_retention_policy.htm" target="_blank" onclick="event.stopPropagation()" title="Salesforce 공식 문서">↗</a></div>
         <div class="check-item" onclick="toggle(this)"><input type="checkbox"><label>공유 범위 설정 (Public: 전체 BU 공유 / Private: 현재 BU만)</label></div>
-        <div class="check-item" onclick="toggle(this)"><input type="checkbox"><label>AllSubscribers 수신거부 연동 확인 (Commercial 발송 시 자동 제외)</label></div>
+        <div class="check-item" onclick="toggle(this)"><input type="checkbox"><label>AllSubscribers 수신거부 연동 확인 (Commercial 발송 시 자동 제외)</label><a class="doc-link" href="https://help.salesforce.com/s/articleView?id=sf.mc_es_all_subscribers.htm" target="_blank" onclick="event.stopPropagation()" title="Salesforce 공식 문서">↗</a></div>
         <div class="check-item" onclick="toggle(this)"><input type="checkbox"><label>폴더 구조 설계 (루트 &gt; [브랜드] &gt; [용도] 계층 권장)</label></div>
         <div class="check-item" onclick="toggle(this)"><input type="checkbox"><label>샘플 데이터로 Import 테스트 (CSV 또는 API)</label></div>
-        <div class="check-item" onclick="toggle(this)"><input type="checkbox"><label>Synchronized DE 설정 (Marketing Cloud Connect 사용 시 — CRM 오브젝트 선택)</label></div>
+        <div class="check-item" onclick="toggle(this)"><input type="checkbox"><label>Synchronized DE 설정 (Marketing Cloud Connect 사용 시 — CRM 오브젝트 선택)</label><a class="doc-link" href="https://help.salesforce.com/s/articleView?id=sf.mc_co_synchronized_data_extensions.htm" target="_blank" onclick="event.stopPropagation()" title="Salesforce 공식 문서">↗</a></div>
       </div>
 
       <div class="block">
@@ -649,9 +655,9 @@ WHERE m.EmailOptIn = 1
       </div>
       <div class="block">
         <div class="block-title">☑ 체크리스트</div>
-        <div class="check-item" onclick="toggle(this)"><input type="checkbox"><label>Contact Builder &gt; Data Designer 접속 확인</label></div>
-        <div class="check-item" onclick="toggle(this)"><input type="checkbox"><label>Attribute Group 생성 및 이름 설정 (예: [브랜드]_Contact_Data)</label></div>
-        <div class="check-item" onclick="toggle(this)"><input type="checkbox"><label>Master DE를 Attribute Group에 연결 (Population 루트 DE 지정)</label></div>
+        <div class="check-item" onclick="toggle(this)"><input type="checkbox"><label>Contact Builder &gt; Data Designer 접속 확인</label><a class="doc-link" href="https://help.salesforce.com/s/articleView?id=sf.mc_co_contact_builder.htm" target="_blank" onclick="event.stopPropagation()" title="Salesforce 공식 문서">↗</a></div>
+        <div class="check-item" onclick="toggle(this)"><input type="checkbox"><label>Attribute Group 생성 및 이름 설정 (예: [브랜드]_Contact_Data)</label><a class="doc-link" href="https://help.salesforce.com/s/articleView?id=sf.mc_co_create_attribute_group.htm" target="_blank" onclick="event.stopPropagation()" title="Salesforce 공식 문서">↗</a></div>
+        <div class="check-item" onclick="toggle(this)"><input type="checkbox"><label>Master DE를 Attribute Group에 연결 (Population 루트 DE 지정)</label><a class="doc-link" href="https://help.salesforce.com/s/articleView?id=sf.mc_co_populations.htm" target="_blank" onclick="event.stopPropagation()" title="Salesforce 공식 문서">↗</a></div>
         <div class="check-item" onclick="toggle(this)"><input type="checkbox"><label>추가 DE 연결 및 관계 정의 (Contact Key 기준 One-to-One / One-to-Many)</label></div>
         <div class="check-item" onclick="toggle(this)"><input type="checkbox"><label>Contact Key ↔ Subscriber Key 매핑 일치 확인</label></div>
         <div class="check-item" onclick="toggle(this)"><input type="checkbox"><label>Journey Builder에서 Contact Data 속성 조회 테스트</label></div>
@@ -704,13 +710,13 @@ WHERE m.EmailOptIn = 1
       </div>
       <div class="block">
         <div class="block-title">☑ 체크리스트</div>
-        <div class="check-item" onclick="toggle(this)"><input type="checkbox"><label>Email Studio &gt; Admin &gt; Sender Profiles 접속</label></div>
+        <div class="check-item" onclick="toggle(this)"><input type="checkbox"><label>Email Studio &gt; Admin &gt; Sender Profiles 접속</label><a class="doc-link" href="https://help.salesforce.com/s/articleView?id=sf.mc_es_sender_profile.htm" target="_blank" onclick="event.stopPropagation()" title="Salesforce 공식 문서">↗</a></div>
         <div class="check-item" onclick="toggle(this)"><input type="checkbox"><label>From Name 설정 (클라이언트 브랜드명으로 확인 후 등록)</label></div>
         <div class="check-item" onclick="toggle(this)"><input type="checkbox"><label>From Email 설정 (Private Domain 기반 주소 사용)</label></div>
-        <div class="check-item" onclick="toggle(this)"><input type="checkbox"><label>SPF 레코드 추가: <code>v=spf1 include:cust-spf.exacttarget.com ~all</code></label></div>
-        <div class="check-item" onclick="toggle(this)"><input type="checkbox"><label>DKIM 활성화 확인 (SAP에 포함 — Admin &gt; Account &gt; Sender Authentication 확인)</label></div>
-        <div class="check-item" onclick="toggle(this)"><input type="checkbox"><label>DMARC 정책 설정 — <code>p=none</code>으로 시작 후 단계적 강화</label></div>
-        <div class="check-item" onclick="toggle(this)"><input type="checkbox"><label>Reply-to 이메일 주소 설정 및 RMM 연동</label></div>
+        <div class="check-item" onclick="toggle(this)"><input type="checkbox"><label>SPF 레코드 추가: <code>v=spf1 include:cust-spf.exacttarget.com ~all</code></label><a class="doc-link" href="https://help.salesforce.com/s/articleView?id=sf.mc_es_spf_include_mechanism.htm" target="_blank" onclick="event.stopPropagation()" title="Salesforce 공식 문서">↗</a></div>
+        <div class="check-item" onclick="toggle(this)"><input type="checkbox"><label>DKIM 활성화 확인 (SAP에 포함 — Admin &gt; Account &gt; Sender Authentication 확인)</label><a class="doc-link" href="https://help.salesforce.com/s/articleView?id=sf.mc_es_dkim_key_management.htm" target="_blank" onclick="event.stopPropagation()" title="Salesforce 공식 문서">↗</a></div>
+        <div class="check-item" onclick="toggle(this)"><input type="checkbox"><label>DMARC 정책 설정 — <code>p=none</code>으로 시작 후 단계적 강화</label><a class="doc-link" href="https://help.salesforce.com/s/articleView?id=sf.mc_es_dmarc.htm" target="_blank" onclick="event.stopPropagation()" title="Salesforce 공식 문서">↗</a></div>
+        <div class="check-item" onclick="toggle(this)"><input type="checkbox"><label>Reply-to 이메일 주소 설정 및 RMM 연동</label><a class="doc-link" href="https://help.salesforce.com/s/articleView?id=sf.mc_es_reply_mail_management.htm" target="_blank" onclick="event.stopPropagation()" title="Salesforce 공식 문서">↗</a></div>
         <div class="check-item" onclick="toggle(this)"><input type="checkbox"><label>Default Sender Profile 지정 (Admin &gt; Account에서 설정)</label></div>
       </div>
 
@@ -763,12 +769,12 @@ WHERE m.EmailOptIn = 1
       </div>
       <div class="block">
         <div class="block-title">☑ 체크리스트</div>
-        <div class="check-item" onclick="toggle(this)"><input type="checkbox"><label>Email Studio &gt; Admin &gt; Send Classification 접속</label></div>
+        <div class="check-item" onclick="toggle(this)"><input type="checkbox"><label>Email Studio &gt; Admin &gt; Send Classification 접속</label><a class="doc-link" href="https://help.salesforce.com/s/articleView?id=sf.mc_es_send_classification.htm" target="_blank" onclick="event.stopPropagation()" title="Salesforce 공식 문서">↗</a></div>
         <div class="check-item" onclick="toggle(this)"><input type="checkbox"><label>Commercial Classification 생성 (마케팅 뉴스레터, 프로모션 발송용)</label></div>
-        <div class="check-item" onclick="toggle(this)"><input type="checkbox"><label>Publication List 생성 및 Subscription Center 연결</label></div>
-        <div class="check-item" onclick="toggle(this)"><input type="checkbox"><label>Delivery Profile 설정 (IP 풀, 헤더/푸터 포함 여부)</label></div>
+        <div class="check-item" onclick="toggle(this)"><input type="checkbox"><label>Publication List 생성 및 Subscription Center 연결</label><a class="doc-link" href="https://help.salesforce.com/s/articleView?id=sf.mc_es_publication_lists.htm" target="_blank" onclick="event.stopPropagation()" title="Salesforce 공식 문서">↗</a></div>
+        <div class="check-item" onclick="toggle(this)"><input type="checkbox"><label>Delivery Profile 설정 (IP 풀, 헤더/푸터 포함 여부)</label><a class="doc-link" href="https://help.salesforce.com/s/articleView?id=sf.mc_es_delivery_profile.htm" target="_blank" onclick="event.stopPropagation()" title="Salesforce 공식 문서">↗</a></div>
         <div class="check-item" onclick="toggle(this)"><input type="checkbox"><label>Transactional Classification 생성 (주문확인, 비밀번호 재설정 등 거래성 발송용)</label></div>
-        <div class="check-item" onclick="toggle(this)"><input type="checkbox"><label>CAN-SPAM 푸터 템플릿 확인 (회사명, 물리적 주소, 수신거부 링크 포함)</label></div>
+        <div class="check-item" onclick="toggle(this)"><input type="checkbox"><label>CAN-SPAM 푸터 템플릿 확인 (회사명, 물리적 주소, 수신거부 링크 포함)</label><a class="doc-link" href="https://help.salesforce.com/s/articleView?id=sf.mc_es_can_spam.htm" target="_blank" onclick="event.stopPropagation()" title="Salesforce 공식 문서">↗</a></div>
         <div class="check-item" onclick="toggle(this)"><input type="checkbox"><label>Default Send Classification 지정</label></div>
       </div>
 
@@ -822,13 +828,13 @@ WHERE m.EmailOptIn = 1
       </div>
       <div class="block">
         <div class="block-title">☑ 체크리스트</div>
-        <div class="check-item" onclick="toggle(this)"><input type="checkbox"><label>Automation Studio &gt; Overview — 데이터 동기화 Automation 플로우 설계</label></div>
-        <div class="check-item" onclick="toggle(this)"><input type="checkbox"><label>Import File Activity 설정 (Enhanced FTP/SFTP 경로, 파일명 패턴, 헤더 매핑)</label></div>
-        <div class="check-item" onclick="toggle(this)"><input type="checkbox"><label>Query Activity 작성 및 Target DE 지정 (Overwrite / Append / Update 모드 선택)</label></div>
+        <div class="check-item" onclick="toggle(this)"><input type="checkbox"><label>Automation Studio &gt; Overview — 데이터 동기화 Automation 플로우 설계</label><a class="doc-link" href="https://help.salesforce.com/s/articleView?id=sf.mc_as_automation_studio.htm" target="_blank" onclick="event.stopPropagation()" title="Salesforce 공식 문서">↗</a></div>
+        <div class="check-item" onclick="toggle(this)"><input type="checkbox"><label>Import File Activity 설정 (Enhanced FTP/SFTP 경로, 파일명 패턴, 헤더 매핑)</label><a class="doc-link" href="https://help.salesforce.com/s/articleView?id=sf.mc_as_import_file.htm" target="_blank" onclick="event.stopPropagation()" title="Salesforce 공식 문서">↗</a></div>
+        <div class="check-item" onclick="toggle(this)"><input type="checkbox"><label>Query Activity 작성 및 Target DE 지정 (Overwrite / Append / Update 모드 선택)</label><a class="doc-link" href="https://help.salesforce.com/s/articleView?id=sf.mc_as_using_query_activity.htm" target="_blank" onclick="event.stopPropagation()" title="Salesforce 공식 문서">↗</a></div>
         <div class="check-item" onclick="toggle(this)"><input type="checkbox"><label>Query Activity Preview로 결과 건수 사전 검증</label></div>
-        <div class="check-item" onclick="toggle(this)"><input type="checkbox"><label>Email Send Activity 설정 (Sender Profile, Classification, Target DE 연결)</label></div>
-        <div class="check-item" onclick="toggle(this)"><input type="checkbox"><label>Data Extract Activity 설정 (결과 데이터 FTP 추출용, 필요 시)</label></div>
-        <div class="check-item" onclick="toggle(this)"><input type="checkbox"><label>File Transfer Activity 설정 (FTP 파일 이동/압축 해제, 필요 시)</label></div>
+        <div class="check-item" onclick="toggle(this)"><input type="checkbox"><label>Email Send Activity 설정 (Sender Profile, Classification, Target DE 연결)</label><a class="doc-link" href="https://help.salesforce.com/s/articleView?id=sf.mc_as_email_send_activity.htm" target="_blank" onclick="event.stopPropagation()" title="Salesforce 공식 문서">↗</a></div>
+        <div class="check-item" onclick="toggle(this)"><input type="checkbox"><label>Data Extract Activity 설정 (결과 데이터 FTP 추출용, 필요 시)</label><a class="doc-link" href="https://help.salesforce.com/s/articleView?id=sf.mc_as_data_extract_activity.htm" target="_blank" onclick="event.stopPropagation()" title="Salesforce 공식 문서">↗</a></div>
+        <div class="check-item" onclick="toggle(this)"><input type="checkbox"><label>File Transfer Activity 설정 (FTP 파일 이동/압축 해제, 필요 시)</label><a class="doc-link" href="https://help.salesforce.com/s/articleView?id=sf.mc_as_file_transfer_activity.htm" target="_blank" onclick="event.stopPropagation()" title="Salesforce 공식 문서">↗</a></div>
         <div class="check-item" onclick="toggle(this)"><input type="checkbox"><label>Automation 스케줄 설정 (주기, 시작 시간 — KST 기준 명확히 설정)</label></div>
         <div class="check-item" onclick="toggle(this)"><input type="checkbox"><label>에러 알림 이메일 설정 (Automation Settings &gt; Notifications)</label></div>
         <div class="check-item" onclick="toggle(this)"><input type="checkbox"><label>최초 수동 실행 후 결과 검증 (Activity별 Status 및 Error Log 확인)</label></div>
@@ -922,17 +928,17 @@ GROUP BY s.JobID, s.EmailName</div>
       </div>
       <div class="block">
         <div class="block-title">☑ 체크리스트</div>
-        <div class="check-item" onclick="toggle(this)"><input type="checkbox"><label>Journey Builder &gt; New Journey 생성 및 이름/설명 설정</label></div>
-        <div class="check-item" onclick="toggle(this)"><input type="checkbox"><label>Entry Source 선택 및 설정 (Data Extension / API Event / Salesforce Data 등)</label></div>
+        <div class="check-item" onclick="toggle(this)"><input type="checkbox"><label>Journey Builder &gt; New Journey 생성 및 이름/설명 설정</label><a class="doc-link" href="https://help.salesforce.com/s/articleView?id=sf.mc_jb_journey_builder.htm" target="_blank" onclick="event.stopPropagation()" title="Salesforce 공식 문서">↗</a></div>
+        <div class="check-item" onclick="toggle(this)"><input type="checkbox"><label>Entry Source 선택 및 설정 (Data Extension / API Event / Salesforce Data 등)</label><a class="doc-link" href="https://help.salesforce.com/s/articleView?id=sf.mc_jb_entry_sources.htm" target="_blank" onclick="event.stopPropagation()" title="Salesforce 공식 문서">↗</a></div>
         <div class="check-item" onclick="toggle(this)"><input type="checkbox"><label>Entry Schedule 또는 Trigger 조건 설정 (배치 실행 주기 또는 실시간 이벤트)</label></div>
-        <div class="check-item" onclick="toggle(this)"><input type="checkbox"><label>Re-entry 정책 설정 (허용 안 함 / 여정 시작부터 / 언제든지)</label></div>
-        <div class="check-item" onclick="toggle(this)"><input type="checkbox"><label>Journey Goal 설정 (전환 목표 이벤트 및 기간 지정)</label></div>
-        <div class="check-item" onclick="toggle(this)"><input type="checkbox"><label>Exit Criteria 설정 (조기 이탈 조건 — 예: 구매 완료 시 즉시 이탈)</label></div>
-        <div class="check-item" onclick="toggle(this)"><input type="checkbox"><label>Decision Split 조건 설계 (Attribute Split / Engagement Split / Random Split)</label></div>
+        <div class="check-item" onclick="toggle(this)"><input type="checkbox"><label>Re-entry 정책 설정 (허용 안 함 / 여정 시작부터 / 언제든지)</label><a class="doc-link" href="https://help.salesforce.com/s/articleView?id=sf.mc_jb_journey_settings.htm" target="_blank" onclick="event.stopPropagation()" title="Salesforce 공식 문서">↗</a></div>
+        <div class="check-item" onclick="toggle(this)"><input type="checkbox"><label>Journey Goal 설정 (전환 목표 이벤트 및 기간 지정)</label><a class="doc-link" href="https://help.salesforce.com/s/articleView?id=sf.mc_jb_goals.htm" target="_blank" onclick="event.stopPropagation()" title="Salesforce 공식 문서">↗</a></div>
+        <div class="check-item" onclick="toggle(this)"><input type="checkbox"><label>Exit Criteria 설정 (조기 이탈 조건 — 예: 구매 완료 시 즉시 이탈)</label><a class="doc-link" href="https://help.salesforce.com/s/articleView?id=sf.mc_jb_exit_criteria.htm" target="_blank" onclick="event.stopPropagation()" title="Salesforce 공식 문서">↗</a></div>
+        <div class="check-item" onclick="toggle(this)"><input type="checkbox"><label>Decision Split 조건 설계 (Attribute Split / Engagement Split / Random Split)</label><a class="doc-link" href="https://help.salesforce.com/s/articleView?id=sf.mc_jb_decision_split.htm" target="_blank" onclick="event.stopPropagation()" title="Salesforce 공식 문서">↗</a></div>
         <div class="check-item" onclick="toggle(this)"><input type="checkbox"><label>각 경로별 Send Email / SMS Activity 및 이메일 에셋 연결</label></div>
-        <div class="check-item" onclick="toggle(this)"><input type="checkbox"><label>Wait Activity 시간 설정 (Duration / Until Date / Until Activity — 타임존 오프셋 주의)</label></div>
-        <div class="check-item" onclick="toggle(this)"><input type="checkbox"><label>Update Contact Activity 설정 (Contact 속성 업데이트 필요 시)</label></div>
-        <div class="check-item" onclick="toggle(this)"><input type="checkbox"><label>Test Mode 활성화 후 테스트 연락처 진입 검증 (실제 이메일 발송됨 주의)</label></div>
+        <div class="check-item" onclick="toggle(this)"><input type="checkbox"><label>Wait Activity 시간 설정 (Duration / Until Date / Until Activity — 타임존 오프셋 주의)</label><a class="doc-link" href="https://help.salesforce.com/s/articleView?id=sf.mc_jb_wait_activity.htm" target="_blank" onclick="event.stopPropagation()" title="Salesforce 공식 문서">↗</a></div>
+        <div class="check-item" onclick="toggle(this)"><input type="checkbox"><label>Update Contact Activity 설정 (Contact 속성 업데이트 필요 시)</label><a class="doc-link" href="https://help.salesforce.com/s/articleView?id=sf.mc_jb_update_contact.htm" target="_blank" onclick="event.stopPropagation()" title="Salesforce 공식 문서">↗</a></div>
+        <div class="check-item" onclick="toggle(this)"><input type="checkbox"><label>Test Mode 활성화 후 테스트 연락처 진입 검증 (실제 이메일 발송됨 주의)</label><a class="doc-link" href="https://help.salesforce.com/s/articleView?id=sf.mc_jb_test_mode.htm" target="_blank" onclick="event.stopPropagation()" title="Salesforce 공식 문서">↗</a></div>
         <div class="check-item" onclick="toggle(this)"><input type="checkbox"><label>Journey 활성화 전 전체 경로 최종 검토 및 클라이언트 승인</label></div>
       </div>
 
@@ -1009,14 +1015,14 @@ GROUP BY s.JobID, s.EmailName</div>
       <div class="block">
         <div class="block-title">☑ 체크리스트</div>
         <div class="check-item" onclick="toggle(this)"><input type="checkbox"><label>테스트 DE 생성 및 시드 데이터 입력 (사내 테스트 주소 최소 5개 이상)</label></div>
-        <div class="check-item" onclick="toggle(this)"><input type="checkbox"><label>Email Studio &gt; Preview and Test — HTML/Text 렌더링 사전 확인</label></div>
-        <div class="check-item" onclick="toggle(this)"><input type="checkbox"><label>AMPScript 개인화 변수 정상 치환 확인 (이름, 등급 등 NULL 처리 포함)</label></div>
+        <div class="check-item" onclick="toggle(this)"><input type="checkbox"><label>Email Studio &gt; Preview and Test — HTML/Text 렌더링 사전 확인</label><a class="doc-link" href="https://help.salesforce.com/s/articleView?id=sf.mc_es_preview_and_test.htm" target="_blank" onclick="event.stopPropagation()" title="Salesforce 공식 문서">↗</a></div>
+        <div class="check-item" onclick="toggle(this)"><input type="checkbox"><label>AMPScript 개인화 변수 정상 치환 확인 (이름, 등급 등 NULL 처리 포함)</label><a class="doc-link" href="https://help.salesforce.com/s/articleView?id=sf.mc_es_ampscript.htm" target="_blank" onclick="event.stopPropagation()" title="Salesforce 공식 문서">↗</a></div>
         <div class="check-item" onclick="toggle(this)"><input type="checkbox"><label>모든 링크 유효성 검증 (버튼, 이미지 링크, 텍스트 링크 클릭 테스트)</label></div>
-        <div class="check-item" onclick="toggle(this)"><input type="checkbox"><label>수신거부 링크 동작 확인 (Subscription Center 또는 커스텀 페이지 리다이렉션)</label></div>
-        <div class="check-item" onclick="toggle(this)"><input type="checkbox"><label>Inbox Preview 확인 — Gmail, Outlook, iOS Mail, Android 주요 4종 (Litmus)</label></div>
+        <div class="check-item" onclick="toggle(this)"><input type="checkbox"><label>수신거부 링크 동작 확인 (Subscription Center 또는 커스텀 페이지 리다이렉션)</label><a class="doc-link" href="https://help.salesforce.com/s/articleView?id=sf.mc_es_subscription_center.htm" target="_blank" onclick="event.stopPropagation()" title="Salesforce 공식 문서">↗</a></div>
+        <div class="check-item" onclick="toggle(this)"><input type="checkbox"><label>Inbox Preview 확인 — Gmail, Outlook, iOS Mail, Android 주요 4종 (Litmus)</label><a class="doc-link" href="https://help.salesforce.com/s/articleView?id=sf.mc_es_inbox_preview.htm" target="_blank" onclick="event.stopPropagation()" title="Salesforce 공식 문서">↗</a></div>
         <div class="check-item" onclick="toggle(this)"><input type="checkbox"><label>스팸 점수 확인 (SpamAssassin 기준 5점 이하 권장, Email Studio &gt; Test Send)</label></div>
         <div class="check-item" onclick="toggle(this)"><input type="checkbox"><label>다크모드 렌더링 확인 (iOS / MacOS Mail)</label></div>
-        <div class="check-item" onclick="toggle(this)"><input type="checkbox"><label>Tracking 데이터 수집 확인 (_Open, _Click 시스템 DE에서 레코드 생성 확인)</label></div>
+        <div class="check-item" onclick="toggle(this)"><input type="checkbox"><label>Tracking 데이터 수집 확인 (_Open, _Click 시스템 DE에서 레코드 생성 확인)</label><a class="doc-link" href="https://help.salesforce.com/s/articleView?id=sf.mc_es_tracking_data.htm" target="_blank" onclick="event.stopPropagation()" title="Salesforce 공식 문서">↗</a></div>
         <div class="check-item" onclick="toggle(this)"><input type="checkbox"><label>클라이언트 최종 승인 수령 (서면 또는 메일 기록 보관)</label></div>
       </div>
 
