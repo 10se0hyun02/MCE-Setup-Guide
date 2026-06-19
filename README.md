@@ -1,100 +1,64 @@
-# MCE 구축 가이드 (index.html)
+# MCE 구축 가이드 + 업무 대시보드
 
-Marketing Cloud Engagement 구축 전 과정을 단계별로 정리한 단일 HTML 가이드 파일입니다.  
-Claude Code로 지속적으로 수정·보완하는 것을 전제로 구성되어 있습니다.
+Salesforce Marketing Cloud Engagement(MCE) 구축 전 과정을 정리한 레퍼런스 가이드와, 고객사별 프로젝트를 관리하는 개인 업무 대시보드로 구성됩니다.
 
 ---
 
 ## 파일 구조
 
 ```
-mce-guide/
-├── index.html      # 메인 가이드 (단일 파일, 이것만 관리)
-├── README.md       # 이 파일 — 구조 설명 + 작업 로그
-└── progress.md     # Claude Code 세션 간 이어가기용 체크포인트
+MCE-Setup-Guide/
+  index.html         — MCE 구축 가이드 (범용 레퍼런스, Step 0~16)
+  dashboard.html     — 개인 업무 대시보드 (IndexedDB, 브라우저 내 저장)
+  README.md          — 이 파일
+  progress.md        — Claude Code 세션 간 이어가기용 체크포인트
+  docs/
+    contact-builder-de.html           — Contact Builder / DE 레퍼런스 (한국어)
+    marketing-cloud-intelligence.html
+    marketing-cloud-personalization.html
+    einstein-analytics.html
 ```
 
 ---
 
-## 현재 구현 상태
+## index.html — MCE 구축 가이드
 
-### 완료된 기능
-- [x] 10단계 사이드바 네비게이션 (그룹별 묶음)
-- [x] 단계별 체크리스트 (클릭 완료 처리 + 취소선)
-- [x] 단계별 진행률 바 + 카운터 (예: 2 / 5)
-- [x] 전체 진행률 (사이드바 하단)
-- [x] 네비게이션 상태 아이콘 (⬜ / 🔵 / ✅)
-- [x] 4종 callout 박스 (warning / danger / tip / note)
-- [x] 코드블록 복사 버튼
-- [x] 필드 구성 테이블 (tag: 필수/선택/시스템)
-- [x] 키워드 검색 (체크리스트 + callout 대상)
-- [x] 다크모드 대응
+### 개요
+모든 고객사에 공통으로 사용하는 MCE 구축 단계별 레퍼런스 문서입니다.  
+브라우저에서 바로 열면 사이드바 네비게이션 + 체크리스트 + 검색이 동작합니다.
 
-### 미완료 / 디벨롭 예정
-- [ ] 각 단계 실제 내용 채우기 (현재는 기본 템플릿 수준)
-- [ ] 클라이언트별 분기 (탭 또는 필터로 Sony / 초록우산 등 구분)
-- [ ] 스크린샷 삽입 영역
-- [ ] 트러블슈팅 섹션 추가
-- [ ] 단계 완료 후 로컬스토리지 진행 상태 저장
-- [ ] 인쇄/PDF 출력 스타일
+### 17단계 구성 (Step 0~16)
 
----
+| 그룹 | Step | 내용 |
+|---|---|---|
+| 준비 | 0 | 사전 준비 |
+| 계정 설정 | 1~3 | 계정/BU, Enhanced FTP, 사용자 권한 |
+| 데이터 설계 | 4~5 | Data Extension 설계, Contact Builder |
+| 발송 설정 | 6~8 | Sender Profile, Send Classification, IP Warming |
+| 콘텐츠 | 9~10 | Content Builder, CloudPages |
+| 자동화 | 11~14 | Automation Studio, Journey Builder, Transactional 발송, 데이터 관리 |
+| 검수 & 인계 | 15~16 | 발송 테스트, 운영 인계 |
 
-## 구조 설명
+### 주요 기능
+- 단계별 체크리스트 (클릭 완료 처리, 진행률 바)
+- 4종 callout 박스 (warning / danger / tip / note)
+- 코드블록 복사 버튼, data-table 컴포넌트
+- 키워드 검색, 다크모드
+- 사이드바 하단 → dashboard.html 바로가기
 
-### HTML 구조 패턴
-
-**새 단계 추가 시 반드시 두 곳 동시 수정:**
-
-```html
-<!-- 1. 사이드바 nav-item 추가 -->
-<div class="nav-item" onclick="showSection('s11')" id="nav-s11">
-  <span class="nav-badge">11</span>
-  <span>새 단계 이름</span>
-  <span class="nav-status" id="status-s11">⬜</span>
-</div>
-
-<!-- 2. main 영역 section 추가 -->
-<div class="section" id="s11">
-  <div class="section-header">
-    <div class="section-eyebrow">Step 11 · 그룹명</div>
-    <div class="section-title">단계 제목</div>
-    <div class="section-desc">설명</div>
-    <div class="step-progress">
-      <div class="step-progress-track">
-        <div class="step-progress-fill" id="prog-s11" style="width:0%"></div>
-      </div>
-      <span class="step-progress-label" id="prog-label-s11">0 / N</span>
-    </div>
-  </div>
-  <!-- 체크리스트, callout, 코드블록 등 -->
-</div>
-```
-
-**JS의 SECTIONS 객체도 함께 추가:**
-```js
-const SECTIONS = {
-  // ...기존 항목들...
-  s11: { title: '새 단계 이름', group: '그룹명' }
-};
-```
-
----
-
-### 컴포넌트 사용법
+### 컴포넌트 패턴
 
 **체크리스트 항목:**
 ```html
 <div class="check-item" onclick="toggle(this)">
-  <input type="checkbox">
-  <label>항목 내용</label>
+  <input type="checkbox"><label>항목 내용</label>
 </div>
 ```
 
-**Callout 박스 (4종):**
+**Callout 박스:**
 ```html
-<div class="callout warning">  <!-- warning / danger / tip / note -->
-  <span class="callout-icon">⚠️</span>  <!-- ⚠️ 🚫 💡 📌 -->
+<div class="callout warning">   <!-- warning / danger / tip / note -->
+  <span class="callout-icon">⚠️</span>
   <div><strong>제목:</strong> 내용</div>
 </div>
 ```
@@ -103,74 +67,125 @@ const SECTIONS = {
 ```html
 <div class="code-block">
   <div class="code-header">
-    <span class="code-lang">SQL (Query Studio)</span>
-    <button class="copy-btn" onclick="copyCode(this)">
-      <svg ...>...</svg> 복사
-    </button>
+    <span class="code-lang">SQL</span>
+    <button class="copy-btn" onclick="copyCode(this)">복사</button>
   </div>
-  <div class="code-body">SELECT * FROM ...</div>
+  <div class="code-body">SELECT * FROM _Sent</div>
 </div>
 ```
 
 **테이블:**
 ```html
 <table class="data-table">
-  <thead><tr><th>필드명</th><th>타입</th><th>필수</th></tr></thead>
+  <thead><tr><th>필드명</th><th>타입</th><th>구분</th></tr></thead>
   <tbody>
     <tr>
-      <td>ContactKey</td>
-      <td>Text(36)</td>
-      <td><span class="tag required">필수</span></td>  <!-- required / optional / system -->
+      <td>ContactKey</td><td>Text(36)</td>
+      <td><span class="tag required">필수</span></td>
     </tr>
   </tbody>
 </table>
 ```
 
+**Block / Block-title (내용 그룹):**
+```html
+<div class="block">
+  <div class="block-title">그룹 제목</div>
+  <!-- 체크리스트, 테이블 등 -->
+</div>
+```
+
+### 새 Step 추가 시 수정 위치 3곳
+
+1. **사이드바 nav-item** (HTML)
+2. **메인 section** (HTML, id=`sN`)
+3. **SECTIONS 객체** (JS)
+
+```js
+const SECTIONS = {
+  // ...기존...
+  sN: { title: '새 단계명', group: '그룹명' }
+};
+```
+
+### CSS 변수 (index.html 전용)
+```css
+--blue:#378ADD;  --blue-bg:#E6F1FB;  --blue-text:#185FA5;
+--green:#1D9E75; --green-bg:#E1F5EE;
+--amber:#BA7517; --amber-bg:#FAEEDA;
+--red:#A32D2D;   --red-bg:#FCEBEB;
+--bg:#fff; --bg2:#f8f8f7; --bg3:#f2f2f0;
+--text:#1a1a1a; --text2:#555; --text3:#999;
+```
+> ⚠️ `docs/*.html`은 Pretendard + 다른 CSS 변수명 사용 — 혼용 금지
+
+---
+
+## dashboard.html — 업무 대시보드
+
+### 개요
+현재 진행 중인 MCE 구축 고객사 프로젝트를 관리하는 개인 업무 도구입니다.  
+데이터는 **브라우저 IndexedDB에 저장**되며 외부 서버가 필요 없습니다.
+
+### 저장 구조 (IndexedDB `MCEDashboardDB` v3)
+
+| 스토어 | 키 | 용도 |
+|---|---|---|
+| projects | id | 프로젝트 정보 (고객사, 기간, 담당자, 에디션) |
+| communications | id (idx: projectId) | 커뮤니케이션 이력 |
+| files | id (idx: projectId) | 첨부파일 (ArrayBuffer) |
+| issues | id (idx: projectId) | 이슈 트래커 |
+| notes | id (idx: projectId) | 메모 카드 |
+| threads | id (idx: parentId) | 카드별 스레드 메시지 |
+
+### 주요 기능
+
+| 탭 | 기능 |
+|---|---|
+| 📊 진행현황 | Step 0~16 상태 토글 (⬜/🔵/✅), 진행률 바, 가이드 링크 |
+| 💬 커뮤니케이션 | 날짜/방식/참석자/내용/결정사항, 검색, 마크다운 편집 |
+| 📎 파일 | 드래그 업로드, 카테고리 필터, 다운로드 |
+| ⚠️ 이슈 | 우선순위/상태/카테고리, 인라인 상태 변경, 마크다운 편집 |
+| 📝 노트 | 카드 목록, 검색, 마크다운 편집, 체크박스 인터랙션 |
+
+**스레드 패널:** 커뮤니케이션/이슈/노트 카드를 클릭하면 우측에 Slack 스레드 형식의 패널이 열립니다.
+
+**마크다운 지원 문법:**
+```
+# 제목 1    ## 제목 2
+**굵게**    *기울임*    `코드`
+- 목록      1. 번호 목록
+- [ ] 체크박스    - [x] 완료
+---  (구분선)
+```
+
+### 백업/복원
+- **내보내기:** JSON 파일 다운로드 (파일 첨부 바이너리 제외)
+- **가져오기:** JSON 파일 업로드로 복원 (파일 첨부는 재업로드 필요)
+
 ---
 
 ## Claude Code 작업 가이드
 
-### 세션 시작 프롬프트 템플릿
-
+### 세션 시작 프롬프트
 ```
 README.md와 progress.md 읽고 현재 상태 파악해줘.
-오늘 작업 목표: [여기에 작업 내용 입력]
-index.html 기준으로 작업해줘.
+오늘 작업 목표: [여기에 작업 내용]
 ```
 
 ### 작업 규칙
-
-1. **항상 index.html 단일 파일 기준** — 외부 CSS/JS 파일 분리하지 않음
-2. **새 단계 추가 시** — nav-item + section + SECTIONS 객체 동시 수정
-3. **체크리스트 항목 수 변경 시** — `prog-label-sN`의 `0 / N` 숫자도 업데이트
-4. **검색 대상 확장 시** — `searchIndex`에 push하는 selector 추가
-5. **스타일 수정 시** — CSS 변수(`--bg-primary` 등) 기준으로만 색상 처리, 하드코딩 금지
-
-### 자주 쓰는 Claude Code 명령
-
-```bash
-# 모델 확인 및 전환
-/status
-/model sonnet
-
-# 현재 세션 진행 상황 체크포인트 저장 요청
-"현재 작업 상태 progress.md에 업데이트해줘"
-```
+1. `index.html` / `dashboard.html` 모두 단일 파일 — 외부 CSS/JS 분리 금지
+2. `docs/*.html` 은 Pretendard + 별도 CSS 변수 사용 (index.html 변수와 혼용 금지)
+3. IndexedDB 스키마 변경 시 `DB_VERSION` 숫자 올리기 (현재 v3)
+4. `dashboard.html` 수정 후 DB 버전을 올릴 경우 `onupgradeneeded` 마이그레이션 로직 확인
 
 ---
 
 ## 작업 로그
 
-| 날짜 | 작업 내용 | 비고 |
-|------|-----------|------|
-| 2026-06-19 | 초기 구조 생성 (10단계, 기본 컴포넌트 세트) | Claude.ai에서 생성 |
-
----
-
-## 디벨롭 아이디어 (백로그)
-
-- **클라이언트 필터**: 상단에 클라이언트 탭 추가, 단계별로 클라이언트별 주의사항 분기
-- **스크린샷 영역**: `<figure class="screenshot">` 컴포넌트 추가
-- **진행 상태 저장**: localStorage로 체크박스 상태 유지 (브라우저 닫아도 유지)
-- **트러블슈팅 섹션**: 자주 발생하는 에러별 해결법 별도 섹션으로 추가
-- **인쇄 모드**: `@media print` 스타일로 PDF 출력 최적화
+| 날짜 | 작업 내용 |
+|------|-----------|
+| 2026-06-19 | 초기 구조 생성 (10단계) |
+| 2026-06-19 | 17단계로 확장, 스타일 정규화, doc-link 정리 |
+| 2026-06-19 | `docs/contact-builder-de.html` 신규 생성 |
+| 2026-06-19 | `dashboard.html` 전체 구현 (IndexedDB, 5탭, 마크다운, 스레드) |

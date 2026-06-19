@@ -1,0 +1,1655 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MCE 업무 대시보드</title>
+<style>
+:root {
+  --blue:#378ADD; --blue-bg:#E6F1FB; --blue-text:#185FA5;
+  --green:#1D9E75; --green-bg:#E1F5EE;
+  --amber:#BA7517; --amber-bg:#FAEEDA;
+  --red:#A32D2D; --red-bg:#FCEBEB;
+  --bg:#fff; --bg2:#f8f8f7; --bg3:#f2f2f0;
+  --text:#1a1a1a; --text2:#555; --text3:#999;
+  --border:rgba(0,0,0,.08); --border2:rgba(0,0,0,.14);
+  --radius:8px; --radius-lg:12px;
+  --header-h:60px; --tab-h:44px;
+}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){
+    --bg:#1a1a1a; --bg2:#242424; --bg3:#2e2e2e;
+    --text:#e8e8e8; --text2:#aaa; --text3:#666;
+    --border:rgba(255,255,255,.08); --border2:rgba(255,255,255,.14);
+    --blue-bg:#1a2d42; --blue-text:#7ab8f5;
+    --green-bg:#142b22; --amber-bg:#2d2208; --red-bg:#2d1414;
+  }
+}
+[data-theme="dark"]{
+  --bg:#1a1a1a; --bg2:#242424; --bg3:#2e2e2e;
+  --text:#e8e8e8; --text2:#aaa; --text3:#666;
+  --border:rgba(255,255,255,.08); --border2:rgba(255,255,255,.14);
+  --blue-bg:#1a2d42; --blue-text:#7ab8f5;
+  --green-bg:#142b22; --amber-bg:#2d2208; --red-bg:#2d1414;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%;overflow:hidden}
+body{
+  font-family:system-ui,-apple-system,'Noto Sans KR',sans-serif;
+  font-size:14px;line-height:1.6;
+  color:var(--text);background:var(--bg);
+  display:flex;flex-direction:column;
+}
+
+/* ── HEADER ── */
+#app-header{
+  height:var(--header-h);min-height:var(--header-h);
+  background:var(--bg);border-bottom:1px solid var(--border2);
+  display:flex;align-items:center;padding:0 20px;gap:12px;
+  flex-shrink:0;
+}
+#app-header .brand{font-weight:700;font-size:15px;color:var(--blue);white-space:nowrap}
+#proj-info{flex:1;display:flex;align-items:center;gap:10px;min-width:0;overflow:hidden}
+#proj-name{font-weight:600;font-size:15px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:200px}
+#proj-meta{color:var(--text3);font-size:12px;white-space:nowrap;display:flex;gap:8px}
+.meta-item{display:flex;align-items:center;gap:3px}
+#btn-edit-proj{
+  background:none;border:1px solid var(--border2);color:var(--text2);
+  border-radius:6px;padding:3px 8px;font-size:12px;cursor:pointer;white-space:nowrap;
+}
+#btn-edit-proj:hover{background:var(--bg2)}
+.header-actions{display:flex;align-items:center;gap:8px;margin-left:auto;flex-shrink:0}
+.header-actions a,.header-actions button{
+  background:none;border:1px solid var(--border2);color:var(--text2);
+  border-radius:6px;padding:4px 10px;font-size:12px;cursor:pointer;
+  text-decoration:none;white-space:nowrap;
+}
+.header-actions a:hover,.header-actions button:hover{background:var(--bg2)}
+#btn-export{border-color:var(--blue);color:var(--blue-text)}
+#btn-export:hover{background:var(--blue-bg)}
+
+/* ── TAB NAV ── */
+#tab-nav{
+  height:var(--tab-h);min-height:var(--tab-h);
+  background:var(--bg2);border-bottom:1px solid var(--border);
+  display:flex;align-items:stretch;padding:0 16px;gap:4px;
+  flex-shrink:0;overflow-x:auto;
+}
+#tab-nav button{
+  background:none;border:none;border-bottom:2px solid transparent;
+  padding:0 14px;font-size:13px;font-weight:500;color:var(--text2);
+  cursor:pointer;white-space:nowrap;margin-bottom:-1px;
+}
+#tab-nav button:hover{color:var(--text)}
+#tab-nav button.active{color:var(--blue);border-bottom-color:var(--blue)}
+
+/* ── TAB CONTENT ── */
+#tab-content{flex:1;display:flex;overflow:hidden}
+.list-pane{flex:1;overflow-y:auto;padding:20px;min-width:0}
+/* ── THREAD PANE ── */
+.thread-pane{
+  width:0;min-width:0;overflow:hidden;flex-shrink:0;
+  border-left:1px solid var(--border2);
+  display:flex;flex-direction:column;
+  background:var(--bg);
+  transition:width .2s ease;
+}
+.thread-pane.open{width:420px}
+.thread-header{
+  display:flex;align-items:center;gap:10px;
+  padding:13px 16px;border-bottom:1px solid var(--border);
+  background:var(--bg2);flex-shrink:0;
+}
+.thread-header-title{font-weight:600;font-size:14px;flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.thread-close{background:none;border:none;cursor:pointer;font-size:16px;color:var(--text3);padding:2px 6px;border-radius:4px}
+.thread-close:hover{background:var(--bg3);color:var(--text)}
+.thread-original{
+  padding:14px 16px;border-bottom:1px solid var(--border);
+  background:var(--bg2);flex-shrink:0;max-height:220px;overflow-y:auto;
+}
+.thread-original-meta{font-size:11px;color:var(--text3);margin-bottom:8px;display:flex;gap:8px;flex-wrap:wrap}
+.thread-messages{flex:1;overflow-y:auto;padding:12px 16px;display:flex;flex-direction:column;gap:8px}
+.thread-msg{background:var(--bg2);border-radius:var(--radius);padding:10px 12px}
+.thread-msg-meta{font-size:11px;color:var(--text3);margin-bottom:4px}
+.thread-empty{text-align:center;padding:30px 0;color:var(--text3);font-size:13px}
+.thread-compose{
+  padding:12px 16px;border-top:1px solid var(--border);
+  display:flex;flex-direction:column;gap:8px;flex-shrink:0;
+}
+.thread-compose textarea{
+  width:100%;border:1px solid var(--border2);border-radius:var(--radius);
+  padding:8px 10px;font-family:inherit;font-size:13px;line-height:1.6;
+  color:var(--text);background:var(--bg);resize:none;min-height:68px;
+}
+.thread-compose textarea:focus{outline:none;border-color:var(--blue)}
+.thread-compose-row{display:flex;justify-content:flex-end}
+.thread-trigger{cursor:pointer}
+.thread-trigger:hover{color:var(--blue)}
+.card-selected{outline:2px solid var(--blue);outline-offset:-1px}
+
+/* ── PROGRESS TAB ── */
+.progress-header{display:flex;align-items:center;gap:16px;margin-bottom:20px}
+.progress-bar-wrap{flex:1;background:var(--bg3);border-radius:99px;height:8px;overflow:hidden}
+.progress-bar-fill{height:100%;background:var(--blue);border-radius:99px;transition:width .3s}
+.progress-label{font-size:13px;color:var(--text2);white-space:nowrap}
+.step-group{margin-bottom:24px}
+.step-group-title{
+  font-size:11px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;
+  color:var(--text3);margin-bottom:8px;padding-bottom:6px;
+  border-bottom:1px solid var(--border);
+}
+.step-item{
+  display:flex;align-items:center;gap:10px;
+  padding:10px 12px;border-radius:var(--radius);
+  border:1px solid var(--border);background:var(--bg);
+  margin-bottom:6px;
+}
+.step-item:hover{border-color:var(--border2)}
+.step-num{font-size:11px;color:var(--text3);min-width:40px;font-weight:500}
+.step-toggle{
+  font-size:18px;cursor:pointer;line-height:1;
+  background:none;border:none;padding:0;
+  transition:transform .15s;
+}
+.step-toggle:hover{transform:scale(1.1)}
+.step-title{flex:1;font-weight:500}
+.step-status-badge{
+  font-size:11px;padding:2px 8px;border-radius:99px;font-weight:500;
+}
+.step-status-badge.pending{background:var(--bg3);color:var(--text3)}
+.step-status-badge.in-progress{background:var(--blue-bg);color:var(--blue-text)}
+.step-status-badge.done{background:var(--green-bg);color:var(--green)}
+.step-guide-link{
+  font-size:11px;color:var(--blue);text-decoration:none;white-space:nowrap;
+}
+.step-guide-link:hover{text-decoration:underline}
+
+/* ── COMM TAB ── */
+.tab-toolbar{display:flex;gap:8px;margin-bottom:16px;align-items:center}
+.tab-toolbar input[type=text]{
+  flex:1;padding:7px 12px;border:1px solid var(--border2);
+  border-radius:var(--radius);background:var(--bg);color:var(--text);
+  font-size:13px;
+}
+.tab-toolbar input[type=text]:focus{outline:none;border-color:var(--blue)}
+.btn-primary{
+  background:var(--blue);color:#fff;border:none;
+  border-radius:var(--radius);padding:7px 14px;font-size:13px;
+  cursor:pointer;white-space:nowrap;font-weight:500;
+}
+.btn-primary:hover{opacity:.9}
+.btn-ghost{
+  background:none;border:1px solid var(--border2);color:var(--text2);
+  border-radius:var(--radius);padding:6px 12px;font-size:12px;cursor:pointer;
+}
+.btn-ghost:hover{background:var(--bg2)}
+.comm-list{display:flex;flex-direction:column;gap:10px}
+.comm-card{
+  border:1px solid var(--border);border-radius:var(--radius-lg);
+  background:var(--bg);overflow:hidden;
+}
+.comm-card-header{
+  display:flex;align-items:center;gap:10px;
+  padding:10px 14px;background:var(--bg2);border-bottom:1px solid var(--border);
+}
+.comm-date{font-weight:600;font-size:13px}
+.comm-type-badge{
+  font-size:11px;padding:2px 8px;border-radius:99px;
+  background:var(--blue-bg);color:var(--blue-text);font-weight:500;
+}
+.comm-participants{font-size:12px;color:var(--text2);flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.card-actions{display:flex;gap:4px}
+.card-actions button{
+  background:none;border:none;cursor:pointer;
+  font-size:14px;padding:2px 5px;border-radius:4px;
+  color:var(--text3);
+}
+.card-actions button:hover{background:var(--bg3);color:var(--text)}
+.comm-card-body{padding:12px 14px;display:flex;flex-direction:column;gap:8px}
+.comm-field label{font-size:11px;font-weight:600;color:var(--text3);display:block;margin-bottom:2px}
+.comm-field p{font-size:13px;line-height:1.6;color:var(--text)}
+.empty-state{
+  text-align:center;padding:60px 20px;color:var(--text3);
+}
+.empty-state p{font-size:15px;margin-bottom:6px}
+.empty-state span{font-size:13px}
+
+/* ── FILES TAB ── */
+.file-upload-zone{
+  border:2px dashed var(--border2);border-radius:var(--radius-lg);
+  padding:30px;text-align:center;margin-bottom:20px;
+  cursor:pointer;transition:border-color .2s,background .2s;
+}
+.file-upload-zone:hover,.file-upload-zone.drag-over{
+  border-color:var(--blue);background:var(--blue-bg);
+}
+.file-upload-zone p{color:var(--text2);font-size:13px}
+.file-upload-zone span{font-size:12px;color:var(--text3)}
+#file-input{display:none}
+.file-category-filter{display:flex;gap:6px;margin-bottom:14px;flex-wrap:wrap}
+.filter-btn{
+  background:none;border:1px solid var(--border2);color:var(--text2);
+  border-radius:99px;padding:3px 10px;font-size:12px;cursor:pointer;
+}
+.filter-btn.active,.filter-btn:hover{background:var(--blue-bg);color:var(--blue-text);border-color:var(--blue)}
+.file-list{display:flex;flex-direction:column;gap:6px}
+.file-item{
+  display:flex;align-items:center;gap:10px;
+  padding:10px 14px;border:1px solid var(--border);
+  border-radius:var(--radius);background:var(--bg);
+}
+.file-icon{font-size:20px}
+.file-info{flex:1;min-width:0}
+.file-name{font-size:13px;font-weight:500;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.file-meta{font-size:11px;color:var(--text3);display:flex;gap:8px}
+.file-cat-badge{
+  font-size:11px;padding:1px 7px;border-radius:99px;
+  background:var(--bg3);color:var(--text2);
+}
+
+/* ── ISSUES TAB ── */
+.issue-filter-tabs{display:flex;gap:4px;margin-bottom:14px}
+.issue-filter-tabs button{
+  background:none;border:1px solid var(--border2);color:var(--text2);
+  border-radius:99px;padding:4px 12px;font-size:12px;cursor:pointer;
+}
+.issue-filter-tabs button.active{background:var(--blue);color:#fff;border-color:var(--blue)}
+.issue-list{display:flex;flex-direction:column;gap:8px}
+.issue-card{
+  border:1px solid var(--border);border-radius:var(--radius-lg);
+  background:var(--bg);padding:14px;
+}
+.issue-card.high{border-left:3px solid var(--red)}
+.issue-card.medium{border-left:3px solid var(--amber)}
+.issue-card.low{border-left:3px solid var(--green)}
+.issue-card-header{display:flex;align-items:flex-start;gap:8px;margin-bottom:8px}
+.issue-title{font-weight:600;font-size:14px;flex:1}
+.priority-badge{
+  font-size:11px;padding:2px 8px;border-radius:99px;font-weight:500;white-space:nowrap;
+}
+.priority-badge.high{background:var(--red-bg);color:var(--red)}
+.priority-badge.medium{background:var(--amber-bg);color:var(--amber)}
+.priority-badge.low{background:var(--green-bg);color:var(--green)}
+.status-select{
+  font-size:11px;padding:2px 6px;border-radius:99px;cursor:pointer;
+  border:1px solid var(--border2);background:var(--bg);color:var(--text2);
+}
+.issue-meta{display:flex;gap:10px;font-size:11px;color:var(--text3);margin-bottom:6px}
+.issue-content{font-size:13px;color:var(--text2);line-height:1.6}
+
+/* ── NOTES TAB ── */
+.note-card{
+  border:1px solid var(--border);border-radius:var(--radius-lg);
+  background:var(--bg);overflow:hidden;margin-bottom:10px;
+}
+.note-card-header{
+  display:flex;align-items:center;gap:10px;
+  padding:10px 14px;background:var(--bg2);border-bottom:1px solid var(--border);
+}
+.note-card-title{font-weight:600;font-size:13px;flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.note-card-date{font-size:11px;color:var(--text3);white-space:nowrap}
+.note-card-body{padding:12px 14px;max-height:120px;overflow:hidden;position:relative}
+.note-card-body.expanded{max-height:none}
+.note-card-fade{
+  position:absolute;bottom:0;left:0;right:0;height:40px;
+  background:linear-gradient(transparent,var(--bg));
+  pointer-events:none;
+}
+.note-card-body.expanded .note-card-fade{display:none}
+.note-expand-btn{
+  background:none;border:none;color:var(--blue);font-size:12px;
+  cursor:pointer;padding:4px 14px 10px;display:block;width:100%;text-align:left;
+}
+#note-modal-textarea{
+  width:100%;border:1px solid var(--border2);
+  border-radius:0 0 var(--radius) var(--radius);
+  padding:12px;font-family:'Noto Sans KR',system-ui,sans-serif;font-size:13px;line-height:1.7;
+  color:var(--text);background:var(--bg);resize:vertical;min-height:220px;
+}
+#note-modal-textarea:focus{outline:none;border-color:var(--blue)}
+.note-toolbar{
+  display:flex;align-items:center;gap:2px;flex-wrap:wrap;
+  padding:5px 7px;background:var(--bg2);
+  border:1px solid var(--border2);border-bottom:none;
+  border-radius:var(--radius) var(--radius) 0 0;
+}
+.note-toolbar button{
+  background:none;border:none;cursor:pointer;
+  padding:3px 7px;border-radius:4px;
+  font-size:12px;color:var(--text2);line-height:1.5;
+  white-space:nowrap;
+}
+.note-toolbar button:hover{background:var(--bg3);color:var(--text)}
+.note-toolbar .tb-sep{width:1px;height:14px;background:var(--border2);margin:0 3px;flex-shrink:0}
+/* Markdown rendered output */
+.note-rendered{font-size:13px;line-height:1.7;color:var(--text)}
+.note-rendered h3{font-size:15px;font-weight:700;margin:10px 0 4px;color:var(--text)}
+.note-rendered h4{font-size:13px;font-weight:700;margin:8px 0 3px;color:var(--text)}
+.note-rendered p{margin:2px 0}
+.note-rendered br{display:block;content:'';margin:1px 0}
+.note-rendered ul{margin:4px 0;padding-left:18px;list-style:disc}
+.note-rendered ol{margin:4px 0;padding-left:18px;list-style:decimal}
+.note-rendered li{margin:1px 0}
+.note-rendered hr{border:none;border-top:1px solid var(--border2);margin:10px 0}
+.note-rendered code{font-family:monospace;background:var(--bg3);padding:1px 5px;border-radius:3px;font-size:12px}
+.note-rendered strong{font-weight:700}
+.note-rendered em{font-style:italic;color:var(--text2)}
+.note-rendered .md-check{display:flex;align-items:flex-start;gap:6px;margin:2px 0}
+.note-rendered .md-check.done{color:var(--text3);text-decoration:line-through}
+.note-rendered .md-check.clickable{cursor:pointer;border-radius:4px;padding:1px 4px;margin:1px -4px}
+.note-rendered .md-check.clickable:hover{background:var(--bg3)}
+
+/* ── MODAL ── */
+.modal-overlay{
+  position:fixed;inset:0;background:rgba(0,0,0,.4);
+  display:flex;align-items:center;justify-content:center;
+  z-index:1000;padding:20px;
+}
+.modal-overlay.hidden{display:none}
+.modal{
+  background:var(--bg);border-radius:var(--radius-lg);
+  width:100%;max-width:560px;max-height:90vh;overflow-y:auto;
+  box-shadow:0 20px 60px rgba(0,0,0,.2);
+}
+.modal.modal-wide{max-width:900px}
+/* split editor */
+.editor-split{display:flex;border:1px solid var(--border2);border-radius:var(--radius);overflow:hidden;min-height:260px}
+.editor-pane-write{flex:1;display:flex;flex-direction:column;border-right:1px solid var(--border2);min-width:0}
+.editor-pane-write .note-toolbar{border-radius:0;border:none;border-bottom:1px solid var(--border2)}
+.editor-pane-write textarea{flex:1;border:none !important;border-radius:0 !important;min-height:220px;resize:none;padding:10px 12px;font-family:inherit;font-size:13px;line-height:1.7;color:var(--text);background:var(--bg)}
+.editor-pane-write textarea:focus{outline:none}
+.editor-pane-preview{flex:1;display:flex;flex-direction:column;background:var(--bg2);min-width:0}
+.eprev-label{font-size:11px;font-weight:600;color:var(--text3);padding:5px 10px;border-bottom:1px solid var(--border);letter-spacing:.04em}
+.eprev-body{flex:1;padding:10px 12px;overflow-y:auto;min-height:220px}
+.eprev-body:empty::after{content:'미리보기';color:var(--text3);font-size:13px}
+.modal-header{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:16px 20px;border-bottom:1px solid var(--border);
+  position:sticky;top:0;background:var(--bg);z-index:1;
+}
+.modal-title{font-weight:700;font-size:15px}
+.modal-close{
+  background:none;border:none;font-size:18px;cursor:pointer;
+  color:var(--text3);padding:2px 6px;border-radius:4px;
+}
+.modal-close:hover{background:var(--bg2);color:var(--text)}
+.modal-body{padding:20px}
+.modal-footer{
+  padding:14px 20px;border-top:1px solid var(--border);
+  display:flex;gap:8px;justify-content:flex-end;
+  position:sticky;bottom:0;background:var(--bg);
+}
+
+/* ── FORM ── */
+.form-row{margin-bottom:14px}
+.form-row label{display:block;font-size:12px;font-weight:600;color:var(--text2);margin-bottom:5px}
+.form-row input,.form-row select,.form-row textarea{
+  width:100%;padding:8px 10px;border:1px solid var(--border2);
+  border-radius:var(--radius);background:var(--bg);color:var(--text);
+  font-family:inherit;font-size:13px;
+}
+.form-row input:focus,.form-row select:focus,.form-row textarea:focus{
+  outline:none;border-color:var(--blue);
+}
+.form-row textarea{resize:vertical;min-height:80px}
+.form-row select{cursor:pointer}
+.form-row-2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.form-hint{font-size:11px;color:var(--text3);margin-top:4px}
+.btn-danger{
+  background:none;border:1px solid var(--red);color:var(--red);
+  border-radius:var(--radius);padding:7px 14px;font-size:13px;cursor:pointer;
+}
+.btn-danger:hover{background:var(--red-bg)}
+
+/* ── UPLOAD MODAL ── */
+.upload-preview{
+  display:flex;align-items:center;gap:10px;
+  padding:10px 12px;background:var(--bg2);border-radius:var(--radius);
+  margin-top:8px;
+}
+.upload-preview .file-name-preview{font-size:13px;flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.upload-preview .file-size-preview{font-size:12px;color:var(--text3)}
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<header id="app-header">
+  <div class="brand">MCE Dashboard</div>
+  <div id="proj-info">
+    <span id="proj-name">—</span>
+    <span id="proj-meta"></span>
+    <button id="btn-edit-proj">✏️ 편집</button>
+  </div>
+  <div class="header-actions">
+    <button id="btn-theme" title="다크/라이트 모드 전환">🌙</button>
+    <a id="link-guide" href="./index.html" target="_blank">📖 MCE 가이드</a>
+    <button id="btn-export">⬇ 내보내기</button>
+    <button id="btn-import">⬆ 가져오기</button>
+    <input type="file" id="import-input" accept=".json" style="display:none">
+  </div>
+</header>
+
+<!-- TAB NAV -->
+<nav id="tab-nav">
+  <button class="active" data-tab="steps">📊 진행현황</button>
+  <button data-tab="comm">💬 커뮤니케이션</button>
+  <button data-tab="files">📎 파일</button>
+  <button data-tab="issues">⚠️ 이슈</button>
+  <button data-tab="notes">📝 노트</button>
+</nav>
+
+<!-- TAB CONTENT -->
+<div id="tab-content"></div>
+
+<!-- MODAL -->
+<div class="modal-overlay hidden" id="modal-overlay">
+  <div class="modal" id="modal">
+    <div class="modal-header">
+      <span class="modal-title" id="modal-title">—</span>
+      <button class="modal-close" id="modal-close">✕</button>
+    </div>
+    <div class="modal-body" id="modal-body"></div>
+    <div class="modal-footer" id="modal-footer"></div>
+  </div>
+</div>
+
+<script>
+'use strict';
+
+// ── CONSTANTS ──────────────────────────────────────────────────────
+const PROJECT_ID = 'default';
+const DB_NAME = 'MCEDashboardDB';
+const DB_VERSION = 3;
+
+const STEPS = [
+  {id:'s0',  num:0,  title:'사전 준비',           group:'준비'},
+  {id:'s1',  num:1,  title:'계정 / BU 설정',       group:'계정 설정'},
+  {id:'s_ftp',num:2, title:'Enhanced FTP 설정',    group:'계정 설정'},
+  {id:'s2',  num:3,  title:'사용자 권한 설정',      group:'계정 설정'},
+  {id:'s3',  num:4,  title:'Data Extension 설계',  group:'데이터 설계'},
+  {id:'s4',  num:5,  title:'Contact Builder 설정', group:'데이터 설계'},
+  {id:'s5',  num:6,  title:'Sender Profile',       group:'발송 설정'},
+  {id:'s6',  num:7,  title:'Send Classification',  group:'발송 설정'},
+  {id:'s_ipw',num:8, title:'IP Warming',           group:'발송 설정'},
+  {id:'s_cb', num:9, title:'Content Builder',      group:'콘텐츠'},
+  {id:'s_cp', num:10,title:'CloudPages',           group:'콘텐츠'},
+  {id:'s7',  num:11, title:'Automation Studio',    group:'자동화'},
+  {id:'s8',  num:12, title:'Journey Builder',      group:'자동화'},
+  {id:'s_tx', num:13,title:'Transactional 발송',   group:'자동화'},
+  {id:'s_dm', num:14,title:'데이터 관리',           group:'자동화'},
+  {id:'s9',  num:15, title:'발송 테스트',           group:'검수 & 인계'},
+  {id:'s10', num:16, title:'운영 인계',             group:'검수 & 인계'},
+];
+
+const COMM_TYPES = ['이메일','전화','화상회의','대면미팅','메신저'];
+const FILE_CATS = ['요건정의','계약서','회의록','기획서','산출물','기타'];
+const ISSUE_CATS = ['기술','커뮤니케이션','요건','일정','기타'];
+
+const STATUS_CYCLE = {pending:'in-progress','in-progress':'done',done:'pending'};
+const STATUS_EMOJI = {pending:'⬜','in-progress':'🔵',done:'✅'};
+const STATUS_LABEL = {pending:'대기','in-progress':'진행중',done:'완료'};
+
+// ── DB ────────────────────────────────────────────────────────────
+class DB {
+  constructor(){this.db=null}
+  init(){
+    return new Promise((res,rej)=>{
+      const req=indexedDB.open(DB_NAME,DB_VERSION);
+      req.onupgradeneeded=e=>{
+        const db=e.target.result;
+        if(!db.objectStoreNames.contains('projects')){
+          db.createObjectStore('projects',{keyPath:'id'});
+        }
+        if(!db.objectStoreNames.contains('communications')){
+          const s=db.createObjectStore('communications',{keyPath:'id'});
+          s.createIndex('projectId','projectId',{unique:false});
+        }
+        if(!db.objectStoreNames.contains('files')){
+          const s=db.createObjectStore('files',{keyPath:'id'});
+          s.createIndex('projectId','projectId',{unique:false});
+        }
+        if(!db.objectStoreNames.contains('issues')){
+          const s=db.createObjectStore('issues',{keyPath:'id'});
+          s.createIndex('projectId','projectId',{unique:false});
+        }
+        if(db.objectStoreNames.contains('notes')){
+          db.deleteObjectStore('notes');
+        }
+        const ns=db.createObjectStore('notes',{keyPath:'id'});
+        ns.createIndex('projectId','projectId',{unique:false});
+        if(!db.objectStoreNames.contains('threads')){
+          const ts=db.createObjectStore('threads',{keyPath:'id'});
+          ts.createIndex('parentId','parentId',{unique:false});
+        }
+      };
+      req.onsuccess=e=>{this.db=e.target.result;res()};
+      req.onerror=e=>rej(e.target.error);
+    });
+  }
+  _tx(stores,mode='readonly'){
+    return this.db.transaction(stores,mode);
+  }
+  get(store,key){
+    return new Promise((res,rej)=>{
+      const req=this._tx(store).objectStore(store).get(key);
+      req.onsuccess=e=>res(e.target.result);
+      req.onerror=e=>rej(e.target.error);
+    });
+  }
+  getAll(store){
+    return new Promise((res,rej)=>{
+      const req=this._tx(store).objectStore(store).getAll();
+      req.onsuccess=e=>res(e.target.result);
+      req.onerror=e=>rej(e.target.error);
+    });
+  }
+  getByIndex(store,indexName,value){
+    return new Promise((res,rej)=>{
+      const req=this._tx(store).objectStore(store).index(indexName).getAll(value);
+      req.onsuccess=e=>res(e.target.result);
+      req.onerror=e=>rej(e.target.error);
+    });
+  }
+  put(store,obj){
+    return new Promise((res,rej)=>{
+      const req=this._tx(store,'readwrite').objectStore(store).put(obj);
+      req.onsuccess=e=>res(e.target.result);
+      req.onerror=e=>rej(e.target.error);
+    });
+  }
+  delete(store,key){
+    return new Promise((res,rej)=>{
+      const req=this._tx(store,'readwrite').objectStore(store).delete(key);
+      req.onsuccess=()=>res();
+      req.onerror=e=>rej(e.target.error);
+    });
+  }
+}
+
+// ── HELPERS ──────────────────────────────────────────────────────
+function genId(){
+  return crypto.randomUUID ? crypto.randomUUID() : Date.now().toString(36)+Math.random().toString(36).slice(2);
+}
+function esc(str){
+  if(!str) return '';
+  return String(str).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+function fmtSize(bytes){
+  if(bytes<1024) return bytes+'B';
+  if(bytes<1024*1024) return (bytes/1024).toFixed(1)+'KB';
+  return (bytes/1024/1024).toFixed(1)+'MB';
+}
+function fileIcon(mimeType){
+  if(!mimeType) return '📄';
+  if(mimeType.includes('pdf')) return '📕';
+  if(mimeType.includes('image')) return '🖼️';
+  if(mimeType.includes('word')||mimeType.includes('document')) return '📝';
+  if(mimeType.includes('excel')||mimeType.includes('sheet')) return '📊';
+  if(mimeType.includes('powerpoint')||mimeType.includes('presentation')) return '📊';
+  if(mimeType.includes('zip')||mimeType.includes('compressed')) return '📦';
+  return '📄';
+}
+
+// ── APP STATE ─────────────────────────────────────────────────────
+const db = new DB();
+let currentTab = 'steps';
+let project = null;
+let fileFilter = '전체';
+let issueFilter = 'all';
+let commSearch = '';
+let noteSearch = '';
+let selectedItem = null; // { id, type }
+
+// ── INIT ──────────────────────────────────────────────────────────
+async function init(){
+  await db.init();
+  project = await db.get('projects', PROJECT_ID);
+  if(!project){
+    showProjectModal(true);
+  } else {
+    renderHeader();
+    renderTab(currentTab);
+  }
+}
+
+// ── HEADER ────────────────────────────────────────────────────────
+function renderHeader(){
+  if(!project) return;
+  document.getElementById('proj-name').textContent = project.clientName || project.name || '프로젝트';
+  const meta = [];
+  if(project.startDate||project.endDate) meta.push(`📅 ${project.startDate||'?'} ~ ${project.endDate||'?'}`);
+  if(project.manager) meta.push(`👤 ${project.manager}`);
+  if(project.edition) meta.push(`📦 ${project.edition}`);
+  document.getElementById('proj-meta').innerHTML = meta.map(m=>`<span class="meta-item">${esc(m)}</span>`).join('');
+}
+
+// ── TAB ROUTING ───────────────────────────────────────────────────
+function renderTab(tab){
+  currentTab = tab;
+  selectedItem = null;
+  document.querySelectorAll('#tab-nav button').forEach(b=>{
+    b.classList.toggle('active', b.dataset.tab===tab);
+  });
+  const el = document.getElementById('tab-content');
+  el.innerHTML = '';
+  const fns = {steps:renderSteps,comm:renderComm,files:renderFiles,issues:renderIssues,notes:renderNotes};
+  fns[tab]();
+}
+
+// ── STEPS TAB ────────────────────────────────────────────────────
+async function renderSteps(){
+  const steps = project?.steps || {};
+  const done = STEPS.filter(s=>(steps[s.id]||'pending')==='done').length;
+  const pct = Math.round(done/STEPS.length*100);
+
+  const el = document.getElementById('tab-content');
+  el.innerHTML = `<div class="list-pane">
+    <div class="progress-header">
+      <div class="progress-bar-wrap"><div class="progress-bar-fill" style="width:${pct}%"></div></div>
+      <span class="progress-label">${done}/${STEPS.length} 완료 (${pct}%)</span>
+    </div>
+    <div id="step-groups"></div>
+  </div>`;
+
+  const groups = [...new Set(STEPS.map(s=>s.group))];
+  const groupEl = document.getElementById('step-groups');
+  groups.forEach(g=>{
+    const items = STEPS.filter(s=>s.group===g);
+    const div = document.createElement('div');
+    div.className = 'step-group';
+    div.innerHTML = `<div class="step-group-title">${esc(g)}</div>`;
+    items.forEach(s=>{
+      const st = steps[s.id]||'pending';
+      const item = document.createElement('div');
+      item.className = 'step-item';
+      item.innerHTML = `
+        <span class="step-num">Step ${s.num}</span>
+        <button class="step-toggle" data-id="${s.id}" title="클릭하여 상태 변경">${STATUS_EMOJI[st]}</button>
+        <span class="step-title">${esc(s.title)}</span>
+        <span class="step-status-badge ${st}">${STATUS_LABEL[st]}</span>
+        <a class="step-guide-link" href="./index.html#${s.id}" target="_blank">가이드 →</a>
+      `;
+      div.appendChild(item);
+    });
+    groupEl.appendChild(div);
+  });
+
+  groupEl.addEventListener('click', async e=>{
+    const btn = e.target.closest('.step-toggle');
+    if(!btn) return;
+    const id = btn.dataset.id;
+    const cur = (project.steps||{})[id]||'pending';
+    const next = STATUS_CYCLE[cur];
+    if(!project.steps) project.steps={};
+    project.steps[id] = next;
+    project.updatedAt = Date.now();
+    await db.put('projects', project);
+    renderTab('steps');
+  });
+}
+
+// ── COMM TAB ─────────────────────────────────────────────────────
+async function renderComm(){
+  const el = document.getElementById('tab-content');
+  el.innerHTML = `
+    <div class="list-pane" id="list-pane">
+      <div class="tab-toolbar">
+        <input type="text" id="comm-search" placeholder="내용 검색..." value="${esc(commSearch)}">
+        <button class="btn-primary" id="btn-add-comm">+ 커뮤니케이션 추가</button>
+      </div>
+      <div id="comm-list"></div>
+    </div>
+    <div class="thread-pane" id="thread-pane"></div>
+  `;
+  document.getElementById('comm-search').addEventListener('input', e=>{
+    commSearch = e.target.value;
+    loadComm();
+  });
+  document.getElementById('btn-add-comm').addEventListener('click', ()=>showCommModal(null));
+  document.getElementById('list-pane').addEventListener('click', e=>{
+    if(e.target.closest('.card-actions')) return;
+    const h=e.target.closest('[data-thread-id]');
+    if(h) openThread(h.dataset.threadId, h.dataset.threadType);
+  });
+  await loadComm();
+}
+
+async function loadComm(){
+  let items = await db.getByIndex('communications','projectId',PROJECT_ID);
+  items.sort((a,b)=>b.date.localeCompare(a.date));
+  if(commSearch){
+    const q = commSearch.toLowerCase();
+    items = items.filter(i=>
+      (i.content||'').toLowerCase().includes(q)||
+      (i.participants||'').toLowerCase().includes(q)||
+      (i.actionItems||'').toLowerCase().includes(q)
+    );
+  }
+  const el = document.getElementById('comm-list');
+  if(!el) return;
+  if(!items.length){
+    el.innerHTML = `<div class="empty-state"><p>커뮤니케이션 기록이 없습니다</p><span>+ 버튼으로 첫 기록을 추가해보세요</span></div>`;
+    return;
+  }
+  el.innerHTML = items.map(c=>`
+    <div class="comm-card${selectedItem?.id===c.id?' card-selected':''}">
+      <div class="comm-card-header thread-trigger" data-thread-id="${c.id}" data-thread-type="comm">
+        <span class="comm-date">${esc(c.date)}</span>
+        <span class="comm-type-badge">${esc(c.type)}</span>
+        <span class="comm-participants">${esc(c.participants)}</span>
+        <div class="card-actions">
+          <button onclick="showCommModal('${c.id}')" title="수정">✏️</button>
+          <button onclick="deleteComm('${c.id}')" title="삭제">🗑️</button>
+        </div>
+      </div>
+      <div class="comm-card-body">
+        <div class="comm-field">
+          <div class="note-rendered">${renderMarkdown(c.content)}</div>
+        </div>
+        ${c.actionItems?`<div class="comm-field" style="border-top:1px solid var(--border);margin-top:8px;padding-top:8px"><label>결정사항</label><div class="note-rendered">${renderMarkdown(c.actionItems)}</div></div>`:''}
+      </div>
+    </div>
+  `).join('');
+}
+
+async function showCommModal(id){
+  let item = null;
+  if(id) item = await db.get('communications', id);
+  const today = new Date().toISOString().slice(0,10);
+
+  showModal('커뮤니케이션 '+(id?'수정':'추가'), `
+    <div class="form-row-2">
+      <div class="form-row">
+        <label>날짜</label>
+        <input type="date" id="f-date" value="${esc(item?.date||today)}">
+      </div>
+      <div class="form-row">
+        <label>방식</label>
+        <select id="f-type">
+          ${COMM_TYPES.map(t=>`<option${item?.type===t?' selected':''}>${esc(t)}</option>`).join('')}
+        </select>
+      </div>
+    </div>
+    <div class="form-row">
+      <label>참석자</label>
+      <input type="text" id="f-participants" placeholder="예: 홍길동(고객사), 이영희(내부)" value="${esc(item?.participants||'')}">
+    </div>
+    <div class="form-row">
+      <label>내용</label>
+      ${makeSplitEditor('f-content','eprev-content','미팅 내용, 논의 사항 등',5,esc(item?.content||''))}
+    </div>
+    <div class="form-row">
+      <label>결정사항 / 액션아이템</label>
+      ${makeSplitEditor('f-actions','eprev-actions','결정된 사항, 후속 액션 등',3,esc(item?.actionItems||''))}
+    </div>
+  `, [
+    {label:'저장', cls:'btn-primary', action: async()=>{
+      const date = document.getElementById('f-date').value;
+      const content = document.getElementById('f-content').value.trim();
+      if(!date||!content){alert('날짜와 내용은 필수입니다');return false}
+      const obj = {
+        id: item?.id||genId(),
+        projectId: PROJECT_ID,
+        date,
+        type: document.getElementById('f-type').value,
+        participants: document.getElementById('f-participants').value.trim(),
+        content,
+        actionItems: document.getElementById('f-actions').value.trim(),
+        createdAt: item?.createdAt||Date.now(),
+      };
+      await db.put('communications', obj);
+      closeModal();
+      renderTab('comm');
+    }},
+    {label:'취소', cls:'btn-ghost', action:()=>closeModal()},
+    ...(id?[{label:'삭제', cls:'btn-danger', action:()=>deleteComm(id)}]:[])
+  ], false, true);
+  setTimeout(()=>{
+    attachToolbars(document.getElementById('modal-body'));
+    attachLivePreview('f-content','eprev-content');
+    attachLivePreview('f-actions','eprev-actions');
+  },50);
+}
+
+async function deleteComm(id){
+  if(!confirm('이 커뮤니케이션 기록을 삭제하시겠습니까?')) return;
+  await db.delete('communications', id);
+  closeModal();
+  renderTab('comm');
+}
+
+// ── FILES TAB ────────────────────────────────────────────────────
+async function renderFiles(){
+  const el = document.getElementById('tab-content');
+  el.innerHTML = `<div class="list-pane">
+    <div class="file-upload-zone" id="upload-zone">
+      <p>📎 파일을 여기에 드래그하거나 클릭하여 업로드</p>
+      <span>PDF, Word, Excel, 이미지 등 모든 형식 지원</span>
+      <input type="file" id="file-input" multiple>
+    </div>
+    <div class="file-category-filter" id="file-cat-filter">
+      <button class="filter-btn${fileFilter==='전체'?' active':''}" data-cat="전체">전체</button>
+      ${FILE_CATS.map(c=>`<button class="filter-btn${fileFilter===c?' active':''}" data-cat="${esc(c)}">${esc(c)}</button>`).join('')}
+    </div>
+    <div id="file-list" class="file-list"></div>
+  </div>`;
+
+  const zone = document.getElementById('upload-zone');
+  const input = document.getElementById('file-input');
+  zone.addEventListener('click',()=>input.click());
+  input.addEventListener('change', e=>handleFileUpload(e.target.files));
+  zone.addEventListener('dragover', e=>{e.preventDefault();zone.classList.add('drag-over')});
+  zone.addEventListener('dragleave',()=>zone.classList.remove('drag-over'));
+  zone.addEventListener('drop', e=>{
+    e.preventDefault();zone.classList.remove('drag-over');
+    handleFileUpload(e.dataTransfer.files);
+  });
+
+  document.getElementById('file-cat-filter').addEventListener('click', e=>{
+    const btn = e.target.closest('.filter-btn');
+    if(!btn) return;
+    fileFilter = btn.dataset.cat;
+    renderFiles();
+  });
+
+  await loadFiles();
+}
+
+async function handleFileUpload(fileList){
+  if(!fileList?.length) return;
+  showUploadModal(Array.from(fileList));
+}
+
+async function showUploadModal(files){
+  const catOptions = FILE_CATS.map(c=>`<option>${esc(c)}</option>`).join('');
+  showModal('파일 업로드', `
+    <div class="form-row">
+      <label>파일 (${files.length}개)</label>
+      <div>${files.map(f=>`
+        <div class="upload-preview">
+          <span>${fileIcon(f.type)}</span>
+          <span class="file-name-preview">${esc(f.name)}</span>
+          <span class="file-size-preview">${fmtSize(f.size)}</span>
+        </div>
+      `).join('')}</div>
+    </div>
+    <div class="form-row">
+      <label>카테고리</label>
+      <select id="f-file-cat">${catOptions}</select>
+    </div>
+  `,[
+    {label:'업로드', cls:'btn-primary', action: async()=>{
+      const cat = document.getElementById('f-file-cat').value;
+      for(const file of files){
+        const data = await readFileAsArrayBuffer(file);
+        await db.put('files',{
+          id: genId(),
+          projectId: PROJECT_ID,
+          name: file.name,
+          category: cat,
+          mimeType: file.type,
+          size: file.size,
+          data,
+          uploadedAt: Date.now(),
+        });
+      }
+      closeModal();
+      renderTab('files');
+    }},
+    {label:'취소', cls:'btn-ghost', action:()=>closeModal()},
+  ]);
+}
+
+function readFileAsArrayBuffer(file){
+  return new Promise((res,rej)=>{
+    const r=new FileReader();
+    r.onload=e=>res(e.target.result);
+    r.onerror=e=>rej(e);
+    r.readAsArrayBuffer(file);
+  });
+}
+
+async function loadFiles(){
+  let items = await db.getByIndex('files','projectId',PROJECT_ID);
+  items.sort((a,b)=>b.uploadedAt-a.uploadedAt);
+  if(fileFilter!=='전체') items=items.filter(f=>f.category===fileFilter);
+  const el = document.getElementById('file-list');
+  if(!el) return;
+  if(!items.length){
+    el.innerHTML=`<div class="empty-state"><p>파일이 없습니다</p><span>위 영역에 파일을 드래그하거나 클릭하여 업로드하세요</span></div>`;
+    return;
+  }
+  el.innerHTML = items.map(f=>`
+    <div class="file-item">
+      <span class="file-icon">${fileIcon(f.mimeType)}</span>
+      <div class="file-info">
+        <div class="file-name">${esc(f.name)}</div>
+        <div class="file-meta">
+          <span class="file-cat-badge">${esc(f.category)}</span>
+          <span>${fmtSize(f.size)}</span>
+          <span>${new Date(f.uploadedAt).toLocaleDateString('ko-KR')}</span>
+        </div>
+      </div>
+      <button class="btn-ghost" onclick="downloadFile('${f.id}')">⬇ 다운로드</button>
+      <button class="btn-ghost" onclick="deleteFile('${f.id}')" style="color:var(--red)">🗑️</button>
+    </div>
+  `).join('');
+}
+
+async function downloadFile(id){
+  const f = await db.get('files', id);
+  if(!f) return;
+  const blob = new Blob([f.data], {type:f.mimeType||'application/octet-stream'});
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href=url; a.download=f.name; a.click();
+  setTimeout(()=>URL.revokeObjectURL(url),1000);
+}
+
+async function deleteFile(id){
+  const f = await db.get('files', id);
+  if(!confirm(`"${f?.name}" 파일을 삭제하시겠습니까?`)) return;
+  await db.delete('files', id);
+  renderTab('files');
+}
+
+// ── ISSUES TAB ───────────────────────────────────────────────────
+async function renderIssues(){
+  const el = document.getElementById('tab-content');
+  el.innerHTML = `
+    <div class="list-pane" id="list-pane">
+      <div class="tab-toolbar">
+        <div class="issue-filter-tabs">
+          <button class="${issueFilter==='all'?'active':''}" data-f="all">전체</button>
+          <button class="${issueFilter==='open'?'active':''}" data-f="open">오픈</button>
+          <button class="${issueFilter==='in-progress'?'active':''}" data-f="in-progress">진행중</button>
+          <button class="${issueFilter==='resolved'?'active':''}" data-f="resolved">완료</button>
+        </div>
+        <button class="btn-primary" id="btn-add-issue" style="margin-left:auto">+ 이슈 등록</button>
+      </div>
+      <div id="issue-list" class="issue-list"></div>
+    </div>
+    <div class="thread-pane" id="thread-pane"></div>
+  `;
+  el.querySelector('.issue-filter-tabs').addEventListener('click', e=>{
+    const btn=e.target.closest('button');
+    if(!btn) return;
+    issueFilter=btn.dataset.f;
+    renderIssues();
+  });
+  document.getElementById('btn-add-issue').addEventListener('click',()=>showIssueModal(null));
+  document.getElementById('list-pane').addEventListener('click', e=>{
+    if(e.target.closest('.card-actions,.status-select')) return;
+    const h=e.target.closest('[data-thread-id]');
+    if(h) openThread(h.dataset.threadId, h.dataset.threadType);
+  });
+  await loadIssues();
+}
+
+async function loadIssues(){
+  let items = await db.getByIndex('issues','projectId',PROJECT_ID);
+  const order={high:0,medium:1,low:2};
+  items.sort((a,b)=>(order[a.priority]-order[b.priority])||b.createdAt-a.createdAt);
+  if(issueFilter!=='all') items=items.filter(i=>i.status===issueFilter);
+  const el=document.getElementById('issue-list');
+  if(!el) return;
+  if(!items.length){
+    el.innerHTML=`<div class="empty-state"><p>이슈가 없습니다</p><span>+ 이슈 등록으로 추가해보세요</span></div>`;
+    return;
+  }
+  const priorityLabel={high:'높음',medium:'보통',low:'낮음'};
+  const statusLabel={'open':'오픈','in-progress':'진행중','resolved':'완료'};
+  el.innerHTML=items.map(i=>`
+    <div class="issue-card ${i.priority}${selectedItem?.id===i.id?' card-selected':''}">
+      <div class="issue-card-header" data-thread-id="${i.id}" data-thread-type="issue">
+        <span class="issue-title thread-trigger">${esc(i.title)}</span>
+        <span class="priority-badge ${i.priority}">${priorityLabel[i.priority]}</span>
+        <select class="status-select" onchange="updateIssueStatus('${i.id}',this.value)">
+          ${['open','in-progress','resolved'].map(s=>`<option value="${s}"${i.status===s?' selected':''}>${statusLabel[s]}</option>`).join('')}
+        </select>
+        <div class="card-actions">
+          <button onclick="showIssueModal('${i.id}')" title="수정">✏️</button>
+          <button onclick="deleteIssue('${i.id}')" title="삭제">🗑️</button>
+        </div>
+      </div>
+      <div class="issue-meta">
+        <span>📂 ${esc(i.category)}</span>
+        ${i.assignee?`<span>👤 ${esc(i.assignee)}</span>`:''}
+        <span>🕐 ${new Date(i.createdAt).toLocaleDateString('ko-KR')}</span>
+      </div>
+      ${i.content?`<div class="issue-content note-rendered">${renderMarkdown(i.content)}</div>`:''}
+    </div>
+  `).join('');
+}
+
+async function updateIssueStatus(id, status){
+  const item=await db.get('issues',id);
+  if(!item) return;
+  item.status=status;item.updatedAt=Date.now();
+  await db.put('issues',item);
+  await loadIssues();
+}
+
+async function showIssueModal(id){
+  let item=null;
+  if(id) item=await db.get('issues',id);
+  showModal('이슈 '+(id?'수정':'등록'),`
+    <div class="form-row">
+      <label>제목 *</label>
+      <input type="text" id="f-issue-title" placeholder="이슈 제목" value="${esc(item?.title||'')}">
+    </div>
+    <div class="form-row-2">
+      <div class="form-row">
+        <label>우선순위</label>
+        <select id="f-priority">
+          <option value="high"${item?.priority==='high'?' selected':''}>🔴 높음</option>
+          <option value="medium"${(!item||item.priority==='medium')?' selected':''}>🟡 보통</option>
+          <option value="low"${item?.priority==='low'?' selected':''}>🟢 낮음</option>
+        </select>
+      </div>
+      <div class="form-row">
+        <label>카테고리</label>
+        <select id="f-issue-cat">
+          ${ISSUE_CATS.map(c=>`<option${item?.category===c?' selected':''}>${esc(c)}</option>`).join('')}
+        </select>
+      </div>
+    </div>
+    <div class="form-row">
+      <label>담당자</label>
+      <input type="text" id="f-assignee" placeholder="담당자명" value="${esc(item?.assignee||'')}">
+    </div>
+    <div class="form-row">
+      <label>내용</label>
+      ${makeSplitEditor('f-issue-content','eprev-issue','이슈 상세 내용',5,esc(item?.content||''))}
+    </div>
+  `,[
+    {label:'저장',cls:'btn-primary',action:async()=>{
+      const title=document.getElementById('f-issue-title').value.trim();
+      if(!title){alert('제목은 필수입니다');return false}
+      const obj={
+        id:item?.id||genId(),
+        projectId:PROJECT_ID,
+        title,
+        priority:document.getElementById('f-priority').value,
+        status:item?.status||'open',
+        category:document.getElementById('f-issue-cat').value,
+        assignee:document.getElementById('f-assignee').value.trim(),
+        content:document.getElementById('f-issue-content').value.trim(),
+        createdAt:item?.createdAt||Date.now(),
+        updatedAt:Date.now(),
+      };
+      await db.put('issues',obj);
+      closeModal();renderTab('issues');
+    }},
+    {label:'취소',cls:'btn-ghost',action:()=>closeModal()},
+    ...(id?[{label:'삭제',cls:'btn-danger',action:()=>deleteIssue(id)}]:[])
+  ], false, true);
+  setTimeout(()=>{
+    attachToolbars(document.getElementById('modal-body'));
+    attachLivePreview('f-issue-content','eprev-issue');
+  },50);
+}
+
+async function deleteIssue(id){
+  if(!confirm('이 이슈를 삭제하시겠습니까?')) return;
+  await db.delete('issues',id);
+  closeModal();renderTab('issues');
+}
+
+// ── MARKDOWN ─────────────────────────────────────────────────────
+function inlineFmt(s){
+  return s
+    .replace(/\*\*(.+?)\*\*/g,'<strong>$1</strong>')
+    .replace(/\*(.+?)\*/g,'<em>$1</em>')
+    .replace(/`(.+?)`/g,'<code>$1</code>');
+}
+function renderMarkdown(raw, opts={}){
+  if(!raw) return '';
+  const lines=raw.split('\n');
+  let html='',inUl=false,inOl=false,chkIdx=0;
+  const closeList=()=>{
+    if(inUl){html+='</ul>';inUl=false;}
+    if(inOl){html+='</ol>';inOl=false;}
+  };
+  const e=s=>s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+  for(const line of lines){
+    if(/^## /.test(line)){closeList();html+=`<h4>${inlineFmt(e(line.slice(3)))}</h4>`;continue;}
+    if(/^# /.test(line)){closeList();html+=`<h3>${inlineFmt(e(line.slice(2)))}</h3>`;continue;}
+    if(/^---+$/.test(line)){closeList();html+='<hr>';continue;}
+    const chk=line.match(/^- \[(x| )\] (.+)/);
+    if(chk){
+      const done=chk[1]==='x';
+      const idx=chkIdx++;
+      const clickAttr=opts.checkClick?` data-chk="${idx}" role="checkbox" aria-checked="${done}" tabindex="0"`:'';
+      closeList();
+      html+=`<div class="md-check${done?' done':''}${opts.checkClick?' clickable':''}"${clickAttr}>${done?'☑':'☐'} ${inlineFmt(e(chk[2]))}</div>`;
+      continue;
+    }
+    const ul=line.match(/^[-*] (.+)/);
+    if(ul){if(!inUl){closeList();html+='<ul>';inUl=true;}html+=`<li>${inlineFmt(e(ul[1]))}</li>`;continue;}
+    const ol=line.match(/^\d+\. (.+)/);
+    if(ol){if(!inOl){closeList();html+='<ol>';inOl=true;}html+=`<li>${inlineFmt(e(ol[1]))}</li>`;continue;}
+    closeList();
+    if(line.trim()===''){html+='<br>';continue;}
+    html+=`<p>${inlineFmt(e(line))}</p>`;
+  }
+  closeList();
+  return html;
+}
+
+// ── TOOLBAR INSERT ────────────────────────────────────────────────
+function applyFormat(cmd, ta){
+  const s=ta.selectionStart, e=ta.selectionEnd;
+  const val=ta.value, sel=val.slice(s,e);
+  const before=val.slice(0,s), after=val.slice(e);
+  const lineStart=before.lastIndexOf('\n')+1;
+  const linePrefix=before.slice(lineStart);
+
+  const LINE_CMDS={'h1':'# ','h2':'## ','ul':'- ','ol':'1. ','check':'- [ ] '};
+  if(LINE_CMDS[cmd]){
+    const prefix=LINE_CMDS[cmd];
+    // strip any existing line prefix
+    let clean=linePrefix;
+    for(const p of Object.values(LINE_CMDS)){if(clean.startsWith(p)){clean=clean.slice(p.length);break;}}
+    const removed=linePrefix.length-clean.length;
+    if(linePrefix.startsWith(prefix)&&removed===prefix.length){
+      // toggle off
+      ta.value=val.slice(0,lineStart)+clean+val.slice(lineStart+linePrefix.length);
+      ta.setSelectionRange(Math.max(lineStart,s-prefix.length),Math.max(lineStart,e-prefix.length));
+    } else {
+      ta.value=val.slice(0,lineStart)+prefix+clean+val.slice(lineStart+linePrefix.length);
+      ta.setSelectionRange(s-removed+prefix.length,e-removed+prefix.length);
+    }
+    ta.focus();return;
+  }
+  if(cmd==='hr'){
+    const ins='\n---\n';
+    ta.value=before+ins+after;
+    ta.setSelectionRange(s+ins.length,s+ins.length);
+    ta.focus();return;
+  }
+  const WRAP={bold:'**',italic:'*',code:'`'};
+  if(WRAP[cmd]){
+    const w=WRAP[cmd];
+    const placeholder={bold:'굵게',italic:'기울임',code:'코드'}[cmd];
+    if(sel){
+      if(before.endsWith(w)&&after.startsWith(w)){
+        ta.value=before.slice(0,-w.length)+sel+after.slice(w.length);
+        ta.setSelectionRange(s-w.length,e-w.length);
+      } else {
+        ta.value=before+w+sel+w+after;
+        ta.setSelectionRange(s,e+w.length*2);
+      }
+    } else {
+      ta.value=before+w+placeholder+w+after;
+      ta.setSelectionRange(s+w.length,s+w.length+placeholder.length);
+    }
+    ta.focus();
+  }
+}
+
+// ── TOOLBAR HELPER ────────────────────────────────────────────────
+const TB_ITEMS=[
+  {cmd:'h1',label:'H1',title:'제목 1'},
+  {cmd:'h2',label:'H2',title:'제목 2'},
+  {sep:true},
+  {cmd:'bold',label:'<b>B</b>',title:'굵게'},
+  {cmd:'italic',label:'<i>I</i>',title:'기울임'},
+  {cmd:'code',label:'<code style="font-size:11px">{ }</code>',title:'인라인 코드'},
+  {sep:true},
+  {cmd:'ul',label:'• 목록',title:'글머리 목록'},
+  {cmd:'ol',label:'1. 번호',title:'번호 목록'},
+  {cmd:'check',label:'☐ 체크',title:'체크박스'},
+  {sep:true},
+  {cmd:'hr',label:'— 구분선',title:'구분선'},
+];
+function makeToolbarHtml(targetId){
+  const btns=TB_ITEMS.map(t=>
+    t.sep?'<span class="tb-sep"></span>'
+    :`<button type="button" data-cmd="${t.cmd}" title="${t.title}">${t.label}</button>`
+  ).join('');
+  return `<div class="note-toolbar" data-target="${targetId}">${btns}</div>`;
+}
+function attachToolbars(root){
+  (root||document).querySelectorAll('.note-toolbar[data-target]').forEach(tb=>{
+    const ta=document.getElementById(tb.dataset.target);
+    if(!ta) return;
+    tb.addEventListener('click',e=>{
+      const btn=e.target.closest('[data-cmd]');
+      if(btn) applyFormat(btn.dataset.cmd,ta);
+    });
+  });
+}
+function makeSplitEditor(taId, prevId, placeholder, rows, value){
+  return `
+    <div class="editor-split">
+      <div class="editor-pane-write">
+        ${makeToolbarHtml(taId)}
+        <textarea id="${taId}" placeholder="${placeholder}">${value}</textarea>
+      </div>
+      <div class="editor-pane-preview">
+        <div class="eprev-label">미리보기</div>
+        <div class="eprev-body note-rendered" id="${prevId}"></div>
+      </div>
+    </div>`;
+}
+function attachLivePreview(taId, prevId){
+  const ta=document.getElementById(taId);
+  const prev=document.getElementById(prevId);
+  if(!ta||!prev) return;
+  const update=()=>{prev.innerHTML=renderMarkdown(ta.value);};
+  ta.addEventListener('input',update);
+  update();
+}
+
+// ── NOTES TAB ────────────────────────────────────────────────────
+async function renderNotes(){
+  const el=document.getElementById('tab-content');
+  el.innerHTML=`
+    <div class="list-pane" id="list-pane">
+      <div class="tab-toolbar">
+        <input type="text" id="note-search" placeholder="노트 검색..." value="${esc(noteSearch)}">
+        <button class="btn-primary" id="btn-add-note">+ 노트 추가</button>
+      </div>
+      <div id="note-list"></div>
+    </div>
+    <div class="thread-pane" id="thread-pane"></div>
+  `;
+  document.getElementById('note-search').addEventListener('input', e=>{
+    noteSearch=e.target.value;loadNotes();
+  });
+  document.getElementById('btn-add-note').addEventListener('click',()=>showNoteModal(null));
+  document.getElementById('note-list').addEventListener('click', async e=>{
+    if(e.target.closest('.card-actions')) return;
+    const chkEl=e.target.closest('.md-check.clickable');
+    if(chkEl){
+      const card=chkEl.closest('[data-note-id]');
+      if(card) await toggleNoteCheck(card.dataset.noteId, parseInt(chkEl.dataset.chk));
+      return;
+    }
+    const h=e.target.closest('[data-thread-id]');
+    if(h) openThread(h.dataset.threadId, h.dataset.threadType);
+  });
+  await loadNotes();
+}
+
+async function loadNotes(){
+  let items=await db.getByIndex('notes','projectId',PROJECT_ID);
+  items.sort((a,b)=>b.updatedAt-a.updatedAt);
+  if(noteSearch){
+    const q=noteSearch.toLowerCase();
+    items=items.filter(i=>(i.title||'').toLowerCase().includes(q)||(i.content||'').toLowerCase().includes(q));
+  }
+  const el=document.getElementById('note-list');
+  if(!el) return;
+  if(!items.length){
+    el.innerHTML=`<div class="empty-state"><p>노트가 없습니다</p><span>+ 노트 추가로 첫 메모를 작성해보세요</span></div>`;
+    return;
+  }
+  el.innerHTML=items.map(n=>{
+    const rendered=renderMarkdown(n.content||'',{checkClick:true});
+    const isLong=(n.content||'').split('\n').length>6||(n.content||'').length>300;
+    return `
+    <div class="note-card" data-note-id="${n.id}${selectedItem?.id===n.id?' card-selected':''}">
+      <div class="note-card-header" data-thread-id="${n.id}" data-thread-type="note">
+        <span class="note-card-title thread-trigger">${esc(n.title)||'(제목 없음)'}</span>
+        <span class="note-card-date">${new Date(n.updatedAt).toLocaleDateString('ko-KR')}</span>
+        <div class="card-actions">
+          <button onclick="showNoteModal('${n.id}')" title="수정">✏️</button>
+          <button onclick="deleteNote('${n.id}')" title="삭제">🗑️</button>
+        </div>
+      </div>
+      <div class="note-card-body" id="nb-${n.id}">
+        <div class="note-rendered">${rendered}</div>
+        ${isLong?'<div class="note-card-fade"></div>':''}
+      </div>
+      ${isLong?`<button class="note-expand-btn" onclick="toggleNoteExpand('${n.id}')">더 보기 ▾</button>`:''}
+    </div>`;
+  }).join('');
+}
+
+async function toggleNoteCheck(noteId, idx){
+  const note=await db.get('notes',noteId);
+  if(!note) return;
+  let count=0;
+  const lines=note.content.split('\n');
+  for(let i=0;i<lines.length;i++){
+    if(/^- \[(x| )\] /.test(lines[i])){
+      if(count===idx){
+        lines[i]=lines[i].startsWith('- [x] ')
+          ?lines[i].replace('- [x] ','- [ ] ')
+          :lines[i].replace('- [ ] ','- [x] ');
+        break;
+      }
+      count++;
+    }
+  }
+  note.content=lines.join('\n');
+  note.updatedAt=Date.now();
+  await db.put('notes',note);
+  await loadNotes();
+}
+
+function toggleNoteExpand(id){
+  const body=document.getElementById('nb-'+id);
+  const btn=body.nextElementSibling;
+  body.classList.toggle('expanded');
+  btn.textContent=body.classList.contains('expanded')?'접기 ▴':'더 보기 ▾';
+}
+
+async function showNoteModal(id){
+  let item=null;
+  if(id) item=await db.get('notes',id);
+  showModal('노트 '+(id?'수정':'추가'),`
+    <div class="form-row">
+      <label>제목</label>
+      <input type="text" id="f-note-title" placeholder="노트 제목 (선택)" value="${esc(item?.title||'')}">
+    </div>
+    <div class="form-row">
+      <label>내용 *</label>
+      ${makeSplitEditor('note-modal-textarea','eprev-note','자유롭게 메모를 작성하세요...',8,esc(item?.content||''))}
+    </div>
+  `,[
+    {label:'저장',cls:'btn-primary',action:async()=>{
+      const content=document.getElementById('note-modal-textarea').value.trim();
+      if(!content){alert('내용을 입력해주세요');return false}
+      const obj={
+        id:item?.id||genId(),
+        projectId:PROJECT_ID,
+        title:document.getElementById('f-note-title').value.trim(),
+        content,
+        createdAt:item?.createdAt||Date.now(),
+        updatedAt:Date.now(),
+      };
+      await db.put('notes',obj);
+      closeModal();renderTab('notes');
+    }},
+    {label:'취소',cls:'btn-ghost',action:()=>closeModal()},
+    ...(id?[{label:'삭제',cls:'btn-danger',action:()=>deleteNote(id)}]:[])
+  ], false, true);
+  setTimeout(()=>{
+    attachToolbars(document.getElementById('modal-body'));
+    attachLivePreview('note-modal-textarea','eprev-note');
+  },50);
+}
+
+async function deleteNote(id){
+  if(!confirm('이 노트를 삭제하시겠습니까?')) return;
+  await db.delete('notes',id);
+  closeModal();renderTab('notes');
+}
+
+// ── THREAD ────────────────────────────────────────────────────────
+async function openThread(id, type){
+  selectedItem={id,type};
+  const pane=document.getElementById('thread-pane');
+  if(!pane) return;
+  pane.classList.add('open');
+
+  // 헤더 정보 로드
+  let item, headerHtml='', metaHtml='';
+  if(type==='comm'){
+    item=await db.get('communications',id);
+    headerHtml=`${esc(item?.date||'')} · ${esc(item?.type||'')}`;
+    metaHtml=`<span>👥 ${esc(item?.participants||'')}</span>`;
+  } else if(type==='issue'){
+    item=await db.get('issues',id);
+    const pl={high:'🔴 높음',medium:'🟡 보통',low:'🟢 낮음'};
+    headerHtml=esc(item?.title||'');
+    metaHtml=`<span>${pl[item?.priority]||''}</span><span>📂 ${esc(item?.category||'')}</span>${item?.assignee?`<span>👤 ${esc(item.assignee)}</span>`:''}`;
+  } else if(type==='note'){
+    item=await db.get('notes',id);
+    headerHtml=esc(item?.title||'(제목 없음)');
+  }
+
+  const origContent=item?.content?`<div class="note-rendered">${renderMarkdown(item.content)}</div>`:'';
+  const origExtra=type==='comm'&&item?.actionItems?`<div style="margin-top:8px;border-top:1px solid var(--border);padding-top:8px"><label style="font-size:11px;font-weight:600;color:var(--text3)">결정사항</label><div class="note-rendered">${renderMarkdown(item.actionItems)}</div></div>`:'';
+
+  pane.innerHTML=`
+    <div class="thread-header">
+      <span class="thread-header-title">${headerHtml}</span>
+      <button class="thread-close" onclick="closeThread()">✕</button>
+    </div>
+    ${origContent||metaHtml?`
+    <div class="thread-original">
+      ${metaHtml?`<div class="thread-original-meta">${metaHtml}</div>`:''}
+      ${origContent}${origExtra}
+    </div>`:''}
+    <div class="thread-messages" id="thread-messages"></div>
+    <div class="thread-compose">
+      <textarea id="thread-input" placeholder="스레드에 내용 추가..."></textarea>
+      <div class="thread-compose-row">
+        <button class="btn-primary" id="btn-thread-send">전송</button>
+      </div>
+    </div>
+  `;
+
+  document.getElementById('btn-thread-send').addEventListener('click', async()=>{
+    const ta=document.getElementById('thread-input');
+    const content=ta.value.trim();
+    if(!content) return;
+    await db.put('threads',{
+      id:genId(), parentId:id, projectId:PROJECT_ID,
+      content, createdAt:Date.now()
+    });
+    ta.value='';
+    await loadThreadMessages(id);
+    // 목록 스크롤 맨 아래로
+    const msgs=document.getElementById('thread-messages');
+    if(msgs) msgs.scrollTop=msgs.scrollHeight;
+  });
+
+  document.getElementById('thread-input').addEventListener('keydown', e=>{
+    if((e.ctrlKey||e.metaKey)&&e.key==='Enter'){
+      e.preventDefault();
+      document.getElementById('btn-thread-send').click();
+    }
+  });
+
+  await loadThreadMessages(id);
+}
+
+async function loadThreadMessages(parentId){
+  const el=document.getElementById('thread-messages');
+  if(!el) return;
+  const items=await db.getByIndex('threads','parentId',parentId);
+  items.sort((a,b)=>a.createdAt-b.createdAt);
+  if(!items.length){
+    el.innerHTML=`<div class="thread-empty">아직 스레드가 없습니다<br><span style="font-size:12px">아래에 내용을 입력해보세요</span></div>`;
+    return;
+  }
+  el.innerHTML=items.map(t=>`
+    <div class="thread-msg">
+      <div class="thread-msg-meta">
+        ${new Date(t.createdAt).toLocaleString('ko-KR',{month:'numeric',day:'numeric',hour:'2-digit',minute:'2-digit'})}
+        <button onclick="deleteThread('${t.id}')" style="background:none;border:none;cursor:pointer;color:var(--text3);font-size:11px;margin-left:6px;padding:0">삭제</button>
+      </div>
+      <div class="thread-msg-content note-rendered">${renderMarkdown(t.content)}</div>
+    </div>
+  `).join('');
+}
+
+async function deleteThread(id){
+  if(!confirm('이 스레드를 삭제하시겠습니까?')) return;
+  await db.delete('threads',id);
+  if(selectedItem) await loadThreadMessages(selectedItem.id);
+}
+
+function closeThread(){
+  selectedItem=null;
+  const pane=document.getElementById('thread-pane');
+  if(pane){pane.classList.remove('open');pane.innerHTML='';}
+}
+
+// ── PROJECT MODAL ────────────────────────────────────────────────
+async function showProjectModal(isFirst=false){
+  const p=project;
+  const today=new Date().toISOString().slice(0,10);
+  showModal(isFirst?'프로젝트 초기 설정':'프로젝트 정보 수정',`
+    ${isFirst?'<p style="color:var(--text2);font-size:13px;margin-bottom:16px">대시보드를 처음 사용합니다. 프로젝트 정보를 입력해주세요.</p>':''}
+    <div class="form-row">
+      <label>고객사명 *</label>
+      <input type="text" id="f-client" placeholder="예: ABC Corporation" value="${esc(p?.clientName||'')}">
+    </div>
+    <div class="form-row">
+      <label>프로젝트명</label>
+      <input type="text" id="f-pname" placeholder="예: MCE 구축 프로젝트" value="${esc(p?.name||'')}">
+    </div>
+    <div class="form-row-2">
+      <div class="form-row">
+        <label>시작일</label>
+        <input type="date" id="f-start" value="${esc(p?.startDate||today)}">
+      </div>
+      <div class="form-row">
+        <label>종료 예정일</label>
+        <input type="date" id="f-end" value="${esc(p?.endDate||'')}">
+      </div>
+    </div>
+    <div class="form-row">
+      <label>담당자</label>
+      <input type="text" id="f-manager" placeholder="담당자명" value="${esc(p?.manager||'')}">
+    </div>
+    <div class="form-row">
+      <label>MCE 에디션</label>
+      <select id="f-edition">
+        ${['Corporate','Enterprise','Advanced','Select',''].map(e=>`<option value="${e}"${(p?.edition||'')=== e?' selected':''}>${e||'—'}</option>`).join('')}
+      </select>
+    </div>
+  `,[
+    {label:'저장',cls:'btn-primary',action:async()=>{
+      const clientName=document.getElementById('f-client').value.trim();
+      if(!clientName){alert('고객사명은 필수입니다');return false}
+      const obj={
+        id:PROJECT_ID,
+        clientName,
+        name:document.getElementById('f-pname').value.trim()||clientName+' MCE 구축',
+        startDate:document.getElementById('f-start').value,
+        endDate:document.getElementById('f-end').value,
+        manager:document.getElementById('f-manager').value.trim(),
+        edition:document.getElementById('f-edition').value,
+        status:'active',
+        steps:p?.steps||{},
+        createdAt:p?.createdAt||Date.now(),
+        updatedAt:Date.now(),
+      };
+      await db.put('projects',obj);
+      project=obj;
+      closeModal();
+      renderHeader();
+      renderTab(currentTab);
+    }},
+    ...(isFirst?[]:[{label:'취소',cls:'btn-ghost',action:()=>closeModal()}]),
+  ],isFirst);
+}
+
+// ── MODAL CORE ────────────────────────────────────────────────────
+function showModal(title, bodyHtml, buttons=[], preventClose=false, wide=false){
+  document.getElementById('modal').classList.toggle('modal-wide', wide);
+  document.getElementById('modal-title').textContent=title;
+  document.getElementById('modal-body').innerHTML=bodyHtml;
+  const footer=document.getElementById('modal-footer');
+  footer.innerHTML='';
+  buttons.forEach(b=>{
+    const btn=document.createElement('button');
+    btn.className=b.cls||'btn-ghost';
+    btn.textContent=b.label;
+    btn.addEventListener('click',async()=>{
+      const result=await b.action();
+      if(result===false) return;
+    });
+    footer.appendChild(btn);
+  });
+  document.getElementById('modal-overlay').classList.remove('hidden');
+  document.getElementById('modal-close').style.display=preventClose?'none':'';
+  document.getElementById('modal-overlay').dataset.preventClose=preventClose?'1':'';
+}
+function closeModal(){
+  document.getElementById('modal-overlay').classList.add('hidden');
+}
+
+// ── EXPORT / IMPORT ───────────────────────────────────────────────
+async function exportData(){
+  const p=await db.get('projects',PROJECT_ID);
+  const comms=await db.getByIndex('communications','projectId',PROJECT_ID);
+  const files=await db.getByIndex('files','projectId',PROJECT_ID);
+  const issues=await db.getByIndex('issues','projectId',PROJECT_ID);
+  const notes=await db.getByIndex('notes','projectId',PROJECT_ID);
+
+  const exportObj={
+    version:2,
+    exportedAt:new Date().toISOString(),
+    project:p,
+    communications:comms,
+    files:files.map(({data,...rest})=>rest),
+    issues,
+    notes,
+  };
+  const blob=new Blob([JSON.stringify(exportObj,null,2)],{type:'application/json'});
+  const url=URL.createObjectURL(blob);
+  const a=document.createElement('a');
+  const name=(p?.clientName||'MCE').replace(/\s+/g,'_');
+  a.href=url;a.download=`${name}_dashboard_${new Date().toISOString().slice(0,10)}.json`;
+  a.click();
+  setTimeout(()=>URL.revokeObjectURL(url),1000);
+}
+
+async function importData(file){
+  if(!file) return;
+  if(!confirm('현재 데이터(파일 제외)를 가져오기 데이터로 덮어씁니까?\n파일 첨부는 별도로 다시 업로드해야 합니다.')) return;
+  try{
+    const text=await file.text();
+    const data=JSON.parse(text);
+    if(data.project) await db.put('projects',data.project);
+    for(const c of(data.communications||[])) await db.put('communications',c);
+    for(const i of(data.issues||[])) await db.put('issues',i);
+    for(const n of(data.notes||[])) await db.put('notes',n);
+    project=await db.get('projects',PROJECT_ID);
+    renderHeader();
+    renderTab(currentTab);
+    alert('가져오기 완료');
+  }catch(e){
+    alert('파일을 읽는 중 오류가 발생했습니다: '+e.message);
+  }
+}
+
+// ── EVENT LISTENERS ───────────────────────────────────────────────
+document.getElementById('tab-nav').addEventListener('click', e=>{
+  const btn=e.target.closest('button');
+  if(btn&&btn.dataset.tab) renderTab(btn.dataset.tab);
+});
+document.getElementById('btn-edit-proj').addEventListener('click',()=>showProjectModal(false));
+document.getElementById('btn-export').addEventListener('click',exportData);
+document.getElementById('btn-import').addEventListener('click',()=>document.getElementById('import-input').click());
+document.getElementById('import-input').addEventListener('change',e=>{
+  importData(e.target.files[0]);
+  e.target.value='';
+});
+document.getElementById('modal-overlay').addEventListener('click', e=>{
+  if(e.target===document.getElementById('modal-overlay')&&e.target.dataset.preventClose!=='1') closeModal();
+});
+document.getElementById('modal-close').addEventListener('click', closeModal);
+
+// ── THEME ─────────────────────────────────────────────────────────
+function applyTheme(theme){
+  document.documentElement.dataset.theme = theme;
+  document.getElementById('btn-theme').textContent = theme==='dark' ? '☀️' : '🌙';
+}
+function getSystemTheme(){
+  return window.matchMedia('(prefers-color-scheme:dark)').matches ? 'dark' : 'light';
+}
+(function initTheme(){
+  const saved = localStorage.getItem('mce-theme');
+  applyTheme(saved || getSystemTheme());
+})();
+document.getElementById('btn-theme').addEventListener('click',()=>{
+  const next = document.documentElement.dataset.theme==='dark' ? 'light' : 'dark';
+  applyTheme(next);
+  localStorage.setItem('mce-theme', next);
+});
+
+// ── START ────────────────────────────────────────────────────────
+init();
+</script>
+</body>
+</html>
