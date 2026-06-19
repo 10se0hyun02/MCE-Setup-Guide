@@ -1,0 +1,805 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MCE 구축 가이드</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg-primary:#ffffff;
+  --bg-secondary:#f8f8f7;
+  --bg-tertiary:#f1efe8;
+  --text-primary:#1a1a1a;
+  --text-secondary:#555;
+  --text-tertiary:#999;
+  --border-light:rgba(0,0,0,0.08);
+  --border-mid:rgba(0,0,0,0.14);
+  --blue:#378ADD;
+  --blue-bg:#E6F1FB;
+  --blue-text:#185FA5;
+  --green:#1D9E75;
+  --green-bg:#E1F5EE;
+  --green-text:#0F6E56;
+  --amber-bg:#FAEEDA;
+  --amber-text:#BA7517;
+  --amber-border:#FAC775;
+  --red-bg:#FCEBEB;
+  --red-text:#A32D2D;
+  --red-border:#F7C1C1;
+  --radius-sm:6px;
+  --radius-md:8px;
+  --radius-lg:12px;
+  --font-sans:-apple-system,BlinkMacSystemFont,'Segoe UI','Noto Sans KR',sans-serif;
+  --font-mono:'JetBrains Mono','Fira Code','Consolas',monospace;
+}
+@media(prefers-color-scheme:dark){
+  :root{
+    --bg-primary:#1e1e1e;
+    --bg-secondary:#252525;
+    --bg-tertiary:#2a2a2a;
+    --text-primary:#e8e8e8;
+    --text-secondary:#aaa;
+    --text-tertiary:#666;
+    --border-light:rgba(255,255,255,0.08);
+    --border-mid:rgba(255,255,255,0.14);
+    --blue-bg:#0c2a4a;
+    --blue-text:#7ab8f5;
+    --green-bg:#052a1e;
+    --green-text:#5dcaa5;
+    --amber-bg:#2a1e08;
+    --amber-text:#fac775;
+    --amber-border:#633806;
+    --red-bg:#2a0808;
+    --red-text:#f09595;
+    --red-border:#501313;
+  }
+}
+body{font-family:var(--font-sans);background:var(--bg-tertiary);color:var(--text-primary);font-size:14px;line-height:1.6}
+.app{display:flex;height:100vh;overflow:hidden}
+
+/* ── SIDEBAR ── */
+.sidebar{
+  width:248px;min-width:248px;
+  background:var(--bg-primary);
+  border-right:0.5px solid var(--border-light);
+  display:flex;flex-direction:column;
+  overflow:hidden;
+}
+.sidebar-top{padding:16px 16px 12px;border-bottom:0.5px solid var(--border-light)}
+.brand{display:flex;align-items:center;gap:8px;margin-bottom:12px}
+.brand-icon{width:28px;height:28px;background:var(--blue);border-radius:6px;display:flex;align-items:center;justify-content:center;color:#fff;font-size:13px;font-weight:600;flex-shrink:0}
+.brand-name{font-size:13px;font-weight:600;color:var(--text-primary)}
+.brand-sub{font-size:11px;color:var(--text-tertiary)}
+.search-box{position:relative}
+.search-box svg{position:absolute;left:8px;top:50%;transform:translateY(-50%);color:var(--text-tertiary);pointer-events:none}
+.search-box input{
+  width:100%;padding:7px 8px 7px 30px;
+  font-size:12px;border:0.5px solid var(--border-mid);
+  border-radius:var(--radius-md);background:var(--bg-secondary);
+  color:var(--text-primary);outline:none;
+}
+.search-box input:focus{border-color:var(--blue)}
+.search-box input::placeholder{color:var(--text-tertiary)}
+
+.sidebar-nav{flex:1;overflow-y:auto;padding:8px 0}
+.nav-group-label{
+  font-size:10px;font-weight:600;letter-spacing:0.06em;
+  color:var(--text-tertiary);text-transform:uppercase;
+  padding:10px 16px 4px;
+}
+.nav-item{
+  display:flex;align-items:center;gap:8px;
+  padding:7px 14px 7px 16px;cursor:pointer;
+  font-size:12.5px;color:var(--text-secondary);
+  border-left:2px solid transparent;
+  transition:all 0.12s;user-select:none;
+}
+.nav-item:hover{background:var(--bg-secondary);color:var(--text-primary)}
+.nav-item.active{
+  color:var(--blue-text);border-left-color:var(--blue);
+  background:var(--blue-bg);font-weight:500;
+}
+.nav-badge{
+  font-size:10px;background:var(--bg-tertiary);
+  color:var(--text-tertiary);border-radius:4px;
+  padding:1px 5px;min-width:18px;text-align:center;
+}
+.nav-item.active .nav-badge{background:var(--blue-bg);color:var(--blue-text)}
+.nav-status{margin-left:auto;font-size:14px;line-height:1}
+
+.sidebar-footer{
+  padding:12px 16px;border-top:0.5px solid var(--border-light);
+  background:var(--bg-primary);
+}
+.progress-meta{display:flex;justify-content:space-between;margin-bottom:6px}
+.progress-meta span{font-size:11px;color:var(--text-tertiary)}
+.progress-meta strong{font-size:11px;color:var(--text-secondary)}
+.progress-track{height:4px;background:var(--border-light);border-radius:2px;overflow:hidden}
+.progress-fill{height:100%;background:var(--green);border-radius:2px;transition:width 0.35s ease}
+
+/* ── MAIN ── */
+.main{flex:1;overflow-y:auto;background:var(--bg-secondary)}
+.section{display:none;padding:28px 32px;max-width:800px}
+.section.active{display:block}
+
+.section-header{margin-bottom:24px;padding-bottom:18px;border-bottom:0.5px solid var(--border-light)}
+.section-eyebrow{font-size:11px;font-weight:600;letter-spacing:0.05em;text-transform:uppercase;color:var(--text-tertiary);margin-bottom:6px}
+.section-title{font-size:22px;font-weight:600;color:var(--text-primary);margin-bottom:8px}
+.section-desc{font-size:13px;color:var(--text-secondary);line-height:1.7}
+.step-progress{margin-top:14px;display:flex;align-items:center;gap:10px}
+.step-progress-track{flex:1;height:3px;background:var(--border-light);border-radius:2px;overflow:hidden}
+.step-progress-fill{height:100%;background:var(--blue);border-radius:2px;transition:width 0.3s}
+.step-progress-label{font-size:11px;color:var(--text-tertiary);white-space:nowrap}
+
+/* checklist */
+.block{margin-bottom:24px}
+.block-title{
+  font-size:12px;font-weight:600;color:var(--text-secondary);
+  margin-bottom:10px;display:flex;align-items:center;gap:6px;
+  text-transform:uppercase;letter-spacing:0.04em;
+}
+.check-item{
+  display:flex;align-items:flex-start;gap:10px;
+  padding:8px 10px;border-radius:var(--radius-md);
+  cursor:pointer;transition:background 0.1s;
+}
+.check-item:hover{background:var(--bg-primary)}
+.check-item input[type=checkbox]{
+  margin-top:2px;min-width:14px;height:14px;cursor:pointer;
+  accent-color:var(--blue);
+}
+.check-item label{font-size:13px;color:var(--text-primary);cursor:pointer;line-height:1.55}
+.check-item.done label{color:var(--text-tertiary);text-decoration:line-through}
+
+/* callout boxes */
+.callout{
+  display:flex;gap:10px;padding:12px 14px;
+  border-radius:var(--radius-md);border:0.5px solid;
+  margin-bottom:16px;font-size:12.5px;line-height:1.65;
+}
+.callout.warning{background:var(--amber-bg);border-color:var(--amber-border);color:var(--amber-text)}
+.callout.danger{background:var(--red-bg);border-color:var(--red-border);color:var(--red-text)}
+.callout.tip{background:var(--green-bg);border-color:#9FE1CB;color:var(--green-text)}
+.callout.note{background:var(--bg-primary);border-color:var(--border-mid);color:var(--text-secondary)}
+.callout-icon{font-size:15px;flex-shrink:0;margin-top:1px}
+.callout strong{font-weight:600}
+
+/* code block */
+.code-block{
+  background:var(--bg-primary);border:0.5px solid var(--border-mid);
+  border-radius:var(--radius-md);margin-bottom:16px;overflow:hidden;
+}
+.code-header{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:8px 12px;border-bottom:0.5px solid var(--border-light);
+}
+.code-lang{font-size:11px;font-weight:600;color:var(--text-tertiary);letter-spacing:0.04em}
+.copy-btn{
+  display:flex;align-items:center;gap:4px;
+  font-size:11px;color:var(--text-secondary);
+  background:none;border:0.5px solid var(--border-mid);
+  border-radius:4px;padding:3px 8px;cursor:pointer;
+  transition:all 0.1s;
+}
+.copy-btn:hover{background:var(--bg-secondary);color:var(--text-primary)}
+.code-body{
+  padding:14px;font-family:var(--font-mono);font-size:12px;
+  color:var(--text-primary);line-height:1.75;
+  white-space:pre;overflow-x:auto;
+}
+
+/* table */
+.data-table{width:100%;border-collapse:collapse;font-size:12.5px;margin-bottom:16px}
+.data-table th{
+  text-align:left;padding:8px 10px;
+  background:var(--bg-primary);color:var(--text-secondary);
+  font-weight:600;font-size:11px;text-transform:uppercase;letter-spacing:0.04em;
+  border-bottom:0.5px solid var(--border-mid);
+}
+.data-table td{
+  padding:8px 10px;border-bottom:0.5px solid var(--border-light);
+  color:var(--text-primary);vertical-align:top;
+}
+.data-table tr:last-child td{border-bottom:none}
+.data-table tr:hover td{background:var(--bg-primary)}
+.tag{display:inline-block;font-size:10px;font-weight:600;padding:2px 6px;border-radius:4px}
+.tag.required{background:var(--red-bg);color:var(--red-text)}
+.tag.optional{background:var(--bg-tertiary);color:var(--text-tertiary)}
+.tag.system{background:var(--blue-bg);color:var(--blue-text)}
+
+/* search results */
+.search-result{
+  padding:10px 12px;border-radius:var(--radius-md);
+  border:0.5px solid var(--border-light);background:var(--bg-primary);
+  cursor:pointer;margin-bottom:6px;
+}
+.search-result:hover{border-color:var(--border-mid)}
+.sr-text{font-size:12.5px;color:var(--text-primary);margin-bottom:3px}
+.sr-path{font-size:11px;color:var(--text-tertiary)}
+mark{background:#FAEEDA;color:#633806;border-radius:2px;padding:0 2px;font-style:normal}
+@media(prefers-color-scheme:dark){mark{background:#2a1e08;color:#fac775}}
+.empty{text-align:center;padding:40px 16px;color:var(--text-tertiary);font-size:13px}
+</style>
+</head>
+<body>
+<div class="app">
+
+  <!-- SIDEBAR -->
+  <aside class="sidebar">
+    <div class="sidebar-top">
+      <div class="brand">
+        <div class="brand-icon">M</div>
+        <div>
+          <div class="brand-name">MCE 구축 가이드</div>
+          <div class="brand-sub">Marketing Cloud Engagement</div>
+        </div>
+      </div>
+      <div class="search-box">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+        <input type="text" id="searchInput" placeholder="검색..." oninput="handleSearch(this.value)">
+      </div>
+    </div>
+
+    <nav class="sidebar-nav" id="navSection">
+      <div class="nav-group-label">준비</div>
+      <div class="nav-item active" onclick="showSection('s0')" id="nav-s0">
+        <span class="nav-badge">0</span>
+        <span>사전 준비</span>
+        <span class="nav-status" id="status-s0">⬜</span>
+      </div>
+
+      <div class="nav-group-label">계정 설정</div>
+      <div class="nav-item" onclick="showSection('s1')" id="nav-s1">
+        <span class="nav-badge">1</span>
+        <span>계정 / BU 설정</span>
+        <span class="nav-status" id="status-s1">⬜</span>
+      </div>
+      <div class="nav-item" onclick="showSection('s2')" id="nav-s2">
+        <span class="nav-badge">2</span>
+        <span>사용자 권한 설정</span>
+        <span class="nav-status" id="status-s2">⬜</span>
+      </div>
+
+      <div class="nav-group-label">데이터 설계</div>
+      <div class="nav-item" onclick="showSection('s3')" id="nav-s3">
+        <span class="nav-badge">3</span>
+        <span>Data Extension 설계</span>
+        <span class="nav-status" id="status-s3">⬜</span>
+      </div>
+      <div class="nav-item" onclick="showSection('s4')" id="nav-s4">
+        <span class="nav-badge">4</span>
+        <span>Contact Builder 설정</span>
+        <span class="nav-status" id="status-s4">⬜</span>
+      </div>
+
+      <div class="nav-group-label">발송 설정</div>
+      <div class="nav-item" onclick="showSection('s5')" id="nav-s5">
+        <span class="nav-badge">5</span>
+        <span>Sender Profile</span>
+        <span class="nav-status" id="status-s5">⬜</span>
+      </div>
+      <div class="nav-item" onclick="showSection('s6')" id="nav-s6">
+        <span class="nav-badge">6</span>
+        <span>Send Classification</span>
+        <span class="nav-status" id="status-s6">⬜</span>
+      </div>
+
+      <div class="nav-group-label">자동화</div>
+      <div class="nav-item" onclick="showSection('s7')" id="nav-s7">
+        <span class="nav-badge">7</span>
+        <span>Automation Studio</span>
+        <span class="nav-status" id="status-s7">⬜</span>
+      </div>
+      <div class="nav-item" onclick="showSection('s8')" id="nav-s8">
+        <span class="nav-badge">8</span>
+        <span>Journey Builder</span>
+        <span class="nav-status" id="status-s8">⬜</span>
+      </div>
+
+      <div class="nav-group-label">검수 &amp; 인계</div>
+      <div class="nav-item" onclick="showSection('s9')" id="nav-s9">
+        <span class="nav-badge">9</span>
+        <span>발송 테스트</span>
+        <span class="nav-status" id="status-s9">⬜</span>
+      </div>
+      <div class="nav-item" onclick="showSection('s10')" id="nav-s10">
+        <span class="nav-badge">10</span>
+        <span>운영 인계</span>
+        <span class="nav-status" id="status-s10">⬜</span>
+      </div>
+    </nav>
+
+    <div class="sidebar-footer">
+      <div class="progress-meta">
+        <span>전체 진행률</span>
+        <strong id="progressPct">0%</strong>
+      </div>
+      <div class="progress-track">
+        <div class="progress-fill" id="progressFill" style="width:0%"></div>
+      </div>
+    </div>
+  </aside>
+
+  <!-- MAIN -->
+  <main class="main" id="mainArea">
+
+    <!-- STEP 0 -->
+    <div class="section active" id="s0">
+      <div class="section-header">
+        <div class="section-eyebrow">Step 0 · 준비</div>
+        <div class="section-title">사전 준비</div>
+        <div class="section-desc">구축 착수 전 반드시 확인해야 할 항목입니다. 이 단계가 완료되지 않으면 이후 설정이 지연될 수 있습니다.</div>
+        <div class="step-progress">
+          <div class="step-progress-track"><div class="step-progress-fill" id="prog-s0" style="width:0%"></div></div>
+          <span class="step-progress-label" id="prog-label-s0">0 / 5</span>
+        </div>
+      </div>
+
+      <div class="block">
+        <div class="block-title">☑ 체크리스트</div>
+        <div class="check-item" onclick="toggle(this)"><input type="checkbox"><label>클라이언트 계약서 및 온보딩 정보 수령 완료</label></div>
+        <div class="check-item" onclick="toggle(this)"><input type="checkbox"><label>Salesforce 파트너 포털에서 org 생성 요청</label></div>
+        <div class="check-item" onclick="toggle(this)"><input type="checkbox"><label>MCE 에디션 확인 (Pro / Corporate / Enterprise)</label></div>
+        <div class="check-item" onclick="toggle(this)"><input type="checkbox"><label>발송 채널 확인 (Email / SMS / Push)</label></div>
+        <div class="check-item" onclick="toggle(this)"><input type="checkbox"><label>클라이언트 도메인 및 DNS 정보 수집</label></div>
+      </div>
+
+      <div class="callout warning">
+        <span class="callout-icon">⚠️</span>
+        <div><strong>주의:</strong> MCE org 생성 후 초기 설정(타임존, 문자셋 등)은 변경 불가입니다. 착수 전 클라이언트와 반드시 확인하세요.</div>
+      </div>
+      <div class="callout tip">
+        <span class="callout-icon">💡</span>
+        <div><strong>팁:</strong> 클라이언트 담당자에게 초기 정보 수집 체크리스트를 별도 문서로 전달하면 누락을 방지할 수 있습니다.</div>
+      </div>
+    </div>
+
+    <!-- STEP 1 -->
+    <div class="section" id="s1">
+      <div class="section-header">
+        <div class="section-eyebrow">Step 1 · 계정 설정</div>
+        <div class="section-title">계정 / BU 설정</div>
+        <div class="section-desc">Parent BU와 Child BU 구조를 설계하고 기본 계정 정보를 구성합니다.</div>
+        <div class="step-progress">
+          <div class="step-progress-track"><div class="step-progress-fill" id="prog-s1" style="width:0%"></div></div>
+          <span class="step-progress-label" id="prog-label-s1">0 / 4</span>
+        </div>
+      </div>
+      <div class="block">
+        <div class="block-title">☑ 체크리스트</div>
+        <div class="check-item" onclick="toggle(this)"><input type="checkbox"><label>Parent Account 기본 정보 입력 (회사명, 타임존, 문자셋)</label></div>
+        <div class="check-item" onclick="toggle(this)"><input type="checkbox"><label>Child BU 생성 및 네이밍 컨벤션 설정</label></div>
+        <div class="check-item" onclick="toggle(this)"><input type="checkbox"><label>각 BU별 기본 From Name / From Email 설정</label></div>
+        <div class="check-item" onclick="toggle(this)"><input type="checkbox"><label>Private Domain 연결 (있는 경우)</label></div>
+      </div>
+
+      <div class="block">
+        <div class="block-title">📋 BU 구성 예시</div>
+        <table class="data-table">
+          <thead><tr><th>BU 이름</th><th>용도</th><th>타임존</th></tr></thead>
+          <tbody>
+            <tr><td>[클라이언트명]_Parent</td><td>관리용 (발송 X)</td><td>KST (Asia/Seoul)</td></tr>
+            <tr><td>[클라이언트명]_Email</td><td>이메일 발송</td><td>KST (Asia/Seoul)</td></tr>
+            <tr><td>[클라이언트명]_SMS</td><td>SMS 발송</td><td>KST (Asia/Seoul)</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="callout danger">
+        <span class="callout-icon">🚫</span>
+        <div><strong>중요:</strong> 타임존은 생성 후 변경 불가입니다. KST(Asia/Seoul)로 설정 후, Journey Builder 날짜 조건에서 UTC+9 오프셋을 별도 처리해야 합니다.</div>
+      </div>
+    </div>
+
+    <!-- STEP 2 -->
+    <div class="section" id="s2">
+      <div class="section-header">
+        <div class="section-eyebrow">Step 2 · 계정 설정</div>
+        <div class="section-title">사용자 권한 설정</div>
+        <div class="section-desc">MCE 사용자 계정을 생성하고 Role별 권한을 부여합니다.</div>
+        <div class="step-progress">
+          <div class="step-progress-track"><div class="step-progress-fill" id="prog-s2" style="width:0%"></div></div>
+          <span class="step-progress-label" id="prog-label-s2">0 / 4</span>
+        </div>
+      </div>
+      <div class="block">
+        <div class="block-title">☑ 체크리스트</div>
+        <div class="check-item" onclick="toggle(this)"><input type="checkbox"><label>Admin 계정 생성 및 MFA 설정</label></div>
+        <div class="check-item" onclick="toggle(this)"><input type="checkbox"><label>운영자 Role 생성 (클라이언트 요청 권한 기준)</label></div>
+        <div class="check-item" onclick="toggle(this)"><input type="checkbox"><label>BU별 접근 권한 매핑</label></div>
+        <div class="check-item" onclick="toggle(this)"><input type="checkbox"><label>API 연동용 서비스 계정 생성 (필요시)</label></div>
+      </div>
+      <div class="callout note">
+        <span class="callout-icon">📌</span>
+        <div>클라이언트 사용자 권한은 최소 권한 원칙으로 시작하고, 필요 시 점진적으로 확대하는 방식을 권장합니다.</div>
+      </div>
+    </div>
+
+    <!-- STEP 3 -->
+    <div class="section" id="s3">
+      <div class="section-header">
+        <div class="section-eyebrow">Step 3 · 데이터 설계</div>
+        <div class="section-title">Data Extension 설계</div>
+        <div class="section-desc">발송에 필요한 DE 구조를 설계하고 생성합니다.</div>
+        <div class="step-progress">
+          <div class="step-progress-track"><div class="step-progress-fill" id="prog-s3" style="width:0%"></div></div>
+          <span class="step-progress-label" id="prog-label-s3">0 / 4</span>
+        </div>
+      </div>
+      <div class="block">
+        <div class="block-title">☑ 체크리스트</div>
+        <div class="check-item" onclick="toggle(this)"><input type="checkbox"><label>Master DE 스키마 정의</label></div>
+        <div class="check-item" onclick="toggle(this)"><input type="checkbox"><label>발송 대상 DE 설계 (Sendable, 관계 키 설정)</label></div>
+        <div class="check-item" onclick="toggle(this)"><input type="checkbox"><label>수신거부 DE 설계 및 AllSubscribers 연동 확인</label></div>
+        <div class="check-item" onclick="toggle(this)"><input type="checkbox"><label>폴더 구조 설계 (계정명 > 용도별)</label></div>
+      </div>
+
+      <div class="block">
+        <div class="block-title">📋 기본 DE 필드 구성</div>
+        <table class="data-table">
+          <thead><tr><th>필드명</th><th>타입</th><th>필수</th><th>설명</th></tr></thead>
+          <tbody>
+            <tr><td>ContactKey</td><td>Text(36)</td><td><span class="tag required">필수</span></td><td>PK, Subscriber Key</td></tr>
+            <tr><td>EmailAddress</td><td>EmailAddress</td><td><span class="tag required">필수</span></td><td>발송 이메일</td></tr>
+            <tr><td>Name</td><td>Text(100)</td><td><span class="tag optional">선택</span></td><td>수신자 이름</td></tr>
+            <tr><td>EmailOptIn</td><td>Boolean</td><td><span class="tag required">필수</span></td><td>이메일 수신 동의</td></tr>
+            <tr><td>CreatedDate</td><td>Date</td><td><span class="tag system">시스템</span></td><td>레코드 생성일</td></tr>
+            <tr><td>UpdatedDate</td><td>Date</td><td><span class="tag system">시스템</span></td><td>최종 수정일</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="block">
+        <div class="block-title">💻 SQL — 발송 대상 추출</div>
+        <div class="code-block">
+          <div class="code-header">
+            <span class="code-lang">SQL (Query Studio)</span>
+            <button class="copy-btn" onclick="copyCode(this)">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+              복사
+            </button>
+          </div>
+          <div class="code-body">SELECT
+    m.ContactKey,
+    m.EmailAddress,
+    m.Name
+FROM [Master_DE] m
+WHERE m.EmailOptIn = 1
+  AND m.IsActive = 1
+  AND m.EmailAddress IS NOT NULL</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- STEP 4 -->
+    <div class="section" id="s4">
+      <div class="section-header">
+        <div class="section-eyebrow">Step 4 · 데이터 설계</div>
+        <div class="section-title">Contact Builder 설정</div>
+        <div class="section-desc">Contact Builder에서 데이터 관계를 설정하고 Attribute Group을 구성합니다.</div>
+        <div class="step-progress">
+          <div class="step-progress-track"><div class="step-progress-fill" id="prog-s4" style="width:0%"></div></div>
+          <span class="step-progress-label" id="prog-label-s4">0 / 3</span>
+        </div>
+      </div>
+      <div class="block">
+        <div class="block-title">☑ 체크리스트</div>
+        <div class="check-item" onclick="toggle(this)"><input type="checkbox"><label>Attribute Group 생성 및 DE 연결</label></div>
+        <div class="check-item" onclick="toggle(this)"><input type="checkbox"><label>Population 설정 (Master DE 지정)</label></div>
+        <div class="check-item" onclick="toggle(this)"><input type="checkbox"><label>관계 키 (Subscriber Key) 매핑 확인</label></div>
+      </div>
+      <div class="callout warning">
+        <span class="callout-icon">⚠️</span>
+        <div><strong>주의:</strong> Journey Builder에서 Contact Data를 사용하려면 Attribute Group이 반드시 설정되어 있어야 합니다.</div>
+      </div>
+    </div>
+
+    <!-- STEP 5 -->
+    <div class="section" id="s5">
+      <div class="section-header">
+        <div class="section-eyebrow">Step 5 · 발송 설정</div>
+        <div class="section-title">Sender Profile</div>
+        <div class="section-desc">발신자 이름과 이메일 주소를 설정합니다.</div>
+        <div class="step-progress">
+          <div class="step-progress-track"><div class="step-progress-fill" id="prog-s5" style="width:0%"></div></div>
+          <span class="step-progress-label" id="prog-label-s5">0 / 4</span>
+        </div>
+      </div>
+      <div class="block">
+        <div class="block-title">☑ 체크리스트</div>
+        <div class="check-item" onclick="toggle(this)"><input type="checkbox"><label>From Name 설정 (클라이언트 확인 필요)</label></div>
+        <div class="check-item" onclick="toggle(this)"><input type="checkbox"><label>From Email 인증 (SAP 또는 도메인 인증)</label></div>
+        <div class="check-item" onclick="toggle(this)"><input type="checkbox"><label>Reply-to 설정</label></div>
+        <div class="check-item" onclick="toggle(this)"><input type="checkbox"><label>Default Sender Profile 지정</label></div>
+      </div>
+    </div>
+
+    <!-- STEP 6 -->
+    <div class="section" id="s6">
+      <div class="section-header">
+        <div class="section-eyebrow">Step 6 · 발송 설정</div>
+        <div class="section-title">Send Classification</div>
+        <div class="section-desc">Commercial / Transactional 분류를 설정합니다.</div>
+        <div class="step-progress">
+          <div class="step-progress-track"><div class="step-progress-fill" id="prog-s6" style="width:0%"></div></div>
+          <span class="step-progress-label" id="prog-label-s6">0 / 3</span>
+        </div>
+      </div>
+      <div class="block">
+        <div class="block-title">☑ 체크리스트</div>
+        <div class="check-item" onclick="toggle(this)"><input type="checkbox"><label>Commercial Classification 생성</label></div>
+        <div class="check-item" onclick="toggle(this)"><input type="checkbox"><label>Transactional Classification 생성 (필요시)</label></div>
+        <div class="check-item" onclick="toggle(this)"><input type="checkbox"><label>Delivery Profile 연결</label></div>
+      </div>
+      <div class="callout note">
+        <span class="callout-icon">📌</span>
+        <div>Commercial은 수신거부자 제외, Transactional은 수신거부 무관 발송입니다. 클라이언트와 용도를 명확히 구분하세요.</div>
+      </div>
+    </div>
+
+    <!-- STEP 7 -->
+    <div class="section" id="s7">
+      <div class="section-header">
+        <div class="section-eyebrow">Step 7 · 자동화</div>
+        <div class="section-title">Automation Studio</div>
+        <div class="section-desc">데이터 동기화 및 정기 쿼리 자동화를 구성합니다.</div>
+        <div class="step-progress">
+          <div class="step-progress-track"><div class="step-progress-fill" id="prog-s7" style="width:0%"></div></div>
+          <span class="step-progress-label" id="prog-label-s7">0 / 4</span>
+        </div>
+      </div>
+      <div class="block">
+        <div class="block-title">☑ 체크리스트</div>
+        <div class="check-item" onclick="toggle(this)"><input type="checkbox"><label>데이터 동기화 Automation 설계</label></div>
+        <div class="check-item" onclick="toggle(this)"><input type="checkbox"><label>Query Activity 작성 및 테스트</label></div>
+        <div class="check-item" onclick="toggle(this)"><input type="checkbox"><label>스케줄 설정 (주기, 시작 시간)</label></div>
+        <div class="check-item" onclick="toggle(this)"><input type="checkbox"><label>에러 알림 설정</label></div>
+      </div>
+
+      <div class="block">
+        <div class="block-title">💻 SQL — 휴면 고객 분류</div>
+        <div class="code-block">
+          <div class="code-header">
+            <span class="code-lang">SQL (Query Studio)</span>
+            <button class="copy-btn" onclick="copyCode(this)">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+              복사
+            </button>
+          </div>
+          <div class="code-body">SELECT
+    ContactKey,
+    EmailAddress,
+    LastPurchaseDate,
+    DATEDIFF(DAY, LastPurchaseDate, GETDATE()) AS DaysSinceLastPurchase
+FROM [Master_DE]
+WHERE DATEDIFF(DAY, LastPurchaseDate, GETDATE()) >= 180
+  AND IsActive = 1</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- STEP 8 -->
+    <div class="section" id="s8">
+      <div class="section-header">
+        <div class="section-eyebrow">Step 8 · 자동화</div>
+        <div class="section-title">Journey Builder</div>
+        <div class="section-desc">고객 여정을 설계하고 Entry Source 및 Split 조건을 구성합니다.</div>
+        <div class="step-progress">
+          <div class="step-progress-track"><div class="step-progress-fill" id="prog-s8" style="width:0%"></div></div>
+          <span class="step-progress-label" id="prog-label-s8">0 / 6</span>
+        </div>
+      </div>
+      <div class="block">
+        <div class="block-title">☑ 체크리스트</div>
+        <div class="check-item" onclick="toggle(this)"><input type="checkbox"><label>Entry Source 설정 (DE / API / Salesforce)</label></div>
+        <div class="check-item" onclick="toggle(this)"><input type="checkbox"><label>Journey Goal / Exit Criteria 설정</label></div>
+        <div class="check-item" onclick="toggle(this)"><input type="checkbox"><label>Decision Split 조건 설계</label></div>
+        <div class="check-item" onclick="toggle(this)"><input type="checkbox"><label>이메일 에셋 연결</label></div>
+        <div class="check-item" onclick="toggle(this)"><input type="checkbox"><label>Wait 시간 설정 (타임존 오프셋 주의)</label></div>
+        <div class="check-item" onclick="toggle(this)"><input type="checkbox"><label>테스트 모드 검증</label></div>
+      </div>
+      <div class="callout danger">
+        <span class="callout-icon">🚫</span>
+        <div><strong>KST/UTC 오프셋 주의:</strong> MCE는 내부적으로 UTC 기준으로 날짜를 처리합니다. Decision Split에서 날짜 비교 시 +9시간 오프셋을 반드시 고려하세요.</div>
+      </div>
+    </div>
+
+    <!-- STEP 9 -->
+    <div class="section" id="s9">
+      <div class="section-header">
+        <div class="section-eyebrow">Step 9 · 검수</div>
+        <div class="section-title">발송 테스트</div>
+        <div class="section-desc">실제 발송 전 모든 항목을 검증합니다.</div>
+        <div class="step-progress">
+          <div class="step-progress-track"><div class="step-progress-fill" id="prog-s9" style="width:0%"></div></div>
+          <span class="step-progress-label" id="prog-label-s9">0 / 6</span>
+        </div>
+      </div>
+      <div class="block">
+        <div class="block-title">☑ 체크리스트</div>
+        <div class="check-item" onclick="toggle(this)"><input type="checkbox"><label>테스트 DE 구성 및 시드 발송</label></div>
+        <div class="check-item" onclick="toggle(this)"><input type="checkbox"><label>개인화 변수(AMPScript) 정상 치환 확인</label></div>
+        <div class="check-item" onclick="toggle(this)"><input type="checkbox"><label>수신거부 링크 동작 확인</label></div>
+        <div class="check-item" onclick="toggle(this)"><input type="checkbox"><label>모바일 렌더링 확인</label></div>
+        <div class="check-item" onclick="toggle(this)"><input type="checkbox"><label>스팸 필터 점수 확인</label></div>
+        <div class="check-item" onclick="toggle(this)"><input type="checkbox"><label>클라이언트 최종 승인</label></div>
+      </div>
+    </div>
+
+    <!-- STEP 10 -->
+    <div class="section" id="s10">
+      <div class="section-header">
+        <div class="section-eyebrow">Step 10 · 인계</div>
+        <div class="section-title">운영 인계</div>
+        <div class="section-desc">구축 완료 후 운영팀에 인계할 항목을 정리합니다.</div>
+        <div class="step-progress">
+          <div class="step-progress-track"><div class="step-progress-fill" id="prog-s10" style="width:0%"></div></div>
+          <span class="step-progress-label" id="prog-label-s10">0 / 6</span>
+        </div>
+      </div>
+      <div class="block">
+        <div class="block-title">☑ 체크리스트</div>
+        <div class="check-item" onclick="toggle(this)"><input type="checkbox"><label>계정 접근 정보 전달 (1Password 등)</label></div>
+        <div class="check-item" onclick="toggle(this)"><input type="checkbox"><label>DE 구조 및 데이터 흐름 문서 전달</label></div>
+        <div class="check-item" onclick="toggle(this)"><input type="checkbox"><label>Automation 스케줄 설명</label></div>
+        <div class="check-item" onclick="toggle(this)"><input type="checkbox"><label>Journey 운영 주의사항 전달</label></div>
+        <div class="check-item" onclick="toggle(this)"><input type="checkbox"><label>에러 대응 매뉴얼 전달</label></div>
+        <div class="check-item" onclick="toggle(this)"><input type="checkbox"><label>인계 완료 서명 수령</label></div>
+      </div>
+      <div class="callout tip">
+        <span class="callout-icon">💡</span>
+        <div><strong>팁:</strong> 인계 후 1-2주간 모니터링 기간을 설정하고, 운영자가 직접 Automation/Journey를 조작해보도록 동행 세션을 진행하는 것을 권장합니다.</div>
+      </div>
+    </div>
+
+    <!-- SEARCH RESULTS VIEW -->
+    <div class="section" id="search-view" style="padding:20px 28px">
+      <div style="font-size:12px;color:var(--text-tertiary);margin-bottom:14px" id="searchMeta"></div>
+      <div id="searchResultsList"></div>
+    </div>
+
+  </main>
+</div>
+
+<script>
+const SECTIONS = {
+  s0:{title:'사전 준비',group:'준비'},
+  s1:{title:'계정 / BU 설정',group:'계정 설정'},
+  s2:{title:'사용자 권한 설정',group:'계정 설정'},
+  s3:{title:'Data Extension 설계',group:'데이터 설계'},
+  s4:{title:'Contact Builder 설정',group:'데이터 설계'},
+  s5:{title:'Sender Profile',group:'발송 설정'},
+  s6:{title:'Send Classification',group:'발송 설정'},
+  s7:{title:'Automation Studio',group:'자동화'},
+  s8:{title:'Journey Builder',group:'자동화'},
+  s9:{title:'발송 테스트',group:'검수 & 인계'},
+  s10:{title:'운영 인계',group:'검수 & 인계'}
+};
+
+let currentSection = 's0';
+
+function showSection(id) {
+  document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+  document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+  const sec = document.getElementById(id);
+  const nav = document.getElementById('nav-' + id);
+  if (sec) sec.classList.add('active');
+  if (nav) nav.classList.add('active');
+  currentSection = id;
+  const si = document.getElementById('searchInput');
+  if (si.value) {
+    si.value = '';
+    document.getElementById('navSection').style.display = '';
+    document.getElementById('search-view').classList.remove('active');
+    if (sec) sec.classList.add('active');
+    if (nav) nav.classList.add('active');
+  }
+}
+
+function toggle(item) {
+  if (event.target.tagName === 'INPUT') return;
+  const cb = item.querySelector('input[type=checkbox]');
+  cb.checked = !cb.checked;
+  item.classList.toggle('done', cb.checked);
+  updateProgress();
+}
+
+document.querySelectorAll('.check-item input[type=checkbox]').forEach(cb => {
+  cb.addEventListener('change', function() {
+    this.closest('.check-item').classList.toggle('done', this.checked);
+    updateProgress();
+  });
+});
+
+function updateProgress() {
+  let totalAll = 0, doneAll = 0;
+  Object.keys(SECTIONS).forEach(id => {
+    const sec = document.getElementById(id);
+    if (!sec) return;
+    const all = sec.querySelectorAll('.check-item input[type=checkbox]');
+    const done = sec.querySelectorAll('.check-item input[type=checkbox]:checked');
+    const pct = all.length > 0 ? Math.round(done.length / all.length * 100) : 0;
+    const bar = document.getElementById('prog-' + id);
+    const lbl = document.getElementById('prog-label-' + id);
+    if (bar) bar.style.width = pct + '%';
+    if (lbl) lbl.textContent = done.length + ' / ' + all.length;
+    const status = document.getElementById('status-' + id);
+    if (status) {
+      if (pct === 100) status.textContent = '✅';
+      else if (pct > 0) status.textContent = '🔵';
+      else status.textContent = '⬜';
+    }
+    totalAll += all.length;
+    doneAll += done.length;
+  });
+  const overall = totalAll > 0 ? Math.round(doneAll / totalAll * 100) : 0;
+  document.getElementById('progressFill').style.width = overall + '%';
+  document.getElementById('progressPct').textContent = overall + '%';
+}
+
+function copyCode(btn) {
+  const text = btn.closest('.code-block').querySelector('.code-body').textContent;
+  navigator.clipboard.writeText(text).then(() => {
+    const orig = btn.innerHTML;
+    btn.innerHTML = '✓ 복사됨';
+    setTimeout(() => btn.innerHTML = orig, 1500);
+  });
+}
+
+// Search index
+const searchIndex = [];
+document.querySelectorAll('.section:not(#search-view)').forEach(sec => {
+  const id = sec.id;
+  const info = SECTIONS[id];
+  if (!info) return;
+  sec.querySelectorAll('.check-item label').forEach(el => {
+    searchIndex.push({ sectionId: id, sectionTitle: info.title, group: info.group, text: el.textContent.trim() });
+  });
+  sec.querySelectorAll('.callout').forEach(el => {
+    searchIndex.push({ sectionId: id, sectionTitle: info.title, group: info.group, text: el.textContent.trim() });
+  });
+});
+
+function handleSearch(q) {
+  const nav = document.getElementById('navSection');
+  const sv = document.getElementById('search-view');
+  const allSec = document.querySelectorAll('.section:not(#search-view)');
+  if (!q.trim()) {
+    nav.style.display = '';
+    sv.classList.remove('active');
+    allSec.forEach(s => s.classList.remove('active'));
+    showSection(currentSection);
+    return;
+  }
+  nav.style.display = 'none';
+  allSec.forEach(s => s.classList.remove('active'));
+  document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+  sv.classList.add('active');
+  const results = searchIndex.filter(r => r.text.toLowerCase().includes(q.toLowerCase()));
+  document.getElementById('searchMeta').textContent = `"${q}" 검색 결과 ${results.length}건`;
+  const list = document.getElementById('searchResultsList');
+  if (!results.length) {
+    list.innerHTML = '<div class="empty">검색 결과가 없습니다</div>';
+    return;
+  }
+  list.innerHTML = results.map(r => `
+    <div class="search-result" onclick="goTo('${r.sectionId}')">
+      <div class="sr-text">${r.text.replace(new RegExp(q, 'gi'), m => '<mark>' + m + '</mark>')}</div>
+      <div class="sr-path">${r.group} › ${r.sectionTitle}</div>
+    </div>
+  `).join('');
+}
+
+function goTo(id) {
+  document.getElementById('searchInput').value = '';
+  document.getElementById('navSection').style.display = '';
+  document.getElementById('search-view').classList.remove('active');
+  document.querySelectorAll('.section:not(#search-view)').forEach(s => s.classList.remove('active'));
+  showSection(id);
+}
+
+updateProgress();
+</script>
+</body>
+</html>
