@@ -1,0 +1,510 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Marketing Intelligence in Marketing Cloud Next — 한국어 가이드</title>
+<link rel="preconnect" href="https://cdn.jsdelivr.net">
+<link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable.min.css">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --primary:#0070D2;
+  --primary-light:#EAF4FF;
+  --primary-dark:#005FB2;
+  --text:#1a1a1a;
+  --text-sub:#555;
+  --text-muted:#888;
+  --border:#E0E0E0;
+  --bg:#F9F9F9;
+  --white:#ffffff;
+  --green:#0E7C59;
+  --green-bg:#E6F5F0;
+  --amber:#8A5700;
+  --amber-bg:#FFF4E0;
+  --red:#B91C1C;
+  --red-bg:#FEF2F2;
+  --sidebar-w:260px;
+  --font:'Pretendard Variable','Pretendard',system-ui,sans-serif;
+}
+body{font-family:var(--font);font-size:15px;line-height:1.75;color:var(--text);background:var(--bg)}
+a{color:var(--primary);text-decoration:none}
+a:hover{text-decoration:underline}
+
+/* Layout */
+.layout{display:flex;min-height:100vh}
+.sidebar{
+  position:sticky;top:0;height:100vh;overflow-y:auto;
+  width:var(--sidebar-w);min-width:var(--sidebar-w);
+  background:var(--white);border-right:1px solid var(--border);
+  padding:24px 0;
+}
+.sidebar-logo{padding:0 20px 20px;border-bottom:1px solid var(--border);margin-bottom:12px}
+.sidebar-logo .back{font-size:12px;color:var(--text-muted);display:block;margin-bottom:8px}
+.sidebar-logo h1{font-size:13px;font-weight:700;color:var(--text);line-height:1.4}
+.sidebar-logo .badge{display:inline-block;margin-top:6px;font-size:10px;padding:2px 8px;background:var(--primary-light);color:var(--primary-dark);border-radius:20px;font-weight:600}
+.toc-label{font-size:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--text-muted);padding:10px 20px 4px}
+.toc-item{display:block;padding:7px 20px;font-size:12.5px;color:var(--text-sub);border-left:2px solid transparent;transition:all .1s;cursor:pointer}
+.toc-item:hover,.toc-item.active{color:var(--primary);background:var(--primary-light);border-left-color:var(--primary);text-decoration:none}
+.toc-sub{padding-left:32px;font-size:12px}
+
+/* Content */
+.content{flex:1;max-width:860px;padding:48px 56px;background:var(--white)}
+@media(max-width:900px){.sidebar{display:none}.content{padding:28px 20px}}
+
+/* Typography */
+.doc-eyebrow{font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--text-muted);margin-bottom:8px}
+h1.doc-title{font-size:30px;font-weight:800;line-height:1.25;margin-bottom:12px;color:var(--text)}
+.doc-meta{font-size:12px;color:var(--text-muted);padding-bottom:24px;border-bottom:1px solid var(--border);margin-bottom:36px}
+h2{font-size:21px;font-weight:700;margin:44px 0 14px;padding-top:8px;color:var(--text);scroll-margin-top:24px}
+h2:first-of-type{margin-top:0}
+h3{font-size:16px;font-weight:700;margin:28px 0 10px;color:var(--text);scroll-margin-top:24px}
+h4{font-size:14px;font-weight:700;margin:20px 0 8px;color:var(--text-sub)}
+p{margin-bottom:14px;color:var(--text)}
+ul,ol{padding-left:22px;margin-bottom:14px}
+li{margin-bottom:6px}
+
+/* Callouts */
+.callout{display:flex;gap:12px;padding:14px 16px;border-radius:8px;border-left:4px solid;margin:20px 0;font-size:13.5px;line-height:1.65}
+.callout-icon{font-size:16px;flex-shrink:0;margin-top:1px}
+.callout.note{background:#F0F4FF;border-color:#6B8CFE;color:#1E3A8A}
+.callout.warning{background:var(--amber-bg);border-color:#F59E0B;color:var(--amber)}
+.callout.danger{background:var(--red-bg);border-color:#EF4444;color:var(--red)}
+.callout.tip{background:var(--green-bg);border-color:#10B981;color:var(--green)}
+.callout strong{font-weight:700}
+
+/* Table */
+.table-wrap{overflow-x:auto;margin:20px 0}
+table{width:100%;border-collapse:collapse;font-size:13px}
+th{text-align:left;padding:10px 12px;background:var(--bg);font-weight:700;font-size:11px;text-transform:uppercase;letter-spacing:.04em;color:var(--text-sub);border-bottom:2px solid var(--border)}
+td{padding:10px 12px;border-bottom:1px solid var(--border);vertical-align:top;line-height:1.55}
+tr:last-child td{border-bottom:none}
+tr:hover td{background:var(--bg)}
+
+/* Step list */
+.steps{counter-reset:step;margin:16px 0}
+.step{display:flex;gap:14px;margin-bottom:16px;align-items:flex-start}
+.step-num{counter-increment:step;content:counter(step);flex-shrink:0;width:26px;height:26px;border-radius:50%;background:var(--primary);color:#fff;font-size:12px;font-weight:700;display:flex;align-items:center;justify-content:center}
+.step-body{flex:1;padding-top:2px}
+
+/* Tag */
+.tag{display:inline-block;font-size:11px;font-weight:600;padding:2px 8px;border-radius:20px;vertical-align:middle}
+.tag.beta{background:#FEF3C7;color:#92400E}
+.tag.required{background:var(--red-bg);color:var(--red)}
+.tag.new{background:var(--primary-light);color:var(--primary-dark)}
+
+/* Divider */
+.divider{border:none;border-top:1px solid var(--border);margin:40px 0}
+
+/* Section anchor */
+section{scroll-margin-top:20px}
+</style>
+</head>
+<body>
+<div class="layout">
+
+<aside class="sidebar">
+  <div class="sidebar-logo">
+    <a class="back" href="../index.html">← MCE 구축 가이드로 돌아가기</a>
+    <h1>Marketing Intelligence<br>in Marketing Cloud Next</h1>
+    <span class="badge">공식 문서 한국어 번역</span>
+  </div>
+  <div class="toc-label">목차</div>
+  <a class="toc-item" href="#overview">개요</a>
+  <a class="toc-item" href="#get-started">시작하기</a>
+  <a class="toc-item toc-sub" href="#roles">역할 및 권한</a>
+  <a class="toc-item toc-sub" href="#setup">Marketing Intelligence 설정</a>
+  <a class="toc-item toc-sub" href="#features">기능 활성화</a>
+  <a class="toc-item toc-sub" href="#multicurrency">다중 통화 지원</a>
+  <a class="toc-item toc-sub" href="#users">사용자 생성 및 권한 배정</a>
+  <a class="toc-item" href="#data-pipelines">데이터 파이프라인</a>
+  <a class="toc-item toc-sub" href="#totalconnect">TotalConnect</a>
+  <a class="toc-item toc-sub" href="#api-connectors">서드파티 API 커넥터</a>
+  <a class="toc-item" href="#harmonize">데이터 정합성</a>
+  <a class="toc-item toc-sub" href="#enrichment">데이터 보강(Enrichment)</a>
+  <a class="toc-item toc-sub" href="#patterns">패턴 (Beta)</a>
+  <a class="toc-item" href="#attribution">어트리뷰션</a>
+  <a class="toc-item toc-sub" href="#mta">멀티터치 어트리뷰션</a>
+  <a class="toc-item toc-sub" href="#funnel">퍼널 기반 어트리뷰션</a>
+  <a class="toc-item" href="#analytics">성과 분석</a>
+  <a class="toc-item" href="#agentforce">Agentforce 연동</a>
+</aside>
+
+<main class="content">
+  <div class="doc-eyebrow">Salesforce 공식 문서 · 한국어 번역</div>
+  <h1 class="doc-title">Marketing Intelligence in Marketing Cloud Next</h1>
+  <p class="doc-meta">최종 업데이트: 2026.06.19 &nbsp;|&nbsp; 번역: MCE 구축 가이드 팀</p>
+
+  <!-- 개요 -->
+  <section id="overview">
+    <h2>개요</h2>
+    <p>Marketing Intelligence in Marketing Cloud Next는 마케터가 여러 채널에서 대규모로 고객 경험을 개선할 수 있도록 지원합니다. 자동화된 커넥터, 통합 데이터 모델, 데이터 보강 기능을 통해 데이터 관리를 단순화하며, AI 기반 캠페인 요약 및 크로스채널 어트리뷰션으로 전환율과 캠페인 성과를 극대화합니다.</p>
+    <div class="callout note">
+      <span class="callout-icon">📌</span>
+      <div>Marketing Intelligence는 <strong>Data 360</strong>과 <strong>Tableau Next</strong> 라이선스가 있어야 사용할 수 있습니다. 에디션별 포함 서비스는 Salesforce 가격 문서를 확인하세요.</div>
+    </div>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>주요 기능</th><th>설명</th></tr></thead>
+        <tbody>
+          <tr><td>데이터 파이프라인</td><td>광고 네트워크·애널리틱스·소셜 미디어 데이터를 자동 수집·정합</td></tr>
+          <tr><td>데이터 보강</td><td>캠페인명 표준화, 비즈니스 컨텍스트 추가로 분석 정확도 향상</td></tr>
+          <tr><td>멀티터치 어트리뷰션</td><td>이메일·SMS·소셜·검색 등 전채널 기여도 분석 (5가지 모델 제공)</td></tr>
+          <tr><td>Anchor Campaign</td><td>관련 캠페인을 단일 성과 뷰로 통합 (Q4 프로모션 전체 성과 한눈에)</td></tr>
+          <tr><td>Agentforce 연동</td><td>AI가 성과를 분석하고 예산 최적화·광고 일시정지 자동 추천</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <hr class="divider">
+
+  <!-- 시작하기 -->
+  <section id="get-started">
+    <h2>시작하기</h2>
+    <p>Marketing Intelligence 설정을 시작하기 전에 필요한 역할과 권한을 먼저 확인합니다. 관리자는 Data 360 활성화 → 시맨틱 모델 배포 → 앱 설치 순서로 진행합니다.</p>
+
+    <h3 id="roles">역할 및 권한</h3>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>역할</th><th>설명</th><th>필요 권한 세트</th></tr></thead>
+        <tbody>
+          <tr>
+            <td><strong>Admin</strong></td>
+            <td>시맨틱 모델 설치·설정 포함 전체 기능 접근</td>
+            <td>Marketing Intelligence Admin<br>Data Cloud Architect<br>Agentforce Default Admin<br>Tableau Next Admin</td>
+          </tr>
+          <tr>
+            <td><strong>Data Specialist</strong></td>
+            <td>데이터 관리 탭 접근 권한 포함 전체 엔티티 접근</td>
+            <td>Marketing Intelligence Marketing Data Specialist<br>Data Cloud Architect<br>Tableau Next Analyst</td>
+          </tr>
+          <tr>
+            <td><strong>Marketing Manager</strong></td>
+            <td>성과 대시보드 조회 및 마케팅 목표 관리</td>
+            <td>Marketing Intelligence Manager<br>Data Cloud User<br>Tableau Next Business User</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="callout warning">
+      <span class="callout-icon">⚠️</span>
+      <div><strong>설치 전 필수:</strong> 관리자는 설치를 진행하기 전에 반드시 본인에게 필요한 권한 세트를 먼저 배정해야 합니다. 권한 없이는 설치가 진행되지 않습니다.</div>
+    </div>
+
+    <h3 id="setup">Marketing Intelligence 설정 방법</h3>
+    <div class="steps">
+      <div class="step"><div class="step-num">1</div><div class="step-body">Setup → Quick Find에서 <strong>Marketing Intelligence</strong> 검색 및 선택</div></div>
+      <div class="step"><div class="step-num">2</div><div class="step-body"><strong>Prerequisites 탭</strong>에서 다음 항목 완료
+        <ul>
+          <li>Data 360 활성화 (데이터 통합·연결)</li>
+          <li>Data Governance 설정 및 접근 정책 정의</li>
+          <li>Tableau Next 활성화 (시각화 분석용)</li>
+        </ul>
+      </div></div>
+      <div class="step"><div class="step-num">3</div><div class="step-body"><strong>Installation Requirements 탭</strong>에서 다음 항목 완료
+        <ul>
+          <li>시맨틱 데이터 모델 배포 — 데이터 공간(Data Space) 선택 후 배포 (공간당 1개 모델)</li>
+          <li>Marketing Intelligence 활성화 — 백그라운드에서 앱 설치 (수분 소요)</li>
+        </ul>
+      </div></div>
+      <div class="step"><div class="step-num">4</div><div class="step-body">(선택) <strong>Advanced Settings 탭</strong> 설정
+        <ul>
+          <li>업종·비즈니스 유형 선택 (업계 벤치마크 리포트 최적화)</li>
+          <li>Einstein LLM Gateway 활성화 (캠페인 성과 요약 생성)</li>
+          <li>Creative Assets 활성화 (에셋 다운로드·저장)</li>
+          <li>Segment Intelligence 설정 — Salesforce org 연결 후 설치</li>
+          <li>이메일 자동 데이터 수신 활성화</li>
+        </ul>
+      </div></div>
+      <div class="step"><div class="step-num">5</div><div class="step-body">App Launcher → <strong>Marketing Intelligence</strong>로 이동하여 데이터 추가 시작</div></div>
+    </div>
+
+    <h3 id="features">기능 활성화 (Feature Manager)</h3>
+    <p>Feature Manager를 통해 Marketing Intelligence 개별 기능을 활성화·비활성화할 수 있습니다. 해당 화면은 활성화·비활성화할 기능이 1개 이상 있을 때만 표시됩니다.</p>
+    <div class="steps">
+      <div class="step"><div class="step-num">1</div><div class="step-body">Setup → Quick Find에서 <strong>Marketing Intelligence</strong> 선택</div></div>
+      <div class="step"><div class="step-num">2</div><div class="step-body"><strong>Feature Manager</strong> 클릭</div></div>
+      <div class="step"><div class="step-num">3</div><div class="step-body">기능 이름 옆 <strong>Enable</strong> 클릭</div></div>
+      <div class="step"><div class="step-num">4</div><div class="step-body">서비스 이용약관 동의 후 확인</div></div>
+    </div>
+    <div class="callout danger">
+      <span class="callout-icon">🚫</span>
+      <div>일부 베타 기능은 활성화 후 비활성화가 불가능합니다. 기능 활성화 전 설명을 반드시 확인하세요.</div>
+    </div>
+
+    <h3 id="multicurrency">다중 통화 지원 설정</h3>
+    <p>대시보드가 사용하는 통화의 환율이 정의되어 있지 않으면 데이터 집계 오류가 발생합니다. 다중 통화 org의 경우 아래 단계로 설정합니다.</p>
+    <div class="steps">
+      <div class="step"><div class="step-num">1</div><div class="step-body">Setup → <strong>Semantic Layer</strong> → 해당 시맨틱 모델 → Test → Dimensions에서 <em>Marketing Intelligence Currency</em> 조회하여 현재 사용 통화 확인</div></div>
+      <div class="step"><div class="step-num">2</div><div class="step-body">Setup → <strong>Currency Connections</strong>에서 기존 통화 설정 확인</div></div>
+      <div class="step"><div class="step-num">3</div><div class="step-body">Setup → <strong>Company Information</strong> → Activate Multiple Currencies 체크</div></div>
+      <div class="step"><div class="step-num">4</div><div class="step-body">Currency Setup → <strong>Enable Advanced Currency Management</strong> 활성화</div></div>
+      <div class="step"><div class="step-num">5</div><div class="step-body">Currency Setup → New → 통화 유형·환율·소수점 자리수 설정 후 저장</div></div>
+    </div>
+    <div class="callout danger">
+      <span class="callout-icon">🚫</span>
+      <div><strong>되돌릴 수 없음:</strong> 다중 통화 활성화는 org에 영구적인 변경을 일으킵니다. 진행 전 <em>Implications of Enabling Multiple Currencies</em> 문서를 반드시 검토하세요.</div>
+    </div>
+
+    <h3 id="users">사용자 생성 및 권한 배정</h3>
+    <div class="steps">
+      <div class="step"><div class="step-num">1</div><div class="step-body">Setup → <strong>Users → Users</strong> 접속</div></div>
+      <div class="step"><div class="step-num">2</div><div class="step-body">User Management → Users → <strong>New User</strong> 생성 또는 기존 사용자 선택</div></div>
+      <div class="step"><div class="step-num">3</div><div class="step-body"><strong>Permission Set Assignments → Edit Assignments</strong>에서 역할에 맞는 권한 세트 추가</div></div>
+      <div class="step"><div class="step-num">4</div><div class="step-body">저장 후 접근이 필요한 모든 사용자에게 동일 과정 반복</div></div>
+    </div>
+    <div class="callout note">
+      <span class="callout-icon">📌</span>
+      <div>Data 360 활성화 시 표준 권한 세트는 기본 데이터 공간에만 적용됩니다. 다른 데이터 공간에 접근하려면 해당 데이터 공간에 권한 세트를 별도 연결해야 합니다.</div>
+    </div>
+  </section>
+
+  <hr class="divider">
+
+  <!-- 데이터 파이프라인 -->
+  <section id="data-pipelines">
+    <h2>데이터 파이프라인</h2>
+    <p>데이터 파이프라인은 마케팅 데이터의 수집·변환·정리를 자동화하여 Marketing Intelligence 분석을 위한 준비를 완료합니다. 사전 정의된 API 커넥터 또는 TotalConnect를 사용하며, 데이터 스트림·변환(transform) 등의 엔티티로 데이터를 구조화합니다.</p>
+
+    <h4>파이프라인 핵심 구성 요소</h4>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>구성 요소</th><th>역할</th><th>관계</th></tr></thead>
+        <tbody>
+          <tr><td><strong>Named Credential</strong></td><td>외부 시스템 인증 정보·엔드포인트 저장 (OAuth, Basic 인증 등)</td><td>여러 Connection에서 재사용 가능</td></tr>
+          <tr><td><strong>Connection</strong></td><td>Data Cloud와 외부 소스 연결 — Named Credential 참조</td><td>1개 Connection = 1개 Pipeline</td></tr>
+          <tr><td><strong>Pipeline</strong></td><td>데이터 수집→변환→정합→Data Cloud 로드 전 과정 관리</td><td>Named Credential에서 인증 획득</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="callout tip">
+      <span class="callout-icon">💡</span>
+      <div><strong>재사용 패턴:</strong> Google Ads 계정 3개를 연결할 때, Named Credential은 1개만 생성하고 Connection·Pipeline을 계정별로 3개 만들면 됩니다. 인증 토큰이 만료되어도 Named Credential 1곳만 업데이트하면 모든 파이프라인에 자동 반영됩니다.</div>
+    </div>
+
+    <h3 id="totalconnect">TotalConnect로 커스텀 데이터 파이프라인 생성</h3>
+    <p>API 커넥터 없이 파일(CSV) 업로드 또는 Data Lake Object(DLO)에서 직접 데이터를 가져올 수 있습니다.</p>
+    <div class="callout note">
+      <span class="callout-icon">📌</span>
+      <div>파일은 <strong>CSV 형식, 100MB 이하</strong>여야 합니다. 필요 권한: <em>Marketing Intelligence Admin</em></div>
+    </div>
+    <div class="steps">
+      <div class="step"><div class="step-num">1</div><div class="step-body">App Launcher → Marketing Intelligence → <strong>Data Management 탭 → Create New</strong></div></div>
+      <div class="step"><div class="step-num">2</div><div class="step-body"><strong>TotalConnect</strong> 선택 → Next</div></div>
+      <div class="step"><div class="step-num">3</div><div class="step-body">데이터 공간 선택 → 소스 선택 (파일 업로드 또는 Data Lake Object)</div></div>
+      <div class="step"><div class="step-num">4</div><div class="step-body">데이터 미리보기 → 각 열 데이터 타입 확인 (텍스트·숫자·날짜)</div></div>
+      <div class="step"><div class="step-num">5</div><div class="step-body"><strong>Map Data</strong> 클릭 → 자동 매핑(Automapping)으로 Marketing Intelligence 데이터 모델에 필드 연결</div></div>
+      <div class="step"><div class="step-num">6</div><div class="step-body">매핑 확인 → 오류 시 Validate 클릭하여 수정</div></div>
+      <div class="step"><div class="step-num">7</div><div class="step-body">Save and Deploy → 파이프라인 테이블에서 상태 확인</div></div>
+    </div>
+
+    <h4>매핑 검증 오류 및 해결 방법</h4>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>오류</th><th>설명</th><th>해결 방법</th></tr></thead>
+        <tbody>
+          <tr><td>Template Not Found</td><td>데이터 모델 템플릿 없음 또는 삭제됨</td><td>기존 템플릿 선택 또는 신규 생성</td></tr>
+          <tr><td>Missing Date Field</td><td>날짜 필드 미매핑 (시계열 분석에 필수)</td><td>날짜 타입 필드를 Date 필드에 매핑</td></tr>
+          <tr><td>Invalid Field Mapping</td><td>소스 필드가 템플릿 스키마와 불일치</td><td>필드 매핑 수정</td></tr>
+          <tr><td>Data Type Mismatch</td><td>소스와 대상 필드 타입 불일치 (예: 텍스트→숫자)</td><td>매핑 수정 또는 미리보기에서 타입 변경</td></tr>
+          <tr><td>Primary Key Not Mapped</td><td>속성 매핑 시 기본 키 누락</td><td>관련 Primary Key 포함하여 매핑</td></tr>
+          <tr><td>Missing Media Buy ID</td><td>campaignId 등 포함 시 mediaBuyId 미매핑</td><td>mediaBuyId 필드 매핑 추가</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3 id="api-connectors">서드파티 API 커넥터</h3>
+    <p>Marketing Intelligence는 광고 네트워크·애널리틱스·소셜 미디어 데이터를 통합 뷰로 가져오는 서드파티 API 커넥터를 제공합니다.</p>
+    <h4>지원 커스텀 커넥터</h4>
+    <ul>
+      <li>Adobe Analytics Custom</li>
+      <li>Google Ads Custom</li>
+      <li>Google Analytics Custom</li>
+      <li>Meta Ads Custom</li>
+    </ul>
+    <h4>지원 표준 커넥터 (주요 목록)</h4>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>채널</th><th>지원 커넥터</th></tr></thead>
+        <tbody>
+          <tr><td>검색 광고</td><td>Google Ads, Google Search Ads 360, Microsoft Advertising, Google Search Console</td></tr>
+          <tr><td>디스플레이·동영상</td><td>Google Ad Manager, Google Display &amp; Video 360, Google Campaign Manager 360, YouTube Ads, YouTube Insights</td></tr>
+          <tr><td>소셜 미디어</td><td>Meta Ads, Instagram, LinkedIn Ads, LinkedIn Company, X Ads, X Social, Pinterest Ads, Reddit Ads, Snapchat Ads, TikTok Ads</td></tr>
+          <tr><td>이커머스·리타겟팅</td><td>Amazon Ads, Amazon DSP, Criteo Marketing, Criteo Retail, Outbrain, Taboola, The Trade Desk</td></tr>
+          <tr><td>애널리틱스</td><td>Google Analytics, Facebook Page Insights, Facebook Post Insights</td></tr>
+          <tr><td>국내 플랫폼</td><td>Kakao Ads, LINE Ads</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <hr class="divider">
+
+  <!-- 데이터 정합성 -->
+  <section id="harmonize">
+    <h2>데이터 정합성 (Harmonize)</h2>
+    <p>마케팅 데이터를 일관성 있고 구조화된 형태로 만들어 분석하기 쉽게 만드는 과정입니다. 패턴과 데이터 보강을 사용해 이름 표준화, 주요 속성 추출, 비즈니스 컨텍스트 추가로 오류를 줄이고 더 정확한 인사이트를 생성합니다.</p>
+
+    <h3 id="enrichment">데이터 보강 (Data Enrichment)</h3>
+    <p>비즈니스 컨텍스트 추가, 일관성 향상, 분류 개선을 통해 마케팅 데이터의 품질과 활용도를 높입니다. Data 360 DMO, 업로드 파일, Einstein 데이터 보강 3가지 방식을 지원합니다.</p>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>보강 방식</th><th>설명</th><th>주요 사용 시나리오</th></tr></thead>
+        <tbody>
+          <tr><td>Data 360 Objects (DMO)</td><td>기존 Data 360 데이터 모델 오브젝트 활용</td><td>표준화된 CRM 데이터 기반 보강</td></tr>
+          <tr><td>파일 업로드</td><td>CSV 파일로 직접 데이터 업로드</td><td>외부 참조 데이터 또는 수동 매핑</td></tr>
+          <tr><td>Einstein 보강</td><td>AI가 데이터 정규화·그룹화 자동 수행</td><td>facebook/FACEBOOK/FaceBook → Facebook 통일</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3 id="patterns">패턴 (Beta) <span class="tag beta">Beta</span></h3>
+    <p>캠페인명·광고명·광고 그룹명 등에 네이밍 컨벤션(패턴)을 적용하여 데이터를 더 구조화되고 분석하기 쉽게 만듭니다. 패턴을 정의하면 긴 텍스트 문자열에서 제품 유형, 지역, 사업부 같은 주요 속성을 추출할 수 있습니다.</p>
+    <div class="steps">
+      <div class="step"><div class="step-num">1</div><div class="step-body">Marketing Intelligence → Data Management 탭 → <strong>Patterns</strong></div></div>
+      <div class="step"><div class="step-num">2</div><div class="step-body">New Pattern → 데이터 공간·이름·디멘전 선택</div></div>
+      <div class="step"><div class="step-num">3</div><div class="step-body">왼쪽 패널에서 네이밍 컨벤션 선택</div></div>
+      <div class="step"><div class="step-num">4</div><div class="step-body">각 위치별 디멘전 선택 또는 생성, 구분자(delimiter) 선택</div></div>
+      <div class="step"><div class="step-num">5</div><div class="step-body">추출할 위치에 <strong>Extract</strong> 선택 → Publish</div></div>
+    </div>
+    <div class="callout note">
+      <span class="callout-icon">📌</span>
+      <div>추출(Extract)로 지정된 위치만 데이터 모델에 추가되어 리포트에 반영됩니다.</div>
+    </div>
+  </section>
+
+  <hr class="divider">
+
+  <!-- 어트리뷰션 -->
+  <section id="attribution">
+    <h2>어트리뷰션 (Attribution)</h2>
+    <p>어트리뷰션은 어떤 마케팅 활동·채널·터치포인트가 리드 전환, 파이프라인 생성, 계약 체결 같은 비즈니스 성과에 기여했는지 파악하는 과정입니다. 어트리뷰션을 통해 예산 투자 결정을 최적화하고 마케팅 활동의 비즈니스 임팩트를 증명할 수 있습니다.</p>
+
+    <h4>핵심 용어 정의</h4>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>용어</th><th>정의</th><th>예시</th></tr></thead>
+        <tbody>
+          <tr><td>인게이지먼트 신호</td><td>사용자가 전환 전 브랜드와 가진 추적된 상호작용</td><td>이메일 오픈, SMS 답장, 웹사이트 방문, 광고 클릭</td></tr>
+          <tr><td>전환 이벤트</td><td>어트리뷰션이 평가하는 단일 성과 이벤트</td><td>결제 완료, 문의 폼 제출, 뉴스레터 구독</td></tr>
+          <tr><td>전환 지표</td><td>전환 이벤트를 수량화하는 지표</td><td>총 구매 수, 리드 생성 수, 구독 가입 수</td></tr>
+          <tr><td>Lookback Window</td><td>전환 인정 기간 — 이 기간 내 터치포인트만 기여도 인정</td><td>30일 Lookback: 30일 이전 상호작용은 기여도 0%</td></tr>
+          <tr><td>Anchor Campaign</td><td>크로스채널 캠페인들을 묶어 성과를 단일 뷰로 보는 상위 캠페인</td><td>Q4 제품 출시 캠페인 (이메일+소셜+검색 통합)</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3 id="mta">멀티터치 어트리뷰션 (MTA)</h3>
+    <p>단일 터치 모델이 1개 상호작용에 전체 기여도를 주는 것과 달리, MTA는 전체 고객 여정을 평가합니다. 단일 전환 이벤트를 정의하고 광범위한 인게이지먼트 신호 전반에 기여도를 분배합니다.</p>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>모델</th><th>최적 사용 시나리오</th><th>동작 방식</th><th>예시</th></tr></thead>
+        <tbody>
+          <tr><td><strong>First Touch</strong></td><td>상위 퍼널 브랜드 인지도 분석</td><td>첫 번째 터치포인트에 100% 기여도</td><td>이메일 → Google Ads → 전환: 이메일 100%</td></tr>
+          <tr><td><strong>Last Touch</strong></td><td>하위 퍼널 직접 전환 요인 최적화</td><td>마지막 터치포인트에 100% 기여도</td><td>이메일 → Google Ads → 전환: Google Ads 100%</td></tr>
+          <tr><td><strong>Linear</strong></td><td>고객 생애 전체 상호작용 동일 가중</td><td>모든 터치포인트에 균등 분배</td><td>3개 터치포인트: 각 약 33%</td></tr>
+          <tr><td><strong>Time Decay</strong></td><td>최근 상호작용 가중치 부여 전략</td><td>전환에 가까울수록 높은 기여도</td><td>전환 1일 전 광고 &gt; 3일 전 이메일</td></tr>
+          <tr><td><strong>U-Shaped</strong></td><td>첫 발견과 최종 전환을 동등하게 강조</td><td>첫·마지막 터치 각 40%, 중간 합계 20%</td><td>이메일:40%, Meta:10%, LinkedIn:10%, Google:40%</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3 id="funnel">퍼널 기반 어트리뷰션</h3>
+    <p>고객이 수익 퍼널의 정의된 단계(예: 이메일 발송 → 클릭 → 장바구니 추가 → 주문 완료)를 통해 어떻게 이동하는지 추적합니다. 멀티터치 어트리뷰션과 달리 상호작용 순서가 중요하며 사전 정의된 체크포인트 순서대로 추적합니다.</p>
+    <div class="callout note">
+      <span class="callout-icon">📌</span>
+      <div>퍼널 단계는 최대 5개까지 정의할 수 있으며, Draft 상태에서는 언제든지 수정·재정렬이 가능합니다. Deploy 후에는 수정 불가입니다.</div>
+    </div>
+    <div class="steps">
+      <div class="step"><div class="step-num">1</div><div class="step-body">Data Management 탭 → <strong>Funnel-Based Attribution → New Attribution</strong></div></div>
+      <div class="step"><div class="step-num">2</div><div class="step-body">데이터 공간·이름·설명 입력 → Next</div></div>
+      <div class="step"><div class="step-num">3</div><div class="step-body">Lookback Window 설정 (전환 인정 기간)</div></div>
+      <div class="step"><div class="step-num">4</div><div class="step-body">Identity Resolution Rule 설정 (크로스 디바이스 고객 식별 방식)</div></div>
+      <div class="step"><div class="step-num">5</div><div class="step-body">어트리뷰션 모델 선택 (First Touch / Last Touch 등)</div></div>
+      <div class="step"><div class="step-num">6</div><div class="step-body">퍼널 단계 추가 (최대 5개) — 드래그&드롭으로 순서 변경 가능</div></div>
+      <div class="step"><div class="step-num">7</div><div class="step-body">각 단계에 인게이지먼트 신호 및 전환 지표 연결</div></div>
+      <div class="step"><div class="step-num">8</div><div class="step-body">Deploy → Marketing Analytics 탭에서 퍼널 성과 확인</div></div>
+    </div>
+  </section>
+
+  <hr class="divider">
+
+  <!-- 성과 분석 -->
+  <section id="analytics">
+    <h2>성과 분석</h2>
+    <p>Marketing Analytics는 중앙 위치에서 바로 사용 가능한 대시보드를 제공하여 쉽게 탐색할 수 있습니다. 데이터 파이프라인을 연결하면 Marketing Intelligence가 자동으로 대시보드를 생성하여 캠페인 성과를 분석할 수 있습니다.</p>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>대시보드</th><th>설명</th></tr></thead>
+        <tbody>
+          <tr><td>Performance Overview</td><td>여러 소스의 크로스채널 성과를 단일 통합 리포트로 제공</td></tr>
+          <tr><td>Channel Analytics</td><td>Facebook Ads, Google Ads, YouTube Ads 등 채널별 CTR·CPC·CPA 분석</td></tr>
+          <tr><td>Campaign Attribution</td><td>첫·마지막 터치포인트 기반 어트리뷰션 개요 및 핵심 지표</td></tr>
+          <tr><td>Segment Intelligence</td><td>Data 360에서 생성해 Google Ads·Meta Ads 등 활성화된 세그먼트 성과 평가</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="callout tip">
+      <span class="callout-icon">💡</span>
+      <div><strong>Collections 기능:</strong> Marketing Analytics 탭에서 표준 및 커스텀 대시보드를 컬렉션으로 그룹화하면 관련 대시보드를 한 곳에서 관리할 수 있습니다.</div>
+    </div>
+  </section>
+
+  <hr class="divider">
+
+  <!-- Agentforce -->
+  <section id="agentforce">
+    <h2>Agentforce 연동 <span class="tag beta">Beta</span></h2>
+    <p>Agentforce는 Marketing Intelligence에 생성형 AI를 도입하여, 에이전트가 데이터를 분석하고 성과 개선을 위한 조치를 추천합니다.</p>
+
+    <h3>Paid Media Optimization Agent</h3>
+    <p>광고 성과를 분석하고 저성과 광고 일시정지를 추천하며, 지원 채널에서는 Marketing Intelligence 내에서 직접 조치를 취할 수 있습니다.</p>
+    <div class="callout warning">
+      <span class="callout-icon">⚠️</span>
+      <div><strong>지원 에디션:</strong> Lightning Experience, Enterprise·Performance·Unlimited 에디션 + Einstein for Sales/Service/Platform 추가 기능 또는 Marketing Cloud Next와 함께 사용 가능</div>
+    </div>
+    <div class="steps">
+      <div class="step"><div class="step-num">1</div><div class="step-body">Setup → Marketing Intelligence → <strong>Feature Manager → Agentforce 활성화</strong></div></div>
+      <div class="step"><div class="step-num">2</div><div class="step-body">Setup → <strong>Agentforce Agents → New Agent → Paid Media Optimization Agent</strong> 선택</div></div>
+      <div class="step"><div class="step-num">3</div><div class="step-body">회사 정보·언어·톤 설정 후 Create</div></div>
+      <div class="step"><div class="step-num">4</div><div class="step-body"><strong>Activate</strong> 클릭하여 에이전트 활성화</div></div>
+    </div>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>지원 LLM</th><th>지원 언어</th><th>Einstein Trust Layer</th></tr></thead>
+        <tbody>
+          <tr>
+            <td>OpenAI GPT-4o</td>
+            <td>영어 (en_US)</td>
+            <td>Dynamic Grounding, Prompt Defense, Toxicity Detection, Audit·Feedback 지원<br>Data Masking 미지원</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="callout note">
+      <span class="callout-icon">📌</span>
+      <div>Agentforce 사용은 Einstein Requests와 Data 360 크레딧을 소비합니다. Generative AI Billable Usage Types 문서를 참조하여 비용을 사전에 확인하세요.</div>
+    </div>
+  </section>
+
+</main>
+</div>
+
+<script>
+// Scroll spy for sidebar TOC
+const sections = document.querySelectorAll('section[id], h3[id], h4[id]');
+const tocItems = document.querySelectorAll('.toc-item');
+const observer = new IntersectionObserver(entries => {
+  entries.forEach(e => {
+    if(e.isIntersecting){
+      tocItems.forEach(t => t.classList.remove('active'));
+      const link = document.querySelector('.toc-item[href="#'+e.target.id+'"]');
+      if(link) link.classList.add('active');
+    }
+  });
+}, {rootMargin:'-20% 0px -70% 0px'});
+sections.forEach(s => observer.observe(s));
+</script>
+</body>
+</html>

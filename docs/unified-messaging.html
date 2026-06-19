@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Unified Messaging — 한국어 가이드</title>
+<link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable.min.css">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --primary:#0070D2;--primary-light:#EAF4FF;--primary-dark:#005FB2;
+  --text:#1a1a1a;--text-sub:#555;--text-muted:#888;
+  --border:#E0E0E0;--bg:#F9F9F9;--white:#fff;
+  --green:#0E7C59;--green-bg:#E6F5F0;
+  --amber:#8A5700;--amber-bg:#FFF4E0;
+  --red:#B91C1C;--red-bg:#FEF2F2;
+  --sidebar-w:260px;
+  --font:'Pretendard Variable','Pretendard',system-ui,sans-serif;
+}
+body{font-family:var(--font);font-size:15px;line-height:1.75;color:var(--text);background:var(--bg)}
+a{color:var(--primary);text-decoration:none}
+a:hover{text-decoration:underline}
+.layout{display:flex;min-height:100vh}
+.sidebar{position:sticky;top:0;height:100vh;overflow-y:auto;width:var(--sidebar-w);min-width:var(--sidebar-w);background:var(--white);border-right:1px solid var(--border);padding:24px 0}
+.sidebar-logo{padding:0 20px 20px;border-bottom:1px solid var(--border);margin-bottom:12px}
+.sidebar-logo .back{font-size:12px;color:var(--text-muted);display:block;margin-bottom:8px}
+.sidebar-logo h1{font-size:13px;font-weight:700;color:var(--text);line-height:1.4}
+.sidebar-logo .badge{display:inline-block;margin-top:6px;font-size:10px;padding:2px 8px;background:var(--primary-light);color:var(--primary-dark);border-radius:20px;font-weight:600}
+.toc-label{font-size:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--text-muted);padding:10px 20px 4px}
+.toc-item{display:block;padding:7px 20px;font-size:12.5px;color:var(--text-sub);border-left:2px solid transparent;transition:all .1s}
+.toc-item:hover,.toc-item.active{color:var(--primary);background:var(--primary-light);border-left-color:var(--primary);text-decoration:none}
+.toc-sub{padding-left:32px;font-size:12px}
+.content{flex:1;max-width:860px;padding:48px 56px;background:var(--white)}
+@media(max-width:900px){.sidebar{display:none}.content{padding:28px 20px}}
+.doc-eyebrow{font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--text-muted);margin-bottom:8px}
+h1.doc-title{font-size:30px;font-weight:800;line-height:1.25;margin-bottom:12px}
+.doc-meta{font-size:12px;color:var(--text-muted);padding-bottom:24px;border-bottom:1px solid var(--border);margin-bottom:36px}
+h2{font-size:21px;font-weight:700;margin:44px 0 14px;scroll-margin-top:24px}
+h3{font-size:16px;font-weight:700;margin:28px 0 10px;scroll-margin-top:24px}
+h4{font-size:14px;font-weight:700;margin:20px 0 8px;color:var(--text-sub)}
+p{margin-bottom:14px}
+ul,ol{padding-left:22px;margin-bottom:14px}
+li{margin-bottom:6px}
+.callout{display:flex;gap:12px;padding:14px 16px;border-radius:8px;border-left:4px solid;margin:20px 0;font-size:13.5px;line-height:1.65}
+.callout-icon{font-size:16px;flex-shrink:0;margin-top:1px}
+.callout.note{background:#F0F4FF;border-color:#6B8CFE;color:#1E3A8A}
+.callout.warning{background:var(--amber-bg);border-color:#F59E0B;color:var(--amber)}
+.callout.danger{background:var(--red-bg);border-color:#EF4444;color:var(--red)}
+.callout.tip{background:var(--green-bg);border-color:#10B981;color:var(--green)}
+.callout strong{font-weight:700}
+.table-wrap{overflow-x:auto;margin:20px 0}
+table{width:100%;border-collapse:collapse;font-size:13px}
+th{text-align:left;padding:10px 12px;background:var(--bg);font-weight:700;font-size:11px;text-transform:uppercase;letter-spacing:.04em;color:var(--text-sub);border-bottom:2px solid var(--border)}
+td{padding:10px 12px;border-bottom:1px solid var(--border);vertical-align:top;line-height:1.55}
+tr:last-child td{border-bottom:none}
+tr:hover td{background:var(--bg)}
+.steps{counter-reset:step;margin:16px 0}
+.step{display:flex;gap:14px;margin-bottom:14px;align-items:flex-start}
+.step-num{counter-increment:step;flex-shrink:0;width:26px;height:26px;border-radius:50%;background:var(--primary);color:#fff;font-size:12px;font-weight:700;display:flex;align-items:center;justify-content:center}
+.step-body{flex:1;padding-top:2px}
+.divider{border:none;border-top:1px solid var(--border);margin:40px 0}
+.tag{display:inline-block;font-size:11px;font-weight:600;padding:2px 8px;border-radius:20px;vertical-align:middle}
+.tag.new{background:var(--primary-light);color:var(--primary-dark)}
+.tag.req{background:var(--red-bg);color:var(--red)}
+.edition-box{background:var(--bg);border:1px solid var(--border);border-radius:8px;padding:14px 16px;font-size:13px;margin:16px 0}
+.edition-box h5{font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--text-muted);margin-bottom:8px}
+section{scroll-margin-top:20px}
+</style>
+</head>
+<body>
+<div class="layout">
+<aside class="sidebar">
+  <div class="sidebar-logo">
+    <a class="back" href="../index.html">← MCE 구축 가이드로 돌아가기</a>
+    <h1>Unified Messaging</h1>
+    <span class="badge">공식 문서 한국어 번역</span>
+  </div>
+  <div class="toc-label">목차</div>
+  <a class="toc-item" href="#overview">개요</a>
+  <a class="toc-item" href="#editions">지원 에디션 및 요구사항</a>
+  <a class="toc-item" href="#whats-um">Unified Messaging 이해</a>
+  <a class="toc-item toc-sub" href="#whatsapp">WhatsApp Unified Messaging</a>
+  <a class="toc-item toc-sub" href="#email-sms">이메일·SMS Unified Messaging</a>
+  <a class="toc-item" href="#setup">설정 가이드</a>
+  <a class="toc-item toc-sub" href="#data360">Data 360 연결</a>
+  <a class="toc-item toc-sub" href="#branded-domain">브랜드 도메인</a>
+  <a class="toc-item toc-sub" href="#whatsapp-setup">WhatsApp 설정</a>
+  <a class="toc-item toc-sub" href="#email-setup">이메일 채널 설정</a>
+  <a class="toc-item toc-sub" href="#sms-setup">SMS 채널 설정</a>
+  <a class="toc-item" href="#channel-compare">채널 기능 비교</a>
+  <a class="toc-item" href="#number-migration">번호 마이그레이션</a>
+  <a class="toc-item" href="#consent">동의(Consent) 관리</a>
+  <a class="toc-item" href="#billing">과금 고려사항</a>
+</aside>
+<main class="content">
+  <div class="doc-eyebrow">Salesforce 공식 문서 · 한국어 번역</div>
+  <h1 class="doc-title">Unified Messaging</h1>
+  <p class="doc-meta">최종 업데이트: 2026.06.19 &nbsp;|&nbsp; 번역: MCE 구축 가이드 팀</p>
+
+  <section id="overview">
+    <h2>개요</h2>
+    <p>Unified Messaging은 Marketing Cloud와 Service Cloud Digital Engagement를 이메일·SMS·WhatsApp 등 서드파티 메시징 앱에 연결합니다. 필요에 따라 모든 채널 유형을 구현하거나 하나만 선택할 수 있습니다.</p>
+    <div class="callout tip">
+      <span class="callout-icon">💡</span>
+      <div><strong>핵심 가치:</strong> 마케팅과 서비스 상호작용을 동일한 채널(동일 번호)에서 처리하여 고객에게 일관된 경험을 제공합니다. Data 360이 모든 메시지의 기반이 됩니다.</div>
+    </div>
+  </section>
+
+  <hr class="divider">
+
+  <section id="editions">
+    <h2>지원 에디션 및 요구사항</h2>
+    <div class="edition-box">
+      <h5>이메일·SMS Unified Messaging</h5>
+      Salesforce Enterprise 및 Unlimited Edition (Service Cloud) AND Marketing Cloud Next Growth·Advanced Edition
+    </div>
+    <div class="edition-box">
+      <h5>WhatsApp Unified Messaging</h5>
+      Marketing Cloud Engagement Growth·Advanced Edition (Enterprise, Unlimited)
+    </div>
+    <div class="callout danger">
+      <span class="callout-icon">🚫</span>
+      <div>Government Cloud Plus에서는 지원되지 않습니다.</div>
+    </div>
+  </section>
+
+  <hr class="divider">
+
+  <section id="whats-um">
+    <h2>Unified Messaging 이해</h2>
+
+    <h3 id="whatsapp">WhatsApp Unified Messaging</h3>
+    <p>Unified Conversation Platform을 기반으로 서비스와 마케팅 상호작용을 하나의 채널에서 제공합니다. 단방향 마케팅 프로모션과 양방향 고객 지원 간 전환이 용이하며, Data 360이 모든 메시지를 지원합니다.</p>
+    <ul>
+      <li>하나의 WhatsApp 번호로 마케팅+서비스 상호작용 모두 처리</li>
+      <li>기존 WhatsApp 번호·WABA 재사용 가능 (마이그레이션 지원)</li>
+      <li>고객의 전체 프로필(마케팅+지원 이력) 확인 가능</li>
+    </ul>
+
+    <h3 id="email-sms">이메일·SMS Unified Messaging</h3>
+    <p>이메일·SMS Unified Messaging은 Data 360과 마케팅 활동을 연결하는 프레임워크를 제공합니다. 구독자 인구통계 및 동의 정보를 Data 360에 저장하고, 세그먼트·타겟팅으로 의미 있는 상호작용을 구현합니다.</p>
+
+    <h4>SMS Unified Messaging 라우팅 방식</h4>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>상호작용 유형</th><th>라우팅 처리</th></tr></thead>
+        <tbody>
+          <tr><td>서비스 관련 인터랙션</td><td>Omni-Channel → 봇 또는 서비스 에이전트 라우팅</td></tr>
+          <tr><td>마케팅 관련 인터랙션</td><td>Flow → 마케팅 처리 방식 결정</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="callout danger">
+      <span class="callout-icon">🚫</span>
+      <div>기존 Service Cloud Messaging 채널이나 Marketing Cloud Engagement 채널을 Unified Messaging 채널로 업그레이드하는 것은 지원되지 않습니다. SMS Unified Messaging 설정 시 <strong>새 전화번호</strong>를 사용해야 합니다.</div>
+    </div>
+  </section>
+
+  <hr class="divider">
+
+  <section id="setup">
+    <h2>설정 가이드</h2>
+
+    <h3 id="data360">Data 360 연결 (필수 첫 번째 단계)</h3>
+    <p>메시지 발송 전 Data 360에 연결하고 필수 데이터 키트를 배포해야 합니다. 데이터 키트는 관리 패키지와 유사하며, 인게이지먼트 추적과 동의 처리에 필요한 데이터 스트림을 생성합니다. 채널별로 Data 360 연결을 생성해야 합니다.</p>
+    <div class="callout note">
+      <span class="callout-icon">📌</span>
+      <div>각 채널 유형에는 <strong>2개의 데이터 키트</strong>가 필요합니다. 하나는 동의 설정, 다른 하나는 채널 인게이지먼트 데이터용입니다. 동시 설치 또는 순차 설치 모두 가능합니다.</div>
+    </div>
+    <div class="callout warning">
+      <span class="callout-icon">⚠️</span>
+      <div>올바른 데이터 처리를 위해 Data Cloud Salesforce Connector 권한 세트의 필드 가시성을 유지하세요. 필드 삭제, 권한 변경, API 이름 변경 시 가시성이 변경될 수 있습니다.</div>
+    </div>
+
+    <h4>데이터 키트 설치 방법</h4>
+    <div class="steps">
+      <div class="step"><div class="step-num">1</div><div class="step-body">Setup → Quick Find → <strong>Unified Messaging</strong> → 구성할 채널 선택</div></div>
+      <div class="step"><div class="step-num">2</div><div class="step-body">Channel Setup 섹션 → <strong>Install</strong> 클릭
+        <ul>
+          <li>이메일: Marketing Cloud Next 설정 프로세스의 일부로 설치</li>
+          <li>SMS: Unified Messaging SMS 섹션의 SMS Codes에서 데이터 키트 찾기</li>
+          <li>WhatsApp: Unified Messaging WhatsApp 섹션의 Your Numbers에서 데이터 키트 찾기</li>
+        </ul>
+      </div></div>
+      <div class="step"><div class="step-num">3</div><div class="step-body">설치 완료 후 <strong>Done</strong> — Data 360에 필수 데이터 스트림 연결 완료</div></div>
+    </div>
+
+    <h3 id="branded-domain">브랜드 도메인 생성</h3>
+    <p>브랜드 도메인을 사용해 URL을 개인화된 단축 링크로 변환하고 인터랙션을 추적합니다. 유효한 CA 서명 HTTPS 인증서가 필요합니다. 단축 링크는 <strong>90일 후 만료</strong>됩니다.</p>
+    <div class="steps">
+      <div class="step"><div class="step-num">1</div><div class="step-body">Setup → Quick Find에서 도메인 페이지 검색
+        <ul>
+          <li>SMS 도메인: URL Shortening Domain</li>
+          <li>이메일 도메인: Links (Unified Messaging 이메일 섹션)</li>
+        </ul>
+      </div></div>
+      <div class="step"><div class="step-num">2</div><div class="step-body"><strong>New Domain</strong> → 도메인 이름 입력 → CA 서명 HTTPS 인증서 선택 (https:// 자동 추가)</div></div>
+      <div class="step"><div class="step-num">3</div><div class="step-body">도메인 저장 → 드롭다운 → <strong>Details</strong></div></div>
+      <div class="step"><div class="step-num">4</div><div class="step-body">DNS CNAME 레코드 설정 (IT팀과 협업하여 도메인 레지스트라에서 DNS 업데이트)</div></div>
+      <div class="step"><div class="step-num">5</div><div class="step-body">DNS 정보 전파 후 <strong>Status</strong> 클릭하여 도메인 활성화</div></div>
+    </div>
+
+    <h3 id="whatsapp-setup">WhatsApp 채널 설정</h3>
+    <p>Unified WhatsApp 설정은 Data Cloud, Marketing Cloud, Service Cloud, Meta 4곳에서 진행합니다.</p>
+    <div class="callout note">
+      <span class="callout-icon">📌</span>
+      <div>필요 패키지 버전: Salesforce Standard Data Model 패키지 1.69 이상, UnifiedMessagingConsent 패키지 1.3 이상. 이전 버전에서 업그레이드해도 기존 동의 데이터는 유지됩니다.</div>
+    </div>
+
+    <h4>권장 설정 순서</h4>
+    <div class="steps">
+      <div class="step"><div class="step-num">1</div><div class="step-body"><strong>Data 360 설정</strong> — 마케팅·서비스 클라우드의 데이터를 통합</div></div>
+      <div class="step"><div class="step-num">2</div><div class="step-body"><strong>WhatsApp Business Account(WABA) 및 번호 연결</strong> — Salesforce 계정에 연결 (WABA 없으면 새로 생성)</div></div>
+      <div class="step"><div class="step-num">3</div><div class="step-body"><strong>컴플라이언스 키워드 설정</strong></div></div>
+      <div class="step"><div class="step-num">4</div><div class="step-body"><strong>크로스클라우드 관계 설정</strong> — 사용하는 마케팅 시스템(MCE 또는 MCN) 및 Service Cloud 연동 여부 설정</div></div>
+      <div class="step"><div class="step-num">5</div><div class="step-body"><strong>Marketing Cloud 라우팅 설정</strong> — 고객을 마케팅 캠페인에 유지할지, 고객 지원으로 보낼지 결정</div></div>
+      <div class="step"><div class="step-num">6</div><div class="step-body"><strong>Service Cloud 라우팅 설정</strong> — 사용자·큐·Omni-Flow(에이전트/봇 조합) 중 라우팅 방식 선택</div></div>
+    </div>
+
+    <h4>기본 클라우드 및 라우팅 설정</h4>
+    <p>수신 고객 메시지를 MCE, MCN, Digital Engagement 중 어디로 연결할지 결정합니다.</p>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>기본 클라우드</th><th>동작 방식</th><th>권장 시나리오</th></tr></thead>
+        <tbody>
+          <tr>
+            <td><strong>Service Cloud (권장)</strong></td>
+            <td>모든 수신 메시지를 서비스로 라우팅. 마케팅 캠페인 중 수신 메시지도 서비스로 연결</td>
+            <td>고객 지원 중심, 수신 메시지 대부분이 지원 문의인 경우</td>
+          </tr>
+          <tr>
+            <td><strong>Marketing</strong></td>
+            <td>모든 수신 메시지를 마케팅 Flow(MCN) 또는 Journey(MCE)로 라우팅. 오픈 Service Cloud 세션이 없는 경우</td>
+            <td>마케팅 캠페인 응답이 주를 이루는 경우</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h4>마케팅→서비스 대화 전환</h4>
+    <p>고객이 마케팅 캠페인에서 사전 정의된 마케팅 키워드 이외의 응답을 보내면, 응답이 Service Cloud로 라우팅되어 지원을 받게 됩니다.</p>
+
+    <h3 id="email-setup">이메일 채널 설정</h3>
+    <div class="steps">
+      <div class="step"><div class="step-num">1</div><div class="step-body">Setup → Unified Messaging → <strong>Email 채널</strong> 선택</div></div>
+      <div class="step"><div class="step-num">2</div><div class="step-body">Marketing Cloud Next 설정 프로세스의 일부로 데이터 키트 설치</div></div>
+      <div class="step"><div class="step-num">3</div><div class="step-body">Unified Messaging용 도메인 인증 (DNS CNAME 설정)</div></div>
+      <div class="step"><div class="step-num">4</div><div class="step-body">Einstein Metrics Guard 활성화 (선택, 이메일 인게이지먼트 품질 개선)</div></div>
+    </div>
+
+    <h3 id="sms-setup">SMS 채널 설정</h3>
+    <div class="steps">
+      <div class="step"><div class="step-num">1</div><div class="step-body">Setup → Unified Messaging → <strong>SMS 섹션</strong></div></div>
+      <div class="step"><div class="step-num">2</div><div class="step-body">미국 10DLC의 경우 순서대로:
+        <ul>
+          <li>Brand 등록 요청</li>
+          <li>Campaign 등록 요청</li>
+          <li>10-Digit Long Code 요청</li>
+        </ul>
+      </div></div>
+      <div class="step"><div class="step-num">3</div><div class="step-body">SMS 코드 활성화</div></div>
+      <div class="step"><div class="step-num">4</div><div class="step-body">URL 단축 도메인 설정 (브랜드 도메인 참조)</div></div>
+      <div class="step"><div class="step-num">5</div><div class="step-body">SMS 동의 설정</div></div>
+    </div>
+    <div class="callout note">
+      <span class="callout-icon">📌</span>
+      <div>SMS Unified Messaging은 <strong>텍스트 전용 메시지</strong>만 지원합니다.</div>
+    </div>
+  </section>
+
+  <hr class="divider">
+
+  <section id="channel-compare">
+    <h2>채널 기능 비교</h2>
+    <h4>설정 및 라우팅</h4>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>기능</th><th>Unified Messaging</th><th>Service Cloud</th><th>MCE</th></tr></thead>
+        <tbody>
+          <tr><td>자동 채널 설정</td><td>✅</td><td>✅</td><td>✅</td></tr>
+          <tr><td>메시지 라우팅</td><td>MCE: Journey Builder<br>MCN: Marketing Flow<br>서비스: Omni-Channel</td><td>Omni-Channel</td><td>Journey Builder</td></tr>
+          <tr><td>탭 기반 용량 관리</td><td>서비스 인터랙션 시</td><td>✅</td><td>해당 없음</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h4>콘텐츠 공유 제한 (WhatsApp 기준)</h4>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>콘텐츠</th><th>Unified Messaging</th><th>Service Cloud</th><th>MCE</th></tr></thead>
+        <tbody>
+          <tr><td>텍스트</td><td>템플릿: 1,024자<br>세션: 4,096자</td><td>템플릿: 1,024자<br>세션: 4,096자</td><td>4,096자 (인바운드 9MB 초과 시 첨부)</td></tr>
+          <tr><td>이미지</td><td>인터랙션 유형별 파일 제한</td><td>최대 5MB: .jpg, .png</td><td>인바운드 5MB, 아웃바운드 25MB</td></tr>
+          <tr><td>문서</td><td>인터랙션 유형별 파일 제한</td><td>최대 100MB (공개 URL)<br>최대 5MB (Content Builder)</td><td>최대 30MB (.pdf, .doc 등)</td></tr>
+          <tr><td>이모지</td><td>✅ (서비스 인터랙션)</td><td>✅</td><td>❌</td></tr>
+          <tr><td>GIF</td><td>✅ (서비스, 인바운드만)</td><td>✅ (인바운드만)</td><td>❌</td></tr>
+          <tr><td>우-좌 언어</td><td>✅</td><td>✅</td><td>❌</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h4>동의 관리 비교</h4>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>기능</th><th>Unified Messaging</th><th>Service Cloud</th><th>MCE</th></tr></thead>
+        <tbody>
+          <tr><td>채널 동의 수준</td><td>묵시적 동의, 명시적 동의</td><td>묵시적 동의, 명시적 동의, 이중 동의</td><td>명시적 동의만</td></tr>
+          <tr><td>고객 수신 거부 가능</td><td>✅</td><td>✅</td><td>✅</td></tr>
+          <tr><td>데이터 레지던시 편집</td><td>✅</td><td>❌</td><td>❌</td></tr>
+          <tr><td>민감 데이터 규칙</td><td>✅ (서비스 인터랙션)</td><td>✅</td><td>❌</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <hr class="divider">
+
+  <section id="number-migration">
+    <h2>WhatsApp 번호 마이그레이션</h2>
+    <p>기존 WhatsApp Business Account(WABA) 또는 번호를 Unified WhatsApp으로 마이그레이션할 수 있습니다.</p>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>번호 유형</th><th>Unified Messaging 지원 여부</th></tr></thead>
+        <tbody>
+          <tr><td>다른 BSP(비즈니스 서비스 공급자)에서 사용 중인 번호</td><td>✅ 마이그레이션 가능</td></tr>
+          <tr><td>MCE WhatsApp 채널에서 사용 중인 번호 또는 MCE 연결 WABA</td><td>✅ 마이그레이션 가능</td></tr>
+          <tr><td>Service Cloud 강화된 WhatsApp 채널에서 활성화된 번호</td><td>✅ 단, WABA가 여러 번호와 연결 불가</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="callout danger">
+      <span class="callout-icon">🚫</span>
+      <div>단일 WABA를 여러 Salesforce Org에 연결하는 것은 지원하지 않습니다. Sandbox와 Production은 별개의 Org로 취급됩니다.</div>
+    </div>
+  </section>
+
+  <hr class="divider">
+
+  <section id="consent">
+    <h2>동의(Consent) 관리</h2>
+    <p>Unified Messaging의 각 채널은 별도의 동의 설정이 필요합니다. SMS Unified Messaging의 키워드와 응답을 커스터마이징할 수 있습니다.</p>
+    <ul>
+      <li><strong>SMS 동의:</strong> STOP/HELP 키워드 처리, 수신 거부 워크플로우 설정</li>
+      <li><strong>WhatsApp 동의:</strong> 마케팅 vs 서비스 채널 동의 레벨 구분 설정</li>
+    </ul>
+  </section>
+
+  <hr class="divider">
+
+  <section id="billing">
+    <h2>과금 고려사항</h2>
+    <ul>
+      <li>Unified Messaging 사용 시 메시지 발송당 과금이 발생합니다.</li>
+      <li>단축 링크는 90일 후 만료됩니다. 만료된 링크는 구독자에게 "페이지를 찾을 수 없음" 오류를 표시합니다.</li>
+      <li>비활성 Unified Messaging 채널은 자동으로 프로비저닝이 해제될 수 있습니다.</li>
+    </ul>
+    <div class="callout warning">
+      <span class="callout-icon">⚠️</span>
+      <div>Meta 규칙으로 인해 고객이 번호를 차단했거나, 30일 이상 오프라인이거나, 제재 국가에 있는 경우 메시지가 전달되지 않을 수 있습니다. 이 경우 Meta가 개인정보 정책상 미전달 사유를 공개하지 않을 수 있습니다.</div>
+    </div>
+  </section>
+</main>
+</div>
+<script>
+const sections = document.querySelectorAll('section[id], h3[id]');
+const tocItems = document.querySelectorAll('.toc-item');
+const observer = new IntersectionObserver(entries => {
+  entries.forEach(e => {
+    if(e.isIntersecting){
+      tocItems.forEach(t => t.classList.remove('active'));
+      const link = document.querySelector('.toc-item[href="#'+e.target.id+'"]');
+      if(link) link.classList.add('active');
+    }
+  });
+}, {rootMargin:'-20% 0px -70% 0px'});
+sections.forEach(s => observer.observe(s));
+</script>
+</body>
+</html>

@@ -1,0 +1,432 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Referral Marketing — MCE 참고 문서</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable.min.css">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --primary:#0070D2;--primary-light:#EAF4FF;--primary-dark:#005FB2;
+  --text:#1a1a1a;--text-sub:#555;--text-muted:#888;
+  --border:#E0E0E0;--bg:#F9F9F9;--white:#fff;
+  --green:#0E7C59;--green-bg:#E6F5F0;
+  --amber:#8A5700;--amber-bg:#FFF4E0;
+  --red:#B91C1C;--red-bg:#FEF2F2;
+  --orange:#9A3412;--orange-bg:#FFF7ED;
+  --sidebar-w:260px;
+  --font:'Pretendard Variable','Pretendard',system-ui,sans-serif;
+}
+body{font-family:var(--font);color:var(--text);background:var(--bg);line-height:1.7;font-size:15px}
+a{color:var(--primary);text-decoration:none}
+a:hover{text-decoration:underline}
+.layout{display:flex;min-height:100vh}
+.sidebar{
+  width:var(--sidebar-w);min-width:var(--sidebar-w);
+  background:var(--white);border-right:1px solid var(--border);
+  position:sticky;top:0;height:100vh;overflow-y:auto;
+  padding:24px 0;display:flex;flex-direction:column
+}
+.sidebar-header{padding:0 20px 20px;border-bottom:1px solid var(--border);margin-bottom:16px}
+.sidebar-title{font-size:13px;font-weight:700;color:var(--primary);text-transform:uppercase;letter-spacing:.5px}
+.sidebar-sub{font-size:12px;color:var(--text-muted);margin-top:4px}
+.back{display:inline-flex;align-items:center;gap:6px;font-size:12px;color:var(--text-muted);padding:8px 20px;margin-bottom:8px}
+.back:hover{color:var(--primary)}
+.toc-item{
+  display:block;padding:7px 20px;font-size:13px;color:var(--text-sub);
+  border-left:3px solid transparent;transition:all .15s
+}
+.toc-item:hover{color:var(--primary);background:var(--primary-light);text-decoration:none}
+.toc-item.active{color:var(--primary);font-weight:600;border-left-color:var(--primary);background:var(--primary-light)}
+.content{flex:1;max-width:860px;padding:48px 56px;overflow-x:hidden}
+.page-header{margin-bottom:40px;padding-bottom:24px;border-bottom:2px solid var(--border)}
+.badge{display:inline-block;background:var(--orange-bg);color:var(--orange);font-size:11px;font-weight:700;padding:3px 10px;border-radius:20px;margin-bottom:12px;letter-spacing:.5px}
+h1{font-size:28px;font-weight:800;color:var(--text);line-height:1.3;margin-bottom:8px}
+.page-meta{font-size:13px;color:var(--text-muted)}
+section{margin-bottom:48px;scroll-margin-top:24px}
+h2{font-size:20px;font-weight:700;color:var(--text);margin-bottom:16px;padding-bottom:10px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:8px}
+h2 .icon{font-size:18px}
+h3{font-size:16px;font-weight:700;color:var(--text);margin:24px 0 10px;scroll-margin-top:24px}
+p{margin-bottom:14px;color:var(--text-sub)}
+ul,ol{padding-left:20px;margin-bottom:14px;color:var(--text-sub)}
+li{margin-bottom:6px}
+.callout{border-radius:8px;padding:14px 16px;margin:16px 0;display:flex;gap:12px;align-items:flex-start}
+.callout.note{background:var(--primary-light);border-left:4px solid var(--primary)}
+.callout.warning{background:var(--amber-bg);border-left:4px solid #F59E0B}
+.callout.danger{background:var(--red-bg);border-left:4px solid var(--red)}
+.callout.tip{background:var(--green-bg);border-left:4px solid var(--green)}
+.callout-icon{font-size:16px;flex-shrink:0;margin-top:1px}
+.callout-body{font-size:14px;color:var(--text-sub);line-height:1.6}
+.callout-body strong{color:var(--text);display:block;margin-bottom:2px}
+.table-wrap{overflow-x:auto;margin:16px 0;border-radius:8px;border:1px solid var(--border)}
+table{width:100%;border-collapse:collapse;font-size:14px}
+th{background:var(--bg);font-weight:700;padding:10px 14px;text-align:left;border-bottom:2px solid var(--border);white-space:nowrap}
+td{padding:10px 14px;border-bottom:1px solid var(--border);vertical-align:top;color:var(--text-sub)}
+tr:last-child td{border-bottom:none}
+tr:hover td{background:#fafafa}
+.steps{counter-reset:step;list-style:none;padding:0}
+.steps li{counter-increment:step;display:flex;gap:14px;margin-bottom:16px;align-items:flex-start}
+.steps li::before{
+  content:counter(step);min-width:28px;height:28px;
+  background:var(--primary);color:#fff;border-radius:50%;
+  display:flex;align-items:center;justify-content:center;
+  font-size:12px;font-weight:700;flex-shrink:0;margin-top:1px
+}
+.flow{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin:16px 0}
+.flow-step{background:var(--white);border:1px solid var(--border);border-radius:8px;padding:10px 16px;font-size:13px;font-weight:600;color:var(--text);text-align:center}
+.flow-arrow{color:var(--primary);font-size:18px;font-weight:700}
+.term-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:12px;margin:16px 0}
+.term-card{background:var(--white);border:1px solid var(--border);border-radius:8px;padding:14px}
+.term-card strong{color:var(--primary);font-size:13px;display:block;margin-bottom:4px}
+.term-card p{font-size:13px;margin:0;color:var(--text-sub)}
+.limit-list{list-style:none;padding:0;display:flex;flex-wrap:wrap;gap:10px;margin:12px 0}
+.limit-list li{background:var(--white);border:1px solid var(--border);border-radius:6px;padding:8px 14px;font-size:13px}
+.limit-list li strong{color:var(--primary);display:block;font-size:15px;font-weight:800}
+@media(max-width:900px){.sidebar{display:none}.content{padding:32px 20px}}
+</style>
+</head>
+<body>
+<div class="layout">
+<nav class="sidebar">
+  <a class="back" href="../index.html">← MCE 구축 가이드로 돌아가기</a>
+  <div class="sidebar-header">
+    <div class="sidebar-title">Referral Marketing</div>
+    <div class="sidebar-sub">추천 마케팅 프로그램</div>
+  </div>
+  <a class="toc-item" href="#overview">개요</a>
+  <a class="toc-item" href="#terminology">핵심 용어</a>
+  <a class="toc-item" href="#roles">역할 및 권한</a>
+  <a class="toc-item" href="#limits">시스템 제한</a>
+  <a class="toc-item" href="#data-model">데이터 모델</a>
+  <a class="toc-item" href="#workflow">추천 프로그램 워크플로우</a>
+  <a class="toc-item" href="#program-types">프로그램 유형</a>
+  <a class="toc-item" href="#rewards">보상 및 바우처</a>
+  <a class="toc-item" href="#setup">설치 및 설정</a>
+  <a class="toc-item" href="#mce-integration">MCE 연동</a>
+  <a class="toc-item" href="#b2b">B2B 추천 관리</a>
+</nav>
+
+<main class="content">
+  <div class="page-header">
+    <div class="badge">마케팅 자동화</div>
+    <h1>Referral Marketing</h1>
+    <p class="page-meta">최종 업데이트: 2026.06.19 · 출처: Salesforce 공식 문서 (277페이지)</p>
+  </div>
+
+  <section id="overview">
+    <h2><span class="icon">🎁</span> 개요</h2>
+    <p>Referral Marketing은 브랜드가 <strong>추천 프로그램(Referral Program)</strong>을 구축·운영할 수 있도록 지원하는 Salesforce 앱입니다. 기존 고객(Advocate)이 새 고객(Friend)을 소개하는 전형적인 MGM(Member Get Member) 구조를 상시 운영하거나 기간 한정으로 실행할 수 있습니다.</p>
+
+    <div class="callout note">
+      <span class="callout-icon">ℹ️</span>
+      <div class="callout-body"><strong>B2C 및 B2B 모두 지원</strong>일반 소비자 대상 추천 프로그램(B2C)뿐만 아니라, 기업 고객이 다른 기업을 추천하는 B2B Referral Management도 지원합니다. B2B의 경우 Sales Cloud와 연동됩니다.</div>
+    </div>
+
+    <h3>주요 특징</h3>
+    <ul>
+      <li>상시 운영(Evergreen) 및 기간 한정(Time-Bound) 프로그램 모두 지원</li>
+      <li>추천 단계별 자동화 트리거 내장 (가입·구매·인증 등 각 단계에서 자동 보상 지급)</li>
+      <li>MCE와 연동하여 추천 링크 포함 이메일 자동 발송</li>
+      <li>바우처(Voucher) 및 포인트 방식 보상 모두 구성 가능</li>
+      <li>OmniStudio 기반 셀프서비스 포털 구성 지원</li>
+    </ul>
+  </section>
+
+  <section id="terminology">
+    <h2><span class="icon">📖</span> 핵심 용어</h2>
+    <div class="term-grid">
+      <div class="term-card">
+        <strong>Advocate (추천인)</strong>
+        <p>추천 프로그램에 참여하여 친구·지인에게 브랜드를 소개하는 기존 고객.</p>
+      </div>
+      <div class="term-card">
+        <strong>Friend (피추천인)</strong>
+        <p>Advocate의 추천 링크를 통해 브랜드에 처음 접속하는 신규 고객 후보.</p>
+      </div>
+      <div class="term-card">
+        <strong>Referral (추천 건)</strong>
+        <p>Advocate와 Friend 사이에서 발생한 단일 추천 이벤트. 각 추천 건은 독립적으로 추적.</p>
+      </div>
+      <div class="term-card">
+        <strong>Voucher (바우처)</strong>
+        <p>추천 보상으로 지급되는 할인 쿠폰·코드. 단일 사용 또는 복수 사용 설정 가능.</p>
+      </div>
+      <div class="term-card">
+        <strong>Promotion Template</strong>
+        <p>추천 프로그램의 구조(단계·보상·기간)를 정의하는 템플릿.</p>
+      </div>
+      <div class="term-card">
+        <strong>Referral Promotion</strong>
+        <p>Promotion Template을 기반으로 실제 실행 중인 추천 프로그램 인스턴스.</p>
+      </div>
+      <div class="term-card">
+        <strong>Transaction Journal</strong>
+        <p>각 추천 이벤트(가입·구매·보상 지급)의 이력을 기록하는 감사 로그 객체.</p>
+      </div>
+      <div class="term-card">
+        <strong>Promotion Stage</strong>
+        <p>추천 프로세스의 단계 (예: 친구 가입 → 친구 첫 구매 → 보상 지급).</p>
+      </div>
+      <div class="term-card">
+        <strong>Voucher Definition</strong>
+        <p>바우처의 유형·할인율·유효기간을 정의하는 마스터 설정 객체.</p>
+      </div>
+    </div>
+  </section>
+
+  <section id="roles">
+    <h2><span class="icon">👥</span> 역할 및 권한</h2>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>역할</th><th>주요 업무</th><th>필요 권한</th></tr></thead>
+        <tbody>
+          <tr>
+            <td><strong>Referral Marketing Admin</strong></td>
+            <td>프로그램 생성, 바우처 설정, 전체 설정 관리</td>
+            <td>Referral Marketing 관리자 권한 세트</td>
+          </tr>
+          <tr>
+            <td><strong>Communication Method Admin</strong></td>
+            <td>이메일·SMS 발송 채널 설정, MCE 연동 구성</td>
+            <td>Communication Method 관리 권한</td>
+          </tr>
+          <tr>
+            <td><strong>Marketing Manager</strong></td>
+            <td>프로그램 성과 모니터링, 캠페인 최적화</td>
+            <td>Referral Marketing 읽기/실행 권한</td>
+          </tr>
+          <tr>
+            <td><strong>Business Executive</strong></td>
+            <td>대시보드 열람, ROI 리포트 조회</td>
+            <td>보고 전용 읽기 권한</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <section id="limits">
+    <h2><span class="icon">⚡</span> 시스템 제한</h2>
+    <ul class="limit-list">
+      <li><strong>100,000명</strong>활성 Advocate 상한 (org당 기본)</li>
+      <li><strong>Advocate Pack</strong>100,000명 초과 시 추가 팩 구매 필요</li>
+      <li><strong>50개</strong>동시 진행 가능한 Referral Promotion 수</li>
+      <li><strong>10개</strong>Promotion Template 내 최대 단계(Stage) 수</li>
+      <li><strong>1개</strong>Friend당 동일 프로그램 참여 횟수 (중복 참여 방지)</li>
+    </ul>
+    <div class="callout warning">
+      <span class="callout-icon">⚠️</span>
+      <div class="callout-body"><strong>Advocate 한도 초과 시 자동 차단</strong>활성 Advocate가 100,000명에 도달하면 신규 Advocate 등록이 차단됩니다. 대규모 프로그램 기획 시 Advocate Pack 추가 구매를 사전에 계획하세요.</div>
+    </div>
+  </section>
+
+  <section id="data-model">
+    <h2><span class="icon">🗃️</span> 데이터 모델</h2>
+    <p>Referral Marketing은 Salesforce 표준 객체 위에 추가 객체를 구성하여 동작합니다.</p>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>객체명</th><th>역할</th><th>비고</th></tr></thead>
+        <tbody>
+          <tr><td>Loyalty Program</td><td>추천 프로그램의 최상위 컨테이너</td><td>Referral 전용 타입으로 생성</td></tr>
+          <tr><td>Promotion Template</td><td>프로그램 구조(단계·보상) 정의 템플릿</td><td>재사용 가능, 복수 Promotion에 연결</td></tr>
+          <tr><td>Promotion Stage Template</td><td>각 단계별 조건·보상 정의</td><td>Template 내 순서 지정</td></tr>
+          <tr><td>Referral Promotion</td><td>실행 중인 추천 캠페인 인스턴스</td><td>시작/종료일, 참여 대상 포함</td></tr>
+          <tr><td>Promotion Stage</td><td>각 Promotion의 실행 단계 기록</td><td>Friend 행동 발생 시 상태 업데이트</td></tr>
+          <tr><td>Voucher Definition</td><td>바우처 유형·조건 마스터</td><td>한 번 정의 후 복수 Promotion 재사용</td></tr>
+          <tr><td>Voucher</td><td>실제 발급된 바우처 코드 레코드</td><td>고객별 고유 코드 생성</td></tr>
+          <tr><td>Transaction Journal</td><td>모든 추천 이벤트 이력 로그</td><td>감사·분쟁 해결용</td></tr>
+          <tr><td>Segment</td><td>Advocate 참여 자격 조건 필터</td><td>Marketing Cloud Segment 또는 SF Segment</td></tr>
+          <tr><td>Internal Organization Unit</td><td>B2B 추천 시 영업 조직 단위</td><td>B2B Referral Management 전용</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <section id="workflow">
+    <h2><span class="icon">🔄</span> 추천 프로그램 워크플로우</h2>
+    <p>표준 추천 프로그램의 흐름은 다음과 같습니다.</p>
+    <div class="flow">
+      <div class="flow-step">1. Advocate<br>프로그램 참여</div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-step">2. 고유 추천<br>링크 생성</div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-step">3. Friend에게<br>링크 공유</div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-step">4. Friend<br>가입 완료</div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-step">5. Friend<br>지정 행동 완료</div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-step">6. 보상 자동<br>지급</div>
+    </div>
+
+    <h3>단계별 자동화 트리거</h3>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>단계</th><th>트리거 이벤트</th><th>보상 지급 대상</th></tr></thead>
+        <tbody>
+          <tr><td>Advocate 참여</td><td>프로그램 등록 완료</td><td>선택적 (참여 보상)</td></tr>
+          <tr><td>Friend 가입</td><td>추천 링크를 통한 계정 생성</td><td>Advocate 또는 Friend 또는 양측</td></tr>
+          <tr><td>Friend 첫 구매</td><td>구매 트랜잭션 확인</td><td>일반적으로 양측 모두</td></tr>
+          <tr><td>Friend 인증 완료</td><td>이메일·전화 인증 이벤트</td><td>프로그램 설정에 따라 상이</td></tr>
+          <tr><td>추천 목표 달성</td><td>N명 이상 성공 추천</td><td>Advocate (마일스톤 보상)</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="callout tip">
+      <span class="callout-icon">💡</span>
+      <div class="callout-body"><strong>이중 보상 설계 권장</strong>Advocate와 Friend 양측에게 보상을 제공하는 "양방향 인센티브" 구조가 추천 프로그램 참여율을 가장 높입니다. Advocate 전용 보상만 있을 경우 Friend의 참여 동기가 낮아집니다.</div>
+    </div>
+  </section>
+
+  <section id="program-types">
+    <h2><span class="icon">📅</span> 프로그램 유형</h2>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>유형</th><th>특징</th><th>적합 사례</th></tr></thead>
+        <tbody>
+          <tr>
+            <td><strong>Evergreen (상시)</strong></td>
+            <td>종료일 없이 지속 운영. 항상 가입 가능.</td>
+            <td>멤버십 브랜드, 구독 서비스</td>
+          </tr>
+          <tr>
+            <td><strong>Time-Bound (기간 한정)</strong></td>
+            <td>시작일·종료일 지정. 기간 외 링크 무효화.</td>
+            <td>시즌 프로모션, 신규 서비스 런칭</td>
+          </tr>
+          <tr>
+            <td><strong>B2C Referral</strong></td>
+            <td>개인 고객 대상. Contact 객체 기반.</td>
+            <td>리테일, 금융, 여행</td>
+          </tr>
+          <tr>
+            <td><strong>B2B Referral</strong></td>
+            <td>법인 고객 대상. Account·Lead 연동. 영업 담당자 추적.</td>
+            <td>SaaS, B2B 서비스</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <section id="rewards">
+    <h2><span class="icon">🎫</span> 보상 및 바우처</h2>
+    <h3>바우처 유형</h3>
+    <ul>
+      <li><strong>단일 사용 바우처</strong> — 한 번만 사용 가능한 고유 코드. 남용 방지에 효과적.</li>
+      <li><strong>복수 사용 바우처</strong> — 정해진 횟수만큼 재사용 가능한 코드.</li>
+      <li><strong>퍼센트 할인</strong> — 결제 금액의 n% 할인.</li>
+      <li><strong>고정 금액 할인</strong> — 특정 금액 차감.</li>
+      <li><strong>무료 배송</strong> — 배송비 면제.</li>
+      <li><strong>포인트 적립</strong> — Loyalty Program 포인트 연동.</li>
+    </ul>
+
+    <h3>바우처 발급 설정</h3>
+    <ol class="steps">
+      <li><strong>Voucher Definition 생성</strong> — 할인 유형, 금액, 유효기간 설정</li>
+      <li><strong>Promotion Template에 보상 연결</strong> — 각 단계(Stage)에 Voucher Definition 연결</li>
+      <li><strong>발급 자동화 설정</strong> — Flow Builder 또는 Apex Trigger를 통한 자동 발급 구성</li>
+      <li><strong>MCE 이메일 연동</strong> — 바우처 코드를 이메일 본문에 동적으로 삽입</li>
+    </ol>
+
+    <div class="callout warning">
+      <span class="callout-icon">⚠️</span>
+      <div class="callout-body"><strong>바우처 만료일 설정 필수</strong>만료일 없는 바우처는 무기한 사용 가능하여 비용 리스크가 발생합니다. 반드시 합리적인 만료 기간을 설정하고, 만료 전 리마인더 이메일 발송 자동화도 구성하세요.</div>
+    </div>
+  </section>
+
+  <section id="setup">
+    <h2><span class="icon">🔧</span> 설치 및 설정</h2>
+    <div class="callout note">
+      <span class="callout-icon">ℹ️</span>
+      <div class="callout-body"><strong>필수 사전 조건</strong>Referral Marketing 설치 전 반드시 <strong>OmniStudio 패키지</strong>가 org에 설치되어 있어야 합니다. 또한 MCE BU와의 연동이 필요합니다.</div>
+    </div>
+
+    <ol class="steps">
+      <li><strong>OmniStudio 설치 확인</strong> — Setup → Installed Packages에서 OmniStudio 존재 여부 확인</li>
+      <li><strong>Referral Marketing 패키지 설치</strong> — AppExchange에서 Referral Marketing 검색 후 설치</li>
+      <li><strong>권한 세트 할당</strong> — 관리자·운영자·조회자별 Permission Set 할당</li>
+      <li><strong>MCE BU 연결</strong> — Communication Method Admin이 MCE Business Unit 연동 설정</li>
+      <li><strong>이메일 템플릿 구성</strong> — 추천 링크·바우처 코드 포함 MCE 이메일 템플릿 작성</li>
+      <li><strong>Loyalty Program 생성</strong> — Referral 타입으로 Loyalty Program 레코드 생성</li>
+      <li><strong>Promotion Template 설계</strong> — 단계별 조건·보상 구조 정의</li>
+      <li><strong>파일럿 테스트</strong> — 샌드박스에서 전체 추천 흐름 검증 후 운영 배포</li>
+    </ol>
+  </section>
+
+  <section id="mce-integration">
+    <h2><span class="icon">📧</span> MCE 연동</h2>
+    <p>Referral Marketing은 Marketing Cloud Engagement와 연동하여 추천 링크 포함 이메일을 자동으로 발송합니다.</p>
+
+    <h3>연동 흐름</h3>
+    <div class="flow">
+      <div class="flow-step">Advocate 등록</div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-step">SF Trigger<br>실행</div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-step">MCE Journey<br>진입</div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-step">추천 링크<br>이메일 발송</div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-step">Friend 클릭·<br>가입 추적</div>
+    </div>
+
+    <h3>MCE 설정 포인트</h3>
+    <ul>
+      <li><strong>API Event Entry Source</strong> — Salesforce Platform이 트리거 이벤트를 Journey Builder에 전달</li>
+      <li><strong>AMPscript 추천 링크 삽입</strong> — <code>%%referralLink%%</code> 형태의 Dynamic Content 변수 활용</li>
+      <li><strong>바우처 코드 삽입</strong> — 보상 지급 시 MCE Transactional API 또는 Triggered Send로 바우처 코드 이메일 발송</li>
+      <li><strong>UTM 파라미터 자동 부착</strong> — 추천 링크에 Advocate ID를 파라미터로 포함하여 Attribution 추적</li>
+    </ul>
+
+    <div class="callout tip">
+      <span class="callout-icon">💡</span>
+      <div class="callout-body"><strong>Journey Builder vs Automation Studio</strong>추천 이메일은 고객 행동에 반응하는 이벤트 기반이므로 Journey Builder의 API Event Entry Source가 적합합니다. Automation Studio는 예약 발송 기반이라 추천 흐름과 맞지 않습니다.</div>
+    </div>
+  </section>
+
+  <section id="b2b">
+    <h2><span class="icon">🏢</span> B2B 추천 관리 (B2B Referral Management)</h2>
+    <p>B2B 환경에서는 기업 고객(Account)이 다른 기업을 추천하는 구조입니다. 영업 담당자가 개입하거나, 자동화된 프로세스로 진행할 수 있습니다.</p>
+
+    <h3>B2B vs B2C 차이점</h3>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>항목</th><th>B2C</th><th>B2B</th></tr></thead>
+        <tbody>
+          <tr><td>Advocate 유형</td><td>개인 Contact</td><td>Account 또는 Contact (법인 담당자)</td></tr>
+          <tr><td>Friend 유형</td><td>신규 개인 고객</td><td>신규 기업 고객 (Lead → Account 전환)</td></tr>
+          <tr><td>추적 단위</td><td>개인 행동 이벤트</td><td>영업 기회(Opportunity) 단위</td></tr>
+          <tr><td>보상 유형</td><td>바우처, 포인트</td><td>리베이트, 크레딧, 서비스 혜택</td></tr>
+          <tr><td>연동 객체</td><td>Contact, Order</td><td>Account, Lead, Opportunity</td></tr>
+          <tr><td>영업 담당자 역할</td><td>불필요</td><td>Internal Organization Unit으로 추적</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="callout note">
+      <span class="callout-icon">ℹ️</span>
+      <div class="callout-body"><strong>Sales Cloud 연동 필수</strong>B2B Referral Management는 Sales Cloud의 Lead·Opportunity 객체와 연동됩니다. MCE만으로는 구성이 불완전합니다.</div>
+    </div>
+  </section>
+</main>
+</div>
+
+<script>
+const sections = document.querySelectorAll('section[id], h3[id]');
+const tocItems = document.querySelectorAll('.toc-item');
+const observer = new IntersectionObserver(entries => {
+  entries.forEach(e => {
+    if(e.isIntersecting){
+      tocItems.forEach(t => t.classList.remove('active'));
+      const link = document.querySelector('.toc-item[href="#'+e.target.id+'"]');
+      if(link) link.classList.add('active');
+    }
+  });
+}, {rootMargin:'-20% 0px -70% 0px'});
+sections.forEach(s => observer.observe(s));
+</script>
+</body>
+</html>

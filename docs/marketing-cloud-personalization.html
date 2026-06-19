@@ -1,0 +1,441 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Marketing Cloud Personalization (구 Interaction Studio) — MCE 참고 문서</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable.min.css">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --primary:#0070D2;--primary-light:#EAF4FF;--primary-dark:#005FB2;
+  --text:#1a1a1a;--text-sub:#555;--text-muted:#888;
+  --border:#E0E0E0;--bg:#F9F9F9;--white:#fff;
+  --green:#0E7C59;--green-bg:#E6F5F0;
+  --amber:#8A5700;--amber-bg:#FFF4E0;
+  --red:#B91C1C;--red-bg:#FEF2F2;
+  --violet:#7C3AED;--violet-bg:#F5F3FF;
+  --sidebar-w:260px;
+  --font:'Pretendard Variable','Pretendard',system-ui,sans-serif;
+}
+body{font-family:var(--font);color:var(--text);background:var(--bg);line-height:1.7;font-size:15px}
+a{color:var(--primary);text-decoration:none}
+a:hover{text-decoration:underline}
+.layout{display:flex;min-height:100vh}
+.sidebar{
+  width:var(--sidebar-w);min-width:var(--sidebar-w);
+  background:var(--white);border-right:1px solid var(--border);
+  position:sticky;top:0;height:100vh;overflow-y:auto;
+  padding:24px 0;display:flex;flex-direction:column
+}
+.sidebar-header{padding:0 20px 20px;border-bottom:1px solid var(--border);margin-bottom:16px}
+.sidebar-title{font-size:13px;font-weight:700;color:var(--primary);text-transform:uppercase;letter-spacing:.5px}
+.sidebar-sub{font-size:12px;color:var(--text-muted);margin-top:4px}
+.back{display:inline-flex;align-items:center;gap:6px;font-size:12px;color:var(--text-muted);padding:8px 20px;margin-bottom:8px}
+.back:hover{color:var(--primary)}
+.toc-item{
+  display:block;padding:7px 20px;font-size:13px;color:var(--text-sub);
+  border-left:3px solid transparent;transition:all .15s
+}
+.toc-item:hover{color:var(--primary);background:var(--primary-light);text-decoration:none}
+.toc-item.active{color:var(--primary);font-weight:600;border-left-color:var(--primary);background:var(--primary-light)}
+.toc-sub{padding-left:32px;font-size:12px}
+.content{flex:1;max-width:860px;padding:48px 56px;overflow-x:hidden}
+.page-header{margin-bottom:40px;padding-bottom:24px;border-bottom:2px solid var(--border)}
+.badge{display:inline-block;background:var(--violet-bg);color:var(--violet);font-size:11px;font-weight:700;padding:3px 10px;border-radius:20px;margin-bottom:12px;letter-spacing:.5px}
+h1{font-size:28px;font-weight:800;color:var(--text);line-height:1.3;margin-bottom:8px}
+.page-meta{font-size:13px;color:var(--text-muted)}
+section{margin-bottom:48px;scroll-margin-top:24px}
+h2{font-size:20px;font-weight:700;color:var(--text);margin-bottom:16px;padding-bottom:10px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:8px}
+h2 .icon{font-size:18px}
+h3{font-size:16px;font-weight:700;color:var(--text);margin:24px 0 10px;scroll-margin-top:24px}
+p{margin-bottom:14px;color:var(--text-sub)}
+ul,ol{padding-left:20px;margin-bottom:14px;color:var(--text-sub)}
+li{margin-bottom:6px}
+.callout{border-radius:8px;padding:14px 16px;margin:16px 0;display:flex;gap:12px;align-items:flex-start}
+.callout.note{background:var(--primary-light);border-left:4px solid var(--primary)}
+.callout.warning{background:var(--amber-bg);border-left:4px solid #F59E0B}
+.callout.danger{background:var(--red-bg);border-left:4px solid var(--red)}
+.callout.tip{background:var(--green-bg);border-left:4px solid var(--green)}
+.callout-icon{font-size:16px;flex-shrink:0;margin-top:1px}
+.callout-body{font-size:14px;color:var(--text-sub);line-height:1.6}
+.callout-body strong{color:var(--text);display:block;margin-bottom:2px}
+.table-wrap{overflow-x:auto;margin:16px 0;border-radius:8px;border:1px solid var(--border)}
+table{width:100%;border-collapse:collapse;font-size:14px}
+th{background:var(--bg);font-weight:700;padding:10px 14px;text-align:left;border-bottom:2px solid var(--border);white-space:nowrap}
+td{padding:10px 14px;border-bottom:1px solid var(--border);vertical-align:top;color:var(--text-sub)}
+tr:last-child td{border-bottom:none}
+tr:hover td{background:#fafafa}
+.steps{counter-reset:step;list-style:none;padding:0}
+.steps li{counter-increment:step;display:flex;gap:14px;margin-bottom:16px;align-items:flex-start}
+.steps li::before{
+  content:counter(step);min-width:28px;height:28px;
+  background:var(--primary);color:#fff;border-radius:50%;
+  display:flex;align-items:center;justify-content:center;
+  font-size:12px;font-weight:700;flex-shrink:0;margin-top:1px
+}
+code{background:#F1F5F9;color:var(--primary-dark);padding:2px 6px;border-radius:4px;font-size:13px;font-family:monospace}
+.channel-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:12px;margin:16px 0}
+.channel-card{background:var(--white);border:1px solid var(--border);border-radius:8px;padding:14px;text-align:center}
+.channel-card .ch-icon{font-size:24px;margin-bottom:8px}
+.channel-card strong{font-size:13px;display:block;margin-bottom:4px}
+.channel-card p{font-size:12px;margin:0;color:var(--text-muted)}
+@media(max-width:900px){.sidebar{display:none}.content{padding:32px 20px}}
+</style>
+</head>
+<body>
+<div class="layout">
+<nav class="sidebar">
+  <a class="back" href="../index.html">← MCE 구축 가이드로 돌아가기</a>
+  <div class="sidebar-header">
+    <div class="sidebar-title">MCP (구 Interaction Studio)</div>
+    <div class="sidebar-sub">실시간 개인화 플랫폼</div>
+  </div>
+  <a class="toc-item" href="#overview">개요</a>
+  <a class="toc-item" href="#mcp-vs-sfp">MCP vs Salesforce Personalization</a>
+  <a class="toc-item" href="#channels">지원 채널</a>
+  <a class="toc-item" href="#unified-profiles">통합 프로필 & ID 관리</a>
+  <a class="toc-item" href="#catalogs">카탈로그 & 프로모션</a>
+  <a class="toc-item" href="#segments">세그먼트 정의</a>
+  <a class="toc-item" href="#einstein-ai">Einstein AI 개인화</a>
+  <a class="toc-item toc-sub" href="#recipes">Einstein Recipes</a>
+  <a class="toc-item toc-sub" href="#decisions">Einstein Decisions</a>
+  <a class="toc-item" href="#campaigns">채널별 캠페인</a>
+  <a class="toc-item" href="#analytics">리포트 & 분석</a>
+  <a class="toc-item" href="#migration-mcn">MCN 전환 (Data 360)</a>
+  <a class="toc-item" href="#s3-connector">Amazon S3 커넥터</a>
+</nav>
+
+<main class="content">
+  <div class="page-header">
+    <div class="badge">실시간 개인화</div>
+    <h1>Marketing Cloud Personalization</h1>
+    <p style="font-size:13px;color:var(--text-muted);margin-top:4px">구 Interaction Studio · 최종 업데이트: 2026.06.19 · 출처: Salesforce 공식 문서 (667페이지)</p>
+  </div>
+
+  <section id="overview">
+    <h2><span class="icon">🎭</span> 개요</h2>
+    <p>Marketing Cloud Personalization(MCP, 구 Interaction Studio)은 고객 경험을 실시간으로 시각화·추적·관리하는 개인화 플랫폼입니다. 적절한 순간에 고객이 선호하는 방식으로 가치 있는 참여를 유도하며, MCE의 개인화 역량을 확장합니다.</p>
+
+    <div class="callout warning">
+      <span class="callout-icon">⚠️</span>
+      <div class="callout-body"><strong>신규 도입 고객은 Salesforce Personalization 권장</strong>MCP(구 Interaction Studio)는 레거시 아키텍처(그래프 기반) 제품입니다. 신규 프로젝트에는 Data 360 기반의 Salesforce Personalization 도입을 권장합니다. 기존 MCP 고객은 MCN for Personalization을 통해 Data 360으로 점진적 전환이 가능합니다.</div>
+    </div>
+
+    <h3>주요 역량</h3>
+    <ul>
+      <li>실시간 고객 프로필 구성 및 행동 추적</li>
+      <li>웹·이메일·모바일·서버사이드 채널 개인화</li>
+      <li>Einstein Recipes·Einstein Decisions 기반 AI 추천</li>
+      <li>A/B·MVT 테스트 내장</li>
+      <li>카탈로그 관리 (상품·콘텐츠·오퍼)</li>
+      <li>세그먼트 기반 캠페인 타겟팅</li>
+    </ul>
+  </section>
+
+  <section id="mcp-vs-sfp">
+    <h2><span class="icon">⚖️</span> MCP vs Salesforce Personalization 비교</h2>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>항목</th><th>Marketing Cloud Personalization (MCP)</th><th>Salesforce Personalization (신)</th></tr></thead>
+        <tbody>
+          <tr><td>출시 시기</td><td>Interaction Studio (2019~)</td><td>2023~ (Data 360 기반)</td></tr>
+          <tr><td>데이터 구조</td><td>그래프 기반 (Graph-based)</td><td>테이블 기반 (Flat/Table-based)</td></tr>
+          <tr><td>데이터 플랫폼</td><td>독립 인프라</td><td>Data 360(Data Cloud) 네이티브</td></tr>
+          <tr><td>Agentforce 통합</td><td>제한적</td><td>기본 지원</td></tr>
+          <tr><td>SDK</td><td>Salesforce Interactions SDK (구 버전)</td><td>Salesforce Interactions SDK (신 버전)</td></tr>
+          <tr><td>세그먼트</td><td>MCP 내부 세그먼트</td><td>Data Cloud Segment</td></tr>
+          <tr><td>권장 대상</td><td>기존 MCP 운영 고객</td><td>신규 도입 고객</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <section id="channels">
+    <h2><span class="icon">📡</span> 지원 채널</h2>
+    <div class="channel-grid">
+      <div class="channel-card">
+        <div class="ch-icon">🌐</div>
+        <strong>웹 캠페인</strong>
+        <p>JavaScript SDK로 웹 방문자 실시간 개인화</p>
+      </div>
+      <div class="channel-card">
+        <div class="ch-icon">⚙️</div>
+        <strong>서버사이드 캠페인</strong>
+        <p>API 기반 개인화. 헤드리스 환경 지원.</p>
+      </div>
+      <div class="channel-card">
+        <div class="ch-icon">📧</div>
+        <strong>이메일 캠페인</strong>
+        <p>MCE 연동 이메일 개인화</p>
+      </div>
+      <div class="channel-card">
+        <div class="ch-icon">⏱️</div>
+        <strong>오픈 시점 이메일</strong>
+        <p>이메일 오픈 순간에 콘텐츠 실시간 결정</p>
+      </div>
+      <div class="channel-card">
+        <div class="ch-icon">🔔</div>
+        <strong>Triggered 캠페인</strong>
+        <p>행동 이벤트 기반 자동 발송</p>
+      </div>
+      <div class="channel-card">
+        <div class="ch-icon">📱</div>
+        <strong>모바일 캠페인</strong>
+        <p>앱 내 개인화 및 푸시 연동</p>
+      </div>
+    </div>
+  </section>
+
+  <section id="unified-profiles">
+    <h2><span class="icon">👤</span> 통합 프로필 & ID 관리</h2>
+    <p>MCP는 웹·이메일·앱 등 다양한 채널에서 수집한 데이터를 단일 고객 프로필로 통합합니다.</p>
+
+    <h3>ID 해석 (Identity Resolution)</h3>
+    <ul>
+      <li><strong>익명 방문자</strong> — 쿠키 ID로 추적, 로그인 시 인증된 ID와 매칭</li>
+      <li><strong>인증된 방문자</strong> — 이메일·전화·CRM ID 기반 통합</li>
+      <li><strong>Cross-Device 매핑</strong> — 동일 고객의 PC·모바일·앱 행동 연결</li>
+    </ul>
+
+    <h3>프로필 구성 요소</h3>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>구성 요소</th><th>내용</th></tr></thead>
+        <tbody>
+          <tr><td>기본 속성</td><td>이름, 이메일, 전화, 생년월일 등 인구통계 정보</td></tr>
+          <tr><td>행동 이력</td><td>페이지 조회, 상품 클릭, 구매, 폼 제출 이력</td></tr>
+          <tr><td>카탈로그 관심도</td><td>특정 카테고리·태그에 대한 친밀도(Affinity) 점수</td></tr>
+          <tr><td>세그먼트 멤버십</td><td>소속 세그먼트 목록 (실시간 갱신)</td></tr>
+          <tr><td>커스텀 프로필 객체</td><td>비즈니스 맞춤 추가 속성 정의</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <section id="catalogs">
+    <h2><span class="icon">📦</span> 카탈로그 & 프로모션</h2>
+    <h3>카탈로그 (Catalog)</h3>
+    <p>추천·개인화의 대상이 되는 콘텐츠 항목(상품·기사·오퍼 등)의 데이터 구조를 정의합니다.</p>
+    <ul>
+      <li><strong>상품(Product)</strong> — ID, 이름, 가격, 카테고리, 재고 상태, 이미지 URL</li>
+      <li><strong>기사(Article)</strong> — ID, 제목, 태그, 발행일, 저자</li>
+      <li><strong>오퍼(Offer)</strong> — ID, 할인율, 유효기간, 자격 조건</li>
+      <li><strong>커스텀 카탈로그 객체</strong> — 비즈니스 맞춤 항목 정의 (예: 강의, 부동산 매물)</li>
+    </ul>
+
+    <h3>카탈로그 데이터 업데이트 방법</h3>
+    <ul>
+      <li><strong>ETL (파일 업로드)</strong> — CSV/JSON 파일로 배치 업데이트</li>
+      <li><strong>Web SDK</strong> — 페이지 로드 시 실시간 카탈로그 항목 업데이트</li>
+      <li><strong>API</strong> — REST API로 개별 항목 즉시 업데이트</li>
+      <li><strong>Amazon S3 커넥터</strong> — Data 360으로 전환 시 S3 기반 자동 업데이트</li>
+    </ul>
+
+    <h3>사용자 프로필 객체 (User Profile Object)</h3>
+    <p>고객의 카탈로그 관련 행동을 기록하는 구조. 예: "고객 A는 '스포츠' 카테고리를 7회 조회했다"는 정보가 사용자 프로필 객체에 기록되어 추천 엔진의 입력값이 됩니다.</p>
+
+    <h3>프로모션 (Promotion)</h3>
+    <p>특정 고객 세그먼트에게 특별 혜택을 제공하는 프로모션을 정의하고 개인화 캠페인에 연결할 수 있습니다.</p>
+  </section>
+
+  <section id="segments">
+    <h2><span class="icon">🎯</span> 세그먼트 정의</h2>
+    <p>MCP에서 세그먼트는 캠페인 대상 조건을 정의합니다. 다양한 기준을 조합하여 세밀하게 타겟팅할 수 있습니다.</p>
+
+    <h3>세그먼트 조건 유형</h3>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>조건 유형</th><th>예시</th></tr></thead>
+        <tbody>
+          <tr><td>프로필 속성</td><td>국가 = "KR", 연령 > 30</td></tr>
+          <tr><td>행동 이력</td><td>최근 7일 내 상품 페이지 3회 이상 조회</td></tr>
+          <tr><td>카탈로그 친밀도</td><td>'전자제품' 카테고리 Affinity ≥ 70</td></tr>
+          <tr><td>세그먼트 멤버십</td><td>VIP 세그먼트 포함 AND 최근 구매 미경험</td></tr>
+          <tr><td>이벤트 발생 여부</td><td>장바구니 담기 후 24시간 내 미구매</td></tr>
+          <tr><td>MCE 데이터</td><td>특정 이메일 오픈 경험 있음</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <section id="einstein-ai">
+    <h2><span class="icon">🧠</span> Einstein AI 개인화</h2>
+    <p>MCP에는 두 가지 핵심 AI 엔진이 내장되어 있습니다: Einstein Recipes(추천)와 Einstein Decisions(의사결정).</p>
+  </section>
+
+  <section id="recipes">
+    <h2><span class="icon">🍳</span> Einstein Recipes</h2>
+    <p>ML 기반 상품·콘텐츠 추천을 생성하는 엔진입니다. '재료(Ingredients)'를 조합해 추천 로직을 직관적으로 구성합니다.</p>
+
+    <h3>Ingredient 유형</h3>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Ingredient</th><th>설명</th></tr></thead>
+        <tbody>
+          <tr><td>Viewed Together</td><td>현재 보고 있는 상품과 함께 조회된 상품</td></tr>
+          <tr><td>Purchased Together</td><td>함께 구매된 상품 (크로스셀)</td></tr>
+          <tr><td>Co-Browse</td><td>유사 방문 패턴을 가진 사용자들이 본 상품</td></tr>
+          <tr><td>Trending</td><td>최근 급상승 조회 상품</td></tr>
+          <tr><td>Top Sellers</td><td>판매량 상위 상품</td></tr>
+          <tr><td>Recently Viewed</td><td>해당 고객이 최근에 조회한 상품</td></tr>
+          <tr><td>Related Catalog Objects</td><td>동일 카테고리·태그의 관련 항목</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3>Exclusion (제외 규칙)</h3>
+    <ul>
+      <li>이미 구매한 상품 제외</li>
+      <li>품절 상품 자동 제외</li>
+      <li>특정 카테고리 항목 제외</li>
+    </ul>
+
+    <h3>Boost (가중치)</h3>
+    <ul>
+      <li>고마진 상품 우선 노출</li>
+      <li>프로모션 상품 가중치 부여</li>
+      <li>신상품 우선 노출</li>
+    </ul>
+  </section>
+
+  <section id="decisions">
+    <h2><span class="icon">⚡</span> Einstein Decisions</h2>
+    <p>단순 추천을 넘어 여러 오퍼 중 고객에게 가장 적합한 단일 오퍼를 AI가 선택하는 의사결정 엔진입니다.</p>
+
+    <h3>Einstein Decisions vs Einstein Recipes 차이</h3>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>항목</th><th>Einstein Recipes</th><th>Einstein Decisions</th></tr></thead>
+        <tbody>
+          <tr><td>결과물</td><td>상품·콘텐츠 목록 (N개)</td><td>단일 최적 오퍼 (1개)</td></tr>
+          <tr><td>입력 데이터</td><td>행동 이력, 카탈로그 관계</td><td>오퍼 성과, 고객 프로필, 비즈니스 제약</td></tr>
+          <tr><td>최적화 목표</td><td>CTR, 전환율</td><td>기대 수익, 고객 가치</td></tr>
+          <tr><td>적합 시나리오</td><td>상품 추천 위젯, 관련 기사</td><td>Next Best Offer, 프로모션 선택</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <section id="campaigns">
+    <h2><span class="icon">📣</span> 채널별 캠페인</h2>
+    <h3>웹 캠페인 (Web Campaign)</h3>
+    <p>웹 페이지의 특정 영역(Zone)에 개인화 콘텐츠를 표시합니다. JavaScript SDK가 DOM을 실시간으로 조작합니다.</p>
+    <ul>
+      <li><strong>인라인 교체</strong> — 기본 콘텐츠를 개인화 콘텐츠로 교체</li>
+      <li><strong>팝업/배너</strong> — 조건 충족 시 레이어 팝업 또는 상단 배너 표시</li>
+      <li><strong>오버레이</strong> — 화면 전체를 덮는 전면 오퍼 표시</li>
+    </ul>
+
+    <h3>서버사이드 캠페인</h3>
+    <p>API 호출로 개인화 결과를 수신하여 서버에서 렌더링합니다. 헤드리스 CMS, 모바일 앱, IoT 기기 등에 적합합니다.</p>
+
+    <h3>오픈 시점 이메일 개인화 (Open-Time Personalization)</h3>
+    <p>이메일을 열어보는 순간의 상황(시간, 위치, 날씨, 재고 상태)에 따라 표시되는 이미지와 콘텐츠가 실시간으로 결정됩니다.</p>
+    <div class="callout tip">
+      <span class="callout-icon">💡</span>
+      <div class="callout-body"><strong>오픈 시점 개인화 활용 예시</strong>• 오전에 열면 "Good Morning" 이미지, 오후에 열면 "Good Afternoon" 이미지<br>• 이메일 작성 시점에 재고가 있었지만 오픈 시점에 품절인 상품은 대체 상품으로 자동 교체<br>• 고객의 현재 위치 기반 가장 가까운 오프라인 매장 정보 삽입</div>
+    </div>
+  </section>
+
+  <section id="analytics">
+    <h2><span class="icon">📊</span> 리포트 & 분석</h2>
+    <h3>제공 리포트</h3>
+    <ul>
+      <li><strong>캠페인 성과 리포트</strong> — 노출·클릭·전환·수익 등 핵심 지표</li>
+      <li><strong>Lift 분석</strong> — 개인화 적용 그룹 vs 비적용 그룹(Control) 비교</li>
+      <li><strong>세그먼트 분석</strong> — 세그먼트별 행동 패턴 및 규모</li>
+      <li><strong>추천 성과</strong> — Recipe별 CTR 및 전환율</li>
+      <li><strong>Einstein Decisions 성과</strong> — 의사결정별 오퍼 선택 비율 및 효과</li>
+    </ul>
+
+    <h3>A/B 테스트 (Experimentation)</h3>
+    <p>캠페인 내에서 여러 변형을 동시에 실행하고 통계적 유의성에 근거하여 승리 변형을 결정합니다. Control 그룹(개인화 미적용)을 포함해 진짜 Lift를 측정할 수 있습니다.</p>
+  </section>
+
+  <section id="migration-mcn">
+    <h2><span class="icon">🔄</span> MCN 전환 (Data 360으로 마이그레이션)</h2>
+    <p>기존 MCP 데이터와 카탈로그를 Data 360(Data Cloud)으로 이전하여 Salesforce Personalization으로 전환하는 프로세스입니다.</p>
+
+    <div class="callout note">
+      <span class="callout-icon">ℹ️</span>
+      <div class="callout-body"><strong>병행 운영 가능</strong>MCP와 Salesforce Personalization은 SDK 동거(Coexistence) 설정을 통해 동일 웹사이트에서 병행 운영이 가능합니다. 빅뱅 전환 없이 점진적으로 이전할 수 있습니다.</div>
+    </div>
+
+    <h3>전환 단계</h3>
+    <ol class="steps">
+      <li><strong>SDK 동거 활성화</strong> — Personalization Setup에서 "Enable SDK Website Coexistence" 클릭</li>
+      <li><strong>Amazon S3 커넥터 생성</strong> — Data 360에 <code>P13N S3 Connection</code> 커넥터 설정</li>
+      <li><strong>데이터 모델 다운로드</strong> — MCP 내 Data Model Download Tool로 .zip 생성</li>
+      <li><strong>Data 360 업로드</strong> — Salesforce CLI로 .zip 파일을 Data 360에 업로드</li>
+      <li><strong>Data Kit 배포</strong> — 두 개의 Data Kit(Profile & Engagement Kit, Catalog Kit) 순서대로 배포</li>
+      <li><strong>카탈로그 데이터 이전</strong> — Catalog Data Extract 도구로 기존 카탈로그 데이터 추출·업로드</li>
+      <li><strong>Sitemap 변환</strong> — MCP Sitemap을 Data 360 호환 형식으로 수정</li>
+      <li><strong>검증 및 파일럿</strong> — 샌드박스에서 전체 개인화 플로우 검증</li>
+    </ol>
+  </section>
+
+  <section id="s3-connector">
+    <h2><span class="icon">🗄️</span> Amazon S3 커넥터 설정</h2>
+    <p>MCP 카탈로그 데이터를 Data 360으로 전송하기 위해 Amazon S3 커넥터를 사용합니다.</p>
+
+    <div class="callout warning">
+      <span class="callout-icon">⚠️</span>
+      <div class="callout-body"><strong>커넥터 이름 고정값 사용 필수</strong>MCP 메타데이터 자동 업로드가 의존하는 커넥터 이름이 하드코딩되어 있습니다. 반드시 아래 정확한 값을 사용하세요.</div>
+    </div>
+
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>설정 항목</th><th>필수 값</th></tr></thead>
+        <tbody>
+          <tr><td>Connector Name</td><td><code>P13N S3 Connection</code></td></tr>
+          <tr><td>API Name</td><td><code>P13NB_S3_Connection</code></td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3>데이터 키트 구성</h3>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Data Kit</th><th>파일명</th><th>용도</th></tr></thead>
+        <tbody>
+          <tr>
+            <td>Profile & Engagement Data Kit</td>
+            <td><code>Persnl_[dataset]_Catalog_Metadata_Transfer</code></td>
+            <td>MCP 전체 데이터 모델 + 카탈로그 모델 포함. 권장 기본 키트.</td>
+          </tr>
+          <tr>
+            <td>Catalog Data Kit</td>
+            <td><code>Persnl_[dataset]_Prfl_Engmt_Metadata_Transfer</code></td>
+            <td>카탈로그 데이터만. 웹 데이터 스트림이 이미 생성된 경우 사용.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3>웹 데이터 스트림 번들 포함 항목</h3>
+    <ul>
+      <li>Behavioral Events (행동 이벤트)</li>
+      <li>Identity (ID 정보)</li>
+      <li>ContactPointEmail (이메일 접점)</li>
+    </ul>
+  </section>
+</main>
+</div>
+
+<script>
+const sections = document.querySelectorAll('section[id], h3[id]');
+const tocItems = document.querySelectorAll('.toc-item');
+const observer = new IntersectionObserver(entries => {
+  entries.forEach(e => {
+    if(e.isIntersecting){
+      tocItems.forEach(t => t.classList.remove('active'));
+      const link = document.querySelector('.toc-item[href="#'+e.target.id+'"]');
+      if(link) link.classList.add('active');
+    }
+  });
+}, {rootMargin:'-20% 0px -70% 0px'});
+sections.forEach(s => observer.observe(s));
+</script>
+</body>
+</html>

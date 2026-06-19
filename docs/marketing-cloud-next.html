@@ -1,0 +1,451 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Marketing Cloud Next (MCN) — MCE 참고 문서</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable.min.css">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --primary:#0070D2;--primary-light:#EAF4FF;--primary-dark:#005FB2;
+  --text:#1a1a1a;--text-sub:#555;--text-muted:#888;
+  --border:#E0E0E0;--bg:#F9F9F9;--white:#fff;
+  --green:#0E7C59;--green-bg:#E6F5F0;
+  --amber:#8A5700;--amber-bg:#FFF4E0;
+  --red:#B91C1C;--red-bg:#FEF2F2;
+  --indigo:#3730A3;--indigo-bg:#EEF2FF;
+  --sidebar-w:260px;
+  --font:'Pretendard Variable','Pretendard',system-ui,sans-serif;
+}
+body{font-family:var(--font);color:var(--text);background:var(--bg);line-height:1.7;font-size:15px}
+a{color:var(--primary);text-decoration:none}
+a:hover{text-decoration:underline}
+.layout{display:flex;min-height:100vh}
+.sidebar{
+  width:var(--sidebar-w);min-width:var(--sidebar-w);
+  background:var(--white);border-right:1px solid var(--border);
+  position:sticky;top:0;height:100vh;overflow-y:auto;
+  padding:24px 0;display:flex;flex-direction:column
+}
+.sidebar-header{padding:0 20px 20px;border-bottom:1px solid var(--border);margin-bottom:16px}
+.sidebar-title{font-size:13px;font-weight:700;color:var(--primary);text-transform:uppercase;letter-spacing:.5px}
+.sidebar-sub{font-size:12px;color:var(--text-muted);margin-top:4px}
+.back{display:inline-flex;align-items:center;gap:6px;font-size:12px;color:var(--text-muted);padding:8px 20px;margin-bottom:8px}
+.back:hover{color:var(--primary)}
+.toc-item{
+  display:block;padding:7px 20px;font-size:13px;color:var(--text-sub);
+  border-left:3px solid transparent;transition:all .15s
+}
+.toc-item:hover{color:var(--primary);background:var(--primary-light);text-decoration:none}
+.toc-item.active{color:var(--primary);font-weight:600;border-left-color:var(--primary);background:var(--primary-light)}
+.content{flex:1;max-width:860px;padding:48px 56px;overflow-x:hidden}
+.page-header{margin-bottom:40px;padding-bottom:24px;border-bottom:2px solid var(--border)}
+.badge{display:inline-block;background:var(--indigo-bg);color:var(--indigo);font-size:11px;font-weight:700;padding:3px 10px;border-radius:20px;margin-bottom:12px;letter-spacing:.5px}
+h1{font-size:28px;font-weight:800;color:var(--text);line-height:1.3;margin-bottom:8px}
+.page-meta{font-size:13px;color:var(--text-muted)}
+section{margin-bottom:48px;scroll-margin-top:24px}
+h2{font-size:20px;font-weight:700;color:var(--text);margin-bottom:16px;padding-bottom:10px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:8px}
+h2 .icon{font-size:18px}
+h3{font-size:16px;font-weight:700;color:var(--text);margin:24px 0 10px;scroll-margin-top:24px}
+p{margin-bottom:14px;color:var(--text-sub)}
+ul,ol{padding-left:20px;margin-bottom:14px;color:var(--text-sub)}
+li{margin-bottom:6px}
+.callout{border-radius:8px;padding:14px 16px;margin:16px 0;display:flex;gap:12px;align-items:flex-start}
+.callout.note{background:var(--primary-light);border-left:4px solid var(--primary)}
+.callout.warning{background:var(--amber-bg);border-left:4px solid #F59E0B}
+.callout.danger{background:var(--red-bg);border-left:4px solid var(--red)}
+.callout.tip{background:var(--green-bg);border-left:4px solid var(--green)}
+.callout-icon{font-size:16px;flex-shrink:0;margin-top:1px}
+.callout-body{font-size:14px;color:var(--text-sub);line-height:1.6}
+.callout-body strong{color:var(--text);display:block;margin-bottom:2px}
+.table-wrap{overflow-x:auto;margin:16px 0;border-radius:8px;border:1px solid var(--border)}
+table{width:100%;border-collapse:collapse;font-size:14px}
+th{background:var(--bg);font-weight:700;padding:10px 14px;text-align:left;border-bottom:2px solid var(--border);white-space:nowrap}
+td{padding:10px 14px;border-bottom:1px solid var(--border);vertical-align:top;color:var(--text-sub)}
+tr:last-child td{border-bottom:none}
+tr:hover td{background:#fafafa}
+.steps{counter-reset:step;list-style:none;padding:0}
+.steps li{counter-increment:step;display:flex;gap:14px;margin-bottom:16px;align-items:flex-start}
+.steps li::before{
+  content:counter(step);min-width:28px;height:28px;
+  background:var(--primary);color:#fff;border-radius:50%;
+  display:flex;align-items:center;justify-content:center;
+  font-size:12px;font-weight:700;flex-shrink:0;margin-top:1px
+}
+.feature-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:12px;margin:16px 0}
+.feature-card{background:var(--white);border:1px solid var(--border);border-radius:8px;padding:14px}
+.feature-card .label{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;margin-bottom:6px}
+.feature-card .label.available{color:var(--green)}
+.feature-card .label.roadmap{color:var(--amber)}
+.feature-card strong{font-size:14px;display:block;margin-bottom:4px}
+.feature-card p{font-size:13px;margin:0;color:var(--text-sub)}
+.arch-block{background:var(--white);border:1px solid var(--border);border-radius:8px;padding:20px;margin:16px 0}
+.arch-row{display:flex;gap:12px;align-items:center;margin-bottom:12px;flex-wrap:wrap}
+.arch-layer{flex:1;min-width:140px;background:var(--indigo-bg);color:var(--indigo);border-radius:6px;padding:10px 14px;text-align:center;font-size:13px;font-weight:700}
+.arch-plus{color:var(--text-muted);font-size:18px;font-weight:700}
+.arch-result{background:var(--primary);color:#fff;border-radius:6px;padding:10px 14px;text-align:center;font-size:13px;font-weight:700;flex:1;min-width:140px}
+@media(max-width:900px){.sidebar{display:none}.content{padding:32px 20px}}
+</style>
+</head>
+<body>
+<div class="layout">
+<nav class="sidebar">
+  <a class="back" href="../index.html">← MCE 구축 가이드로 돌아가기</a>
+  <div class="sidebar-header">
+    <div class="sidebar-title">Marketing Cloud Next</div>
+    <div class="sidebar-sub">차세대 마케팅 플랫폼</div>
+  </div>
+  <a class="toc-item" href="#overview">개요</a>
+  <a class="toc-item" href="#architecture">플랫폼 아키텍처</a>
+  <a class="toc-item" href="#editions">에디션 및 라이선스</a>
+  <a class="toc-item" href="#features">기능 세트 (Salesforce Go)</a>
+  <a class="toc-item" href="#roles">관리자 역할</a>
+  <a class="toc-item" href="#setup">설정 절차</a>
+  <a class="toc-item" href="#data-kits">Data Kit 설치</a>
+  <a class="toc-item" href="#business-units">Business Unit 구성</a>
+  <a class="toc-item" href="#scoring">리드/컨택 스코어링</a>
+  <a class="toc-item" href="#mce-vs-mcn">MCE vs MCN 비교</a>
+  <a class="toc-item" href="#migration">MCE에서 MCN으로 전환</a>
+</nav>
+
+<main class="content">
+  <div class="page-header">
+    <div class="badge">차세대 플랫폼</div>
+    <h1>Marketing Cloud Next (MCN)</h1>
+    <p class="page-meta">최종 업데이트: 2026.06.19 · 출처: Salesforce 공식 문서 (406페이지)</p>
+  </div>
+
+  <section id="overview">
+    <h2><span class="icon">🚀</span> 개요</h2>
+    <p>Marketing Cloud Next(MCN)는 Salesforce 플랫폼 위에 네이티브로 구축된 차세대 마케팅 솔루션입니다. 기존 Marketing Cloud Engagement(MCE)가 별도 인프라로 운영되던 것과 달리, MCN은 <strong>Data 360(Data Cloud) + Experience Cloud + Flow Builder + Agentforce</strong>를 통합하여 단일 플랫폼에서 마케팅을 운영합니다.</p>
+
+    <div class="callout note">
+      <span class="callout-icon">ℹ️</span>
+      <div class="callout-body"><strong>MCE를 대체하는 것이 아닙니다</strong>MCN은 MCE의 대체제가 아니라 확장 레이어입니다. 기존 MCE 고객은 MCE를 유지하면서 MCN 기능을 점진적으로 도입하거나, 장기적으로 MCN으로 전환을 검토할 수 있습니다. Salesforce는 두 플랫폼을 병행 지원합니다.</div>
+    </div>
+
+    <h3>핵심 차별점</h3>
+    <ul>
+      <li><strong>네이티브 Data 360 통합</strong> — 별도 커넥터 없이 Data Cloud 고객 프로필에 직접 접근</li>
+      <li><strong>Flow Builder 기반 자동화</strong> — 개발자 없이 로우코드로 마케팅 자동화 구성</li>
+      <li><strong>Agentforce 기본 탑재</strong> — AI 에이전트가 마케팅 의사결정에 참여</li>
+      <li><strong>Unified Messaging 내장</strong> — 이메일·SMS·WhatsApp을 단일 채널로 관리</li>
+      <li><strong>Real-time 세그멘테이션</strong> — Data Cloud Segment 기반 즉각적인 대상 갱신</li>
+    </ul>
+  </section>
+
+  <section id="architecture">
+    <h2><span class="icon">🏗️</span> 플랫폼 아키텍처</h2>
+    <div class="arch-block">
+      <div class="arch-row">
+        <div class="arch-layer">Data 360<br>(Data Cloud)</div>
+        <div class="arch-plus">+</div>
+        <div class="arch-layer">Experience Cloud<br>(포털·웹)</div>
+        <div class="arch-plus">+</div>
+        <div class="arch-layer">Flow Builder<br>(자동화)</div>
+        <div class="arch-plus">+</div>
+        <div class="arch-layer">Agentforce<br>(AI 에이전트)</div>
+      </div>
+      <div style="text-align:center;color:var(--text-muted);margin:8px 0;font-size:18px">↓</div>
+      <div class="arch-result">Marketing Cloud Next — 통합 마케팅 실행 플랫폼</div>
+    </div>
+
+    <h3>레이어별 역할</h3>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>레이어</th><th>역할</th><th>MCE 대응 기능</th></tr></thead>
+        <tbody>
+          <tr><td>Data 360</td><td>고객 통합 프로필, 세그먼트, ID Resolution</td><td>Contact Builder + Audience Builder</td></tr>
+          <tr><td>Experience Cloud</td><td>웹 채널, 셀프서비스 포털, 랜딩 페이지</td><td>CloudPages</td></tr>
+          <tr><td>Flow Builder</td><td>마케팅 자동화, 조건 분기, 액션 실행</td><td>Automation Studio + Journey Builder</td></tr>
+          <tr><td>Agentforce</td><td>AI 카피 생성, 최적 발송 시간, 성과 분석</td><td>Einstein Features</td></tr>
+          <tr><td>Salesforce Go</td><td>이메일·SMS·WhatsApp 캠페인 실행 UI</td><td>Email Studio + Mobile Studio</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <section id="editions">
+    <h2><span class="icon">📦</span> 에디션 및 라이선스</h2>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>에디션</th><th>MCN 라이선스</th><th>주요 차이점</th></tr></thead>
+        <tbody>
+          <tr>
+            <td>Enterprise</td>
+            <td rowspan="2">MCN Growth 또는 MCN Advanced</td>
+            <td>BU(Business Unit) 최대 50개</td>
+          </tr>
+          <tr>
+            <td>Unlimited</td>
+            <td>BU 무제한, 고급 Agentforce 기능 포함</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3>MCN Growth vs MCN Advanced</h3>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>기능</th><th>MCN Growth</th><th>MCN Advanced</th></tr></thead>
+        <tbody>
+          <tr><td>이메일 캠페인</td><td>✅</td><td>✅</td></tr>
+          <tr><td>SMS 캠페인</td><td>✅</td><td>✅</td></tr>
+          <tr><td>WhatsApp 캠페인</td><td>✅</td><td>✅</td></tr>
+          <tr><td>Mobile App Messaging</td><td>제한적</td><td>✅</td></tr>
+          <tr><td>Rich Messaging (RCS)</td><td>❌</td><td>✅</td></tr>
+          <tr><td>Marketing Intelligence</td><td>기본</td><td>고급 + MTA</td></tr>
+          <tr><td>Agentforce Agents</td><td>1개</td><td>복수</td></tr>
+          <tr><td>Salesforce Personalization</td><td>Personalization Card</td><td>Full License</td></tr>
+          <tr><td>고급 세그멘테이션</td><td>기본 Segment</td><td>Calculated Insight 포함</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="callout warning">
+      <span class="callout-icon">⚠️</span>
+      <div class="callout-body"><strong>에디션 요건 확인 필수</strong>MCN 기능은 Salesforce Enterprise 또는 Unlimited Edition에서만 사용 가능합니다. Professional Edition 고객은 MCN을 사용할 수 없습니다.</div>
+    </div>
+  </section>
+
+  <section id="features">
+    <h2><span class="icon">✨</span> 기능 세트 (Salesforce Go)</h2>
+    <p>Salesforce Go는 MCN에서 캠페인을 실행하는 메인 UI입니다. 다음 채널과 기능을 지원합니다.</p>
+    <div class="feature-grid">
+      <div class="feature-card">
+        <div class="label available">사용 가능</div>
+        <strong>Email Campaigns</strong>
+        <p>Data Cloud 세그먼트 기반 이메일 캠페인. AI 카피 생성 포함.</p>
+      </div>
+      <div class="feature-card">
+        <div class="label available">사용 가능</div>
+        <strong>SMS</strong>
+        <p>국내외 SMS 발송. Unified Messaging과 통합.</p>
+      </div>
+      <div class="feature-card">
+        <div class="label available">사용 가능</div>
+        <strong>WhatsApp</strong>
+        <p>Unified Messaging의 WhatsApp 채널. 서비스·마케팅 통합.</p>
+      </div>
+      <div class="feature-card">
+        <div class="label available">사용 가능</div>
+        <strong>Mobile App Messaging</strong>
+        <p>푸시 알림 및 인앱 메시지. SDK 연동 필요.</p>
+      </div>
+      <div class="feature-card">
+        <div class="label available">사용 가능</div>
+        <strong>Rich Messaging (RCS)</strong>
+        <p>이미지·버튼 포함 고화질 문자. 통신사 지원 필요.</p>
+      </div>
+      <div class="feature-card">
+        <div class="label available">사용 가능</div>
+        <strong>Page Customization</strong>
+        <p>Experience Cloud 랜딩 페이지 개인화.</p>
+      </div>
+      <div class="feature-card">
+        <div class="label available">사용 가능</div>
+        <strong>Brand Settings</strong>
+        <p>로고·색상·글꼴 등 브랜드 가이드라인 중앙 관리.</p>
+      </div>
+      <div class="feature-card">
+        <div class="label roadmap">고급 기능</div>
+        <strong>Journey Automation</strong>
+        <p>Flow Builder 기반 멀티스텝 자동화 여정.</p>
+      </div>
+    </div>
+  </section>
+
+  <section id="roles">
+    <h2><span class="icon">👥</span> 관리자 역할</h2>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>역할</th><th>주요 책임</th><th>비고</th></tr></thead>
+        <tbody>
+          <tr>
+            <td><strong>Salesforce Admin<br>(System Administrator)</strong></td>
+            <td>MCN 기능 활성화, 권한 세트 배포, 기본 설정</td>
+            <td>System Administrator 프로필 필요</td>
+          </tr>
+          <tr>
+            <td><strong>Data Cloud Architect</strong></td>
+            <td>Data 360 설정, Identity Resolution, 데이터 키트 배포</td>
+            <td>Data Cloud 별도 교육 권장</td>
+          </tr>
+          <tr>
+            <td><strong>Marketing Admin</strong></td>
+            <td>캠페인 설정, 채널 구성, 브랜드 설정, 이메일 채널 관리</td>
+            <td>MCN Marketing Admin 권한 세트</td>
+          </tr>
+          <tr>
+            <td><strong>Marketing Manager</strong></td>
+            <td>캠페인 생성·실행, 세그먼트 정의, 성과 분석</td>
+            <td>MCN Marketing User 권한 세트</td>
+          </tr>
+          <tr>
+            <td><strong>Content Designer</strong></td>
+            <td>이메일 템플릿, 랜딩 페이지, 브랜드 에셋 제작</td>
+            <td>Content Builder 접근 권한</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <section id="setup">
+    <h2><span class="icon">🔧</span> 설정 절차</h2>
+    <p>MCN 설정은 세 단계로 구분됩니다: 기본 설정 → 필수 설정 → 추가 설정</p>
+
+    <h3>Phase 1 — 기본 설정 (Basic Settings)</h3>
+    <ol class="steps">
+      <li><strong>MCN 활성화 요청</strong> — Salesforce 영업 담당자 또는 지원팀을 통해 MCN 라이선스 프로비저닝 요청</li>
+      <li><strong>Data 360 활성화</strong> — Setup → Data Cloud Setup에서 Data 360 사용 설정 (약 15분 소요)</li>
+      <li><strong>기본 이메일 채널 추가</strong> — 지원 케이스를 통해 Default Email Channel 활성화 요청</li>
+      <li><strong>데이터 보호 정보 입력</strong> — 개인정보 처리 방침 URL, 데이터 보호 담당자 정보 설정</li>
+    </ol>
+
+    <h3>Phase 2 — 필수 설정 (Required Setup)</h3>
+    <ol class="steps">
+      <li><strong>Salesforce CRM Connector 생성</strong> — Data 360과 CRM 간 데이터 동기화 설정</li>
+      <li><strong>데이터 스페이스 선택</strong> — 마케팅 데이터를 저장할 Data Space 지정</li>
+      <li><strong>Identity Resolution 설정</strong> — 이메일·전화·쿠키 기반 고객 통합 규칙 구성</li>
+      <li><strong>Segment 생성</strong> — 첫 번째 발송 대상 세그먼트 정의 및 테스트</li>
+    </ol>
+
+    <h3>Phase 3 — 추가 설정 (Additional Settings)</h3>
+    <ol class="steps">
+      <li><strong>Data Kit 설치</strong> — 사용할 기능(이메일·SMS·WhatsApp 등)에 맞는 Data Kit 설치</li>
+      <li><strong>브랜드 설정</strong> — 로고, 기본 색상, 글꼴 등 브랜드 가이드라인 업로드</li>
+      <li><strong>채널별 설정</strong> — SMS 발신 번호, WhatsApp 번호 등 채널별 추가 구성</li>
+      <li><strong>Agentforce 설정</strong> — Marketing Agent 활성화 및 Topic/Action 설정</li>
+    </ol>
+
+    <div class="callout warning">
+      <span class="callout-icon">⚠️</span>
+      <div class="callout-body"><strong>Data 360 먼저 설정해야 합니다</strong>Data 360이 활성화되지 않은 상태에서는 MCN의 대부분 기능을 사용할 수 없습니다. 모든 설정의 출발점은 Data 360 활성화입니다.</div>
+    </div>
+  </section>
+
+  <section id="data-kits">
+    <h2><span class="icon">📦</span> Data Kit 설치</h2>
+    <p>Data Kit은 채널별 기능을 Data 360에 연결하는 패키지입니다. 사용하려는 채널마다 해당 Data Kit을 설치해야 합니다.</p>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Data Kit</th><th>연결 채널/기능</th><th>포함 내용</th></tr></thead>
+        <tbody>
+          <tr><td>Email Data Kit</td><td>이메일 캠페인</td><td>이메일 발송 이력, 오픈·클릭 이벤트 DMO</td></tr>
+          <tr><td>SMS Data Kit</td><td>SMS 캠페인</td><td>SMS 발송·수신 이력, 동의 관리 DMO</td></tr>
+          <tr><td>WhatsApp Data Kit</td><td>WhatsApp (Unified Messaging)</td><td>대화 이력, 템플릿 메시지 DMO</td></tr>
+          <tr><td>Mobile App Data Kit</td><td>모바일 앱 푸시·인앱</td><td>디바이스 등록, 푸시 발송 이력 DMO</td></tr>
+          <tr><td>Web Engagement Data Kit</td><td>웹 행동 추적</td><td>페이지뷰, 이벤트 데이터 수집 DMO</td></tr>
+          <tr><td>Personalization Data Kit</td><td>Salesforce Personalization</td><td>추천 이력, Calculated Insight 연동 DMO</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="callout tip">
+      <span class="callout-icon">💡</span>
+      <div class="callout-body"><strong>Data Kit = 사전 구성된 DMO 묶음</strong>Data Kit은 Data Model Object(DMO), Data Stream, 관련 메타데이터를 미리 패키징한 것입니다. 직접 DMO를 만들어도 되지만, Data Kit을 사용하면 Salesforce 권장 스키마가 자동으로 적용됩니다.</div>
+    </div>
+  </section>
+
+  <section id="business-units">
+    <h2><span class="icon">🏢</span> Business Unit 구성</h2>
+    <p>MCN에서도 MCE와 마찬가지로 Business Unit(BU)을 통해 조직·브랜드·지역별 마케팅 분리가 가능합니다.</p>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>항목</th><th>MCE BU</th><th>MCN BU</th></tr></thead>
+        <tbody>
+          <tr><td>최대 개수</td><td>에디션별 상이</td><td>Enterprise: 50개, Unlimited: 무제한</td></tr>
+          <tr><td>데이터 격리</td><td>BU별 독립 DB</td><td>Data Space 기반 격리</td></tr>
+          <tr><td>이메일 채널 공유</td><td>SAP 기반 공유 가능</td><td>이메일 채널 BU별 독립</td></tr>
+          <tr><td>Segment 공유</td><td>불가 (독립적)</td><td>Data Space를 통해 부분적 공유 가능</td></tr>
+          <tr><td>브랜드 설정</td><td>BU별 개별 설정</td><td>Brand Settings로 중앙 관리 가능</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <section id="scoring">
+    <h2><span class="icon">📈</span> 리드/컨택 스코어링</h2>
+    <p>MCN은 Data 360과 Agentforce를 활용하여 리드(Lead)·컨택(Contact)·어카운트(Account)의 마케팅 참여도를 자동으로 점수화합니다.</p>
+    <h3>스코어링 기반 데이터</h3>
+    <ul>
+      <li>이메일 오픈·클릭·전환 이력</li>
+      <li>웹사이트 방문 빈도·페이지뎁스</li>
+      <li>폼 제출, 자료 다운로드 이벤트</li>
+      <li>캠페인 참여 이력 (누적 기간 설정 가능)</li>
+      <li>Sales Cloud 활동 연동 (미팅, 통화 등)</li>
+    </ul>
+    <h3>스코어 활용</h3>
+    <ul>
+      <li><strong>MQL(Marketing Qualified Lead) 자동 식별</strong> — 임계점 이상 점수 획득 시 Sales Cloud로 자동 이관</li>
+      <li><strong>세그먼트 조건 활용</strong> — 스코어 범위별 맞춤 캠페인 타겟팅</li>
+      <li><strong>Agentforce 참고 데이터</strong> — 에이전트가 고객 가치를 판단하는 데 활용</li>
+    </ul>
+  </section>
+
+  <section id="mce-vs-mcn">
+    <h2><span class="icon">⚖️</span> MCE vs MCN 비교</h2>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>항목</th><th>MCE (Marketing Cloud Engagement)</th><th>MCN (Marketing Cloud Next)</th></tr></thead>
+        <tbody>
+          <tr><td>플랫폼 기반</td><td>독립 인프라 (Exact Target 기반)</td><td>Salesforce Platform 네이티브</td></tr>
+          <tr><td>데이터 관리</td><td>Data Extension, Contact Builder</td><td>Data 360 DMO, Identity Resolution</td></tr>
+          <tr><td>자동화 도구</td><td>Automation Studio, Journey Builder</td><td>Flow Builder, Agentforce</td></tr>
+          <tr><td>웹 채널</td><td>CloudPages</td><td>Experience Cloud</td></tr>
+          <tr><td>개인화</td><td>AMPscript, Einstein (추가)</td><td>Salesforce Personalization (기본)</td></tr>
+          <tr><td>AI 통합</td><td>Einstein 기능 별도 추가</td><td>Agentforce 기본 탑재</td></tr>
+          <tr><td>개발 요구</td><td>AMPscript, SSJS 등 코딩 필요</td><td>로우코드 (Flow Builder) 중심</td></tr>
+          <tr><td>Analytics</td><td>Intelligence Reports (별도)</td><td>Marketing Intelligence (통합)</td></tr>
+          <tr><td>CRM 연동</td><td>Marketing Cloud Connect (별도)</td><td>네이티브 CRM 통합</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <section id="migration">
+    <h2><span class="icon">🔄</span> MCE에서 MCN으로 전환</h2>
+    <div class="callout note">
+      <span class="callout-icon">ℹ️</span>
+      <div class="callout-body"><strong>즉시 전환이 아닌 점진적 도입을 권장</strong>Salesforce는 MCE에서 MCN으로의 빅뱅 전환보다 병행 운영을 통한 점진적 전환을 권장합니다. MCE의 기존 이메일 프로그램은 MCN 전환과 무관하게 계속 운영됩니다.</div>
+    </div>
+
+    <h3>전환 시 주요 검토 항목</h3>
+    <ul>
+      <li><strong>Data Extension → DMO 매핑</strong> — 기존 DE 구조를 Data 360 DMO 스키마로 변환</li>
+      <li><strong>Journey Builder → Flow Builder 재설계</strong> — Journey의 로직을 Flow로 재구성 필요</li>
+      <li><strong>AMPscript → Salesforce Formula 전환</strong> — 동적 콘텐츠 로직 재작성</li>
+      <li><strong>CloudPages → Experience Cloud 이전</strong> — 랜딩 페이지·폼 재구성</li>
+      <li><strong>추적 코드 마이그레이션</strong> — Collect JS → Interactions SDK 교체</li>
+    </ul>
+
+    <h3>권장 전환 순서</h3>
+    <ol class="steps">
+      <li><strong>Data 360 활성화 + Data Kit 설치</strong> — 데이터 레이어 구축 선행</li>
+      <li><strong>새 채널(SMS·WhatsApp) MCN으로 먼저 시작</strong> — 리스크 낮은 신규 채널부터 MCN 방식 적용</li>
+      <li><strong>세그먼트 병행 운영</strong> — MCE Audience Builder와 Data Cloud Segment를 동시에 테스트</li>
+      <li><strong>신규 캠페인부터 MCN 적용</strong> — 기존 MCE 캠페인은 유지하고 신규 캠페인을 MCN으로 실행</li>
+      <li><strong>MCE 캠페인 순차 마이그레이션</strong> — 성과가 낮거나 단순한 캠페인부터 순서대로 이전</li>
+    </ol>
+  </section>
+</main>
+</div>
+
+<script>
+const sections = document.querySelectorAll('section[id], h3[id]');
+const tocItems = document.querySelectorAll('.toc-item');
+const observer = new IntersectionObserver(entries => {
+  entries.forEach(e => {
+    if(e.isIntersecting){
+      tocItems.forEach(t => t.classList.remove('active'));
+      const link = document.querySelector('.toc-item[href="#'+e.target.id+'"]');
+      if(link) link.classList.add('active');
+    }
+  });
+}, {rootMargin:'-20% 0px -70% 0px'});
+sections.forEach(s => observer.observe(s));
+</script>
+</body>
+</html>
