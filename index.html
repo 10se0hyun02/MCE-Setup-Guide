@@ -332,26 +332,66 @@ mark{background:#FAEEDA;color:#633806;border-radius:2px;padding:0 2px;font-style
         <div class="section-desc">구축 착수 전 반드시 확인해야 할 항목입니다. 이 단계가 완료되지 않으면 이후 설정이 지연될 수 있습니다.</div>
         <div class="step-progress">
           <div class="step-progress-track"><div class="step-progress-fill" id="prog-s0" style="width:0%"></div></div>
-          <span class="step-progress-label" id="prog-label-s0">0 / 5</span>
+          <span class="step-progress-label" id="prog-label-s0">0 / 12</span>
         </div>
       </div>
 
       <div class="block">
         <div class="block-title">☑ 체크리스트</div>
         <div class="check-item" onclick="toggle(this)"><input type="checkbox"><label>클라이언트 계약서 및 온보딩 정보 수령 완료</label></div>
-        <div class="check-item" onclick="toggle(this)"><input type="checkbox"><label>Salesforce 파트너 포털에서 org 생성 요청</label></div>
-        <div class="check-item" onclick="toggle(this)"><input type="checkbox"><label>MCE 에디션 확인 (Pro / Corporate / Enterprise)</label></div>
-        <div class="check-item" onclick="toggle(this)"><input type="checkbox"><label>발송 채널 확인 (Email / SMS / Push)</label></div>
-        <div class="check-item" onclick="toggle(this)"><input type="checkbox"><label>클라이언트 도메인 및 DNS 정보 수집</label></div>
+        <div class="check-item" onclick="toggle(this)"><input type="checkbox"><label>Salesforce 파트너 포털에서 Org 프로비저닝 요청</label></div>
+        <div class="check-item" onclick="toggle(this)"><input type="checkbox"><label>MCE 에디션 확인 (Basic / Pro / Corporate / Enterprise)</label></div>
+        <div class="check-item" onclick="toggle(this)"><input type="checkbox"><label>계약 채널 확인 (Email / SMS / MobileConnect / Push / WhatsApp)</label></div>
+        <div class="check-item" onclick="toggle(this)"><input type="checkbox"><label>SAP(Sender Authentication Package) 포함 여부 확인</label></div>
+        <div class="check-item" onclick="toggle(this)"><input type="checkbox"><label>전용 IP(Dedicated IP) 사용 여부 결정</label></div>
+        <div class="check-item" onclick="toggle(this)"><input type="checkbox"><label>Private Domain 사용 여부 및 도메인 확정</label></div>
+        <div class="check-item" onclick="toggle(this)"><input type="checkbox"><label>DNS 담당자 연락처 확보 (SPF / DKIM / DMARC / CNAME 레코드 추가 필요)</label></div>
+        <div class="check-item" onclick="toggle(this)"><input type="checkbox"><label>발송 볼륨 및 IP Warming 계획 수립 (전용 IP 사용 시 필수)</label></div>
+        <div class="check-item" onclick="toggle(this)"><input type="checkbox"><label>수신거부 관리 방식 결정 (기본 Subscription Center vs 커스텀 페이지)</label></div>
+        <div class="check-item" onclick="toggle(this)"><input type="checkbox"><label>CAN-SPAM / GDPR / 정보통신망법 준수 여부 및 물리적 주소 확인</label></div>
+        <div class="check-item" onclick="toggle(this)"><input type="checkbox"><label>CRM 연동 여부 결정 (Marketing Cloud Connect 필요 시 사전 협의)</label></div>
       </div>
 
+      <div class="block">
+        <div class="block-title">📋 MCE 에디션 비교</div>
+        <table class="data-table">
+          <thead><tr><th>에디션</th><th>BU 수</th><th>주요 기능</th><th>비고</th></tr></thead>
+          <tbody>
+            <tr><td>Basic</td><td>1</td><td>Email 발송, 기본 자동화</td><td>소규모 단일 브랜드</td></tr>
+            <tr><td>Pro</td><td>1</td><td>Basic + A/B Test, 고급 세그멘테이션</td><td>중소 규모</td></tr>
+            <tr><td>Corporate</td><td>최대 5</td><td>Pro + 멀티 BU, Content Builder 공유</td><td>다브랜드 운영</td></tr>
+            <tr><td>Enterprise</td><td>무제한</td><td>Corporate + Distributed Sending, SSO</td><td>대기업, 대리점 모델</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="block">
+        <div class="block-title">📋 초기 정보 수집 항목</div>
+        <table class="data-table">
+          <thead><tr><th>항목</th><th>예시</th><th>비고</th></tr></thead>
+          <tbody>
+            <tr><td>회사명 (법인명)</td><td>Sony Korea Co., Ltd.</td><td>CAN-SPAM 푸터 사용</td></tr>
+            <tr><td>물리적 주소</td><td>서울시 강남구 ...</td><td>법적 필수 (CAN-SPAM/CASL)</td></tr>
+            <tr><td>타임존</td><td>Asia/Seoul (KST, UTC+9)</td><td><strong>생성 후 변경 불가</strong></td></tr>
+            <tr><td>문자셋</td><td>UTF-8</td><td><strong>생성 후 변경 불가</strong></td></tr>
+            <tr><td>발신 도메인</td><td>mail.brand.co.kr</td><td>Private Domain용</td></tr>
+            <tr><td>발신자 이름</td><td>소니코리아</td><td>From Name</td></tr>
+            <tr><td>Reply-to 이메일</td><td>noreply@brand.co.kr</td><td>RMM 연동</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="callout danger">
+        <span class="callout-icon">🚫</span>
+        <div><strong>변경 불가 항목:</strong> MCE Org 생성 후 타임존, 문자셋은 절대 변경 불가입니다. 잘못 설정 시 새 Org 재생성 필요 — 반드시 착수 전 클라이언트와 서면 확인하세요.</div>
+      </div>
       <div class="callout warning">
         <span class="callout-icon">⚠️</span>
-        <div><strong>주의:</strong> MCE org 생성 후 초기 설정(타임존, 문자셋 등)은 변경 불가입니다. 착수 전 클라이언트와 반드시 확인하세요.</div>
+        <div><strong>IP Warming 필수:</strong> 전용 IP(Dedicated IP) 사용 시 워밍 없이 대량 발송하면 Gmail/Yahoo 스팸 필터에 등록됩니다. 최소 4~6주 워밍 계획을 수립하세요. (1일차 500건 → 점진적 증가)</div>
       </div>
       <div class="callout tip">
         <span class="callout-icon">💡</span>
-        <div><strong>팁:</strong> 클라이언트 담당자에게 초기 정보 수집 체크리스트를 별도 문서로 전달하면 누락을 방지할 수 있습니다.</div>
+        <div><strong>SAP 미포함 시:</strong> Shared IP + Shared Domain으로 발송되어 다른 고객의 평판에 영향을 받습니다. 브랜드 도메인 보호 및 deliverability를 위해 SAP를 강력히 권장합니다.</div>
       </div>
     </div>
 
@@ -363,32 +403,54 @@ mark{background:#FAEEDA;color:#633806;border-radius:2px;padding:0 2px;font-style
         <div class="section-desc">Parent BU와 Child BU 구조를 설계하고 기본 계정 정보를 구성합니다.</div>
         <div class="step-progress">
           <div class="step-progress-track"><div class="step-progress-fill" id="prog-s1" style="width:0%"></div></div>
-          <span class="step-progress-label" id="prog-label-s1">0 / 4</span>
+          <span class="step-progress-label" id="prog-label-s1">0 / 9</span>
         </div>
       </div>
       <div class="block">
         <div class="block-title">☑ 체크리스트</div>
-        <div class="check-item" onclick="toggle(this)"><input type="checkbox"><label>Parent Account 기본 정보 입력 (회사명, 타임존, 문자셋)</label></div>
-        <div class="check-item" onclick="toggle(this)"><input type="checkbox"><label>Child BU 생성 및 네이밍 컨벤션 설정</label></div>
-        <div class="check-item" onclick="toggle(this)"><input type="checkbox"><label>각 BU별 기본 From Name / From Email 설정</label></div>
-        <div class="check-item" onclick="toggle(this)"><input type="checkbox"><label>Private Domain 연결 (있는 경우)</label></div>
+        <div class="check-item" onclick="toggle(this)"><input type="checkbox"><label>Admin &gt; Account &gt; Account Details — 회사명, 물리주소, 타임존, 문자셋 입력</label></div>
+        <div class="check-item" onclick="toggle(this)"><input type="checkbox"><label>문자셋 UTF-8 확인 (한국어 발송 필수)</label></div>
+        <div class="check-item" onclick="toggle(this)"><input type="checkbox"><label>Child BU 생성 및 네이밍 컨벤션 적용 ([브랜드명]_[채널] 형태 권장)</label></div>
+        <div class="check-item" onclick="toggle(this)"><input type="checkbox"><label>각 BU별 Default From Name / From Email 설정</label></div>
+        <div class="check-item" onclick="toggle(this)"><input type="checkbox"><label>Private Domain CNAME DNS 레코드 추가 (DNS 담당자 요청)</label></div>
+        <div class="check-item" onclick="toggle(this)"><input type="checkbox"><label>Admin &gt; Account &gt; Business Units에서 Private Domain 연결 및 인증 완료</label></div>
+        <div class="check-item" onclick="toggle(this)"><input type="checkbox"><label>SAP 링크 도메인 설정 (이미지 호스팅 및 클릭 추적 도메인)</label></div>
+        <div class="check-item" onclick="toggle(this)"><input type="checkbox"><label>Reply Mail Management (RMM) 설정 — 바운스/부재중 자동 처리 규칙 구성</label></div>
+        <div class="check-item" onclick="toggle(this)"><input type="checkbox"><label>Subscription Center URL 확인 및 커스텀 페이지 연결 (필요 시)</label></div>
       </div>
 
       <div class="block">
         <div class="block-title">📋 BU 구성 예시</div>
         <table class="data-table">
-          <thead><tr><th>BU 이름</th><th>용도</th><th>타임존</th></tr></thead>
+          <thead><tr><th>BU 이름</th><th>용도</th><th>타임존</th><th>발송</th></tr></thead>
           <tbody>
-            <tr><td>[클라이언트명]_Parent</td><td>관리용 (발송 X)</td><td>KST (Asia/Seoul)</td></tr>
-            <tr><td>[클라이언트명]_Email</td><td>이메일 발송</td><td>KST (Asia/Seoul)</td></tr>
-            <tr><td>[클라이언트명]_SMS</td><td>SMS 발송</td><td>KST (Asia/Seoul)</td></tr>
+            <tr><td>[브랜드]_Parent</td><td>관리 전용 (콘텐츠 공유, 사용자 관리)</td><td>Asia/Seoul</td><td>X</td></tr>
+            <tr><td>[브랜드]_Email</td><td>이메일 발송</td><td>Asia/Seoul</td><td>O</td></tr>
+            <tr><td>[브랜드]_SMS</td><td>SMS 발송 (MobileConnect)</td><td>Asia/Seoul</td><td>O</td></tr>
+            <tr><td>[브랜드]_Trans</td><td>트랜잭션 발송 전용 (주문확인 등)</td><td>Asia/Seoul</td><td>O</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="block">
+        <div class="block-title">📋 Private Domain DNS 레코드 설정</div>
+        <table class="data-table">
+          <thead><tr><th>레코드 타입</th><th>호스트명 (예시)</th><th>값</th><th>용도</th></tr></thead>
+          <tbody>
+            <tr><td>CNAME</td><td>mail.brand.co.kr</td><td>[SAP 제공 호스트명].exacttarget.com</td><td>Private Domain (링크/이미지)</td></tr>
+            <tr><td>TXT</td><td>@</td><td>v=spf1 include:cust-spf.exacttarget.com ~all</td><td>SPF</td></tr>
+            <tr><td>TXT</td><td>_dmarc</td><td>v=DMARC1; p=none; rua=mailto:dmarc@brand.co.kr</td><td>DMARC</td></tr>
           </tbody>
         </table>
       </div>
 
       <div class="callout danger">
         <span class="callout-icon">🚫</span>
-        <div><strong>중요:</strong> 타임존은 생성 후 변경 불가입니다. KST(Asia/Seoul)로 설정 후, Journey Builder 날짜 조건에서 UTC+9 오프셋을 별도 처리해야 합니다.</div>
+        <div><strong>타임존 변경 불가:</strong> BU 생성 후 타임존 수정 불가입니다. KST(Asia/Seoul) 설정 시 Journey Builder에서 날짜 비교 조건에 UTC+9 오프셋을 별도 반영해야 합니다.</div>
+      </div>
+      <div class="callout warning">
+        <span class="callout-icon">⚠️</span>
+        <div><strong>Private Domain 미설정 시:</strong> 이메일 내 이미지/링크가 <code>image.exacttarget.com</code> 같은 Salesforce 공유 도메인으로 표시됩니다. 브랜드 신뢰도 저하 및 피싱 의심 위험이 있으므로 반드시 설정을 권장합니다.</div>
       </div>
     </div>
 
@@ -400,19 +462,51 @@ mark{background:#FAEEDA;color:#633806;border-radius:2px;padding:0 2px;font-style
         <div class="section-desc">MCE 사용자 계정을 생성하고 Role별 권한을 부여합니다.</div>
         <div class="step-progress">
           <div class="step-progress-track"><div class="step-progress-fill" id="prog-s2" style="width:0%"></div></div>
-          <span class="step-progress-label" id="prog-label-s2">0 / 4</span>
+          <span class="step-progress-label" id="prog-label-s2">0 / 8</span>
         </div>
       </div>
       <div class="block">
         <div class="block-title">☑ 체크리스트</div>
-        <div class="check-item" onclick="toggle(this)"><input type="checkbox"><label>Admin 계정 생성 및 MFA 설정</label></div>
-        <div class="check-item" onclick="toggle(this)"><input type="checkbox"><label>운영자 Role 생성 (클라이언트 요청 권한 기준)</label></div>
-        <div class="check-item" onclick="toggle(this)"><input type="checkbox"><label>BU별 접근 권한 매핑</label></div>
-        <div class="check-item" onclick="toggle(this)"><input type="checkbox"><label>API 연동용 서비스 계정 생성 (필요시)</label></div>
+        <div class="check-item" onclick="toggle(this)"><input type="checkbox"><label>Setup &gt; Users &gt; Users — 관리자 계정 생성</label></div>
+        <div class="check-item" onclick="toggle(this)"><input type="checkbox"><label>Setup &gt; Security &gt; Multi-Factor Authentication — MFA 정책 활성화</label></div>
+        <div class="check-item" onclick="toggle(this)"><input type="checkbox"><label>System Role 배정 (Marketing Cloud Administrator 등 공식 5개 롤 중 선택)</label></div>
+        <div class="check-item" onclick="toggle(this)"><input type="checkbox"><label>Setup &gt; Users &gt; Roles — 커스텀 Role 생성 (클라이언트 요청 권한 기준)</label></div>
+        <div class="check-item" onclick="toggle(this)"><input type="checkbox"><label>BU별 접근 권한 매핑 (Business Unit Access 탭에서 설정)</label></div>
+        <div class="check-item" onclick="toggle(this)"><input type="checkbox"><label>SSO 설정 (Setup &gt; Platform Tools &gt; Apps &gt; SSO Settings, 필요 시)</label></div>
+        <div class="check-item" onclick="toggle(this)"><input type="checkbox"><label>API 통합용 서비스 계정 생성 및 Installed Package 발급 (Setup &gt; Platform Tools &gt; Apps &gt; Installed Packages)</label></div>
+        <div class="check-item" onclick="toggle(this)"><input type="checkbox"><label>비밀번호 정책 설정 확인 (Setup &gt; Security &gt; Security Settings)</label></div>
       </div>
+
+      <div class="block">
+        <div class="block-title">📋 공식 System Role (변경 불가)</div>
+        <table class="data-table">
+          <thead><tr><th>Role</th><th>설명</th><th>주요 권한</th></tr></thead>
+          <tbody>
+            <tr><td>Marketing Cloud Administrator</td><td>최고 관리자</td><td>계정 설정, 사용자 관리, 모든 기능 접근</td></tr>
+            <tr><td>Marketing Cloud Viewer</td><td>읽기 전용</td><td>콘텐츠/보고서 조회만 가능, 발송 불가</td></tr>
+            <tr><td>Marketing Cloud Channel Manager</td><td>채널 운영자</td><td>이메일/SMS 발송, 여정 관리 (계정 설정 제외)</td></tr>
+            <tr><td>Marketing Cloud Security Administrator</td><td>보안 관리자</td><td>사용자 생성, 권한 관리, SSO/MFA 설정</td></tr>
+            <tr><td>Marketing Cloud Content Editor/Publisher</td><td>콘텐츠 담당</td><td>콘텐츠 생성/편집/발행, 발송 승인</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="block">
+        <div class="block-title">📋 API 연동 계정 설정 (Installed Package)</div>
+        <table class="data-table">
+          <thead><tr><th>항목</th><th>설정값</th><th>비고</th></tr></thead>
+          <tbody>
+            <tr><td>Package 이름</td><td>[프로젝트명]_API_Integration</td><td>Setup &gt; Installed Packages &gt; New</td></tr>
+            <tr><td>Component 타입</td><td>API Integration</td><td>Server-to-Server OAuth 선택</td></tr>
+            <tr><td>Scope</td><td>Data &gt; Data Extensions (Read/Write), Contacts (Read/Write)</td><td>최소 필요 권한만 선택</td></tr>
+            <tr><td>인증 방식</td><td>OAuth 2.0 Client Credentials</td><td>Client ID / Secret 안전 보관 필수</td></tr>
+          </tbody>
+        </table>
+      </div>
+
       <div class="callout note">
         <span class="callout-icon">📌</span>
-        <div>클라이언트 사용자 권한은 최소 권한 원칙으로 시작하고, 필요 시 점진적으로 확대하는 방식을 권장합니다.</div>
+        <div><strong>최소 권한 원칙:</strong> 클라이언트 운영자에게 처음부터 Administrator 롤을 부여하지 마세요. Channel Manager로 시작 후 필요 시 점진적으로 확대하는 방식을 권장합니다.</div>
       </div>
     </div>
 
@@ -424,26 +518,66 @@ mark{background:#FAEEDA;color:#633806;border-radius:2px;padding:0 2px;font-style
         <div class="section-desc">발송에 필요한 DE 구조를 설계하고 생성합니다.</div>
         <div class="step-progress">
           <div class="step-progress-track"><div class="step-progress-fill" id="prog-s3" style="width:0%"></div></div>
-          <span class="step-progress-label" id="prog-label-s3">0 / 4</span>
+          <span class="step-progress-label" id="prog-label-s3">0 / 10</span>
         </div>
       </div>
       <div class="block">
         <div class="block-title">☑ 체크리스트</div>
-        <div class="check-item" onclick="toggle(this)"><input type="checkbox"><label>Master DE 스키마 정의</label></div>
-        <div class="check-item" onclick="toggle(this)"><input type="checkbox"><label>발송 대상 DE 설계 (Sendable, 관계 키 설정)</label></div>
-        <div class="check-item" onclick="toggle(this)"><input type="checkbox"><label>수신거부 DE 설계 및 AllSubscribers 연동 확인</label></div>
-        <div class="check-item" onclick="toggle(this)"><input type="checkbox"><label>폴더 구조 설계 (계정명 > 용도별)</label></div>
+        <div class="check-item" onclick="toggle(this)"><input type="checkbox"><label>DE 타입 결정 (Standard / Filtered / Random / Synchronized)</label></div>
+        <div class="check-item" onclick="toggle(this)"><input type="checkbox"><label>Master DE 스키마 정의 (필드명, 타입, 길이, Nullable, 기본값)</label></div>
+        <div class="check-item" onclick="toggle(this)"><input type="checkbox"><label>Sendable DE 지정 — Email Address 필드 설정 + Subscriber Key 연결 (All Subscribers)</label></div>
+        <div class="check-item" onclick="toggle(this)"><input type="checkbox"><label>Primary Key 설정 (ContactKey 기준, 중복 방지)</label></div>
+        <div class="check-item" onclick="toggle(this)"><input type="checkbox"><label>데이터 보존 정책(Retention Policy) 설정 — 개별 레코드 또는 DE 전체 삭제 주기</label></div>
+        <div class="check-item" onclick="toggle(this)"><input type="checkbox"><label>공유 범위 설정 (Public: 전체 BU 공유 / Private: 현재 BU만)</label></div>
+        <div class="check-item" onclick="toggle(this)"><input type="checkbox"><label>AllSubscribers 수신거부 연동 확인 (Commercial 발송 시 자동 제외)</label></div>
+        <div class="check-item" onclick="toggle(this)"><input type="checkbox"><label>폴더 구조 설계 (루트 &gt; [브랜드] &gt; [용도] 계층 권장)</label></div>
+        <div class="check-item" onclick="toggle(this)"><input type="checkbox"><label>샘플 데이터로 Import 테스트 (CSV 또는 API)</label></div>
+        <div class="check-item" onclick="toggle(this)"><input type="checkbox"><label>Synchronized DE 설정 (Marketing Cloud Connect 사용 시 — CRM 오브젝트 선택)</label></div>
       </div>
 
       <div class="block">
-        <div class="block-title">📋 기본 DE 필드 구성</div>
+        <div class="block-title">📋 DE 타입 비교</div>
+        <table class="data-table">
+          <thead><tr><th>타입</th><th>생성 방식</th><th>용도</th><th>비고</th></tr></thead>
+          <tbody>
+            <tr><td>Standard</td><td>수동 생성</td><td>마스터 데이터, 발송 대상</td><td>가장 일반적</td></tr>
+            <tr><td>Filtered</td><td>Source DE 기반 필터</td><td>세그먼트 (조건 기반 추출)</td><td>Automation 새로고침 필요</td></tr>
+            <tr><td>Random</td><td>Source DE 기반 랜덤</td><td>A/B 테스트, 샘플링</td><td>비율 또는 수량 지정</td></tr>
+            <tr><td>Synchronized</td><td>CRM 오브젝트 동기화</td><td>Salesforce CRM 데이터 연동</td><td>Marketing Cloud Connect 필요</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="block">
+        <div class="block-title">📋 필드 타입 레퍼런스</div>
+        <table class="data-table">
+          <thead><tr><th>타입</th><th>최대 길이</th><th>용도</th></tr></thead>
+          <tbody>
+            <tr><td>Text</td><td>4,000자</td><td>이름, 코드 등 일반 문자열</td></tr>
+            <tr><td>Number</td><td>-</td><td>정수 (소수점 없음)</td></tr>
+            <tr><td>Decimal</td><td>소수점 18자리</td><td>금액, 비율 등</td></tr>
+            <tr><td>EmailAddress</td><td>254자</td><td>이메일 주소 (형식 검증 자동)</td></tr>
+            <tr><td>Phone</td><td>50자</td><td>전화번호</td></tr>
+            <tr><td>Date</td><td>-</td><td>날짜 (시간 없음)</td></tr>
+            <tr><td>Boolean</td><td>-</td><td>True/False (0/1)</td></tr>
+            <tr><td>Locale</td><td>-</td><td>언어/지역 코드 (ko-KR 등)</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="block">
+        <div class="block-title">📋 Master DE 기본 필드 구성</div>
         <table class="data-table">
           <thead><tr><th>필드명</th><th>타입</th><th>필수</th><th>설명</th></tr></thead>
           <tbody>
-            <tr><td>ContactKey</td><td>Text(36)</td><td><span class="tag required">필수</span></td><td>PK, Subscriber Key</td></tr>
-            <tr><td>EmailAddress</td><td>EmailAddress</td><td><span class="tag required">필수</span></td><td>발송 이메일</td></tr>
-            <tr><td>Name</td><td>Text(100)</td><td><span class="tag optional">선택</span></td><td>수신자 이름</td></tr>
-            <tr><td>EmailOptIn</td><td>Boolean</td><td><span class="tag required">필수</span></td><td>이메일 수신 동의</td></tr>
+            <tr><td>ContactKey</td><td>Text(36)</td><td><span class="tag required">필수</span></td><td>PK, Subscriber Key와 동일하게 설정</td></tr>
+            <tr><td>EmailAddress</td><td>EmailAddress</td><td><span class="tag required">필수</span></td><td>Sendable 필드 — 발송 이메일 주소</td></tr>
+            <tr><td>Name</td><td>Text(100)</td><td><span class="tag optional">선택</span></td><td>수신자 이름 (AMPScript 개인화용)</td></tr>
+            <tr><td>EmailOptIn</td><td>Boolean</td><td><span class="tag required">필수</span></td><td>이메일 수신 동의 여부</td></tr>
+            <tr><td>OptInDate</td><td>Date</td><td><span class="tag required">필수</span></td><td>동의 일시 (법적 증빙)</td></tr>
+            <tr><td>IsActive</td><td>Boolean</td><td><span class="tag required">필수</span></td><td>활성 회원 여부</td></tr>
+            <tr><td>MemberGrade</td><td>Text(20)</td><td><span class="tag optional">선택</span></td><td>회원 등급 (세그멘테이션용)</td></tr>
+            <tr><td>LastPurchaseDate</td><td>Date</td><td><span class="tag optional">선택</span></td><td>최근 구매일 (휴면 분류용)</td></tr>
             <tr><td>CreatedDate</td><td>Date</td><td><span class="tag system">시스템</span></td><td>레코드 생성일</td></tr>
             <tr><td>UpdatedDate</td><td>Date</td><td><span class="tag system">시스템</span></td><td>최종 수정일</td></tr>
           </tbody>
@@ -451,10 +585,10 @@ mark{background:#FAEEDA;color:#633806;border-radius:2px;padding:0 2px;font-style
       </div>
 
       <div class="block">
-        <div class="block-title">💻 SQL — 발송 대상 추출</div>
+        <div class="block-title">💻 SQL — 발송 대상 추출 (수신거부 제외)</div>
         <div class="code-block">
           <div class="code-header">
-            <span class="code-lang">SQL (Query Studio)</span>
+            <span class="code-lang">SQL (SFMC Query Studio)</span>
             <button class="copy-btn" onclick="copyCode(this)">
               <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
               복사
@@ -463,11 +597,41 @@ mark{background:#FAEEDA;color:#633806;border-radius:2px;padding:0 2px;font-style
           <div class="code-body">SELECT
     m.ContactKey,
     m.EmailAddress,
-    m.Name
+    m.Name,
+    m.MemberGrade
+FROM [Master_DE] m
+-- AllSubscribers 수신거부자 제외 (Commercial 발송 시 필수)
+LEFT JOIN _Subscribers s
+    ON m.EmailAddress = s.EmailAddress
+WHERE m.EmailOptIn = 1
+  AND m.IsActive = 1
+  AND m.EmailAddress IS NOT NULL
+  AND (s.Status IS NULL OR s.Status = 'Active')</div>
+        </div>
+      </div>
+
+      <div class="block">
+        <div class="block-title">💻 SQL — 최근 30일 미오픈 구독자 추출</div>
+        <div class="code-block">
+          <div class="code-header">
+            <span class="code-lang">SQL (SFMC Query Studio)</span>
+            <button class="copy-btn" onclick="copyCode(this)">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+              복사
+            </button>
+          </div>
+          <div class="code-body">-- _Open 시스템 DE 활용 (Tracking 데이터)
+SELECT DISTINCT
+    m.ContactKey,
+    m.EmailAddress
 FROM [Master_DE] m
 WHERE m.EmailOptIn = 1
   AND m.IsActive = 1
-  AND m.EmailAddress IS NOT NULL</div>
+  AND m.ContactKey NOT IN (
+    SELECT SubscriberKey
+    FROM _Open
+    WHERE EventDate >= DATEADD(DAY, -30, GETDATE())
+  )</div>
         </div>
       </div>
     </div>
@@ -480,18 +644,50 @@ WHERE m.EmailOptIn = 1
         <div class="section-desc">Contact Builder에서 데이터 관계를 설정하고 Attribute Group을 구성합니다.</div>
         <div class="step-progress">
           <div class="step-progress-track"><div class="step-progress-fill" id="prog-s4" style="width:0%"></div></div>
-          <span class="step-progress-label" id="prog-label-s4">0 / 3</span>
+          <span class="step-progress-label" id="prog-label-s4">0 / 6</span>
         </div>
       </div>
       <div class="block">
         <div class="block-title">☑ 체크리스트</div>
-        <div class="check-item" onclick="toggle(this)"><input type="checkbox"><label>Attribute Group 생성 및 DE 연결</label></div>
-        <div class="check-item" onclick="toggle(this)"><input type="checkbox"><label>Population 설정 (Master DE 지정)</label></div>
-        <div class="check-item" onclick="toggle(this)"><input type="checkbox"><label>관계 키 (Subscriber Key) 매핑 확인</label></div>
+        <div class="check-item" onclick="toggle(this)"><input type="checkbox"><label>Contact Builder &gt; Data Designer 접속 확인</label></div>
+        <div class="check-item" onclick="toggle(this)"><input type="checkbox"><label>Attribute Group 생성 및 이름 설정 (예: [브랜드]_Contact_Data)</label></div>
+        <div class="check-item" onclick="toggle(this)"><input type="checkbox"><label>Master DE를 Attribute Group에 연결 (Population 루트 DE 지정)</label></div>
+        <div class="check-item" onclick="toggle(this)"><input type="checkbox"><label>추가 DE 연결 및 관계 정의 (Contact Key 기준 One-to-One / One-to-Many)</label></div>
+        <div class="check-item" onclick="toggle(this)"><input type="checkbox"><label>Contact Key ↔ Subscriber Key 매핑 일치 확인</label></div>
+        <div class="check-item" onclick="toggle(this)"><input type="checkbox"><label>Journey Builder에서 Contact Data 속성 조회 테스트</label></div>
       </div>
+
+      <div class="block">
+        <div class="block-title">📋 Contact 데이터 모델 구조</div>
+        <table class="data-table">
+          <thead><tr><th>계층</th><th>구성 요소</th><th>설명</th></tr></thead>
+          <tbody>
+            <tr><td>1단계</td><td>All Contacts</td><td>MCE의 전체 연락처 pool (자동 관리)</td></tr>
+            <tr><td>2단계</td><td>Population</td><td>Attribute Group의 루트 — Master DE 지정</td></tr>
+            <tr><td>3단계</td><td>Attribute Group</td><td>DE 묶음 단위 (Journey Builder에서 참조)</td></tr>
+            <tr><td>4단계</td><td>DE (연결됨)</td><td>Contact Key로 조인된 개별 Data Extension</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="block">
+        <div class="block-title">📋 DE 관계 유형</div>
+        <table class="data-table">
+          <thead><tr><th>관계 유형</th><th>설명</th><th>예시</th></tr></thead>
+          <tbody>
+            <tr><td>One-to-One</td><td>Contact당 레코드 1개</td><td>회원정보 DE, 등급 DE</td></tr>
+            <tr><td>One-to-Many</td><td>Contact당 레코드 여러 개</td><td>구매이력 DE, 방문이력 DE</td></tr>
+          </tbody>
+        </table>
+      </div>
+
       <div class="callout warning">
         <span class="callout-icon">⚠️</span>
-        <div><strong>주의:</strong> Journey Builder에서 Contact Data를 사용하려면 Attribute Group이 반드시 설정되어 있어야 합니다.</div>
+        <div><strong>Journey Builder 필수 조건:</strong> Decision Split에서 Contact 속성(회원등급, 구매일 등)을 조건으로 사용하려면 해당 DE가 반드시 Attribute Group에 연결되어 있어야 합니다. 미설정 시 속성값이 조회되지 않습니다.</div>
+      </div>
+      <div class="callout note">
+        <span class="callout-icon">📌</span>
+        <div>Contact 삭제 시 진행 중인 Journey의 해당 Contact 처리 방침을 사전에 결정하세요. 삭제된 Contact는 Journey에서 자동 제거됩니다.</div>
       </div>
     </div>
 
@@ -503,15 +699,54 @@ WHERE m.EmailOptIn = 1
         <div class="section-desc">발신자 이름과 이메일 주소를 설정합니다.</div>
         <div class="step-progress">
           <div class="step-progress-track"><div class="step-progress-fill" id="prog-s5" style="width:0%"></div></div>
-          <span class="step-progress-label" id="prog-label-s5">0 / 4</span>
+          <span class="step-progress-label" id="prog-label-s5">0 / 8</span>
         </div>
       </div>
       <div class="block">
         <div class="block-title">☑ 체크리스트</div>
-        <div class="check-item" onclick="toggle(this)"><input type="checkbox"><label>From Name 설정 (클라이언트 확인 필요)</label></div>
-        <div class="check-item" onclick="toggle(this)"><input type="checkbox"><label>From Email 인증 (SAP 또는 도메인 인증)</label></div>
-        <div class="check-item" onclick="toggle(this)"><input type="checkbox"><label>Reply-to 설정</label></div>
-        <div class="check-item" onclick="toggle(this)"><input type="checkbox"><label>Default Sender Profile 지정</label></div>
+        <div class="check-item" onclick="toggle(this)"><input type="checkbox"><label>Email Studio &gt; Admin &gt; Sender Profiles 접속</label></div>
+        <div class="check-item" onclick="toggle(this)"><input type="checkbox"><label>From Name 설정 (클라이언트 브랜드명으로 확인 후 등록)</label></div>
+        <div class="check-item" onclick="toggle(this)"><input type="checkbox"><label>From Email 설정 (Private Domain 기반 주소 사용)</label></div>
+        <div class="check-item" onclick="toggle(this)"><input type="checkbox"><label>SPF 레코드 추가: <code>v=spf1 include:cust-spf.exacttarget.com ~all</code></label></div>
+        <div class="check-item" onclick="toggle(this)"><input type="checkbox"><label>DKIM 활성화 확인 (SAP에 포함 — Admin &gt; Account &gt; Sender Authentication 확인)</label></div>
+        <div class="check-item" onclick="toggle(this)"><input type="checkbox"><label>DMARC 정책 설정 — <code>p=none</code>으로 시작 후 단계적 강화</label></div>
+        <div class="check-item" onclick="toggle(this)"><input type="checkbox"><label>Reply-to 이메일 주소 설정 및 RMM 연동</label></div>
+        <div class="check-item" onclick="toggle(this)"><input type="checkbox"><label>Default Sender Profile 지정 (Admin &gt; Account에서 설정)</label></div>
+      </div>
+
+      <div class="block">
+        <div class="block-title">📋 SAP(Sender Authentication Package) 구성 요소</div>
+        <table class="data-table">
+          <thead><tr><th>구성 요소</th><th>설명</th><th>필요 작업</th></tr></thead>
+          <tbody>
+            <tr><td>Private Domain</td><td>브랜드 전용 링크/이미지 도메인</td><td>CNAME DNS 레코드 추가</td></tr>
+            <tr><td>Dedicated IP</td><td>전용 발송 IP (평판 독립)</td><td>IP Warming 계획 수립</td></tr>
+            <tr><td>DKIM</td><td>이메일 서명 인증</td><td>DNS TXT 레코드 자동 설정 (SAP 포함)</td></tr>
+            <tr><td>Custom Unsubscribe Page</td><td>브랜드 커스텀 수신거부 페이지</td><td>클라이언트 URL 연결</td></tr>
+            <tr><td>Reply Mail Management</td><td>바운스/부재중 자동 처리</td><td>RMM 규칙 설정</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="block">
+        <div class="block-title">📋 이메일 인증 레코드 설정</div>
+        <table class="data-table">
+          <thead><tr><th>인증 방식</th><th>DNS 레코드 타입</th><th>값 (예시)</th><th>상태</th></tr></thead>
+          <tbody>
+            <tr><td>SPF</td><td>TXT (@)</td><td>v=spf1 include:cust-spf.exacttarget.com ~all</td><td><span class="tag required">필수</span></td></tr>
+            <tr><td>DKIM</td><td>TXT (SAP 제공)</td><td>SAP 설정 시 자동 구성</td><td><span class="tag required">필수</span></td></tr>
+            <tr><td>DMARC</td><td>TXT (_dmarc)</td><td>v=DMARC1; p=none; rua=mailto:dmarc@brand.co.kr</td><td><span class="tag required">필수</span></td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="callout danger">
+        <span class="callout-icon">🚫</span>
+        <div><strong>Gmail / Yahoo 2024 정책:</strong> 하루 5,000건 이상 발송 시 SPF, DKIM, DMARC 모두 필수입니다. DMARC <code>p=none</code> 이상 미설정 시 수신 차단될 수 있습니다.</div>
+      </div>
+      <div class="callout tip">
+        <span class="callout-icon">💡</span>
+        <div><strong>DMARC 단계적 강화 권장:</strong> <code>p=none</code>(모니터링) → <code>p=quarantine</code>(스팸함) → <code>p=reject</code>(차단) 순으로 리포트 확인 후 단계적으로 강화하세요.</div>
       </div>
     </div>
 
@@ -523,18 +758,54 @@ WHERE m.EmailOptIn = 1
         <div class="section-desc">Commercial / Transactional 분류를 설정합니다.</div>
         <div class="step-progress">
           <div class="step-progress-track"><div class="step-progress-fill" id="prog-s6" style="width:0%"></div></div>
-          <span class="step-progress-label" id="prog-label-s6">0 / 3</span>
+          <span class="step-progress-label" id="prog-label-s6">0 / 7</span>
         </div>
       </div>
       <div class="block">
         <div class="block-title">☑ 체크리스트</div>
-        <div class="check-item" onclick="toggle(this)"><input type="checkbox"><label>Commercial Classification 생성</label></div>
-        <div class="check-item" onclick="toggle(this)"><input type="checkbox"><label>Transactional Classification 생성 (필요시)</label></div>
-        <div class="check-item" onclick="toggle(this)"><input type="checkbox"><label>Delivery Profile 연결</label></div>
+        <div class="check-item" onclick="toggle(this)"><input type="checkbox"><label>Email Studio &gt; Admin &gt; Send Classification 접속</label></div>
+        <div class="check-item" onclick="toggle(this)"><input type="checkbox"><label>Commercial Classification 생성 (마케팅 뉴스레터, 프로모션 발송용)</label></div>
+        <div class="check-item" onclick="toggle(this)"><input type="checkbox"><label>Publication List 생성 및 Subscription Center 연결</label></div>
+        <div class="check-item" onclick="toggle(this)"><input type="checkbox"><label>Delivery Profile 설정 (IP 풀, 헤더/푸터 포함 여부)</label></div>
+        <div class="check-item" onclick="toggle(this)"><input type="checkbox"><label>Transactional Classification 생성 (주문확인, 비밀번호 재설정 등 거래성 발송용)</label></div>
+        <div class="check-item" onclick="toggle(this)"><input type="checkbox"><label>CAN-SPAM 푸터 템플릿 확인 (회사명, 물리적 주소, 수신거부 링크 포함)</label></div>
+        <div class="check-item" onclick="toggle(this)"><input type="checkbox"><label>Default Send Classification 지정</label></div>
+      </div>
+
+      <div class="block">
+        <div class="block-title">📋 Commercial vs Transactional 비교</div>
+        <table class="data-table">
+          <thead><tr><th>항목</th><th>Commercial</th><th>Transactional</th></tr></thead>
+          <tbody>
+            <tr><td>수신거부 적용</td><td>O (All Subscribers 제외)</td><td>X (수신거부 무관 발송)</td></tr>
+            <tr><td>CAN-SPAM 푸터</td><td>필수 (주소 + 수신거부 링크)</td><td>권장 (일부 국가 필수)</td></tr>
+            <tr><td>용도 예시</td><td>뉴스레터, 프로모션, 이벤트</td><td>주문확인, 비밀번호 재설정, 영수증</td></tr>
+            <tr><td>법적 근거</td><td>마케팅 수신 동의 필요</td><td>계약 이행 목적 (동의 불필요)</td></tr>
+            <tr><td>Publication List</td><td>필수</td><td>불필요</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="block">
+        <div class="block-title">📋 Delivery Profile 설정 항목</div>
+        <table class="data-table">
+          <thead><tr><th>항목</th><th>설명</th></tr></thead>
+          <tbody>
+            <tr><td>Header (물리적 주소)</td><td>CAN-SPAM 법적 필수 — 회사 물리주소 포함</td></tr>
+            <tr><td>Footer (수신거부)</td><td>Subscription Center 링크 또는 커스텀 Unsubscribe URL</td></tr>
+            <tr><td>IP Pool</td><td>Dedicated IP 또는 Shared IP 선택</td></tr>
+            <tr><td>Character Set</td><td>UTF-8 (한국어 발송 필수)</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="callout danger">
+        <span class="callout-icon">🚫</span>
+        <div><strong>분류 오용 금지:</strong> 마케팅성 발송에 Transactional 분류를 사용하면 수신거부 의사를 무시한 발송이 되어 스팸법 위반입니다. 반드시 발송 목적에 맞는 분류를 사용하세요.</div>
       </div>
       <div class="callout note">
         <span class="callout-icon">📌</span>
-        <div>Commercial은 수신거부자 제외, Transactional은 수신거부 무관 발송입니다. 클라이언트와 용도를 명확히 구분하세요.</div>
+        <div>Subscription Center URL은 기본 Salesforce 제공 페이지 또는 클라이언트 커스텀 페이지 중 선택합니다. 커스텀 사용 시 AMPScript 또는 REST API로 수신거부 처리 로직 별도 구현 필요.</div>
       </div>
     </div>
 
@@ -546,22 +817,46 @@ WHERE m.EmailOptIn = 1
         <div class="section-desc">데이터 동기화 및 정기 쿼리 자동화를 구성합니다.</div>
         <div class="step-progress">
           <div class="step-progress-track"><div class="step-progress-fill" id="prog-s7" style="width:0%"></div></div>
-          <span class="step-progress-label" id="prog-label-s7">0 / 4</span>
+          <span class="step-progress-label" id="prog-label-s7">0 / 10</span>
         </div>
       </div>
       <div class="block">
         <div class="block-title">☑ 체크리스트</div>
-        <div class="check-item" onclick="toggle(this)"><input type="checkbox"><label>데이터 동기화 Automation 설계</label></div>
-        <div class="check-item" onclick="toggle(this)"><input type="checkbox"><label>Query Activity 작성 및 테스트</label></div>
-        <div class="check-item" onclick="toggle(this)"><input type="checkbox"><label>스케줄 설정 (주기, 시작 시간)</label></div>
-        <div class="check-item" onclick="toggle(this)"><input type="checkbox"><label>에러 알림 설정</label></div>
+        <div class="check-item" onclick="toggle(this)"><input type="checkbox"><label>Automation Studio &gt; Overview — 데이터 동기화 Automation 플로우 설계</label></div>
+        <div class="check-item" onclick="toggle(this)"><input type="checkbox"><label>Import File Activity 설정 (Enhanced FTP/SFTP 경로, 파일명 패턴, 헤더 매핑)</label></div>
+        <div class="check-item" onclick="toggle(this)"><input type="checkbox"><label>Query Activity 작성 및 Target DE 지정 (Overwrite / Append / Update 모드 선택)</label></div>
+        <div class="check-item" onclick="toggle(this)"><input type="checkbox"><label>Query Activity Preview로 결과 건수 사전 검증</label></div>
+        <div class="check-item" onclick="toggle(this)"><input type="checkbox"><label>Email Send Activity 설정 (Sender Profile, Classification, Target DE 연결)</label></div>
+        <div class="check-item" onclick="toggle(this)"><input type="checkbox"><label>Data Extract Activity 설정 (결과 데이터 FTP 추출용, 필요 시)</label></div>
+        <div class="check-item" onclick="toggle(this)"><input type="checkbox"><label>File Transfer Activity 설정 (FTP 파일 이동/압축 해제, 필요 시)</label></div>
+        <div class="check-item" onclick="toggle(this)"><input type="checkbox"><label>Automation 스케줄 설정 (주기, 시작 시간 — KST 기준 명확히 설정)</label></div>
+        <div class="check-item" onclick="toggle(this)"><input type="checkbox"><label>에러 알림 이메일 설정 (Automation Settings &gt; Notifications)</label></div>
+        <div class="check-item" onclick="toggle(this)"><input type="checkbox"><label>최초 수동 실행 후 결과 검증 (Activity별 Status 및 Error Log 확인)</label></div>
       </div>
 
       <div class="block">
-        <div class="block-title">💻 SQL — 휴면 고객 분류</div>
+        <div class="block-title">📋 Automation Studio Activity 유형</div>
+        <table class="data-table">
+          <thead><tr><th>Activity</th><th>기능</th><th>주요 사용 시나리오</th></tr></thead>
+          <tbody>
+            <tr><td>Query Activity</td><td>SFMC SQL 실행 → DE 저장</td><td>세그멘테이션, 데이터 변환</td></tr>
+            <tr><td>Import File Activity</td><td>FTP/SFTP 파일 → DE Import</td><td>CRM 데이터 일배치 동기화</td></tr>
+            <tr><td>Email Send Activity</td><td>DE 대상 이메일 발송</td><td>정기 뉴스레터, 배치 발송</td></tr>
+            <tr><td>Data Extract Activity</td><td>DE 데이터 → FTP 파일 추출</td><td>발송 결과 외부 시스템 전달</td></tr>
+            <tr><td>File Transfer Activity</td><td>FTP 파일 이동/압축 해제</td><td>Import 전 파일 전처리</td></tr>
+            <tr><td>Filter Activity</td><td>Filtered DE 새로고침</td><td>세그먼트 최신화</td></tr>
+            <tr><td>Refresh Group Activity</td><td>Random DE 재생성</td><td>A/B 테스트 그룹 갱신</td></tr>
+            <tr><td>Wait Activity</td><td>지정 시간 대기</td><td>배치 간 시간차 설정</td></tr>
+            <tr><td>Verification Activity</td><td>데이터 검증 조건 확인</td><td>발송 전 대상 건수 안전 검증</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="block">
+        <div class="block-title">💻 SQL — 휴면 고객 분류 (180일 이상 미구매)</div>
         <div class="code-block">
           <div class="code-header">
-            <span class="code-lang">SQL (Query Studio)</span>
+            <span class="code-lang">SQL (SFMC Query Activity)</span>
             <button class="copy-btn" onclick="copyCode(this)">
               <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
               복사
@@ -570,12 +865,47 @@ WHERE m.EmailOptIn = 1
           <div class="code-body">SELECT
     ContactKey,
     EmailAddress,
+    Name,
     LastPurchaseDate,
     DATEDIFF(DAY, LastPurchaseDate, GETDATE()) AS DaysSinceLastPurchase
 FROM [Master_DE]
-WHERE DATEDIFF(DAY, LastPurchaseDate, GETDATE()) >= 180
-  AND IsActive = 1</div>
+WHERE IsActive = 1
+  AND EmailOptIn = 1
+  AND LastPurchaseDate IS NOT NULL
+  AND DATEDIFF(DAY, LastPurchaseDate, GETDATE()) >= 180</div>
         </div>
+      </div>
+
+      <div class="block">
+        <div class="block-title">💻 SQL — 일별 이메일 발송 성과 집계</div>
+        <div class="code-block">
+          <div class="code-header">
+            <span class="code-lang">SQL (SFMC Query Activity — 시스템 DE 활용)</span>
+            <button class="copy-btn" onclick="copyCode(this)">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+              복사
+            </button>
+          </div>
+          <div class="code-body">-- _Sent, _Open, _Click 시스템 DE 활용
+SELECT
+    s.JobID,
+    s.EmailName,
+    COUNT(DISTINCT s.SubscriberKey)             AS TotalSent,
+    COUNT(DISTINCT o.SubscriberKey)             AS TotalOpens,
+    COUNT(DISTINCT c.SubscriberKey)             AS TotalClicks,
+    CAST(COUNT(DISTINCT o.SubscriberKey) * 100.0
+        / NULLIF(COUNT(DISTINCT s.SubscriberKey), 0) AS DECIMAL(5,2)) AS OpenRate
+FROM _Sent s
+LEFT JOIN _Open  o ON s.JobID = o.JobID AND s.SubscriberKey = o.SubscriberKey
+LEFT JOIN _Click c ON s.JobID = c.JobID AND s.SubscriberKey = c.SubscriberKey
+WHERE CAST(s.EventDate AS DATE) = CAST(DATEADD(DAY,-1,GETDATE()) AS DATE)
+GROUP BY s.JobID, s.EmailName</div>
+        </div>
+      </div>
+
+      <div class="callout note">
+        <span class="callout-icon">📌</span>
+        <div><strong>SFMC SQL 제약사항:</strong> INSERT / UPDATE / DELETE 불가 (SELECT만 허용). 임시 테이블(#temp), 저장 프로시저 사용 불가. 날짜 함수는 <code>GETDATE()</code> 사용 (<code>NOW()</code> 아님). <code>DATEADD</code>, <code>DATEDIFF</code>, <code>CONVERT</code> 사용 가능.</div>
       </div>
     </div>
 
@@ -587,21 +917,81 @@ WHERE DATEDIFF(DAY, LastPurchaseDate, GETDATE()) >= 180
         <div class="section-desc">고객 여정을 설계하고 Entry Source 및 Split 조건을 구성합니다.</div>
         <div class="step-progress">
           <div class="step-progress-track"><div class="step-progress-fill" id="prog-s8" style="width:0%"></div></div>
-          <span class="step-progress-label" id="prog-label-s8">0 / 6</span>
+          <span class="step-progress-label" id="prog-label-s8">0 / 12</span>
         </div>
       </div>
       <div class="block">
         <div class="block-title">☑ 체크리스트</div>
-        <div class="check-item" onclick="toggle(this)"><input type="checkbox"><label>Entry Source 설정 (DE / API / Salesforce)</label></div>
-        <div class="check-item" onclick="toggle(this)"><input type="checkbox"><label>Journey Goal / Exit Criteria 설정</label></div>
-        <div class="check-item" onclick="toggle(this)"><input type="checkbox"><label>Decision Split 조건 설계</label></div>
-        <div class="check-item" onclick="toggle(this)"><input type="checkbox"><label>이메일 에셋 연결</label></div>
-        <div class="check-item" onclick="toggle(this)"><input type="checkbox"><label>Wait 시간 설정 (타임존 오프셋 주의)</label></div>
-        <div class="check-item" onclick="toggle(this)"><input type="checkbox"><label>테스트 모드 검증</label></div>
+        <div class="check-item" onclick="toggle(this)"><input type="checkbox"><label>Journey Builder &gt; New Journey 생성 및 이름/설명 설정</label></div>
+        <div class="check-item" onclick="toggle(this)"><input type="checkbox"><label>Entry Source 선택 및 설정 (Data Extension / API Event / Salesforce Data 등)</label></div>
+        <div class="check-item" onclick="toggle(this)"><input type="checkbox"><label>Entry Schedule 또는 Trigger 조건 설정 (배치 실행 주기 또는 실시간 이벤트)</label></div>
+        <div class="check-item" onclick="toggle(this)"><input type="checkbox"><label>Re-entry 정책 설정 (허용 안 함 / 여정 시작부터 / 언제든지)</label></div>
+        <div class="check-item" onclick="toggle(this)"><input type="checkbox"><label>Journey Goal 설정 (전환 목표 이벤트 및 기간 지정)</label></div>
+        <div class="check-item" onclick="toggle(this)"><input type="checkbox"><label>Exit Criteria 설정 (조기 이탈 조건 — 예: 구매 완료 시 즉시 이탈)</label></div>
+        <div class="check-item" onclick="toggle(this)"><input type="checkbox"><label>Decision Split 조건 설계 (Attribute Split / Engagement Split / Random Split)</label></div>
+        <div class="check-item" onclick="toggle(this)"><input type="checkbox"><label>각 경로별 Send Email / SMS Activity 및 이메일 에셋 연결</label></div>
+        <div class="check-item" onclick="toggle(this)"><input type="checkbox"><label>Wait Activity 시간 설정 (Duration / Until Date / Until Activity — 타임존 오프셋 주의)</label></div>
+        <div class="check-item" onclick="toggle(this)"><input type="checkbox"><label>Update Contact Activity 설정 (Contact 속성 업데이트 필요 시)</label></div>
+        <div class="check-item" onclick="toggle(this)"><input type="checkbox"><label>Test Mode 활성화 후 테스트 연락처 진입 검증 (실제 이메일 발송됨 주의)</label></div>
+        <div class="check-item" onclick="toggle(this)"><input type="checkbox"><label>Journey 활성화 전 전체 경로 최종 검토 및 클라이언트 승인</label></div>
       </div>
+
+      <div class="block">
+        <div class="block-title">📋 Entry Source 유형</div>
+        <table class="data-table">
+          <thead><tr><th>Entry Source</th><th>트리거 방식</th><th>주요 용도</th></tr></thead>
+          <tbody>
+            <tr><td>Data Extension</td><td>배치 (스케줄 or 수동)</td><td>세그먼트 기반 캠페인, 정기 발송</td></tr>
+            <tr><td>API Event</td><td>실시간 (REST API 호출)</td><td>가입 환영, 구매 확인, 이벤트 트리거</td></tr>
+            <tr><td>Salesforce Data</td><td>CRM 레코드 변경 시</td><td>Lead/Opportunity 상태 변경 연동 (MC Connect 필요)</td></tr>
+            <tr><td>Audience</td><td>Audience Builder 세그먼트</td><td>고급 세그멘테이션 기반 여정</td></tr>
+            <tr><td>Inbound Chat</td><td>WhatsApp/SMS 수신 시</td><td>인바운드 대화형 여정</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="block">
+        <div class="block-title">📋 Journey Activity 유형</div>
+        <table class="data-table">
+          <thead><tr><th>Activity</th><th>분류</th><th>설명</th></tr></thead>
+          <tbody>
+            <tr><td>Send Email</td><td>발송</td><td>Email Studio 에셋 연결하여 이메일 발송</td></tr>
+            <tr><td>Send SMS</td><td>발송</td><td>MobileConnect 메시지 발송</td></tr>
+            <tr><td>Send Push</td><td>발송</td><td>MobilePush 앱 푸시 발송</td></tr>
+            <tr><td>Wait</td><td>대기</td><td>Duration / Until Date / Until Activity 3가지 모드</td></tr>
+            <tr><td>Decision Split</td><td>분기</td><td>Contact 속성 또는 Journey Data 조건 분기</td></tr>
+            <tr><td>Engagement Split</td><td>분기</td><td>이메일 오픈/클릭 여부 기반 분기</td></tr>
+            <tr><td>Random Split</td><td>분기</td><td>무작위 비율 분기 (A/B 테스트)</td></tr>
+            <tr><td>Join</td><td>합류</td><td>분기된 경로를 단일 경로로 합류</td></tr>
+            <tr><td>Update Contact</td><td>데이터</td><td>Contact 속성값 업데이트</td></tr>
+            <tr><td>Einstein STO</td><td>AI</td><td>개인별 최적 발송 시간 자동 선택</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="block">
+        <div class="block-title">📋 Re-entry 정책 비교</div>
+        <table class="data-table">
+          <thead><tr><th>설정</th><th>동작</th><th>권장 사용 시나리오</th></tr></thead>
+          <tbody>
+            <tr><td>No Re-entry</td><td>한 번 진입한 Contact는 재진입 불가</td><td>환영 여정, 일회성 캠페인</td></tr>
+            <tr><td>Re-entry only at start</td><td>이전 여정 완료 후에만 재진입 가능</td><td>반복 구매 유도, 주기적 넛지</td></tr>
+            <tr><td>Re-entry anytime</td><td>진행 중이어도 재진입 허용</td><td>이벤트 트리거 여정 (구매마다 발송)</td></tr>
+          </tbody>
+        </table>
+      </div>
+
       <div class="callout danger">
         <span class="callout-icon">🚫</span>
-        <div><strong>KST/UTC 오프셋 주의:</strong> MCE는 내부적으로 UTC 기준으로 날짜를 처리합니다. Decision Split에서 날짜 비교 시 +9시간 오프셋을 반드시 고려하세요.</div>
+        <div><strong>KST/UTC 오프셋 주의:</strong> MCE는 내부적으로 UTC 기준으로 날짜를 처리합니다. Wait "Until Date" 조건이나 Decision Split의 날짜 비교 시 KST = UTC+9 오프셋을 반드시 반영하세요. (예: KST 09:00 = UTC 00:00)</div>
+      </div>
+      <div class="callout warning">
+        <span class="callout-icon">⚠️</span>
+        <div><strong>활성화 후 변경 불가:</strong> Journey 활성화(Activate) 후에는 Entry Source, Goal, Exit Criteria를 수정할 수 없습니다. 수정이 필요하면 Journey를 중지하고 새 버전을 생성해야 합니다.</div>
+      </div>
+      <div class="callout tip">
+        <span class="callout-icon">💡</span>
+        <div><strong>Test Mode 주의:</strong> Test Mode에서도 실제 이메일이 발송됩니다. 반드시 테스트 주소만 있는 DE를 Entry Source로 사용하거나, Test Mode 전용 주소를 사전 등록하세요.</div>
       </div>
     </div>
 
@@ -613,17 +1003,48 @@ WHERE DATEDIFF(DAY, LastPurchaseDate, GETDATE()) >= 180
         <div class="section-desc">실제 발송 전 모든 항목을 검증합니다.</div>
         <div class="step-progress">
           <div class="step-progress-track"><div class="step-progress-fill" id="prog-s9" style="width:0%"></div></div>
-          <span class="step-progress-label" id="prog-label-s9">0 / 6</span>
+          <span class="step-progress-label" id="prog-label-s9">0 / 10</span>
         </div>
       </div>
       <div class="block">
         <div class="block-title">☑ 체크리스트</div>
-        <div class="check-item" onclick="toggle(this)"><input type="checkbox"><label>테스트 DE 구성 및 시드 발송</label></div>
-        <div class="check-item" onclick="toggle(this)"><input type="checkbox"><label>개인화 변수(AMPScript) 정상 치환 확인</label></div>
-        <div class="check-item" onclick="toggle(this)"><input type="checkbox"><label>수신거부 링크 동작 확인</label></div>
-        <div class="check-item" onclick="toggle(this)"><input type="checkbox"><label>모바일 렌더링 확인</label></div>
-        <div class="check-item" onclick="toggle(this)"><input type="checkbox"><label>스팸 필터 점수 확인</label></div>
-        <div class="check-item" onclick="toggle(this)"><input type="checkbox"><label>클라이언트 최종 승인</label></div>
+        <div class="check-item" onclick="toggle(this)"><input type="checkbox"><label>테스트 DE 생성 및 시드 데이터 입력 (사내 테스트 주소 최소 5개 이상)</label></div>
+        <div class="check-item" onclick="toggle(this)"><input type="checkbox"><label>Email Studio &gt; Preview and Test — HTML/Text 렌더링 사전 확인</label></div>
+        <div class="check-item" onclick="toggle(this)"><input type="checkbox"><label>AMPScript 개인화 변수 정상 치환 확인 (이름, 등급 등 NULL 처리 포함)</label></div>
+        <div class="check-item" onclick="toggle(this)"><input type="checkbox"><label>모든 링크 유효성 검증 (버튼, 이미지 링크, 텍스트 링크 클릭 테스트)</label></div>
+        <div class="check-item" onclick="toggle(this)"><input type="checkbox"><label>수신거부 링크 동작 확인 (Subscription Center 또는 커스텀 페이지 리다이렉션)</label></div>
+        <div class="check-item" onclick="toggle(this)"><input type="checkbox"><label>Inbox Preview 확인 — Gmail, Outlook, iOS Mail, Android 주요 4종 (Litmus)</label></div>
+        <div class="check-item" onclick="toggle(this)"><input type="checkbox"><label>스팸 점수 확인 (SpamAssassin 기준 5점 이하 권장, Email Studio &gt; Test Send)</label></div>
+        <div class="check-item" onclick="toggle(this)"><input type="checkbox"><label>다크모드 렌더링 확인 (iOS / MacOS Mail)</label></div>
+        <div class="check-item" onclick="toggle(this)"><input type="checkbox"><label>Tracking 데이터 수집 확인 (_Open, _Click 시스템 DE에서 레코드 생성 확인)</label></div>
+        <div class="check-item" onclick="toggle(this)"><input type="checkbox"><label>클라이언트 최종 승인 수령 (서면 또는 메일 기록 보관)</label></div>
+      </div>
+
+      <div class="block">
+        <div class="block-title">📋 주요 이메일 클라이언트 렌더링 체크</div>
+        <table class="data-table">
+          <thead><tr><th>클라이언트</th><th>확인 항목</th><th>주요 이슈</th></tr></thead>
+          <tbody>
+            <tr><td>Gmail (Web)</td><td>레이아웃, 이미지 표시</td><td>CSS background-image 미지원</td></tr>
+            <tr><td>Gmail (Mobile)</td><td>모바일 반응형, 폰트</td><td>일부 미디어쿼리 미지원</td></tr>
+            <tr><td>Outlook 2016+</td><td>테이블 레이아웃, 버튼</td><td>CSS flexbox/grid 미지원, VML 필요</td></tr>
+            <tr><td>iOS Mail</td><td>다크모드, 자동 링크 감지</td><td>전화번호 자동 링크 변환</td></tr>
+            <tr><td>Android Gmail</td><td>폰트, 이미지 로딩</td><td>구글 폰트 미지원 폴백 확인</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="callout warning">
+        <span class="callout-icon">⚠️</span>
+        <div><strong>Preview ≠ 실제 발송:</strong> Email Studio Preview 모드는 실제 발송 결과와 다를 수 있습니다. AMPScript 조건 분기, Dynamic Content는 반드시 실제 시드 발송으로 최종 확인하세요.</div>
+      </div>
+      <div class="callout note">
+        <span class="callout-icon">📌</span>
+        <div>Inbox Preview(Litmus 통합)는 별도 라이선스가 필요합니다. 미구매 시 직접 각 디바이스/클라이언트에서 실발송 후 확인하거나, Litmus 무료 체험을 활용하세요.</div>
+      </div>
+      <div class="callout tip">
+        <span class="callout-icon">💡</span>
+        <div><strong>스팸 점수 관리:</strong> 5점 이상 시 도메인 평판 저하 위험. 이미지 과다, 스팸성 키워드(무료, 할인, CLICK HERE 등), 링크 도메인 불일치가 주요 원인입니다.</div>
       </div>
     </div>
 
@@ -635,21 +1056,44 @@ WHERE DATEDIFF(DAY, LastPurchaseDate, GETDATE()) >= 180
         <div class="section-desc">구축 완료 후 운영팀에 인계할 항목을 정리합니다.</div>
         <div class="step-progress">
           <div class="step-progress-track"><div class="step-progress-fill" id="prog-s10" style="width:0%"></div></div>
-          <span class="step-progress-label" id="prog-label-s10">0 / 6</span>
+          <span class="step-progress-label" id="prog-label-s10">0 / 9</span>
         </div>
       </div>
       <div class="block">
         <div class="block-title">☑ 체크리스트</div>
-        <div class="check-item" onclick="toggle(this)"><input type="checkbox"><label>계정 접근 정보 전달 (1Password 등)</label></div>
-        <div class="check-item" onclick="toggle(this)"><input type="checkbox"><label>DE 구조 및 데이터 흐름 문서 전달</label></div>
-        <div class="check-item" onclick="toggle(this)"><input type="checkbox"><label>Automation 스케줄 설명</label></div>
-        <div class="check-item" onclick="toggle(this)"><input type="checkbox"><label>Journey 운영 주의사항 전달</label></div>
-        <div class="check-item" onclick="toggle(this)"><input type="checkbox"><label>에러 대응 매뉴얼 전달</label></div>
-        <div class="check-item" onclick="toggle(this)"><input type="checkbox"><label>인계 완료 서명 수령</label></div>
+        <div class="check-item" onclick="toggle(this)"><input type="checkbox"><label>계정 접근 정보 전달 (1Password 또는 보안 채널 — 이메일 평문 전달 금지)</label></div>
+        <div class="check-item" onclick="toggle(this)"><input type="checkbox"><label>DE 구조 및 데이터 흐름 다이어그램 전달</label></div>
+        <div class="check-item" onclick="toggle(this)"><input type="checkbox"><label>Automation Studio 스케줄 및 모니터링 방법 설명 (Activity 상태, 에러 로그 확인법)</label></div>
+        <div class="check-item" onclick="toggle(this)"><input type="checkbox"><label>Journey Builder 운영 주의사항 전달 (버전 관리, 활성화 후 수정 불가 항목 명시)</label></div>
+        <div class="check-item" onclick="toggle(this)"><input type="checkbox"><label>수신거부 / 하드바운스 처리 프로세스 설명 (AllSubscribers 상태 관리)</label></div>
+        <div class="check-item" onclick="toggle(this)"><input type="checkbox"><label>에러 대응 매뉴얼 전달 (Automation 실패, Journey 오류, FTP 연결 오류 시나리오)</label></div>
+        <div class="check-item" onclick="toggle(this)"><input type="checkbox"><label>FTP 계정 및 파일 업로드 규칙 안내 (파일명 형식, 업로드 경로, 인코딩)</label></div>
+        <div class="check-item" onclick="toggle(this)"><input type="checkbox"><label>운영자 동행 실습 세션 진행 (Automation 수동 실행, Journey 모니터링 직접 조작)</label></div>
+        <div class="check-item" onclick="toggle(this)"><input type="checkbox"><label>인계 완료 서명 수령 (서면 또는 이메일 확인)</label></div>
       </div>
+
+      <div class="block">
+        <div class="block-title">📋 인계 문서 목록</div>
+        <table class="data-table">
+          <thead><tr><th>문서</th><th>포함 내용</th><th>형식</th></tr></thead>
+          <tbody>
+            <tr><td>시스템 구성도</td><td>BU 구조, 채널, 연동 시스템 아키텍처</td><td>PPT / Visio</td></tr>
+            <tr><td>DE 정의서</td><td>전체 DE 스키마, 필드 설명, 관계도</td><td>Excel / Confluence</td></tr>
+            <tr><td>Automation 명세서</td><td>각 Automation 플로우, 스케줄, 목적</td><td>Excel</td></tr>
+            <tr><td>Journey 설계서</td><td>여정 목적, 진입 조건, 분기 로직, 발송 에셋</td><td>PPT / Figma</td></tr>
+            <tr><td>계정 정보</td><td>URL, 로그인 정보, API 키 (암호화 전달)</td><td>1Password / Keybase</td></tr>
+            <tr><td>에러 대응 매뉴얼</td><td>주요 에러 유형, 원인, 해결 절차</td><td>Notion / Confluence</td></tr>
+          </tbody>
+        </table>
+      </div>
+
       <div class="callout tip">
         <span class="callout-icon">💡</span>
-        <div><strong>팁:</strong> 인계 후 1-2주간 모니터링 기간을 설정하고, 운영자가 직접 Automation/Journey를 조작해보도록 동행 세션을 진행하는 것을 권장합니다.</div>
+        <div><strong>모니터링 기간 운영:</strong> 인계 후 최소 2주간 모니터링 기간을 설정하고, 운영자가 직접 Automation/Journey를 조작해보도록 동행 세션을 진행하세요. 이 기간 내 발생한 이슈는 구축사가 책임 지원합니다.</div>
+      </div>
+      <div class="callout warning">
+        <span class="callout-icon">⚠️</span>
+        <div><strong>Journey 수정 제약 고지 필수:</strong> 활성화된 Journey는 Entry Source, Goal, Exit Criteria 변경이 불가합니다. 운영자가 임의로 변경 시도 시 새 버전이 생성되므로, 이 제약을 반드시 사전에 충분히 설명하세요.</div>
       </div>
     </div>
 
