@@ -4,7 +4,7 @@
 
 ---
 
-## 현재 상태 (2026-06-19 최종)
+## 현재 상태 (2026-06-19 최종 — 세션 5)
 
 **프로젝트 파일:**
 ```
@@ -77,10 +77,10 @@ MCE-Setup-Guide/
 ## dashboard.html 완료 현황
 
 ### 아키텍처
-- **저장소:** IndexedDB `MCEDashboardDB` v3
-- **스키마:** `projects` / `communications` / `files` / `issues` / `notes` / `threads`
+- **저장소:** IndexedDB `MCEDashboardDB` v4
+- **스키마:** `projects` / `communications` / `files` / `issues` / `notes` / `threads` / `todos`
 - **프로젝트:** 단일 고객사 (`id: 'default'`), 멀티 프로젝트 확장 가능 구조
-- **백업:** JSON 내보내기/가져오기 (파일 바이너리 제외)
+- **백업:** JSON 내보내기/가져오기 (파일 바이너리 제외, todos 포함)
 
 ### 완료된 기능
 
@@ -125,6 +125,21 @@ MCE-Setup-Guide/
 - [x] 스레드 입력 (Ctrl+Enter 전송), 삭제
 - [x] 선택된 카드 파란 테두리 강조
 
+**📅 할일 탭**
+- [x] 월 달력 (왼쪽): prev/next 달 네비게이션, 오늘 날짜 강조, 선택 날짜 파란 배경
+- [x] 할일 있는 날짜에 파란 점(dot) 표시
+- [x] 달력 날짜 클릭 → 오른쪽 해당 날짜 할일 목록으로 전환
+- [x] 빠른 추가: 텍스트 입력 + Enter/버튼 (시간·담당자·마감일·메모 선택 입력)
+- [x] [▾ 상세] 토글로 optional 필드 펼침/접기
+- [x] 체크박스 클릭으로 완료/미완료 전환 (취소선 스타일)
+- [x] ✏️ 수정 모달 (전 필드 편집), 🗑️ 삭제
+- [x] 내보내기/가져오기 JSON에 todos 배열 포함
+
+**todos 스키마:**
+```javascript
+{ id, projectId, date:'YYYY-MM-DD', content, time, assignee, deadline, memo, done:false, createdAt }
+```
+
 ---
 
 ## 다음 세션 시작 프롬프트
@@ -144,3 +159,4 @@ README.md와 progress.md 읽고 현재 상태 파악해줘.
 | 2026-06-19 세션 2 | 17단계 확장, s_ftp/s_cb/s_ipw/s_cp/s_tx/s_dm 추가, 스타일 정규화, doc-link 정리 |
 | 2026-06-19 세션 3 | contact-builder-de.html 신규 생성 (DE/Contact Builder 한국어 레퍼런스) |
 | 2026-06-19 세션 4 | dashboard.html 전체 구현 (IndexedDB, 5탭, 마크다운, 스레드 패널) |
+| 2026-06-19 세션 5 | dashboard.html — 📅 할일 탭 추가 (달력+날짜별 할일, DB v4) |

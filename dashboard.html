@@ -1058,6 +1058,81 @@ async function readSyncFile(filename){
   }catch(e){ return null; }
 }
 
+async function deleteSyncFile(filename){
+  const handle = await getSyncDirHandle();
+  if(!handle) return;
+  try{ await handle.removeEntry(filename); }catch(e){}
+}
+
+async function importFromQueue(){
+  const q = await readSyncFile('import-queue.json');
+  if(!q){ showToast('import-queue.json 파일을 찾을 수 없습니다'); return; }
+
+  const todosHtml = (q.todos||[]).map(t=>`
+    <div style="padding:5px 0;border-bottom:1px solid var(--border);font-size:13px">
+      <span style="color:var(--text)">${esc(t.content)}</span>
+      <span style="color:var(--text3);font-size:11px;margin-left:8px">${esc(t.date||'')} ${t.assignee?'· '+esc(t.assignee):''}</span>
+    </div>`).join('') || '<div style="color:var(--text3);font-size:13px">없음</div>';
+
+  const issuesHtml = (q.issues||[]).map(i=>`
+    <div style="padding:5px 0;border-bottom:1px solid var(--border);font-size:13px;display:flex;gap:8px;align-items:center">
+      <span class="priority-badge ${i.priority||'low'}">${{high:'높음',medium:'보통',low:'낮음'}[i.priority]||'낮음'}</span>
+      <span>${esc(i.title)}</span>
+    </div>`).join('') || '<div style="color:var(--text3);font-size:13px">없음</div>';
+
+  const commHtml = (q.communications||[]).map(c=>`
+    <div style="padding:5px 0;border-bottom:1px solid var(--border);font-size:13px">
+      <span style="color:var(--text3)">${esc(c.date)}</span>
+      <span style="margin:0 6px">·</span><span>${esc(c.type)}</span>
+      <span style="margin:0 6px">·</span><span style="color:var(--text2)">${esc(c.summary||'').slice(0,60)}${(c.summary||'').length>60?'…':''}</span>
+    </div>`).join('') || '<div style="color:var(--text3);font-size:13px">없음</div>';
+
+  showModal(`📥 ${esc(q.meetingTitle||'회의록')} 가져오기`,`
+    <div style="font-size:12px;color:var(--text3);margin-bottom:14px">${esc(q.meetingDate||'')} · ${esc(q.participants||'')}</div>
+    <div style="margin-bottom:12px">
+      <div style="font-size:11px;font-weight:700;color:var(--text3);text-transform:uppercase;letter-spacing:.05em;margin-bottom:6px">✅ 할일 ${(q.todos||[]).length}개</div>
+      ${todosHtml}
+    </div>
+    <div style="margin-bottom:12px">
+      <div style="font-size:11px;font-weight:700;color:var(--text3);text-transform:uppercase;letter-spacing:.05em;margin-bottom:6px">🔥 이슈 ${(q.issues||[]).length}개</div>
+      ${issuesHtml}
+    </div>
+    <div>
+      <div style="font-size:11px;font-weight:700;color:var(--text3);text-transform:uppercase;letter-spacing:.05em;margin-bottom:6px">💬 커뮤니케이션 ${(q.communications||[]).length}건</div>
+      ${commHtml}
+    </div>`,
+    [{label:'가져오기', cls:'btn-primary', action: async()=>{
+      const now = Date.now();
+      await Promise.all([
+        ...(q.todos||[]).map((t,i)=>db.put('todos',{
+          id:genId(), projectId:PROJECT_ID,
+          content:t.content||'', date:t.date||new Date().toISOString().slice(0,10),
+          assignee:t.assignee||'', memo:t.memo||'', time:'', deadline:'',
+          done:false, createdAt:now+i
+        })),
+        ...(q.issues||[]).map((is,i)=>db.put('issues',{
+          id:genId(), projectId:PROJECT_ID,
+          title:is.title||'', priority:is.priority||'medium',
+          description:is.description||'', status:'open',
+          createdAt:new Date().toISOString(), updatedAt:new Date().toISOString()
+        })),
+        ...(q.communications||[]).map((c,i)=>db.put('communications',{
+          id:genId(), projectId:PROJECT_ID,
+          date:c.date||new Date().toISOString().slice(0,10),
+          type:c.type||'대면미팅', participants:c.participants||'',
+          summary:c.summary||'', nextAction:c.nextAction||'',
+          createdAt:now+i
+        })),
+      ]);
+      await deleteSyncFile('import-queue.json');
+      showToast(`✅ 할일 ${(q.todos||[]).length}개, 이슈 ${(q.issues||[]).length}개, 커뮤니케이션 ${(q.communications||[]).length}건 추가됨`);
+      closeModal();
+      renderBriefing();
+    }},
+    {label:'취소', cls:'btn-ghost', action:()=>closeModal()}]
+  );
+}
+
 function openAgentSettings(){
   showModal('⚙️ Agent 설정', `
     <p style="font-size:14px;color:var(--text2);margin-bottom:16px;line-height:1.6">
@@ -1267,8 +1342,25 @@ async function renderBriefing(){
   }
   secE += `</div>`;
 
+  // ── 회의록 가져오기 버튼 (import-queue.json 있을 때만)
+  const queueData = await readSyncFile('import-queue.json');
+  const queueBanner = queueData ? `
+    <div class="briefing-full" style="margin-bottom:0">
+      <div class="briefing-setup-banner" style="background:var(--green-bg);border-color:var(--green)">
+        <span style="font-size:20px">📥</span>
+        <div style="flex:1">
+          <div style="font-size:13px;font-weight:600;color:var(--text)">${esc(queueData.meetingTitle||'회의록')} 추출 완료</div>
+          <div style="font-size:12px;color:var(--text3);margin-top:2px">
+            할일 ${(queueData.todos||[]).length}개 · 이슈 ${(queueData.issues||[]).length}개 · 커뮤니케이션 ${(queueData.communications||[]).length}건
+          </div>
+        </div>
+        <button class="btn-primary" onclick="importFromQueue()">대시보드에 가져오기</button>
+      </div>
+    </div>` : '';
+
   // ── 레이아웃 조립: A(풀) / 좌(B+D) 우(C+E)
   html += `<div class="briefing-grid">
+    ${queueBanner}
     ${secA}
     <div>${secB}${secD}</div>
     <div>${secC}${secE}</div>

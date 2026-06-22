@@ -1,0 +1,1958 @@
+=== PAGE 1 ===
+Marketing Intelligence in
+Marketing Cloud Next
+Last Updated:2026.06.19
+
+=== PAGE 2 ===
+© Copyright 2000–2026 salesforce.com, inc. All rights reserved. Salesforce is a registered trademark of salesforce.com, inc.,
+as are other names and marks. Other marks appearing herein may be trademarks of their respective owners.
+
+=== PAGE 3 ===
+CONTENTS
+Marketing Intelligence in Marketing Cloud Next . . . . . . . . . . . . . . . . . . . . . . . . . . . 1
+Get Started With Marketing Intelligence in Marketing Cloud Next . . . . . . . . . . . . . . . . . . . . 4
+Connect Your Data to Marketing Intelligence with Data Pipelines . . . . . . . . . . . . . . . . . . . 15
+Harmonize Your Data . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 28
+Anchor Your Campaign Data in Marketing Intelligence . . . . . . . . . . . . . . . . . . . . . . . . . . . . 33
+Attribution in Marketing Intelligence . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 34
+View Insights on the Marketing Intelligence Home Page . . . . . . . . . . . . . . . . . . . . . . . . . . 42
+Measure Performance with Marketing Intelligence Goals (Beta) . . . . . . . . . . . . . . . . . . . . 43
+Optimize Marketing Strategies with Marketing Intelligence Analytics . . . . . . . . . . . . . . . . 44
+Track Segment Performance with the Segment Intelligence Dashboard . . . . . . . . . . . . . 45
+Improve Marketing Strategies with Agentforce in Marketing Intelligence . . . . . . . . . . . . 45
+
+=== PAGE 5 ===
+Marketing Intelligence in Marketing Cloud Next
+Marketing Intelligence in Marketing Cloud Next empowers marketers to improve customer experiences
+across multiple channels and at scale. Marketing Intelligence simplifies data management by providing
+automated connectors, a unified data model, and data enrichment. Maximize conversions and improve
+campaign performance with AI-generated campaign summaries and cross-channel attribution.
+Get Started Run Your Business Connect Your Data
+Webpage: Introducing Marketing Get the Latest Release Notes Connect Your Data to Marketing
+Intelligence Intelligence With Data Pipelines
+Trailhead: AI-Powered Analytics
+Get Started With Marketing with Marketing Intelligence Developers: Marketing
+Intelligence Intelligence Connectors and
+Integrations
+Set Up Marketing Intelligence
+Trailhead: Marketing Intelligence
+in Marketing Cloud Next
+Enhance Your Data Analyze and Visualize Your Data
+Enrich Your Data in Marketing Measure Performance with
+Intelligence Marketing Intelligence Goals
+Patterns in Marketing Optimize Marketing Strategies
+Intelligence (Beta) with Marketing Intelligence
+Analytics
+Analyze Conversions with
+Marketing Intelligence
+Attribution
+Improve Marketing Strategies
+with Agentforce in Marketing
+Intelligence
+1
+
+=== PAGE 6 ===
+Marketing Intelligence in Marketing Cloud Next
+Video: How Slack Uses
+Agentforce Marketing to
+Optimize Paid Search
+Note For more information on which services are included in each Marketing Intelligence edition,
+see our pricing docs.
+Get Started With Marketing Intelligence in Marketing Cloud Next
+Marketing Intelligence in Marketing Cloud Next helps you analyze marketing performance using the
+power of Data 360 and Tableau. To get started, make sure you have the required roles, and
+permissions. Admins can enable Data 360, deploy the semantic model, and install the app to unlock
+insights and optimize campaigns.
+Connect Your Data to Marketing Intelligence with Data Pipelines
+Data pipelines automate the collection, transformation, and organization of marketing data to prepare
+it for analysis in Marketing Intelligence in Marketing Cloud Next. By using a predefined API connector
+or TotalConnect, pipelines structure data with entities like data streams and transforms. This process
+ensures accuracy, consistency, and alignment with the Marketing Intelligence data model, delivering
+faster insights and more reliable campaign optimization.
+Harmonize Your Data
+Make your marketing data consistent, structured, and easy to analyze. Use patterns and data
+enrichment to standardize naming, extract key attributes, and add business context to reduce errors,
+save time, and generate more accurate insights.
+Anchor Your Campaign Data in Marketing Intelligence
+An Anchor Campaign groups related marketing campaigns into a single performance view. By
+consolidating cross-channel efforts like email, social, and search, you can track how an entire initiative
+performs as a whole rather than managing fragmented reports.
+Attribution in Marketing Intelligence
+Attribution in Marketing Intelligence is the practice of identifying which marketing activities, channels,
+and touchpoints contribute to a desired business outcome—such as a lead conversion, pipeline
+creation, or closed deal. By understanding attribution, marketing teams can make smarter investment
+decisions, optimize campaign performance, and demonstrate the business impact of their work.
+View Insights on the Marketing Intelligence Home Page
+The Marketing Intelligence in Marketing Cloud Next home page provides an interactive overview of
+your marketing strategies, data health, and goals. It helps you navigate the marketing landscape and
+make informed decisions by providing a clear picture of your overall performance and trends.
+Measure Performance with Marketing Intelligence Goals (Beta)
+Goals are essential for developing and executing an effective marketing strategy. Marketing goals are
+specific, measurable objectives that align with broader business goals, guiding teams toward success.
+With Goals from Marketing Intelligence in Marketing Cloud Next, you can create, manage, track, and
+visualize goals to enhance advertising campaign performance, optimize return on investment (ROI),
+and achieve your marketing KPIs.
+Optimize Marketing Strategies with Marketing Intelligence Analytics
+2
+
+=== PAGE 7 ===
+Marketing Intelligence in Marketing Cloud Next
+Marketing Analytics provides out-of-the-box dashboards in a centralized location, helping you navigate
+between them easily. After you connect a data pipeline, Marketing Intelligence in Marketing Cloud
+Next automatically generates dashboards to help you analyze campaign performance and make data-
+driven decisions.
+Track Segment Performance with the Segment Intelligence Dashboard
+Segment Intelligence is a dashboard for Marketing Intelligence in Marketing Cloud Next that helps you
+evaluate how your audience segments—created in Data 360 and activated to third-party platforms like
+Google Ads and Meta Ads—perform across channels. The dashboard presents your engagement data
+in a single view, making it easier to identify which segments are performing well and which need
+adjustment. The Segment Summary provides performance highlights and benchmarks, offering clear
+insights to help you optimize your campaigns.
+Improve Marketing Strategies with Agentforce in Marketing Intelligence
+Agentforce brings generative AI to Marketing Intelligence in Marketing Cloud Next, enabling agents to
+analyze your data and recommend actions to improve performance.
+3
+
+=== PAGE 8 ===
+Marketing Intelligence in Marketing Cloud Next Get Started With Marketing Intelligence in Marketing Cloud Next
+Get Started With Marketing Intelligence in Marketing Cloud
+Next
+Marketing Intelligence in Marketing Cloud Next helps you analyze marketing performance using the
+power of Data 360 and Tableau. To get started, make sure you have the required roles, and permissions.
+Admins can enable Data 360, deploy the semantic model, and install the app to unlock insights and
+optimize campaigns.
+Required Roles and Permissions for Marketing Intelligence
+Before you set up Marketing Intelligence in Marketing Cloud Next, confirm that you have the
+necessary roles and permissions to access the data and features. Choose from three standard
+permission sets for these roles: Admin, Data Specialist, and Marketing Manager. A Salesforce admin
+can assign permission sets to users.
+Set Up Marketing Intelligence
+Set up Marketing Intelligence in Marketing Cloud Next to centralize your marketing data and generate
+AI-powered insights. Setup includes activating Data 360 and Tableau Next, deploying your semantic
+model, and installing the app.
+Create Users and Assign Permissions
+Create users and provide access to Marketing Intelligence features by assigning them the appropriate
+permission set.
+Required Roles and Permissions for Marketing Intelligence
+Before you set up Marketing Intelligence in Marketing Cloud Next, confirm that you have the necessary
+roles and permissions to access the data and features. Choose from three standard permission sets for
+these roles: Admin, Data Specialist, and Marketing Manager. A Salesforce admin can assign permission
+sets to users.
+Marketing Intelligence is available in Lightning Experience for these standard Salesforce editions:
+•
+Developer
+•
+Enterprise
+•
+Performance
+•
+Unlimited
+To access Marketing Intelligence, make sure you have:
+•
+Salesforce account
+•
+Data 360 license with the Semantic Layer enabled
+•
+Tableau Next license
+•
+Marketing Intelligence permission set
+4
+
+=== PAGE 9 ===
+Marketing Intelligence in Marketing Cloud Next Get Started With Marketing Intelligence in Marketing Cloud Next
+Role description Additional Required
+permissions
+Admin The Admin has full access to
+•
+Marketing Intelligence Admin
+configure all Marketing
+•
+Data Cloud Architect
+Intelligence features, including
+•
+Agentforce Default Admin
+setting up and installing the
+•
+Tableau Next Admin
+semantic model and application.
+Data Specialist The Data Specialist has full
+•
+Marketing Intelligence
+access to Marketing Intelligence
+Marketing Data Specialist
+entities and can configure data
+•
+Data Cloud Architect
+management with targeted
+•
+Tableau Next Analyst
+permissions access to the Data
+Management tab.
+Marketing Manager The Marketing Manager can view
+•
+Marketing Intelligence
+marketing performance
+Manager
+dashboards and access
+•
+Data Cloud User
+Marketing Intelligence to view
+•
+Tableau Next Business User
+and create marketing goals.
+Set Up Marketing Intelligence
+Set up Marketing Intelligence in Marketing Cloud Next to centralize your marketing data and generate AI-
+powered insights. Setup includes activating Data 360 and Tableau Next, deploying your semantic model,
+and installing the app.
+RREEQQUUIIRREEDD EEDDIITTIIOONNSS
+Available in: Developer, Enterprise, Performance, and Unlimited editions
+USER PERMISSIONS NEEDED
+To set up Marketing Intelligence: Marketing Intelligence Admin
+11.. From Setup, in the Quick Find box, enter and select Marketing Intelligence.
+22.. On the Prerequisites tab complete these steps.
+aa.. Turn on Data 360 to unify and connect your data.
+bb.. Confirm Data Governance settings and define policies that allow access to all objects for accurate
+data queries.
+cc.. Turn on Tableau Next for visual analytics and access pre-built dashboards .
+33.. On the Installation Requirements tab complete these steps.
+aa.. Set up the Semantic Data Model. Select a data space to deploy your semantic model. Each data
+space supports one semantic model. To deploy to a different data space, click + Deploy to a New
+5
+
+=== PAGE 10 ===
+Marketing Intelligence in Marketing Cloud Next Get Started With Marketing Intelligence in Marketing Cloud Next
+Data Space and select the target space.
+The data space table displays the deployed Marketing Intelligence semantic models.
+bb.. Turn on Marketing Intelligence to access all features and data-driven insights.
+The app installs in the background and can take a few minutes to complete.
+44.. (Optional) Apply advanced settings.
+aa.. Go to the Advanced Settings tab.
+bb.. Select a business type and industry to tailor reports and summaries to industry benchmarks.
+cc.. Turn on Einstein LLM Gateway to generate campaign performance summaries.
+dd.. Turn on Creative Assets to download and store assets for use across dashboards and reports.
+ee.. Set up Segment Intelligence. Select a Salesforce org and then click Install. If no organization is
+connected, see Salesforce CRM Connector.
+ff.. Turn on Automate Data Retrieval with Email to retrieve and process data files sent via email. Enter
+an email address for error alerts. Select Advanced Email Security Settings to increase data
+protection.
+55.. Review the beta features.
+aa.. Go to the Feature Manager tab.
+bb.. Enable the features that you want to add to Marketing Intelligence.
+cc.. Accept the beta terms and conditions.
+66.. From the App Launcher, enter and select Marketing Intelligence and start adding data to your app.
+Enable Marketing Intelligence Features
+You can enable Marketing Intelligence features using the Feature Manager. This screen is visible only
+when there are one or more features to enable or disable.
+Enable Data Governance Permissions for Objects in Marketing Intelligence
+To use Data 360 Data Governance features for Marketing Intelligence, grant access to objects
+according to an access policy.
+Enable Multicurrency Support for Marketing Intelligence
+Configure the currency settings in Salesforce so that dashboards display data accurately in Marketing
+Intelligence. If a dashboard uses a currency without a defined conversion rate, the system can't
+aggregate data, which causes errors. For orgs working with multiple currencies, first enable Multiple
+Currencies within your Company Information settings.
+Enable Marketing Intelligence Features
+You can enable Marketing Intelligence features using the Feature Manager. This screen is visible only
+when there are one or more features to enable or disable.
+RREEQQUUIIRREEDD EEDDIITTIIOONNSS
+Available in: Enterprise, Performance, Unlimited and Developer Editions.
+6
+
+=== PAGE 11 ===
+Marketing Intelligence in Marketing Cloud Next Get Started With Marketing Intelligence in Marketing Cloud Next
+USER PERMISSIONS NEEDED
+To access Marketing Intelligence Setup Marketing Intelligence Admin
+11.. From setup, in the Quick Find box, enter and select Marketing Intelligence.
+22.. Click Feature Manager.
+33.. To enable a feature, click Enable next to the feature name.
+44.. Agree to the terms and service, and then confirm that you want to enable it.
+Certain beta features can’t be disabled.
+Enable Data Governance Permissions for Objects in Marketing Intelligence
+To use Data 360 Data Governance features for Marketing Intelligence, grant access to objects according
+to an access policy.
+Marketing Intelligence continues to evolve after setup. Each time a data source is connected or a
+pipeline is deployed, new Data 360 objects automatically generate in the background. As new objects
+are created and existing ones become relevant to new use cases, permissions must be continuously
+managed to ensure that users have the appropriate access.
+You can manage access using either attribute-based access control (ABAC) or role-based access control
+(RBAC).
+•
+Attribute-Based Access Control (ABAC): Allows or denies access based on attributes of the user, data,
+or environment.
+•
+Role-Based Access Control (RBAC): Defined as part of a permission set and controls which data spaces,
+objects, and fields within those data spaces users can access.
+These options provide granular control over user access to data. Follow the steps in Grant Access to Data
+360 Objects to assign objects to an available policy.
+Associated Data 360 Objects
+Object Type Category Name Additional Information
+Data Lake Object (DLO) Engagement Engagement Marketing Intelligence
+engagement data
+Profile Profile Profile category data
+Other Other Other category data
+Engagement SecondaryEngagement Secondary engagement
+data
+Profile SecondaryProfile Secondary profile data
+Other SecondaryOther Secondary other
+7
+
+=== PAGE 12 ===
+Marketing Intelligence in Marketing Cloud Next Get Started With Marketing Intelligence in Marketing Cloud Next
+Object Type Category Name Additional Information
+category data
+Data Model Objects Core Marketing Objects Campaign Campaign information
+(DMOs) and metadata
+Ad Advertisement details
+MediaBuy Media buying
+information
+MediaBuyPackage Media buy package
+details
+MarketingChannel Marketing channel
+definitions
+MarketSegment Market segmentation
+data
+Ad-Related Objects AdConversionTag Conversion tracking tags
+AdExchange Ad exchange
+information
+AdKeyword Keyword targeting data
+AdStrategy Ad strategy definitions
+AdSite Site placement
+information
+Engagement Summary ConversionEngagement Conversion engagement
+Objects Summary metrics
+DeliveryEngagementSu Delivery engagement
+mmary metrics
+DeliveryVerificationEng Delivery verification
+mtSummary metrics
+WebEventEngagementS Web event engagement
+ummary data
+WebPageEngagementS Web page engagement
+ummary metrics
+Audience & Targeting MarketingChannelEnga Engaged audience data
+Objects gedAudience
+MarketingChannelTarge Targeted segment
+tedSegment information
+8
+
+=== PAGE 13 ===
+Marketing Intelligence in Marketing Cloud Next Get Started With Marketing Intelligence in Marketing Cloud Next
+Object Type Category Name Additional Information
+DeviceTypeConfiguratio Device targeting
+n configuration
+Web & Digital Objects Website Website information
+Webpage Individual webpage
+data
+WebsiteEvent Website event tracking
+WebsiteSource Website traffic sources
+Social Media Objects SocialMessage Social media message
+data
+SocialPage Social media page
+information
+Product Object Product Product information
+details
+Calculated Insights Performance Metrics CPA Cost Per Acquisition
+(CIOs)
+CPC Cost Per Click
+CPM Cost Per Mille
+CPV Cost Per View
+CPCV Cost Per Completed
+View
+CTR Click Through Rate
+ConversionRate Conversion rate
+calculation
+InteractionRate Interaction rate metrics
+ViewRate View rate calculations
+Social Media Metrics CostPerEngagement Cost per social
+engagement
+CostPerFollow Cost per follower
+CostPerLike Cost per like/reaction
+acquisition
+SocialEngagementRate Social engagement rate
+Video Metrics VideoCompletions25Ra 25% video completion
+9
+
+=== PAGE 14 ===
+Marketing Intelligence in Marketing Cloud Next Get Started With Marketing Intelligence in Marketing Cloud Next
+Object Type Category Name Additional Information
+te rate
+VideoCompletions50Ra 50% video completion
+te rate
+VideoCompletions75Ra 75% video completion
+te rate
+VideoFullyPlayedRate 100% video
+completion rate
+VideoViewRate Video view rate
+Financial Metrics ROAS Return on Ad Spend
+ROI Return on Investment
+CampaignBudget Budget calculations
+Website Analytics AverageTimeOnWebsite Average time spent on
+website
+WebsiteVisitBounceRate Website bounce rate
+Aggregation Metrics WeightedPositions Weighted position
+calculations
+UniqueCampaigns Unique campaign
+counts
+UniqueMarketSegments Unique market segment
+counts
+Data Pipeline Objects Supported Data Sources Campaign, MediaBuy, Object types created for
+Ad, MarketingChannel, supported data sources
+Delivery, Conversion,
+ConversionTag, Site
+Object Type Catergories OTHER: Campaign, Object Types
+MediaBuy, Ad,
+MarketingChannel,
+ConversionTag, Site
+ENGAGEMENT: Delivery, Object Types
+Conversion
+Campaign Attribution campaign-attribution Main attribution object
+Objects
+campaign-attribution- Attribution logical view
+logical-view
+10
+
+=== PAGE 15 ===
+Marketing Intelligence in Marketing Cloud Next Get Started With Marketing Intelligence in Marketing Cloud Next
+Object Type Category Name Additional Information
+campaign-attribution- Attribution relationships
+semantic-relationship
+Segment Intelligence market-segment Market segment
+Objects intelligence data
+Marketing Performance Performance UnifiedChannelDateTim Unified channel date/
+Objects Dimensions e time dimension
+UnifiedChannelMarketS Unified channel market
+egmentName segment dimension
+UnifiedChannelType Unified channel type
+dimension
+UnifiedChannelName Unified channel name
+dimension
+UnifiedChannelNameFr Unified channel name
+omDataSource from data source
+Performance TotalMarketingClicks Total marketing clicks
+Measurements measurement
+TotalMarketingCommen Total marketing
+ts comments
+measurement
+TotalMarketingCTR Total marketing CTR
+measurement
+TotalMarketingImpressi Total marketing
+ons impressions
+measurement
+TotalMarketingShares Total marketing shares
+measurement
+TotalMarketingVisits Total marketing visits
+measurement
+Schema Objects Advertisement Ad N/A
+Campaign Campaign
+Conversion Conversion
+Conversion Tracking ConversionTag
+Delivery Delivery
+11
+
+=== PAGE 16 ===
+Marketing Intelligence in Marketing Cloud Next Get Started With Marketing Intelligence in Marketing Cloud Next
+Object Type Category Name Additional Information
+Verification DeliveryVerification
+Device Device
+Audience EngagedAudience
+Ad Exchange Exchange
+Keyword Keyword
+Channel MarketingChannel
+Media Buy MediaBuy
+Media Package MediaBuyPackage
+Product Product
+Site Site
+Strategy Strategy
+Targeting TargetedSegment
+Web Analytics WebAnalyticsEvent
+Web Analytics WebAnalyticsPage
+Website Website
+Website Event WebsiteEvent
+Website Page WebsitePage
+Website Source WebsiteSource
+If you have more than one data space, grant access to objects in each data space. Object names in non-
+default data spaces follow the convention of <DataSpace Prefix>_<Object Name>.
+Enable Multicurrency Support for Marketing Intelligence
+Configure the currency settings in Salesforce so that dashboards display data accurately in Marketing
+Intelligence. If a dashboard uses a currency without a defined conversion rate, the system can't
+aggregate data, which causes errors. For orgs working with multiple currencies, first enable Multiple
+Currencies within your Company Information settings.
+RREEQQUUIIRREEDD EEDDIITTIIOONNSS
+Available in: Developer, Enterprise, Performance, and Unlimited editions
+12
+
+=== PAGE 17 ===
+Marketing Intelligence in Marketing Cloud Next Get Started With Marketing Intelligence in Marketing Cloud Next
+USER PERMISSIONS NEEDED
+To set and edit currencies and conversions: Admin
+11.. Identify Missing Currencies.
+Before configuring settings, test your semantic model to identify which currencies are present in your
+data. This process helps you cross-reference your source data against your existing currency settings to
+identify what needs to be added.
+aa.. From Setup, in the Quick Find box enter and select Semantic Layer.
+bb.. Select the semantic model associated with the dashboard displaying the error.
+cc.. Select Test.
+dd.. Under Dimensions, select these dimensions.
+••
+Marketing Intelligence Currency
+••
+Unified Data Source—This field shows you exactly where the currency values originate.
+ee.. Preview the data and identify all active currencies. For example USD, EUR, and GBP.
+ff.. Compare this list with your existing currency setup to identify missing currencies.
+22.. Configure Currency Settings.
+Use the currencies identified in the previous step to verify or update the configuration for your org.
+Begin with checking existing currency support.
+aa.. From Setup, in the Quick Find box enter and select Currency Connections.
+bb.. Review the currencies currently set for your org and determine your next steps.
+••
+Currency already listed: Update the conversion rate if needed. You're done.
+••
+Currency not listed: Continue to "Enable Multiple Currencies" to add it.
+33.. Enable Multiple Currencies.
+Warning Turning on multiple currencies introduces permanent changes to your org that can't be
+undone. Review the Implications of Enabling Multiple Currencies before proceeding.
+aa.. From Setup, in the Quick Find box enter and select Company Information.
+bb.. Under Organization Detail, check if Activate Multiple Currencies is selected.
+cc.. If not, click Edit, and under Currency Settings, select Activate Multiple Currencies.
+44.. Enable Advanced Currency Management.
+aa.. Click Currency Setup at the top of the page.
+bb.. Select Enable Advanced Currency Management.
+cc.. Select Yes, I want to enable Advanced Currency Management, and then click Enable.
+55.. Add and Define Currencies.
+aa.. In Currency Setup, click New.
+bb.. Select the currency type. Currencies are alphabetized using their ISO currency code.
+cc.. Enter the conversion rate relative to your corporate currency.
+dd.. Specify the number of decimal places to display for amounts in this currency.
+ee.. Save your work.
+ff.. Processing takes time. To verify completion, in setup in the Quick Find box, enter and select
+Currency Connections. Confirm the currency status is Active.
+13
+
+=== PAGE 18 ===
+Marketing Intelligence in Marketing Cloud Next Get Started With Marketing Intelligence in Marketing Cloud Next
+Create Users and Assign Permissions
+Create users and provide access to Marketing Intelligence features by assigning them the appropriate
+permission set.
+RREEQQUUIIRREEDD EEDDIITTIIOONNSS
+Before you install Marketing Intelligence, admins must assign themselves the required permissions.
+Installation won't proceed without them.
+Note When Data 360 is enabled, standard permission sets apply only to the default data space. To
+grant access to other data spaces, update the associated data space. All permission sets—including
+standard and custom ones—must be manually associated with non-default data spacesSee Associate
+a Permission Set with a Data Space.
+Available in: Developer, Enterprise, Performance, and Unlimited editions.
+USER PERMISSIONS NEEDED
+To create users and assign permissions: Marketing Intelligence Admin
+Required Permission Sets
+User Type Required Permission Sets
+Admin User
+•
+Marketing Intelligence Admin
+•
+Agentforce Default Admin
+•
+Data Cloud Admin
+•
+Tableau Next Admin
+Data Specialist User
+•
+Marketing Intelligence Marketing Data
+Specialist
+•
+Tableau Next Analyst
+•
+Data Cloud Data Aware Specialist
+Marketing Manager User
+•
+Marketing Intelligence Manager
+•
+Tableau Next Business User
+•
+Data Cloud User
+11.. In Setup, find and select Users.
+14
+
+=== PAGE 19 ===
+Marketing Intelligence in Marketing Cloud Next Connect Your Data to Marketing Intelligence with Data Pipelines
+22.. Under User Management, click Users.
+33.. Click New User to create a new user, or select an existing user to assign permissions.
+44.. Click Permission Set Assignments and then click Edit Assignments.
+55.. Select the appropriate permission set and click Add.
+66.. Save your work.
+Repeat these steps for each user that needs access to Marketing Intelligence.
+Connect Your Data to Marketing Intelligence with Data
+Pipelines
+Data pipelines automate the collection, transformation, and organization of marketing data to prepare it
+for analysis in Marketing Intelligence in Marketing Cloud Next. By using a predefined API connector or
+TotalConnect, pipelines structure data with entities like data streams and transforms. This process
+ensures accuracy, consistency, and alignment with the Marketing Intelligence data model, delivering
+faster insights and more reliable campaign optimization.
+API connectors provide predefined mappings for common marketing channels and allow more custom
+mappings, so users can extend the integration for unique business needs.
+TotalConnect supports custom sources, new objects, custom fields, and calculated fields. Users can
+upload files directly or select a Data Lake Object (DLO) as the source. A DLO is a managed data source in
+Data Cloud—such as an enterprise data warehouse or a synced connector—that enables automatic data
+ingestion without manual uploads.
+Using DLOs broadens connectivity to enterprise sources and supports a zero-copy architecture, keeping a
+15
+
+=== PAGE 20 ===
+Marketing Intelligence in Marketing Cloud Next Connect Your Data to Marketing Intelligence with Data Pipelines
+single source of truth while reducing Extract, Transform, Load (ETL) complexity. Pipelines also automate
+mapping and integration, streamlining workflows and ensuring consistent, error-free data for
+dashboards, reports, and campaign analysis.
+Understand Named Credentials, Connections, and Pipelines
+When you create a data pipeline in Marketing Intelligence, three components work together to ingest
+data: Named Credential, Connection, and a Pipeline. This architecture separates authentication,
+connectivity, and data processing so you can reuse credentials and configure pipelines efficiently.
+Connection Management in Marketing Intelligence
+Monitor and manage your Marketing Intelligence data source connections from a single, centralized
+location.
+Create a Data Pipeline With Custom Data in TotalConnect
+Use TotalConnect to upload data from files or pull data directly from Data Lake Object (DLO) into
+Marketing Intelligence enabling flexible integration of custom datasets without an API connector.
+Third-Party API Connectors for Marketing Intelligence
+Marketing Intelligence provides third-party API connectors that help you bring data from ad networks,
+analytics tools, and social media platforms into a unified view. By connecting these sources, you can
+analyze performance across channels and see how fields are mapped.
+Understand Named Credentials, Connections, and Pipelines
+When you create a data pipeline in Marketing Intelligence, three components work together to ingest
+data: Named Credential, Connection, and a Pipeline. This architecture separates authentication,
+connectivity, and data processing so you can reuse credentials and configure pipelines efficiently.
+Named Credentials
+A Named Credential specifies the authentication details and the endpoint for an external system. It acts
+as a centralized configuration that services reference so you don't have to define authentication details
+every time you create a connection.
+A Named Credential typically includes:
+•
+The external system endpoint URL
+•
+The authentication method, such as OAuth or basic authentication
+•
+Required credentials, such as tokens, usernames, or passwords
+Connections
+A Connection links Data Cloud to an external data source. It defines how Data Cloud interacts with the
+source system and prepares the data for ingestion.
+A Connection typically includes:
+16
+
+=== PAGE 21 ===
+Marketing Intelligence in Marketing Cloud Next Connect Your Data to Marketing Intelligence with Data Pipelines
+•
+Connector configuration for the source system
+•
+Authentication using a Named Credential
+Pipelines
+A Pipeline manages the end-to-end data ingestion and processing workflow. It retrieves data from the
+Connection and prepares it for use in Data Cloud.
+A Pipeline handles:
+•
+Data ingestion from the source system
+•
+Data transformation
+•
+Data harmonization
+•
+Loading processed data into Data Cloud objects
+Component Relationships
+Relationship Description
+Named Credential → One Named Credential can be used by multiple Connections.
+Connection
+Named Credential → Pipeline One Named Credential can support multiple Pipelines.
+Connection → Pipeline Each Connection is associated with one Pipeline.
+How the Components Work Together
+When a pipeline runs:
+11.. The Named Credential provides the authentication and endpoint to access the external system.
+22.. The Connection uses that credential to establish the link between Data Cloud and the external data
+source.
+33.. The Pipeline retrieves data through the connection and performs ingestion, transformation, and
+loading into Data Cloud.
+Note Separating these responsibilities allows you to reuse authentication settings and makes
+pipeline configuration modular and easier to manage.
+Example: Connecting Multiple Google Ads Accounts
+Suppose you want to ingest data from three different Google Ads accounts for your organization. Instead
+of configuring authentication three times, you can:
+11.. Create one Named Credential called "Google Ads Auth" that contains your OAuth token and the
+17
+
+=== PAGE 22 ===
+Marketing Intelligence in Marketing Cloud Next Connect Your Data to Marketing Intelligence with Data Pipelines
+Google Ads API endpoint.
+22.. Create three separate Connections—one for each account—that all reference "Google Ads Auth" for
+authentication.
+33.. Create three Pipelines—one per Connection—to ingest, transform, and load account data into Data
+Cloud.
+If your Google Ads authentication token expires, you only need to update it in one place: the Named
+Credential. All three Connections and Pipelines automatically use the updated credential without
+requiring individual reconfiguration.
+Connection Management in Marketing Intelligence
+Monitor and manage your Marketing Intelligence data source connections from a single, centralized
+location.
+Access Connection Management from the Data Management tab. This screen gives you a unified view of
+all your data source connections, their health status, and the pipelines they support. This centralized
+visibility helps you quickly identify and resolve issues before they disrupt your reporting pipelines.
+Connection Statuses
+Connection Management uses statuses to help you evaluate connection state and urgency.
+•
+Active — The connection is available and ready for scheduled processing.
+•
+Processing — The connection is currently running or being processed.
+•
+Expired — Authentication is no longer valid and user action is needed.
+•
+Error — The connection encountered a problem and requires investigation.
+What You Can Do with Connection Management
+•
+View all connections in one place instead of checking individual pipeline settings
+•
+Monitor connection health at a glance with status indicators
+•
+See which pipelines each connection supports
+•
+Create a new data source connection
+•
+Edit existing connection configurations
+•
+Re-authenticate expired connections without rebuilding them
+•
+Remove connections that are no longer needed
+•
+Identify and prioritize issues faster when connections need attention
+Create a Data Pipeline With Custom Data in TotalConnect
+Use TotalConnect to upload data from files or pull data directly from Data Lake Object (DLO) into
+Marketing Intelligence enabling flexible integration of custom datasets without an API connector.
+18
+
+=== PAGE 23 ===
+Marketing Intelligence in Marketing Cloud Next Connect Your Data to Marketing Intelligence with Data Pipelines
+RREEQQUUIIRREEDD EEDDIITTIIOONNSS
+Before you begin, make sure that your file is in CSV format and the size is 100 MB or less.
+Available in: Developer, Enterprise, Performance, and Unlimited editions.
+USER PERMISSIONS NEEDED
+To create a TotalConnect pipeline: Marketing Intelligence Admin
+11.. From the App Launcher, find and select Marketing Intelligence.
+22.. On the Data Management tab, under Data Pipelines, click Create New.
+33.. Select TotalConnect and then click Next.
+44.. Select the data space.
+55.. Select the data source.
+aa.. To upload a custom file, click Upload File, upload your file, and then click Next.
+aa.. To pull data from an existing source, click Data Lake Object, select the object and fields, and then
+click Next.
+66.. Preview the data and confirm the data type for each column—text, number, or date. Adjust data types
+as needed using the dropdown menu.
+77.. Click Map Data.
+Automapping matches your data to the appropriate data model template and fields using names,
+synonyms, and data types.
+88.. Confirm the mappings.
+aa.. Check that the data model template is correct, or click Switch Model to change it.
+19
+
+=== PAGE 24 ===
+Marketing Intelligence in Marketing Cloud Next Connect Your Data to Marketing Intelligence with Data Pipelines
+bb.. To remove a mapping, click the arrow and select Delete.
+cc.. To check for errors, click Validate and address errors before proceeding.
+dd.. Click Save and confirm the mappings in the mapping preview screen.
+99.. Add a new data object. The field is added to the object and is available for mapping.
+aa.. Click + New Object. Enter a name and description, and then click Add.
+The object is created with three default fields: ID, Currency, and Name. Map the fields as needed.
+bb.. To add additional fields to the data object, click the + icon next to the object.
+cc.. Enter a field name and description, select a data type and then click Add.
+The field is added to the object and is available for mapping.
+Note The source and target data types must match to complete the mapping.
+Your data appears in the data pipeline table where you can verify data integration and run reports.
+Pipeline creation can take a few minutes. Check the status column for updates.
+Automate Data Retrieval in Marketing Intelligence
+Configure automated data retrieval for TotalConnect data pipelines to regularly import data from
+Amazon S3 or email sources into Marketing Intelligence.
+Field Automapping in Marketing Intelligence
+20
+
+=== PAGE 25 ===
+Marketing Intelligence in Marketing Cloud Next Connect Your Data to Marketing Intelligence with Data Pipelines
+Automapping streamlines data integration by automatically mapping source file or Data Lake Object
+(DLO) fields to the Marketing Intelligence data model. TotalConnect automatically creates the data
+transforms necessary align input with the Marketing Intelligence semantic data model.
+Troubleshooting Mapping Errors in Marketing Intelligence
+TotalConnect automatically validates your data mapping to meet system requirements during
+ingestion. These validations detect errors like missing templates, mismatched data types, or
+unmapped primary keys and provide guidance for resolution. Improving data accuracy enhances
+analysis and reporting quality.
+Automate Data Retrieval in Marketing Intelligence
+Configure automated data retrieval for TotalConnect data pipelines to regularly import data from
+Amazon S3 or email sources into Marketing Intelligence.
+RREEQQUUIIRREEDD EEDDIITTIIOONNSS
+Before you begin:
+•
+To automate data retrieval using Amazon S3, ensure you have an existing S3 connection configured.
+•
+To automate data retrieval using Email, an administrator must enable Automate Data Retrieval with
+Email on the Advanced Settings tab in Setup.
+Available in: Developer, Enterprise, Performance, and Unlimited editions
+USER PERMISSIONS NEEDED
+To automate data retrieval in Marketing Marketing Intelligence Admin
+Intelligence:
+11.. From Marketing Intelligence, go to the Data Management tab.
+22.. Under Data Pipelines, click the dropdown arrow and select Automate Retrieval.
+33.. Select a source and then click Next.
+44.. Configure your selected source.
+If you selected Amazon S3:
+aa.. Select a connection.
+bb.. Select the file type.
+cc.. (Optional) To import files from a specific folder in your S3 bucket, enter the folder path under
+Import from Directory.
+dd.. Click Deploy.
+If you selected Email:
+aa.. To restrict who can send data, define authorized senders and domains. Leave blank to accept data
+from any source.
+21
+
+=== PAGE 26 ===
+Marketing Intelligence in Marketing Cloud Next Connect Your Data to Marketing Intelligence with Data Pipelines
+bb.. Click Deploy.
+After deployment, a unique email address is generated for receiving data files.
+cc.. To view the email address, in the pipeline list click the dropdown arrow and select View Email
+Address, or open the pipeline record page and view the Email field.
+Field Automapping in Marketing Intelligence
+Automapping streamlines data integration by automatically mapping source file or Data Lake Object
+(DLO) fields to the Marketing Intelligence data model. TotalConnect automatically creates the data
+transforms necessary align input with the Marketing Intelligence semantic data model.
+Review the suggested mappings and make adjustments as needed before deploying the pipeline.
+Marketing Intelligence selects the appropriate data model template based on uploaded data and
+suggests mappings based on these considerations.
+•
+Field name matching—aligns DLO and data model object (DMO) fields using exact match,
+standardized match, and fuzzy match to account for minor spelling or formatting differences.
+•
+Synonyms—includes common synonyms in comparisons to improve mapping accuracy. For example, a
+DLO field named "Spend" likely maps to "Media Spend."
+•
+Template selection rules—Marketing Intelligence selects one of these data model templates.
+- Delivery Template—tracks marketing content delivery and channel performance. For example,
+impressions, clicks, media buy, ads, and campaign.
+- Conversion Tag Template—measures customer actions resulting from marketing interactions. For
+example, purchases or customer actions.
+- Web Analytics Events Template—captures visitor interactions at the event level on a website, such
+as form fills or button clicks.
+- Web Analytics Pages Template—captures interactions at the individual page level, such as views,
+exits, and visitor engagement.
+Troubleshooting Mapping Errors in Marketing Intelligence
+TotalConnect automatically validates your data mapping to meet system requirements during ingestion.
+These validations detect errors like missing templates, mismatched data types, or unmapped primary
+keys and provide guidance for resolution. Improving data accuracy enhances analysis and reporting
+quality.
+Mapping Validation Errors and Resolutions
+Validation Description Resolution
+Template Not Found The system couldn't locate the Select an existing template or
+selected Data Model Template create a new one to continue.
+for mapping fields. This error
+typically occurs if the template
+doesn’t exist or was deleted
+22
+
+=== PAGE 27 ===
+Marketing Intelligence in Marketing Cloud Next Connect Your Data to Marketing Intelligence with Data Pipelines
+Validation Description Resolution
+Missing Date Field A date field isn’t mapped. Date Map a date-type field in your
+fields are essential for time- data to the Date field to
+based analysis and reporting. continue.
+Invalid Field Mapping Some of the fields in your data Review and adjust the field
+don’t correspond to valid mappings to make sure all the
+schema fields in the selected fields match the template's
+template. schema.
+Data Type Mismatch The data type of a mapped field Update the mappings or adjust
+doesn’t match the expected type the data type in the preview so
+in the schema. For example, a that each field aligns with the
+text field might be mapped to a correct data type.
+numeric field.
+Primary Key Not Mapped If you map an attribute, such as Make sure the primary key for
+Campaign Details, you must any mapped attributes is
+also include its associated included in the mapping.
+primary key, campaignId, to
+ensure data integrity.
+Field Length Exceeds Limit A field exceeds the maximum Shorten the field or adjust the
+allowed length in the schema. mapping to comply with the
+limit.
+Missing Media Buy ID MediaBuyId must be mapped Map the mediaBuyId field to
+when fields like campaignId, continue.
+channelId, productId, or
+deviceId are included for
+proper linking.
+Third-Party API Connectors for Marketing Intelligence
+Marketing Intelligence provides third-party API connectors that help you bring data from ad networks,
+analytics tools, and social media platforms into a unified view. By connecting these sources, you can
+analyze performance across channels and see how fields are mapped.
+Marketing Intelligence offers both standard and custom connector options for third-party platforms.
+Standard connectors provide predefined field mappings for quick setup. Custom connectors let you
+select specific dimensions and metrics for your unique business needs.
+Supported Custom Connectors
+•
+Adobe Analytics Custom
+23
+
+=== PAGE 28 ===
+Marketing Intelligence in Marketing Cloud Next Connect Your Data to Marketing Intelligence with Data Pipelines
+•
+Google Ads Custom
+•
+Google Analytics Custom
+•
+Meta Ads Custom
+Supported Connectors
+•
+Amazon Ads
+•
+Amazon Demand-Side Platform (DSP)
+•
+Criteo Marketing
+•
+Criteo Retail
+•
+Facebook Page Insights
+•
+Facebook Post Insights
+•
+Google Ads
+•
+Google Ad Manager
+•
+Google Analytics
+•
+Google Campaign Manager 360
+•
+Google Display & Video 360
+•
+Google Search Ads 360
+•
+Google Search Console
+•
+Instagram
+•
+Kakao Ads
+•
+LINE Ads
+•
+LinkedIn Ads
+•
+LinkedIn Company
+•
+Meta Ads
+•
+Microsoft Advertising
+•
+Outbrain
+•
+Pinterest Ads
+•
+Reddit Ads
+•
+Snapchat Ads
+•
+Taboola
+•
+The Trade Desk
+•
+TikTok Ads
+•
+X Ads
+•
+X Social
+•
+YouTube Ads
+•
+YouTube Insights
+Create Data Pipelines With Third-Party Vendors
+Connect to a marketing data source by setting up a data pipeline. After creating a data pipeline, DLOs,
+DMOs, and transforms are generated and automatically connect your data to the data model. You can
+monitor the pipeline’s performance and health through the Pipeline Record Page.
+Custom Connectors for Marketing Intelligence
+Marketing Intelligence includes a prebuilt connector library for popular ad platforms and analytics
+tools. Custom connectors extend this library to ingest data from sources with specific reporting
+24
+
+=== PAGE 29 ===
+Marketing Intelligence in Marketing Cloud Next Connect Your Data to Marketing Intelligence with Data Pipelines
+requirements, custom configurations, or fields that aren't available in standard connectors. Configure a
+custom connector to define exactly what data to extract, including specific dimensions and metrics.
+Map fields manually to align data with the Marketing Intelligence semantic data model.
+Setting Up a Custom Connector
+Use Marketing Intelligence's prebuilt API connectors to connect to paid media and analytics platforms
+and automatically generate the data pipelines you need.
+Create Data Pipelines With Third-Party Vendors
+Connect to a marketing data source by setting up a data pipeline. After creating a data pipeline, DLOs,
+DMOs, and transforms are generated and automatically connect your data to the data model. You can
+monitor the pipeline’s performance and health through the Pipeline Record Page.
+RREEQQUUIIRREEDD EEDDIITTIIOONNSS
+Available in: Developer, Enterprise, Performance, and Unlimited editions.
+USER PERMISSIONS NEEDED
+To create a data pipeline with an API connector Marketing Intelligence Data Specialist
+To create a new connection Marketing Intelligence Data Specialist
+11.. From the app launcher, find and select Marketing Intelligence.
+22.. On the Data Pipeline tab, click New Pipeline.
+33.. Select a connector and then click Next.
+44.. Select a connection and then click Next.
+55.. Create a new connection.
+aa.. Click New Connection
+bb.. Enter a connection name.
+cc.. Select a named credential. If required, click Authenticate and complete the authentication process.
+dd.. To add a new named credential, click + New Named Credential, and complete the connection
+process with the provider.
+ee.. Enter the remaining required fields. Required fields vary by provider.
+66.. Select the data space.
+77.. To view the data sets and how they are mapped in Marketing Intelligence select the Data Sets tab (1).
+88.. To customize data fields and refine segmentation, select the Extended Attributes tab (2).
+99.. To schedule when the data pipeline runs, select the Run Schedule tab (3) and set the start date. The
+time zone is determined by the data space.
+25
+
+=== PAGE 30 ===
+Marketing Intelligence in Marketing Cloud Next Connect Your Data to Marketing Intelligence with Data Pipelines
+1100.. Customize field mapping.
+aa.. Under Mapping select Custom, and then click Custom Mapping.
+bb.. Map the fields as needed.
+1111.. Add a new data object.
+aa.. Click + New Object.
+bb.. Enter a name and description, and then click Add.
+The object is created with three default fields: ID, Currency, and Name. Map the fields as needed.
+cc.. To add additional fields to the data object, click the + icon next to the object.
+dd.. Enter a field name and description, select a data type and then click Add.
+The field is added to the object and is available for mapping.
+Note The source and target data types must match to complete the mapping.
+1122.. To validate the mapping, click Validate.
+1133.. Click Save and Deploy and then review the mappings.
+1144.. Click Deploy
+The pipeline appears in the table, where you can monitor performance and health from the Pipeline
+Record Page.
+Custom Connectors for Marketing Intelligence
+Marketing Intelligence includes a prebuilt connector library for popular ad platforms and analytics tools.
+Custom connectors extend this library to ingest data from sources with specific reporting requirements,
+custom configurations, or fields that aren't available in standard connectors. Configure a custom
+connector to define exactly what data to extract, including specific dimensions and metrics. Map fields
+manually to align data with the Marketing Intelligence semantic data model.
+26
+
+=== PAGE 31 ===
+Marketing Intelligence in Marketing Cloud Next Connect Your Data to Marketing Intelligence with Data Pipelines
+When to Use a Custom Connector
+Use a custom connector in these scenarios.
+•
+Standard connectors don't expose required fields, such as custom events or platform-specific
+parameters.
+•
+Standard connectors return more data than required, and you want to retrieve specific fields only.
+When Not to Use a Custom Connector
+Avoid a custom connector when the standard connector supports the data source and includes the
+required fields. Use a prebuilt connector instead.
+Available Custom Connectors
+Marketing Intelligence offers custom connector options for the following platforms:
+•
+Adobe Analytics Custom
+•
+Google Ads Custom
+•
+Google Analytics Custom
+•
+Meta Ads Custom
+When creating a data pipeline, select the Custom tab to access these custom configuration options.
+Setting Up a Custom Connector
+Use Marketing Intelligence's prebuilt API connectors to connect to paid media and analytics platforms
+and automatically generate the data pipelines you need.
+Before You Start
+Review connector-specific documentation for API limits, field compatibility, and historical data
+availability.
+11.. From the app launcher, find and select Marketing Intelligence.
+22.. On the Data Pipeline tab, click New Pipeline.
+33.. On the Custom tab, select a connector and then click Next.
+44.. Select a connection and click Next.
+If you don't have a connection create a new connection.
+aa.. Click New Connection.
+bb.. Enter a connection name.
+cc.. Select a named credential.
+dd.. If your named credential isn't authenticated, click Authenticate and complete the authentication
+process.
+ee.. To add a new named credential, click + New Named Credential, and complete the connection
+27
+
+=== PAGE 32 ===
+Marketing Intelligence in Marketing Cloud Next Harmonize Your Data
+process with the provider.
+ff.. Enter the remaining required fields. Required fields vary by provider.
+55.. Select a data space.
+66.. Select the data object and fields.
+Only one data object can be selected per connection. To customize data fields and refine
+segmentation, select the Extended Attributes tab.
+77.. To schedule when the pipeline runs, select the Run Schedule tab and set the start date.
+88.. Set the span days and the sliding window.
+••
+Span Days — The maximum number of days a single processing statistic can cover. For example, a
+30-day retrieval with a 10-day span creates 3 statistics.
+••
+Sliding Window — The number of days to retrieve for a scheduled run, ending with yesterday's data.
+99.. Click Next and map the fields.
+1100.. Customize your mapping.
+Add a new data object by clicking + New Object. Enter a name and description, and then click Add.
+The object is created with three default fields: ID, Currency, and Name. Map the fields as needed.
+To add additional fields to the data object, click the + icon next to the object. Enter a field name and
+description, select a data type and then click Add. The field is added to the object and is available for
+mapping.
+The source and target data types must match to complete the mapping.
+1111.. To validate the mappings, click Validate and address any errors.
+1122.. Click Save and Deploy, review the mappings and then click Deploy.
+After setup, the stream ingests data into Data Cloud. Data Cloud maps the data to the Marketing
+Intelligence Semantic Data Model and makes it available for analysis, dashboards, and AI-powered
+insights.
+Harmonize Your Data
+Make your marketing data consistent, structured, and easy to analyze. Use patterns and data enrichment
+to standardize naming, extract key attributes, and add business context to reduce errors, save time, and
+generate more accurate insights.
+Enrich Your Data in Marketing Intelligence
+Data enrichment enhances the quality and usability of your marketing data by adding business
+context, providing consistency, and improving categorization. You can generate more accurate insights
+and make better-informed decisions. With Marketing Intelligence in Marketing Cloud Next, you can
+use a preexisting Data 360 data model object (DMO), upload an enrichment file, or apply Einstein
+Data Enrichment to refine and structure your data.
+Patterns in Marketing Intelligence (Beta)
+Make data more structured and easier to analyze by creating naming conventions in fields like
+campaign names, ad names, and ad group names. By defining these patterns, you can extract key
+28
+
+=== PAGE 33 ===
+Marketing Intelligence in Marketing Cloud Next Harmonize Your Data
+attributes, such as a product type, region, or business unit, from lengthy text strings. Using patterns
+improves data consistency, reduces errors, saves time, and ensures uniform classification across
+marketing campaigns.
+Enrich Your Data in Marketing Intelligence
+Data enrichment enhances the quality and usability of your marketing data by adding business context,
+providing consistency, and improving categorization. You can generate more accurate insights and make
+better-informed decisions. With Marketing Intelligence in Marketing Cloud Next, you can use a
+preexisting Data 360 data model object (DMO), upload an enrichment file, or apply Einstein Data
+Enrichment to refine and structure your data.
+Create a Data Enrichment With Data 360 Objects
+You can enhance your data in Marketing Intelligence using multiple methods. Use Data 360 Data
+Model Objects (DMO) to normalize your data for better consistency and insights.
+Create a Data Enrichment With a File
+You can enhance your data in Marketing Intelligence using multiple methods. Use a data enrichment
+file to normalize your data for better consistency and insights.
+Create a Data Enrichment with Einstein
+Use Einstein to draft and refine enrichments to standardize and harmonize data for consistency and
+improved segmentation. Einstein Data Enrichment unifies variations, fills in missing details, and
+categorizes data. For example, it normalizes entries like facebook, FACEBOOK, and FaceBook into a
+consistent format, improving data accuracy and organization.
+Create a Data Enrichment With Data 360 Objects
+You can enhance your data in Marketing Intelligence using multiple methods. Use Data 360 Data Model
+Objects (DMO) to normalize your data for better consistency and insights.
+RREEQQUUIIRREEDD EEDDIITTIIOONNSS
+Available in: Developer, Enterprise, Performance, and Unlimited editions.
+USER PERMISSIONS NEEDED
+To enrich your data using Data 360 objects: Marketing Intelligence Admin
+11.. From the App Launcher, find and select Marketing Intelligence.
+22.. On the Data Management tab, select Data Enrichment.
+33.. Click New Enrichment, and select Enrichment Source.
+44.. Select a data space, name the enrichment, select the dimension, add an optional description, and
+then click Next.
+55.. On the Data Objects tab, select a data object, and click Next.
+29
+
+=== PAGE 34 ===
+Marketing Intelligence in Marketing Cloud Next Harmonize Your Data
+When you select an object, its associated dimensions are listed on the right.
+66.. Preview the enrichment. You can edit the column names or set a dimension as a key.
+The key determines how enrichment data joins the data model object (DMO). By selecting a key, each
+enrichment row maps correctly to the corresponding DMO records, allowing new fields to be added
+and used for analysis.
+77.. To specify how a raw value appears in your data, expand Enrichment Properties and edit the values.
+88.. Preview your data, and click Create.
+Your enriched data is available on the Data Enrichment tab for reporting, dashboard visualization, and
+analysis.
+Create a Data Enrichment With a File
+You can enhance your data in Marketing Intelligence using multiple methods. Use a data enrichment file
+to normalize your data for better consistency and insights.
+RREEQQUUIIRREEDD EEDDIITTIIOONNSS
+Available in: Developer, Enterprise, Performance, and Unlimited editions.
+USER PERMISSIONS NEEDED
+To enrich your data using an enrichment file: Marketing Intelligence Admin
+11.. From the App Launcher, find and select Marketing Intelligence.
+22.. On the Data Management tab, select Data Enrichment.
+33.. Click New Enrichment, and select Enrichment Source.
+44.. Select a data space, name the enrichment, select the dimension, add an optional description, and
+30
+
+=== PAGE 35 ===
+Marketing Intelligence in Marketing Cloud Next Harmonize Your Data
+then click Next.
+55.. On the Upload File tab, click Upload file, select a file and click Next.
+66.. Preview the enrichment. You can edit the column names or set a dimension as a key.
+The key determines how enrichment data joins the data model object (DMO). By selecting a key, each
+enrichment row maps correctly to the corresponding DMO records, allowing new fields to be added
+and used for analysis.
+77.. To specify how a raw value appears in your data, expand Enrichment Properties and edit the values.
+88.. Preview your data, and click Create.
+Your enriched data is available on the Data Enrichment tab for reporting, dashboard visualization, and
+analysis.
+Create a Data Enrichment with Einstein
+Use Einstein to draft and refine enrichments to standardize and harmonize data for consistency and
+improved segmentation. Einstein Data Enrichment unifies variations, fills in missing details, and
+categorizes data. For example, it normalizes entries like facebook, FACEBOOK, and FaceBook into a
+consistent format, improving data accuracy and organization.
+RREEQQUUIIRREEDD EEDDIITTIIOONNSS
+Available in: Developer, Enterprise, Performance, and Unlimited editions.
+USER PERMISSIONS NEEDED
+To draft data enrichments with Einstein: Marketing Intelligence Admin
+11.. From the App Launcher, find and select Marketing Intelligence.
+22.. On the Data Management tab, select Data Enrichment.
+33.. Click New Enrichment and then select Enrich with Einstein.
+44.. Select a data space, name the enrichment, select the dimension, add an optional description, and
+31
+
+=== PAGE 36 ===
+Marketing Intelligence in Marketing Cloud Next Harmonize Your Data
+then click Next.
+55.. Select the relevant Einstein use case and click Next.
+••
+Data Normalization—Standardizes formats and values across datasets to reduce redundancy and
+improve integrity.
+••
+Grouping—Organizes data into categories or clusters for easier analysis and identifying patterns.
+66.. To edit the enrichment or add instructions, enter them in the canvas and click Refine.
+77.. To specify how a raw value appears in your data, expand Enrichment Properties and edit the values.
+88.. Preview your data, and click Create.
+Enriched data is available in the Data Enrichment tab for reporting and visualizations in dashboards
+Patterns in Marketing Intelligence (Beta)
+Make data more structured and easier to analyze by creating naming conventions in fields like campaign
+names, ad names, and ad group names. By defining these patterns, you can extract key attributes, such
+as a product type, region, or business unit, from lengthy text strings. Using patterns improves data
+consistency, reduces errors, saves time, and ensures uniform classification across marketing campaigns.
+Create a Pattern for Marketing Intelligence Data (Beta)
+Apply consistency to your data by creating a naming convention (pattern). Using patterns makes data
+more structured and easier to analyze.
+Create a Pattern for Marketing Intelligence Data (Beta)
+Apply consistency to your data by creating a naming convention (pattern). Using patterns makes data
+more structured and easier to analyze.
+RREEQQUUIIRREEDD EEDDIITTIIOONNSS
+Available in: Developer, Enterprise, Performance, and Unlimited editions.
+USER PERMISSIONS NEEDED
+To create a pattern: Marketing Intelligence Admin
+Note Patterns is a pilot or beta s ervice that is subject to the Beta Services Terms at Agreements -
+Salesforce.com or a written Unified Pilot Agreement if executed by Customer, and applicable terms
+in the Product Terms Directory. Use of this pilot or beta service is at the Customer's sole discretion.
+11.. From the App Launcher, search and select Marketing Intelligence.
+22.. On the Data Management tab, select Patterns.
+33.. Click New Pattern.
+44.. Select a data space, name your pattern, select the dimension, add an optional description, and then
+click Next.
+55.. Select a naming convention to base the pattern on from the left side panel.
+32
+
+=== PAGE 37 ===
+Marketing Intelligence in Marketing Cloud Next Anchor Your Campaign Data in Marketing Intelligence
+66.. Select a dimension or create one for each position in your pattern.
+77.. To change the applied delimiter, select an option from the dropdown
+88.. To extract a position, select Extract.
+Only extracted positions are added to the data model and are reflected in reporting.
+99.. Click Publish.
+Your pattern is added to the pattern list, where you can monitor, activate and deactivate it.
+Anchor Your Campaign Data in Marketing Intelligence
+An Anchor Campaign groups related marketing campaigns into a single performance view. By
+consolidating cross-channel efforts like email, social, and search, you can track how an entire initiative
+performs as a whole rather than managing fragmented reports.
+For example, group Q4 email, social, and paid search campaigns under “Q4 Product Launch” to see how
+the initiative performs overall.
+Anchor Campaigns reduce errors from siloed or inconsistently named campaigns and help you quickly
+identify areas that need optimization.
+Create an Anchor Campaign in Marketing Intelligence
+Group related campaigns to track performance as a single strategic initiative.
+Create an Anchor Campaign in Marketing Intelligence
+Group related campaigns to track performance as a single strategic initiative.
+RREEQQUUIIRREEDD EEDDIITTIIOONNSS
+Available in: Enterprise, Performance, Unlimited and Developer Editions.
+USER PERMISSIONS NEEDED
+To create an anchor campaign Marketing Intelligence Admin
+11.. In Marketing Intelligence, from the Data Management tab, click Anchor Campaigns.
+22.. Click New Anchor Campaign.
+33.. Select the data space, name your anchor campaign, add a description, and then click Next.
+44.. Select the method for including campaigns.
+••
+Filters automatically include campaigns based on defined rules.
+••
+Note Filters help refine your selection. However, anchors are created at the campaign level, and
+queries include all data tied to the parent Campaign ID.
+33
+
+=== PAGE 38 ===
+Marketing Intelligence in Marketing Cloud Next Attribution in Marketing Intelligence
+••
+Use Manual mode to select specific campaigns from a list. Set the date range.
+55.. Set the date range.
+66.. Add your campaigns.
+••
+To create a filter, select a dimension, select an operator, enter a value, and then click Apply.
+For example, create a filter to include campaigns automatically based on strategy. Select the
+Strategy Name dimension, set Contains as the operator, and enter a value of Lead Nurturing. This
+objective targets campaigns that engage and educate prospects over time to drive conversions.
+••
+In Manual mode, select the campaigns you want to include from the list.
+77.. Customize the table columns. Click the icon, search for the fields you want to view, and add
+them to the table.
+88.. Save your changes.
+The Anchor Campaign appears in the Anchor Campaign table.
+Attribution in Marketing Intelligence
+Attribution in Marketing Intelligence is the practice of identifying which marketing activities, channels,
+and touchpoints contribute to a desired business outcome—such as a lead conversion, pipeline creation,
+or closed deal. By understanding attribution, marketing teams can make smarter investment decisions,
+optimize campaign performance, and demonstrate the business impact of their work.
+Marketing attribution sits at the intersection of data, buyer behavior, and business strategy. It answers
+the fundamental question: What is driving results, and how much credit should each effort receive?
+Key Attribution Concepts
+Before diving into specific attribution models, it's important to understand the foundational concepts
+that apply across all approaches:
+Engagement Signal / Touchpoint
+A tracked interaction such as an email open, SMS reply, website visit, or ad click, that a user has
+with your brand before you convert them.
+Conversion Event
+The single, defined outcome in the customer journey that attribution evaluates. For example,
+completing a checkout, submitting a contact form, or subscribing to a newsletter.
+Conversion Metric
+The metric that represents or quantifies the conversion event for reporting and analysis. For
+example, total purchases, leads generated, or newsletter sign-ups.
+Lookback Window
+The time period in which touchpoints are considered eligible for credit. For example, a 90-day
+34
+
+=== PAGE 39 ===
+Marketing Intelligence in Marketing Cloud Next Attribution in Marketing Intelligence
+window means touchpoints expire after 3 months. If a lead attends a webinar in January but
+converts in April, that webinar receives zero credit and won't appear in your revenue reporting.
+Revenue Attribution
+Connecting marketing activity directly to pipeline or bookings. For example, proving a LinkedIn
+campaign generated $2.4M in pipeline and 12 closed deals allows a team to justify their budget
+with a clear ROI figure.
+Multi-touch vs. Single-touch
+Whether credit is distributed across multiple interactions or assigned to one. For example, a lead
+clicks an ad, attends a webinar, and then responds to a sales email before converting. Single-
+touch gives 100% of the credit to just one of those interactions. Multi-touch splits credit across
+all three interactions.
+First-party Data
+Data that your organization owns and collects directly. For example, CRM records, form
+submissions, and email engagement. Unlike third-party data, it reflects your actual customer
+interactions, making it a more accurate and reliable foundation for attribution reporting.
+Supported Attribution Types in Marketing Intelligence
+Marketing Intelligence supports two primary attribution model families, each designed for different
+analytical needs.
+Touch-Based Attribution
+Assign credit based on the individual interactions (touches) a prospect has with marketing
+content and campaigns across their buyer journey. Best for understanding which campaigns and
+channels influence pipeline.
+Key Characteristic: Credit is distributed across individual marketing interactions regardless of
+order. Evaluating the full breadth of touchpoints a prospect encounters across channels and
+campaigns, without requiring a predefined sequence.
+Focus: Breadth—the "What".
+Funnel-Based Attribution
+Assign credit based on the stage transitions a prospect moves through in the revenue funnel. For
+example, Lead → Marketing Qualified Lead (MQL) → Opportunity. Best suited for understanding
+which activities accelerate progression through the buyer journey.
+Key Characteristic: The order of engagement signals matters. Users are tracked through
+predefined checkpoints in a sequence, whereas Touch-Based Attribution evaluates interactions
+globally without requiring a specific progression.
+35
+
+=== PAGE 40 ===
+Marketing Intelligence in Marketing Cloud Next Attribution in Marketing Intelligence
+Focus: Momentum—the "When".
+Choosing the Right Attribution Model
+Touch-Based Attribution Funnel-Based Attribution
+Primary Goal Measure touchpoint influence Track pipeline progression and
+conversion
+Focus Marketing interactions across Lifecycle stage transitions
+the journey
+Best Use Case Budget allocation and media Sales and marketing velocity and
+mix optimization alignment
+Supported Models First Touch, Last Touch, Linear, First touch , Last touch
+Time decay, U shape
+Salesforce Object Campaign Members, Leads, Opportunities, Lead History,
+Custom Touch Objects Account Stages
+Multi-Touch Attribution in Marketing Intelligence
+Multi-Touch Attribution (MTA) in Marketing Intelligence shows how each engagement contributes to
+conversions across your marketing efforts. MTA connects first-party and third-party interactions across
+email, SMS, social, search, and other channels to help you understand the true impact of your
+campaigns.
+Funnel-Based Attribution in Marketing Intelligence
+Funnel-Based Attribution in Marketing Intelligence tracks how prospects move through the defined
+stages of your revenue funnel—such as Email Send → Click → Add to Cart → Order Placed. Unlike
+Touch-Based Attribution, which evaluates interactions globally, Funnel-Based Attribution is ordered:
+the sequence of engagement signals matters, and users are tracked through predefined checkpoints
+in progression.
+Multi-Touch Attribution in Marketing Intelligence
+Multi-Touch Attribution (MTA) in Marketing Intelligence shows how each engagement contributes to
+conversions across your marketing efforts. MTA connects first-party and third-party interactions across
+email, SMS, social, search, and other channels to help you understand the true impact of your
+campaigns.
+Unlike single-touch models that assign all credit to one interaction, MTA evaluates the entire customer
+journey by using a global attribution approach. You define a single conversion event, and MTA distributes
+credit across a wide range of engagement signals without requiring a strict or sequential funnel. Use
+attribution dashboards to identify high-impact paths, compare channel performance, and make
+informed budget decisions.
+36
+
+=== PAGE 41 ===
+Marketing Intelligence in Marketing Cloud Next Attribution in Marketing Intelligence
+Attribution Terms and Definitions in Marketing Intelligence
+Engagement Signal
+A tracked interaction such as an email open, SMS reply, website visit, or ad click, that a user has
+with your brand before you convert them.
+Conversion Metric
+The metric that represents or quantifies the conversion event for reporting and analysis. For
+example, total purchases, leads generated, or newsletter sign-ups.
+Conversion Event
+The single, defined outcome in the customer journey that attribution evaluates. For example,
+completing a checkout, submitting a contact form, or subscribing to a newsletter.
+Attribution Model
+The logic used to distribute conversion credit across engagement signals. For example, Linear or
+Time decay.
+Lookback Window
+The period before a conversion that counts toward attribution. For example, with a 30-day sales
+cycle, only interactions from the prior 30 days count.
+Anchor Campaign
+A parent campaign that aggregates engagement signals across channels for campaign-level
+attribution analysis.
+How Attribution Tracks the Customer Journey
+Signals and metrics determine which interactions along the customer journey qualify for attribution and
+which of those events counts as a successful outcome.
+For example, a user clicks a Meta ad, visits your website, and then buys a product. The ad click and
+website visit are engagement signals. The purchase event is the conversion signal, and associated values
+such as revenue are conversion metrics.
+Note MTA only tracks engagement signals when they occur within your configured lookback window
+and resulted in a conversion.
+Supported Multi-Touch Attribution Models
+Multi-Touch Attribution (MTA) offers several default models that analyze channel contribution. Select a
+model based on your specific business strategy.
+Configure a Multi-Touch Attribution
+Configure how engagement signals distribute conversion credit to evaluate the customer journey.
+37
+
+=== PAGE 42 ===
+Marketing Intelligence in Marketing Cloud Next Attribution in Marketing Intelligence
+Supported Multi-Touch Attribution Models
+Multi-Touch Attribution (MTA) offers several default models that analyze channel contribution. Select a
+model based on your specific business strategy.
+Model Name Best For How It Works Example
+First Touch Analyzing top-of-funnel Assigns 100% credit to
+Journey: Email →
+brand awareness drivers the first interaction in
+Google Ads →
+the lookback window
+Conversion
+Credit: Email = 100%.
+Last Touch Optimizing bottom-of- Assigns 100% credit to
+Journey: Email →
+funnel performance and the final interaction
+Google Ads →
+immediate conversion before conversion
+Conversion
+drivers
+Credit: Google Ads =
+100%
+Linear Regression Weighting every Distributes credit
+Journey: Email →
+interaction in the equally across every
+Google Ads →
+customer lifecycle touchpoint in the
+Instagram →
+evenly journey
+Conversion
+Credit: Each touchpoint
+≈ 33%
+Time Decay Strategies that give Assigns credit based on
+Journey (Time-decay 7
+more weight to recent recency. Touchpoints
+days): Email (3 days
+interactions when closer to the conversion
+before) → Google Ads
+attributing a sale get more weight
+(1 day before) →
+Conversion
+Credit: Google Ads
+receives more credit
+than the email, because
+it’s closer to the
+conversion
+U-Shaped Emphasizing both the Allocates 40% to the
+Journey: Email → Meta
+initial discovery and the first touch and 40% to
+Ads → LinkedIn Ads →
+final close, while the last touch. Splitting
+Google Ads →
+acknowledging mid- the remaining 20%
+funnel nurturing equally among middle
+38
+
+=== PAGE 43 ===
+Marketing Intelligence in Marketing Cloud Next Attribution in Marketing Intelligence
+Model Name Best For How It Works Example
+interactions
+Conversion
+Credit: Email:
+40%Meta Ads:
+10%LinkedIn Ads:
+10%Google Ads: 40%
+Configure a Multi-Touch Attribution
+Configure how engagement signals distribute conversion credit to evaluate the customer journey.
+RREEQQUUIIRREEDD EEDDIITTIIOONNSS
+Available in: Developer, Enterprise, Performance, and Unlimited editions.
+USER PERMISSIONS NEEDED
+To configure a multi-touch attribution Marketing Intelligence Admin
+11.. In Marketing Intelligence, from the Data Management tab, click Touch-Based Attribution.
+22.. Click New Attribution.
+33.. Select the data space, name your attribution, add a description, and then click Next.
+44.. Set the Lookback Window—defines how far back to consider touchpoints before a conversion.
+55.. Set the Identity Resolution Rule—defines how customer interactions across devices or channels are
+linked to a single identity.
+66.. Select the attribution models.
+77.. Save your work.
+88.. Add a signal.
+aa.. Click + Engagement Signal and then select the signals you want to add.
+bb.. Click Apply.
+Signals marked as suggested are preconfigured templates. Selecting a suggested signal
+automatically creates the signal without extra configuration.
+99.. Create a new signal.
+aa.. Click New Signal.
+bb.. Select the data space and engagement DMO, and then click Next.
+cc.. Select the user identifier, timestamp identifier, and the event identifier and then click Next.
+dd.. Determine the event count definition and then click Next.
+ee.. (Optional) Add filters to help define the specific engagement signal.
+ff.. Click Next.
+gg.. Name the signal and then click Save.
+The system creates the signal and adds it to the signal list for selection.
+39
+
+=== PAGE 44 ===
+Marketing Intelligence in Marketing Cloud Next Attribution in Marketing Intelligence
+1100.. Add a conversion metric.
+aa.. Click + Conversion Metric.
+bb.. Select the metric and then click Apply.
+1111.. Create a new conversion metric.
+aa.. Click + Conversion Metric.
+bb.. Select a signal and then click Next.
+cc.. Name the metric.
+dd.. Set the aggregate function—how the system calculates the selected field values.
+For example, use SUM to total a value like revenue, or COUNT to tally the number of occurrences
+like orders.
+ee.. Save your work.
+The conversion metric is created and can be selected from the metric list.
+1122.. Click Deploy.
+The attribution deploys in the background, and results become available for analysis in dashboards after
+deployment completes.
+Funnel-Based Attribution in Marketing Intelligence
+Funnel-Based Attribution in Marketing Intelligence tracks how prospects move through the defined
+stages of your revenue funnel—such as Email Send → Click → Add to Cart → Order Placed. Unlike Touch-
+Based Attribution, which evaluates interactions globally, Funnel-Based Attribution is ordered: the
+sequence of engagement signals matters, and users are tracked through predefined checkpoints in
+progression.
+Use Funnel-Based Attribution to understand which activities accelerate pipeline velocity, align sales and
+marketing on lifecycle stage transitions, and identify where prospects stall or drop off in the buyer
+journey.
+You can define up to 5 custom funnel stages, tie specific engagement signals and metrics to each stage,
+and reorder stages at any time while the attribution is in draft status.
+How Funnel-Based Attribution Tracks the Customer Journey
+Funnel stages and metrics determine which transitions along the buyer journey qualify for attribution
+and which outcome counts as a successful conversion.
+For example, a prospect receives an email, clicks through to a product page, and then completes a
+purchase. Each of these events maps to a predefined funnel stage—Email Send, Click, and Order Placed.
+Attribution credit is assigned based on how the prospect progresses through those stages in sequence.
+Note Funnel-Based Attribution only tracks stage transitions when they occur within your configured
+lookback window, in the defined order, and resulted in a conversion.
+40
+
+=== PAGE 45 ===
+Marketing Intelligence in Marketing Cloud Next Attribution in Marketing Intelligence
+Configure a Funnel-Based Attribution
+Configure how conversion credit is distributed across funnel stage transitions to track prospect
+progression through the buyer journey.
+Configure a Funnel-Based Attribution
+Configure how conversion credit is distributed across funnel stage transitions to track prospect
+progression through the buyer journey.
+RREEQQUUIIRREEDD EEDDIITTIIOONNSS
+Available in: Enterprise, Performance, Unlimited and Developer Editions.
+USER PERMISSIONS NEEDED
+To configure Funnel-Based Attribution Marketing Intelligence Admin
+11.. In Marketing Intelligence, from the Data Management tab, click Funnel-Based Attribution.
+22.. Click New Attribution.
+33.. Select the data space, name your attribution, add a description, and then click Next.
+44.. Set the Lookback window.
+The lookback window defines how far back to consider stage transitions before a conversion.
+55.. Set the Identity Resolution Rule.
+The identity resolution rule defines how customer interactions across devices or channels are linked to
+a single identity.
+66.. Select the attribution models.
+Choose one or more models such as First Touch or Last Touch. Each model distributes credit
+differently. For more information, see Attribution in Marketing Intelligence.
+77.. Click Save.
+88.. Add funnel stages.
+Note You can edit or add stages at any time while the attribution is in draft status. After you click
+Deploy you can no longer edit or add.
+aa.. Click Add Stage and define up to 5 stages.
+For example, Email Send → Click → Add to Cart → Order Placed.
+bb.. Drag and drop to reorder stages as needed.
+99.. Add a signal to each stage.
+aa.. In a stage, search and select the signal you want to add.
+Repeat this step for each funnel stage.
+1100.. Add the conversion metric.
+Only one metric can be selected. If no metric is selected, the stage defaults to a count-based metric.
+aa.. Click + Change Metric.
+bb.. Search and select the metric.
+cc.. Click Save.
+1111.. Review the configuration and then click Deploy.
+41
+
+=== PAGE 46 ===
+Marketing Intelligence in Marketing Cloud Next View Insights on the Marketing Intelligence Home Page
+1122.. When deployment is complete, go to the Marketing Analytics tab to view attribution insights and
+analyze funnel performance.
+View Insights on the Marketing Intelligence Home Page
+The Marketing Intelligence in Marketing Cloud Next home page provides an interactive overview of your
+marketing strategies, data health, and goals. It helps you navigate the marketing landscape and make
+informed decisions by providing a clear picture of your overall performance and trends.
+The home page includes a campaign summary so that you can quickly assess the performance of your
+advertising campaigns. To start the Paid Media Optimization Agent, click Optimize Campaigns. This
+agent helps you improve ad performance by identifying underperforming ads based on industry
+benchmarks. See Pause Underperforming Ads with the Paid Media Optimization Agent (Beta).
+To view data on the home page, connect at least one data pipeline to Marketing Intelligence. See Data
+Pipelines in MI.
+Customize the Campaign Summary in Marketing Intelligence
+The campaign summary helps you quickly understand how your campaigns are performing. In the
+Home tab, you see an overall summary of all campaign objectives. In the Marketing Analytics
+dashboards, you see summaries grouped by objective and tailored to each dashboard. Select
+objectives, define the metrics that measure success, and take action directly from the summary.
+Customize the Campaign Summary in Marketing Intelligence
+The campaign summary helps you quickly understand how your campaigns are performing. In the Home
+tab, you see an overall summary of all campaign objectives. In the Marketing Analytics dashboards, you
+see summaries grouped by objective and tailored to each dashboard. Select objectives, define the
+metrics that measure success, and take action directly from the summary.
+RREEQQUUIIRREEDD EEDDIITTIIOONNSS
+Available in: Enterprise, Performance, Unlimited and Developer Editions.
+USER PERMISSIONS NEEDED
+To customize a campaign summary: Marketing Intelligence Admin
+You can customize the campaign summary in both the Home tab and the Marketing Analytics
+dashboards.
+In the Home tab, select up to 6 metrics to include in the campaign summary. Default thresholds reflect
+the lowest and highest values across all channels, and you can adjust them to align with your campaign
+goals.
+42
+
+=== PAGE 47 ===
+Marketing Intelligence in Marketing Cloud Next Measure Performance with Marketing Intelligence Goals (Beta)
+In the Marketing Analytics dashboards, summaries are grouped by objective. Select up to 4 objectives,
+and for each objective choose up to 4 metrics and adjust thresholds to define performance. In
+Performance Overview and Segment Intelligence, thresholds use the lowest and highest values across
+connected channels. In Channel Summaries, thresholds follow industry benchmarks
+Changes you make in one dashboard don’t affect others.
+11.. Open the summary that you want to customize.
+22.. Open the campaign summary menu, and then click Customize.
+33.. To customize from the Home tab
+aa.. Search or select up to 6 metrics to include in the campaign summary.
+bb.. Hover over a metric to adjust its thresholds. Default thresholds reflect the lowest and highest values
+across all channels.
+44.. To customize from Marketing Analytics dashboards:
+aa.. Search or select up to 4 objectives to include in the dashboard campaign summary.
+bb.. To change the related metrics for an objective, click the objective and select the metrics you want
+(up to 4 per objective).
+cc.. Hover over a metric to adjust its thresholds.
+55.. Click Save to apply your changes.
+66.. (Optional) Click Optimize on an objective to open the Paid Media Agent and take action.
+Customizations apply only to the dashboard you edited. Other dashboards and the Home tab aren’t
+affected. To reset all defaults, open the campaign summary menu and click Restore Defaults.
+Measure Performance with Marketing Intelligence Goals (Beta)
+Goals are essential for developing and executing an effective marketing strategy. Marketing goals are
+specific, measurable objectives that align with broader business goals, guiding teams toward success.
+With Goals from Marketing Intelligence in Marketing Cloud Next, you can create, manage, track, and
+visualize goals to enhance advertising campaign performance, optimize return on investment (ROI), and
+achieve your marketing KPIs.
+Note Marketing Intelligence Goals is a pilot or beta service that is subject to the Beta Services Terms
+at Agreements - Salesforce.com or a written Unified Pilot Agreement if executed by Customer, and
+applicable terms in the Product Terms Directory. Use of this pilot or beta service is at the Customer's
+sole discretion.
+Create a Marketing Intelligence Goal (Beta)
+Create a goal to make informed decisions that drive success. Goals help you set clear KPIs, track, and
+measure key metrics, experiment with different marketing channels, and understand the customer
+journey.
+43
+
+=== PAGE 48 ===
+Marketing Intelligence in Marketing Cloud Optimize Marketing Strategies with Marketing Intelligence
+Next Analytics
+Create a Marketing Intelligence Goal (Beta)
+Create a goal to make informed decisions that drive success. Goals help you set clear KPIs, track, and
+measure key metrics, experiment with different marketing channels, and understand the customer
+journey.
+RREEQQUUIIRREEDD EEDDIITTIIOONNSS
+Available in: Enterprise, Performance, Unlimited and Developer Editions.
+USER PERMISSIONS NEEDED
+To create a Marketing Intelligence Goal Marketing Intelligence Admin
+Note Marketing Intelligence Goals is a pilot or beta service that is subject to the Beta Services Terms
+at Agreements - Salesforce.com or a written Unified Pilot Agreement if executed by Customer, and
+applicable terms in the Product Terms Directory. Use of this pilot or beta service is at the Customer's
+sole discretion.
+Use Marketing Intelligence Feature Manager to turn on Goals, or ask your admin to do it for you.
+11.. In Marketing Intelligence, on the Goals tab, click Create a Goal.
+22.. Select the metric that you want to target.
+33.. Select the channel you want to base the goal on. You can select multiple channels.
+44.. Add additional filters.
+55.. Define the goal’s target value.
+66.. Select the goal type you want to use.
+77.. Enter the goal’s start and end dates.
+88.. Preview your goal in the preview window.
+99.. Review the goal and its settings, then click Save.
+The new goal appears in the Goals Overview list and can be modified as needed.
+Optimize Marketing Strategies with Marketing Intelligence
+Analytics
+Marketing Analytics provides out-of-the-box dashboards in a centralized location, helping you navigate
+between them easily. After you connect a data pipeline, Marketing Intelligence in Marketing Cloud Next
+automatically generates dashboards to help you analyze campaign performance and make data-driven
+decisions.
+For a comprehensive view of cross-channel performance, explore the Performance Overview dashboard,
+which consolidates data from multiple sources into a single, unified report. With a campaign summary
+44
+
+=== PAGE 49 ===
+Marketing Intelligence in Marketing Cloud Track Segment Performance with the Segment Intelligence
+Next Dashboard
+providing key insights, you can quickly assess advertising performance and optimize your strategy.
+Customize the Campaign Summary to focus on the metrics and benchmarks that matter most to your
+goals and channels. See Customize the Campaign Summary.
+View all available out-of-the-box dashboards under Channel Analytics to gain insights that help you
+evaluate campaign performance. Optimize channels such as Facebook Ads, Google Ads, and YouTube
+Ads by analyzing key metrics such as click-through rate (CTR), cost per click (CPC), and cost per
+acquisition (CPA). Use analytic graphs to illustrate trends such as conversions over time, CPA over time,
+and conversions by campaign.
+Use Collections in the Marketing Analytics tab to organize dashboards in one place. Group standard and
+custom dashboards into collections to make them easier to find, access, and manage. Collections
+streamline workflows and help you keep related dashboards together for quicker analysis.
+Campaign Attribution links your campaigns to conversions, providing a full view of the sales funnel—from
+the initial touchpoint to the final sale. The Attribution Dashboard offers an overview and key metrics for
+the first and last touchpoints, helping you to analyze attribution data using different models. Customize
+your view by selecting the start time and choosing the first or last touch.
+Track Segment Performance with the Segment Intelligence
+Dashboard
+Segment Intelligence is a dashboard for Marketing Intelligence in Marketing Cloud Next that helps you
+evaluate how your audience segments—created in Data 360 and activated to third-party platforms like
+Google Ads and Meta Ads—perform across channels. The dashboard presents your engagement data in a
+single view, making it easier to identify which segments are performing well and which need adjustment.
+The Segment Summary provides performance highlights and benchmarks, offering clear insights to help
+you optimize your campaigns.
+After setup is complete, the dashboard automatically updates with performance data and
+summaries—giving you the insights you need to fine-tune your campaigns and improve results.
+Improve Marketing Strategies with Agentforce in Marketing
+Intelligence
+Agentforce brings generative AI to Marketing Intelligence in Marketing Cloud Next, enabling agents to
+analyze your data and recommend actions to improve performance.
+Pause Underperforming Ads with the Paid Media Optimization Agent (Beta)
+The Paid Media Optimization Agent analyzes ad performance, recommends which ads to pause, and
+lets you take action directly in Marketing Intelligence for supported channels. It helps you optimize
+campaigns and manage budgets without switching between reports or dashboards.
+45
+
+=== PAGE 50 ===
+Marketing Intelligence in Marketing Cloud Improve Marketing Strategies with Agentforce in Marketing
+Next Intelligence
+Pause Underperforming Ads with the Paid Media Optimization
+Agent (Beta)
+The Paid Media Optimization Agent analyzes ad performance, recommends which ads to pause, and lets
+you take action directly in Marketing Intelligence for supported channels. It helps you optimize
+campaigns and manage budgets without switching between reports or dashboards.
+Configure Agentforce with Marketing Intelligence: Paid Media Agent (Beta)
+Use Marketing Intelligence with Agentforce to improve ad performance by identifying
+underperforming ads based on industry benchmarks. Manage budget distribution effectively and
+optimize campaigns without manually tracking multiple reports and dashboards. The agent
+recommends which ads to pause and can automatically pause them in certain channels.
+Set Up the Paid Media Optimization Agent (Beta)
+Use the The Paid Media Optimization Agent to review underperforming ads, see pause
+recommendations, and pause ads directly from Marketing Intelligence in supported channels. The
+agent helps you optimize campaigns and manage budgets without switching between reports or
+dashboards.
+Considerations for Paid Media Optimization in Marketing Intelligence (Beta)
+To use Paid Media Optimization in Marketing Intelligence, consider supported functionality, usage,
+limitations and allowances, limits, and other issues.
+Agents and Data Usage in Marketing Intelligence (Beta)
+When using Agentforce along with Marketing Intelligence, review this table to understand the type of
+data used by agents.
+Configure Agentforce with Marketing Intelligence: Paid Media Agent (Beta)
+Use Marketing Intelligence with Agentforce to improve ad performance by identifying underperforming
+ads based on industry benchmarks. Manage budget distribution effectively and optimize campaigns
+without manually tracking multiple reports and dashboards. The agent recommends which ads to pause
+and can automatically pause them in certain channels.
+RREEQQUUIIRREEDD EEDDIITTIIOONNSS
+Note Paid Media Optimization Agent is a pilot or beta service that is subject to the Beta Services
+Terms at Agreements - Salesforce.com or a written Unified Pilot Agreement if executed by Customer,
+and the Non-GA Credit Consumption, Non-GA Gen AI, and the Non-GA Open AI LLM Provider
+terms in the Product Terms Directory. Use of this pilot or beta service is at the Customer's sole
+discretion.
+Available in: Lightning Experience
+Available in: Enterprise, Performance, and Unlimited Editions with the Einstein for Sales, Einstein for
+Service, or Einstein Platform add-ons, and in Enterprise and Unlimited Editions with Marketing Cloud
+46
+
+=== PAGE 51 ===
+Marketing Intelligence in Marketing Cloud Improve Marketing Strategies with Agentforce in Marketing
+Next Intelligence
+Next.
+USER PERMISSIONS NEEDED
+To create Agentforce (Default):
+Manage AI Agents AND Manage Agentforce
+Default Agent
+OR
+Customize Application
+To set up Paid Media Optimization agent:
+Marketing Intelligence Admin permission set
+Meet these prerequisites before configuring the agent to optimize and pause your campaigns.
+•
+Set Up Marketing Intelligence.
+•
+Set Up Einstein Generative AI.
+•
+Set Up the Paid Media Optimization Agent.
+Set Up the Paid Media Optimization Agent (Beta)
+Use the The Paid Media Optimization Agent to review underperforming ads, see pause
+recommendations, and pause ads directly from Marketing Intelligence in supported channels. The agent
+helps you optimize campaigns and manage budgets without switching between reports or dashboards.
+RREEQQUUIIRREEDD EEDDIITTIIOONNSS
+Note Paid Media Optimization Agent is a pilot or beta service that is subject to the Beta Services
+Terms at Agreements - Salesforce.com or a written Unified Pilot Agreement if executed by Customer,
+and the Non-GA Credit Consumption, Non-GA Gen AI, and the Non-GA Open AI LLM Provider
+terms in the Product Terms Directory. Use of this pilot or beta service is at the Customer's sole
+discretion.
+Available in: Lightning Experience
+Available in: Enterprise, Performance, and Unlimited Editions with the Einstein for Sales, Einstein for
+Service, or Einstein Platform add-ons, and in Enterprise and Unlimited Editions with Marketing Cloud
+Next.
+USER PERMISSIONS NEEDED
+To create an AI Agent:
+Manage AI Agents and Manage Agentforce
+Employee Agents
+47
+
+=== PAGE 52 ===
+Marketing Intelligence in Marketing Cloud Improve Marketing Strategies with Agentforce in Marketing
+Next Intelligence
+USER PERMISSIONS NEEDED
+OR
+Customize Application
+To set up Paid Media Optimization agent:
+Marketing Intelligence Admin permission set
+11.. Enable Agentforce in Marketing Intelligence.
+aa.. From Setup, in the Quick Find box, enter and select Marketing Intelligence.
+bb.. On the Feature Manager tab, enable Agentforce.
+22.. Turn on Agentforce Agents.
+aa.. From Setup, in the Quick Find box, enter and select Agentforce Agents.
+bb.. Click New Agent.
+cc.. Select Paid Media Optimization Agent, and then click Next.
+dd.. Click Next.
+ee.. Enter your company details.
+ff.. Click Next.
+gg.. Select the language and tone of your agent's responses.
+hh.. Click Create.
+33.. To turn on the Paid Media Optimization Agent, click Activate.
+44.. Manage Agentforce Employee Agent (AEA) access.
+Considerations for Paid Media Optimization in Marketing Intelligence (Beta)
+To use Paid Media Optimization in Marketing Intelligence, consider supported functionality, usage,
+limitations and allowances, limits, and other issues.
+RREEQQUUIIRREEDD EEDDIITTIIOONNSS
+Note Paid Media Optimization Agent is a pilot or beta service that is subject to the Beta Services
+Terms at Agreements - Salesforce.com or a written Unified Pilot Agreement if executed by Customer,
+and the Non-GA Credit Consumption, Non-GA Gen AI, and the Non-GA Open AI LLM Provider
+terms in the Product Terms Directory. Use of this pilot or beta service is at the Customer's sole
+discretion.
+Available in: Lightning Experience
+Available in: Enterprise, Performance, and Unlimited Editions with the Einstein for Sales, Einstein for
+Service, or Einstein Platform add-ons, and in Enterprise and Unlimited Editions with Marketing Cloud
+Next.
+48
+
+=== PAGE 53 ===
+Marketing Intelligence in Marketing Cloud Improve Marketing Strategies with Agentforce in Marketing
+Next Intelligence
+USER PERMISSIONS NEEDED
+To create an AI Agent:
+Manage AI Agents and Manage Agentforce
+Employee Agents
+OR
+Customize Application
+To set up Paid Media Optimization agent:
+Marketing Intelligence Admin permission set
+Language and Locale Support
+Language locale culture code
+English English (United States) en_US
+Large Language Model Support
+Paid Media Optimization supports this model.
+Model
+OpenAI GPT-4o
+Einstein Trust Layer Service Support
+Paid Media Optimization supports these Trust Layer services.
+Service Description
+Dynamic Grounding with Secure Data Retrieval Yes
+Yes
+Prompt Defense (System policies and prompt
+injection detection)
+Data Masking No
+Toxicity Detection Yes
+Audit and Feedback Yes
+49
+
+=== PAGE 54 ===
+Marketing Intelligence in Marketing Cloud Improve Marketing Strategies with Agentforce in Marketing
+Next Intelligence
+Region Support
+Paid media optimization does not support geo-aware LLM request routing, as described in Geo-Aware
+LLM Request Routing on the Einstein Generative AI Platform.
+Generative AI Usage
+Agentforce Usage Types (for Agentforce conversations) and Einstein Requests are metrics for generative
+AI. The use of generative AI capabilities, in either a production or sandbox environment, consumes
+Einstein Requests and possibly Data 360 credits. To learn more, see Generative AI Billable Usage Types.
+Paid media optimization stores and processes data using Data 360. Paid media optimization consumes
+credits used for billing based on your usage of the feature.
+Data Cloud One Support
+Paid media optimization is supported in Data Cloud One companion orgs. For more information, see
+Salesforce CRM Orgs to Data 360.
+Agents and Data Usage in Marketing Intelligence (Beta)
+When using Agentforce along with Marketing Intelligence, review this table to understand the type of
+data used by agents.
+RREEQQUUIIRREEDD EEDDIITTIIOONNSS
+Available in: Lightning Experience in Enterprise, Unlimited, Professional, and Developer editions with
+Data 360.
+Note Paid Media Optimization Agent is a pilot or beta service that is subject to the Beta Services
+Terms at Agreements - Salesforce.com or a written Unified Pilot Agreement if executed by Customer,
+and the Non-GA Credit Consumption, Non-GA Gen AI, and the Non-GA Open AI LLM Provider
+terms in the Product Terms Directory. Use of this pilot or beta service is at the Customer's sole
+discretion.
+The table lists both the Customer Data that is used, which is data submitted by the Customer to our
+services as defined in our Main Services Agreement (MSA), and the usage data that is used, which is data
+relating to users’ interactions with Salesforce. Data submitted to an agent may be used to train AI
+models, to improve your services and features, or to develop new features that you can access without
+additional cost.
+50
+
+=== PAGE 55 ===
+Marketing Intelligence in Marketing Cloud Improve Marketing Strategies with Agentforce in Marketing
+Next Intelligence
+Customer data
+generative ai global model deep learning
+feature and salesforce
+model used used model used
+objects used
+Marketing
+User engagement
+Intelligence: Get Yes No No
+data from DMOs
+Channel Types
+Marketing
+Intelligence: Get User engagement
+Yes No No
+Campaign data from DMOs
+Objectives
+Marketing
+User engagement
+Intelligence: Get Yes No No
+data from DMOs
+Metrics
+Marketing
+Intelligence: Get User engagement
+Yes No No
+Low Performing data from DMOs
+Ads
+51

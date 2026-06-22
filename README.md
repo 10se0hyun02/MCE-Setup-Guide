@@ -127,7 +127,7 @@ const SECTIONS = {
 현재 진행 중인 MCE 구축 고객사 프로젝트를 관리하는 개인 업무 도구입니다.  
 데이터는 **브라우저 IndexedDB에 저장**되며 외부 서버가 필요 없습니다.
 
-### 저장 구조 (IndexedDB `MCEDashboardDB` v3)
+### 저장 구조 (IndexedDB `MCEDashboardDB` v4)
 
 | 스토어 | 키 | 용도 |
 |---|---|---|
@@ -137,18 +137,22 @@ const SECTIONS = {
 | issues | id (idx: projectId) | 이슈 트래커 |
 | notes | id (idx: projectId) | 메모 카드 |
 | threads | id (idx: parentId) | 카드별 스레드 메시지 |
+| todos | id (idx: projectId, date) | 날짜별 할일 목록 |
 
 ### 주요 기능
 
 | 탭 | 기능 |
 |---|---|
 | 📊 진행현황 | Step 0~16 상태 토글 (⬜/🔵/✅), 진행률 바, 가이드 링크 |
-| 💬 커뮤니케이션 | 날짜/방식/참석자/내용/결정사항, 검색, 마크다운 편집 |
+| 💬 커뮤니케이션 | 날짜/방식/참석자/내용, 검색, 마크다운 편집 |
 | 📎 파일 | 드래그 업로드, 카테고리 필터, 다운로드 |
 | ⚠️ 이슈 | 우선순위/상태/카테고리, 인라인 상태 변경, 마크다운 편집 |
 | 📝 노트 | 카드 목록, 검색, 마크다운 편집, 체크박스 인터랙션 |
+| 📅 할일 | 월 달력 + 날짜별 할일 목록, 시간/담당자/마감일/메모 |
 
 **스레드 패널:** 커뮤니케이션/이슈/노트 카드를 클릭하면 우측에 Slack 스레드 형식의 패널이 열립니다.
+
+**할일 탭:** 왼쪽 달력에서 날짜를 클릭하면 해당 날짜의 할일 목록이 오른쪽에 표시됩니다. 할일이 있는 날짜에는 파란 점이 표시됩니다.
 
 **마크다운 지원 문법:**
 ```
@@ -176,7 +180,7 @@ README.md와 progress.md 읽고 현재 상태 파악해줘.
 ### 작업 규칙
 1. `index.html` / `dashboard.html` 모두 단일 파일 — 외부 CSS/JS 분리 금지
 2. `docs/*.html` 은 Pretendard + 별도 CSS 변수 사용 (index.html 변수와 혼용 금지)
-3. IndexedDB 스키마 변경 시 `DB_VERSION` 숫자 올리기 (현재 v3)
+3. IndexedDB 스키마 변경 시 `DB_VERSION` 숫자 올리기 (현재 v4)
 4. `dashboard.html` 수정 후 DB 버전을 올릴 경우 `onupgradeneeded` 마이그레이션 로직 확인
 
 ---
@@ -189,3 +193,4 @@ README.md와 progress.md 읽고 현재 상태 파악해줘.
 | 2026-06-19 | 17단계로 확장, 스타일 정규화, doc-link 정리 |
 | 2026-06-19 | `docs/contact-builder-de.html` 신규 생성 |
 | 2026-06-19 | `dashboard.html` 전체 구현 (IndexedDB, 5탭, 마크다운, 스레드) |
+| 2026-06-19 | `dashboard.html` — 📅 할일 탭 추가 (달력, 날짜별 할일, DB v4) |
