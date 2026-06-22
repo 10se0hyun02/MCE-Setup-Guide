@@ -1,0 +1,15 @@
+# Agent 출력 파일 (자동 생성, 버전 추적 불필요)
+briefing-data.json
+weekly-data.json
+gmail-sync.json
+gmail-config.json
+
+# 대시보드 데이터 (IndexedDB 스냅샷, 자주 변경됨)
+dashboard-data.json
+
+# Drive 백업 폴더
+backups/
+
+# OS
+.DS_Store
+Thumbs.db
