@@ -1,0 +1,962 @@
+﻿<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Journey Builder & Automation Studio — MCE 가이드</title>
+<link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable.min.css">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --primary:#0070D2;--primary-light:#EAF4FF;--primary-dark:#005FB2;
+  --text:#1a1a1a;--text-sub:#555;--text-muted:#888;
+  --border:#E0E0E0;--bg:#F9F9F9;--white:#fff;
+  --green:#0E7C59;--green-bg:#E6F5F0;
+  --amber:#8A5700;--amber-bg:#FFF4E0;
+  --red:#B91C1C;--red-bg:#FEF2F2;
+  --purple:#6B21A8;--purple-bg:#F5F3FF;
+  --sidebar-w:248px;
+  --font:'Pretendard Variable','Pretendard',system-ui,sans-serif;
+}
+body{font-family:var(--font);font-size:16px;line-height:1.75;color:var(--text);background:var(--bg)}
+a{color:var(--primary);text-decoration:none}
+a:hover{text-decoration:underline}
+.layout{display:flex;min-height:100vh}
+.sidebar{position:sticky;top:0;height:100vh;overflow-y:auto;width:var(--sidebar-w);min-width:var(--sidebar-w);background:var(--white);border-right:1px solid var(--border);padding:24px 0}
+.sidebar-logo{padding:0 20px 20px;border-bottom:1px solid var(--border);margin-bottom:12px}
+.sidebar-logo .back{font-size:12px;color:var(--text-muted);display:block;margin-bottom:8px}
+.sidebar-logo h1{font-size:13px;font-weight:700;color:var(--text);line-height:1.4}
+.sidebar-logo .badge{display:inline-block;margin-top:6px;font-size:10px;padding:2px 8px;background:var(--primary-light);color:var(--primary-dark);border-radius:20px;font-weight:600}
+.toc-label{font-size:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--text-muted);padding:10px 20px 4px}
+.toc-item{display:block;padding:7px 20px;font-size:12.5px;color:var(--text-sub);border-left:2px solid transparent;transition:all .1s}
+.toc-item:hover,.toc-item.active{color:var(--primary);background:var(--primary-light);border-left-color:var(--primary);text-decoration:none}
+.toc-sub{padding-left:32px;font-size:12px}
+.content{flex:1;padding:48px 64px;background:var(--white)}
+@media(max-width:900px){.sidebar{display:none}.content{padding:28px 20px}}
+.doc-eyebrow{font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--text-muted);margin-bottom:8px}
+h1.doc-title{font-size:30px;font-weight:800;line-height:1.25;margin-bottom:12px}
+.doc-meta{font-size:13px;color:var(--text-muted);padding-bottom:24px;border-bottom:1px solid var(--border);margin-bottom:36px}
+h2{font-size:21px;font-weight:700;margin:44px 0 14px;padding-top:8px;scroll-margin-top:24px}
+h3{font-size:16px;font-weight:700;margin:28px 0 10px;scroll-margin-top:24px}
+h4{font-size:14px;font-weight:700;margin:20px 0 8px;color:var(--text-sub)}
+p{margin-bottom:14px}
+ul,ol{padding-left:22px;margin-bottom:14px}
+li{margin-bottom:6px}
+code{background:#F1F5F9;color:#0F172A;padding:1px 5px;border-radius:4px;font-size:14px;font-family:'Consolas','Courier New',monospace}
+pre{background:#0F172A;color:#E2E8F0;padding:16px 18px;border-radius:8px;font-size:13px;line-height:1.65;overflow-x:auto;margin:16px 0;font-family:'Consolas','Courier New',monospace}
+pre .kw{color:#93C5FD}
+pre .fn{color:#6EE7B7}
+pre .str{color:#FCD34D}
+pre .cm{color:#94A3B8;font-style:italic}
+pre .field{color:#C4B5FD}
+.callout{display:flex;gap:12px;padding:14px 16px;border-radius:8px;border-left:4px solid;margin:20px 0;font-size:13.5px;line-height:1.65}
+.callout-icon{font-size:16px;flex-shrink:0;margin-top:1px}
+.callout.note{background:#F0F4FF;border-color:#6B8CFE;color:#1E3A8A}
+.callout.warning{background:var(--amber-bg);border-color:#F59E0B;color:var(--amber)}
+.callout.danger{background:var(--red-bg);border-color:#EF4444;color:var(--red)}
+.callout.tip{background:var(--green-bg);border-color:#10B981;color:var(--green)}
+.callout strong{font-weight:700}
+.table-wrap{overflow-x:auto;margin:20px 0}
+table{width:100%;border-collapse:collapse;font-size:14px}
+th{text-align:left;padding:10px 12px;background:var(--bg);font-weight:700;font-size:13px;text-transform:uppercase;letter-spacing:.04em;color:var(--text-sub);border-bottom:2px solid var(--border)}
+td{padding:10px 12px;border-bottom:1px solid var(--border);vertical-align:top;line-height:1.55}
+tr:last-child td{border-bottom:none}
+tr:hover td{background:var(--bg)}
+.steps{margin:16px 0}
+.step{display:flex;gap:14px;margin-bottom:14px;align-items:flex-start}
+.step-num{flex-shrink:0;width:26px;height:26px;border-radius:50%;background:var(--primary);color:#fff;font-size:12px;font-weight:700;display:flex;align-items:center;justify-content:center}
+.step-body{flex:1;padding-top:2px}
+.tag{display:inline-block;font-size:11px;font-weight:600;padding:2px 8px;border-radius:20px;vertical-align:middle}
+.tag.blue{background:var(--primary-light);color:var(--primary-dark)}
+.tag.green{background:var(--green-bg);color:var(--green)}
+.tag.amber{background:var(--amber-bg);color:var(--amber)}
+.tag.red{background:var(--red-bg);color:var(--red)}
+.divider{border:none;border-top:1px solid var(--border);margin:40px 0}
+section{scroll-margin-top:20px}
+.act-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:12px;margin:16px 0}
+.act-card{background:var(--bg);border:1px solid var(--border);border-radius:8px;padding:12px 14px}
+.act-card .ac-name{font-size:13px;font-weight:700;color:var(--text);margin-bottom:4px}
+.act-card .ac-id{font-size:11px;color:var(--text-muted);margin-bottom:6px;font-family:monospace}
+.act-card .ac-desc{font-size:12px;color:var(--text-sub);line-height:1.5}
+.dv-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:10px;margin:16px 0}
+.dv-card{border:1px solid var(--border);border-radius:8px;padding:10px 14px}
+.dv-card .dv-name{font-size:12.5px;font-weight:700;color:var(--primary-dark);margin-bottom:3px}
+.dv-card .dv-desc{font-size:12px;color:var(--text-sub);line-height:1.45}
+.flow-box{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin:16px 0}
+.flow-step{background:var(--primary-light);color:var(--primary-dark);border-radius:8px;padding:10px 14px;font-size:13px;font-weight:600;text-align:center;min-width:80px}
+.flow-arrow{color:var(--text-muted);font-size:18px;flex-shrink:0}
+.jb-act-box{display:flex;align-items:flex-start;gap:14px;padding:12px 16px;border:1px solid var(--border);border-radius:8px;margin-bottom:10px}
+.jb-act-icon{font-size:22px;flex-shrink:0;width:32px;text-align:center}
+.jb-act-body strong{display:block;font-size:14px;font-weight:700;margin-bottom:2px}
+.jb-act-body p{margin:0;font-size:13px;color:var(--text-sub);line-height:1.55}
+</style>
+</head>
+<body>
+<div class="layout">
+
+<aside class="sidebar">
+  <div class="sidebar-logo">
+    <a class="back" href="../index.html">← MCE 구축 가이드로 돌아가기</a>
+    <h1>Journey Builder &amp; Automation Studio</h1>
+    <span class="badge">자동화 & 여정 설계</span>
+  </div>
+
+  <div class="toc-label">Automation Studio</div>
+  <a class="toc-item" href="#as-overview">Automation Studio 개요</a>
+  <a class="toc-item toc-sub" href="#as-start">시작 소스 유형</a>
+  <a class="toc-item" href="#as-activities">Activities 목록</a>
+  <a class="toc-item" href="#as-query">SQL Query Activity</a>
+  <a class="toc-item toc-sub" href="#as-query-build">Query 작성 방법</a>
+  <a class="toc-item toc-sub" href="#as-query-optimize">최적화 가이드</a>
+  <a class="toc-item toc-sub" href="#as-query-data-action">Data Action</a>
+  <a class="toc-item" href="#as-data-views">Data Views</a>
+  <a class="toc-item toc-sub" href="#as-dv-list">주요 Data View 목록</a>
+  <a class="toc-item" href="#as-sql-patterns">실전 SQL 패턴</a>
+  <a class="toc-item toc-sub" href="#sql-bounce">바운스 이력 수집</a>
+  <a class="toc-item toc-sub" href="#sql-open30">30일 오픈 수집</a>
+  <a class="toc-item toc-sub" href="#sql-jb-sends">Journey 발송 집계</a>
+  <a class="toc-item toc-sub" href="#sql-jb-bounce">Journey 바운스 추출</a>
+  <a class="toc-item toc-sub" href="#sql-intermediate">중간 테이블 패턴</a>
+
+  <div class="toc-label">Journey Builder</div>
+  <a class="toc-item" href="#jb-overview">Journey Builder 개요</a>
+  <a class="toc-item" href="#jb-entry">Entry Sources</a>
+  <a class="toc-item toc-sub" href="#jb-de-entry">Data Extension Entry</a>
+  <a class="toc-item toc-sub" href="#jb-api-entry">API Event Entry</a>
+  <a class="toc-item toc-sub" href="#jb-sf-entry">Salesforce Data Event</a>
+  <a class="toc-item" href="#jb-canvas">Canvas Activities</a>
+  <a class="toc-item toc-sub" href="#jb-send">Send Activities</a>
+  <a class="toc-item toc-sub" href="#jb-split">Split Activities</a>
+  <a class="toc-item toc-sub" href="#jb-wait">Wait Activities</a>
+  <a class="toc-item toc-sub" href="#jb-update">Update & Admin</a>
+  <a class="toc-item" href="#jb-best-practice">성능 최적화</a>
+  <a class="toc-item" href="#jb-patterns">실전 Journey 패턴</a>
+  <a class="toc-item toc-sub" href="#pattern-welcome">Welcome Series</a>
+  <a class="toc-item toc-sub" href="#pattern-birthday">생일 자동화</a>
+  <a class="toc-item toc-sub" href="#pattern-reengagement">Re-engagement</a>
+</aside>
+
+<div class="content">
+  <div class="doc-eyebrow">Marketing Cloud Engagement · 자동화</div>
+  <h1 class="doc-title">Journey Builder &amp; Automation Studio</h1>
+  <p class="doc-meta">Automation Studio로 데이터 처리 워크플로를 자동화하고, Journey Builder로 고객 여정을 설계합니다. 이 두 앱은 MCE 구축의 핵심 엔진입니다.<br>출처: Salesforce 공식 문서 <em>Engagement: Journey Builder and Automation Studio</em> (2026.06.23, 497p)</p>
+
+  <!-- ══════════════════════════════════════════
+       AUTOMATION STUDIO
+  ══════════════════════════════════════════ -->
+
+  <section id="as-overview">
+    <h2>Automation Studio 개요</h2>
+    <p>Automation Studio는 이메일 발송, 데이터 임포트, SQL 쿼리, 파일 전송 등 반복적인 마케팅·데이터 관리 작업을 자동화합니다. 단순한 단일 단계 자동화부터 복잡한 멀티스텝 워크플로까지 구성할 수 있습니다.</p>
+
+    <div class="callout note">
+      <span class="callout-icon">📌</span>
+      <div><strong>Automation Studio vs Journey Builder:</strong> Automation Studio는 <em>데이터 처리·배치 작업</em>(SQL 쿼리, 파일 임포트, 발송 준비)에 사용하고, Journey Builder는 <em>개인별 실시간 여정</em>(이메일 시퀀스, Decision Split, Wait)에 사용합니다. 두 앱은 상호보완적으로 함께 사용됩니다.</div>
+    </div>
+
+    <section id="as-start">
+      <h3>시작 소스(Starting Source) 유형</h3>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>유형</th><th>트리거 조건</th><th>대표 사용 케이스</th></tr></thead>
+          <tbody>
+            <tr>
+              <td><strong>Scheduled</strong></td>
+              <td>지정된 날짜·시간·반복 주기</td>
+              <td>매일 새벽 2시 세그먼트 갱신, 매주 월요일 주간 발송 준비</td>
+            </tr>
+            <tr>
+              <td><strong>File Drop</strong></td>
+              <td>Enhanced FTP의 <code>Import/</code> 또는 <code>Triggered_Automations/</code> 폴더에 파일 업로드 시</td>
+              <td>POS 데이터 야간 자동 임포트, 외부 시스템 파일 연동</td>
+            </tr>
+            <tr>
+              <td><strong>Trigger API</strong></td>
+              <td>외부 시스템(AWS S3, GCP, Azure)에 파일 업로드 → REST API 호출</td>
+              <td>실시간 트랜잭션 데이터 처리, 외부 이벤트 기반 자동화</td>
+            </tr>
+            <tr>
+              <td><strong>Run Once</strong></td>
+              <td>수동 즉시 실행</td>
+              <td>임시 세그먼트 생성, 긴급 발송 준비, 개별 Activity 테스트</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="callout tip">
+        <span class="callout-icon">💡</span>
+        <div><strong>Advanced Run Once:</strong> Scheduled 자동화에서만 지원. 전체 자동화가 아닌 특정 스텝·액티비티만 선택해 실행할 수 있습니다. 에러가 발생한 액티비티만 수정 후 재실행할 때 유용합니다.</div>
+      </div>
+    </section>
+  </section>
+
+  <hr class="divider">
+
+  <!-- ──── Activities 목록 ──── -->
+  <section id="as-activities">
+    <h2>Activities 목록</h2>
+    <p>자동화에서 사용할 수 있는 Activity 유형입니다. Activities 탭에서 미리 설정해두면 여러 자동화에서 재사용할 수 있습니다.</p>
+
+    <div class="act-grid">
+      <div class="act-card">
+        <div class="ac-name">Send Email</div>
+        <div class="ac-id">Type ID: 42</div>
+        <div class="ac-desc">이메일 발송. Send Definition 생성 후 다수 자동화에서 재사용 가능. STO, Delivery Window, Hourly Throttle 설정 지원</div>
+      </div>
+      <div class="act-card">
+        <div class="ac-name">SQL Query</div>
+        <div class="ac-id">Type ID: 300</div>
+        <div class="ac-desc">SQL로 Data View·DE를 쿼리해 결과를 대상 DE에 저장. Append / Update / Overwrite 3가지 Data Action 지원</div>
+      </div>
+      <div class="act-card">
+        <div class="ac-name">Data Copy or Import</div>
+        <div class="ac-id">Type ID: 43</div>
+        <div class="ac-desc">FTP 파일 또는 DE 데이터를 대상 DE로 임포트. 복잡한 SQL 없이 대용량 데이터 이동 가능</div>
+      </div>
+      <div class="act-card">
+        <div class="ac-name">File Transfer</div>
+        <div class="ac-id">Type ID: 53</div>
+        <div class="ac-desc">Enhanced FTP ↔ Safehouse 간 파일 이동, 압축 해제(unzip), 복호화(decrypt)</div>
+      </div>
+      <div class="act-card">
+        <div class="ac-name">Data Extract</div>
+        <div class="ac-id">Type ID: 73</div>
+        <div class="ac-desc">Tracking 데이터, DE 데이터를 CSV로 내보내기. FTP로 자동 전송 가능</div>
+      </div>
+      <div class="act-card">
+        <div class="ac-name">Filter</div>
+        <div class="ac-id">Type ID: 303</div>
+        <div class="ac-desc">Filter Activity로 구독자 필터링 후 대상 List/DE 갱신</div>
+      </div>
+      <div class="act-card">
+        <div class="ac-name">Script</div>
+        <div class="ac-id">Type ID: 423</div>
+        <div class="ac-desc">Server-Side JavaScript(SSJS) 실행. 복잡한 데이터 변환, REST API 호출 자동화</div>
+      </div>
+      <div class="act-card">
+        <div class="ac-name">Refresh Group</div>
+        <div class="ac-id">Type ID: 45</div>
+        <div class="ac-desc">Group(구독자 세그먼트)을 현재 데이터로 갱신</div>
+      </div>
+      <div class="act-card">
+        <div class="ac-name">Publish Audience</div>
+        <div class="ac-id">Type ID: 427</div>
+        <div class="ac-desc">Audience Builder의 Audience를 발행해 Sendable DE 업데이트</div>
+      </div>
+      <div class="act-card">
+        <div class="ac-name">Wait</div>
+        <div class="ac-id">Type ID: 467</div>
+        <div class="ac-desc">지정 시간만큼 자동화 일시 정지. 다음 단계 실행 전 대기</div>
+      </div>
+      <div class="act-card">
+        <div class="ac-name">Verification</div>
+        <div class="ac-id">Type ID: 1000</div>
+        <div class="ac-desc">DE 레코드 수 확인. 예상 범위 벗어나면 자동화 중단 또는 알림</div>
+      </div>
+      <div class="act-card">
+        <div class="ac-name">Fire Event</div>
+        <div class="ac-id">Type ID: 749</div>
+        <div class="ac-desc">Journey Builder의 API Event를 트리거해 여정에 Contact 진입</div>
+      </div>
+    </div>
+
+    <div class="callout warning">
+      <span class="callout-icon">⚠️</span>
+      <div><strong>1 Step = 1 Query 원칙:</strong> 하나의 Automation Step에는 Query Activity를 1개만 배치하세요. 같은 스텝에 여러 Query가 있으면 동일 데이터를 동시 접근(Concurrent Activity)해 타임아웃·실패가 발생할 수 있습니다.</div>
+    </div>
+  </section>
+
+  <hr class="divider">
+
+  <!-- ──── SQL Query Activity ──── -->
+  <section id="as-query">
+    <h2>SQL Query Activity</h2>
+    <p>SQL Query Activity는 Data View와 DE를 SQL로 조회해 결과를 대상 DE에 저장하는 Automation Studio의 핵심 기능입니다. 세그먼트 갱신, 트래킹 데이터 수집, 재활성 대상 추출 등 다양한 데이터 파이프라인에 활용됩니다.</p>
+
+    <section id="as-query-build">
+      <h3>Query 작성 방법</h3>
+      <div class="steps">
+        <div class="step"><div class="step-num">1</div><div class="step-body">Automation Studio → Activities → <strong>New Activity → SQL Query</strong></div></div>
+        <div class="step"><div class="step-num">2</div><div class="step-body">쿼리 이름·External Key 입력 (External Key는 API 식별자로 활용)</div></div>
+        <div class="step"><div class="step-num">3</div><div class="step-body">SQL 작성: 왼쪽 패널에서 DE·Data View를 더블클릭 또는 드래그해 테이블·컬럼 추가 <span class="tag amber">컬럼명 직접 입력 금지</span></div></div>
+        <div class="step"><div class="step-num">4</div><div class="step-body"><strong>Validate Syntax</strong> 클릭으로 문법 검증</div></div>
+        <div class="step"><div class="step-num">5</div><div class="step-body">대상 DE(Target Data Extension) 선택 — 쿼리에 사용한 DE와 달라야 함</div></div>
+        <div class="step"><div class="step-num">6</div><div class="step-body">Data Action 선택 (Append / Update / Overwrite) → 저장</div></div>
+        <div class="step"><div class="step-num">7</div><div class="step-body">자동화에 추가 후 스케줄 설정 및 활성화</div></div>
+      </div>
+    </section>
+
+    <section id="as-query-optimize">
+      <h3>Query 최적화 가이드</h3>
+      <div class="callout danger">
+        <span class="callout-icon">🚫</span>
+        <div><strong>30분 타임아웃:</strong> SQL Query Activity는 30분 후 자동 실패합니다. 쿼리가 10분 이상 걸린다면 중간 테이블 분리 패턴을 적용하거나 Customer Data Platform 검토가 필요합니다.</div>
+      </div>
+
+      <h4>성능 향상 핵심 원칙</h4>
+      <ul>
+        <li><strong>JOIN + SELECT * 사용 금지:</strong> JOIN 시에는 반드시 컬럼명을 명시하세요. <code>SELECT *</code>는 단일 테이블에서만 허용</li>
+        <li><strong>SARGable 쿼리 작성:</strong> <code>WHERE</code>절에 함수 감싸기 금지. <code>WHERE YEAR(EventDate) = 2026</code> 대신 <code>WHERE EventDate >= '2026-01-01'</code> 사용</li>
+        <li><strong>LOWER() 금지:</strong> SQL Server는 대소문자를 구분하지 않으므로 <code>LOWER()</code> 함수는 불필요하며 성능을 저하시킴</li>
+        <li><strong>Primary Key 남용 금지:</strong> 너무 많은 Primary Key는 INSERT 성능을 저하시킴. 조인 기준 필드만 지정</li>
+        <li><strong>정각 회피:</strong> 자동화 대부분이 정각에 집중됨. 8:00 → 8:17처럼 비정각으로 스케줄 분산</li>
+        <li><strong>독립 DE 사용:</strong> 자동화 전용 DE를 별도 생성해 다른 프로세스와 동시 접근 충돌 방지</li>
+      </ul>
+    </section>
+
+    <section id="as-query-data-action">
+      <h3>Data Action 선택 기준</h3>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Data Action</th><th>동작</th><th>성능</th><th>사용 적합 케이스</th></tr></thead>
+          <tbody>
+            <tr>
+              <td><strong>Overwrite</strong></td>
+              <td>기존 데이터 전체 삭제 후 새 데이터 삽입</td>
+              <td><span class="tag green">빠름</span></td>
+              <td>전체 세그먼트 갱신, 매일 새로 만드는 발송 대상 DE</td>
+            </tr>
+            <tr>
+              <td><strong>Append</strong></td>
+              <td>기존 데이터 유지, 새 데이터를 끝에 추가</td>
+              <td><span class="tag blue">보통</span></td>
+              <td>이벤트 로그 누적, 트래킹 이력 장기 보관</td>
+            </tr>
+            <tr>
+              <td><strong>Update</strong></td>
+              <td>Primary Key 일치 시 업데이트, 없으면 추가</td>
+              <td><span class="tag amber">느림</span></td>
+              <td>회원 속성 최신값 유지, Upsert 패턴</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="callout tip">
+        <span class="callout-icon">💡</span>
+        <div><strong>기본값은 Overwrite:</strong> 발송 대상 세그먼트처럼 매번 새로 만드는 DE에는 Overwrite가 가장 빠르고 안전합니다. Append는 오래 사용하면 DE 크기가 계속 커지므로 Retention Policy 설정을 꼭 함께 하세요.</div>
+      </div>
+    </section>
+  </section>
+
+  <hr class="divider">
+
+  <!-- ──── Data Views ──── -->
+  <section id="as-data-views">
+    <h2>Data Views</h2>
+    <p>Data Views는 MCE가 자동 관리하는 시스템 테이블입니다. Automation Studio SQL Query Activity에서 <code>[_ViewName]</code> 형식으로 조회할 수 있습니다. 데이터는 최대 <strong>6개월</strong> 보관됩니다.</p>
+
+    <div class="callout note">
+      <span class="callout-icon">📌</span>
+      <div><strong>시간대:</strong> 모든 Data View 날짜·시간은 <strong>Central Standard Time(CST)</strong> 기준입니다. Daylight Saving Time은 적용되지 않습니다. 한국 기준으로 보려면 <code>DATEADD(hour, 15, EventDate)</code>로 변환하세요.</div>
+    </div>
+
+    <section id="as-dv-list">
+      <h3>주요 Data View 목록</h3>
+      <div class="dv-grid">
+        <div class="dv-card">
+          <div class="dv-name">_Sent</div>
+          <div class="dv-desc">이메일 발송 이벤트. JobID, SubscriberKey, EventDate 포함</div>
+        </div>
+        <div class="dv-card">
+          <div class="dv-name">_Open</div>
+          <div class="dv-desc">이메일 오픈 이벤트. IsUnique 필드로 중복 오픈 구분</div>
+        </div>
+        <div class="dv-card">
+          <div class="dv-name">_Click</div>
+          <div class="dv-desc">이메일 링크 클릭 이벤트. LinkContent(AMPScript 변수 치환 후)·LinkName 포함</div>
+        </div>
+        <div class="dv-card">
+          <div class="dv-name">_Bounce</div>
+          <div class="dv-desc">바운스 이벤트. BounceCategory, SMTPBounceReason 포함</div>
+        </div>
+        <div class="dv-card">
+          <div class="dv-name">_Unsubscribe</div>
+          <div class="dv-desc">수신거부 이벤트. 스팸 신고도 포함. StatusChanges Extract로 전체 기간 조회 가능</div>
+        </div>
+        <div class="dv-card">
+          <div class="dv-name">_Complaint</div>
+          <div class="dv-desc">스팸 신고(FBL) 이벤트. 발송 메시지와 JOIN 필요</div>
+        </div>
+        <div class="dv-card">
+          <div class="dv-name">_Subscribers</div>
+          <div class="dv-desc">구독자 목록. Status(active/held/unsubscribed/bounced), BounceCount. Enterprise 레벨에서만 조회</div>
+        </div>
+        <div class="dv-card">
+          <div class="dv-name">_Job</div>
+          <div class="dv-desc">이메일 발송 Job 정보. EmailName, EmailID, DeliveredTime. JobID 인덱스 필드</div>
+        </div>
+        <div class="dv-card">
+          <div class="dv-name">_Journey</div>
+          <div class="dv-desc">Journey 버전 정보. JourneyName, VersionID, VersionNumber</div>
+        </div>
+        <div class="dv-card">
+          <div class="dv-name">_JourneyActivity</div>
+          <div class="dv-desc">Journey 내 Activity 정보. ActivityName, ActivityType, JourneyActivityObjectID</div>
+        </div>
+        <div class="dv-card">
+          <div class="dv-name">_AutomationInstance</div>
+          <div class="dv-desc">자동화 실행 이력. 성공/실패/Skip 상태, 에러 메시지. 자동화 헬스 모니터링에 활용</div>
+        </div>
+        <div class="dv-card">
+          <div class="dv-name">_BusinessUnitUnsubscribes</div>
+          <div class="dv-desc">Enterprise 레벨 수신거부. Parent BU에서만 실행 가능</div>
+        </div>
+        <div class="dv-card">
+          <div class="dv-name">_ListSubscribers</div>
+          <div class="dv-desc">List 구독자 목록. ListID 기준으로 구독자 조회</div>
+        </div>
+        <div class="dv-card">
+          <div class="dv-name">_FTAF</div>
+          <div class="dv-desc">친구에게 전달(Forward to a Friend) 이벤트</div>
+        </div>
+        <div class="dv-card">
+          <div class="dv-name">_SMSSubscriptionLog</div>
+          <div class="dv-desc">MobileConnect SMS 구독 이력. OptInStatus, OptInDate</div>
+        </div>
+      </div>
+
+      <div class="callout note">
+        <span class="callout-icon">📌</span>
+        <div><strong>Enterprise 2.0 멀티 BU:</strong> 하위 BU에서 쿼리 시 Enterprise 레벨 Data View는 <code>ent.</code> 접두사를 추가하세요. 예: <code>ent.[_Subscribers]</code>. 없으면 해당 BU 데이터만 반환됩니다.</div>
+      </div>
+    </section>
+  </section>
+
+  <hr class="divider">
+
+  <!-- ──── 실전 SQL 패턴 ──── -->
+  <section id="as-sql-patterns">
+    <h2>실전 SQL 패턴</h2>
+
+    <section id="sql-bounce">
+      <h3>바운스 이력 수집 (BounceHistory)</h3>
+      <p>최근 3일 바운스 발생 구독자 목록을 수집해 별도 DE에 저장합니다. 매일 자동화로 실행해 24시간 이내 바운스를 CRM에 반영할 때 활용합니다.</p>
+      <pre><span class="kw">SELECT</span>
+  b.<span class="field">SubscriberID</span>,
+  b.<span class="field">JobID</span>,
+  b.<span class="field">ListID</span>,
+  b.<span class="field">BatchID</span>,
+  b.<span class="field">EventDate</span>,
+  l.<span class="field">EmailAddress</span>,
+  b.<span class="field">SubscriberKey</span>,
+  j.<span class="field">EmailName</span>,
+  b.<span class="field">Domain</span>,
+  b.<span class="field">BounceCategory</span>,
+  b.<span class="field">SMTPBounceReason</span>
+<span class="kw">FROM</span> [_listsubscribers] <span class="kw">AS</span> l
+<span class="kw">INNER JOIN</span> [_bounce] <span class="kw">AS</span> b
+  <span class="kw">ON</span> l.<span class="field">SubscriberID</span> = b.<span class="field">SubscriberID</span>
+<span class="kw">INNER JOIN</span> [_job] <span class="kw">AS</span> j
+  <span class="kw">ON</span> b.<span class="field">JobId</span> = j.<span class="field">JobID</span>
+<span class="kw">WHERE</span> b.<span class="field">EventDate</span> > <span class="fn">DATEADD</span>(dd, -3, <span class="fn">GETDATE</span>())</pre>
+      <div class="callout tip">
+        <span class="callout-icon">💡</span>
+        <div>특정 이메일의 바운스만 추출하려면 마지막 줄에 <code>AND j.EmailID = <em>YOUR_EMAIL_ID</em></code>를 추가하세요. Target DE Data Action: <strong>Update</strong> 권장.</div>
+      </div>
+    </section>
+
+    <section id="sql-open30">
+      <h3>최근 30일 고유 오픈 수집 (OpensIn30Days)</h3>
+      <p>특정 이메일의 30일 이내 고유 오픈 목록을 추출합니다. 리인게이지먼트 대상 제외(최근 활성자 목록)나 세그먼트 갱신에 사용합니다.</p>
+      <pre><span class="kw">SELECT</span>
+  j.<span class="field">JobID</span>,
+  j.<span class="field">EmailName</span>,
+  j.<span class="field">DeliveredTime</span> <span class="kw">AS</span> SendTime,
+  o.<span class="field">EventDate</span> <span class="kw">AS</span> OpenTime,
+  s.<span class="field">EmailAddress</span>,
+  s.<span class="field">SubscriberKey</span>
+<span class="kw">FROM</span> [_job] j
+<span class="kw">INNER JOIN</span> [_open] o
+  <span class="kw">ON</span> j.<span class="field">JobID</span> = o.<span class="field">JobID</span>
+<span class="kw">INNER JOIN</span> [_subscribers] s
+  <span class="kw">ON</span> o.<span class="field">SubscriberID</span> = s.<span class="field">SubscriberID</span>
+<span class="kw">WHERE</span> o.<span class="field">IsUnique</span> = 1
+  <span class="kw">AND</span> o.<span class="field">EventDate</span> > <span class="fn">DATEADD</span>(day, -30, <span class="fn">GETDATE</span>())
+  <span class="kw">AND</span> j.<span class="field">EmailID</span> = <span class="str">YOUR_EMAIL_ID</span></pre>
+    </section>
+
+    <section id="sql-jb-sends">
+      <h3>Journey 발송 일별 집계 (EmailSendsByJourney)</h3>
+      <p>특정 Journey의 이메일 발송 수를 날짜·이메일명별로 집계합니다. 운영 리포팅 자동화에 활용합니다.</p>
+      <pre><span class="kw">SELECT</span>
+  j.<span class="field">JourneyName</span>,
+  <span class="fn">CAST</span>(s.<span class="field">EventDate</span> <span class="kw">AS</span> <span class="kw">DATE</span>) <span class="kw">AS</span> Date,
+  ja.<span class="field">ActivityName</span> <span class="kw">AS</span> EmailName,
+  ja.<span class="field">ActivityExternalKey</span>,
+  <span class="fn">COUNT</span>(*) <span class="kw">AS</span> Sends
+<span class="kw">FROM</span> [_sent] <span class="kw">AS</span> s
+<span class="kw">INNER JOIN</span> [_journeyactivity] <span class="kw">AS</span> ja
+  <span class="kw">ON</span> s.<span class="field">TriggererSendDefinitionObjectID</span>
+     = ja.<span class="field">JourneyActivityObjectID</span>
+<span class="kw">INNER JOIN</span> [_journey] <span class="kw">AS</span> j
+  <span class="kw">ON</span> ja.<span class="field">VersionID</span> = j.<span class="field">VersionID</span>
+<span class="kw">INNER JOIN</span> [_subscribers] <span class="kw">AS</span> su
+  <span class="kw">ON</span> s.<span class="field">SubscriberID</span> = su.<span class="field">SubscriberID</span>
+<span class="kw">WHERE</span> ja.<span class="field">ActivityType</span> <span class="kw">IN</span> (<span class="str">'EMAIL'</span>, <span class="str">'EMAILV2'</span>)
+  <span class="kw">AND</span> j.<span class="field">JourneyName</span> = <span class="str">'YOUR_JOURNEY_NAME'</span>
+  <span class="kw">AND</span> s.<span class="field">EventDate</span> > <span class="fn">DATEADD</span>(day, -7, <span class="fn">GETDATE</span>())
+<span class="kw">GROUP BY</span>
+  j.<span class="field">JourneyName</span>, j.<span class="field">JourneyID</span>,
+  <span class="fn">CAST</span>(s.<span class="field">EventDate</span> <span class="kw">AS</span> <span class="kw">DATE</span>),
+  ja.<span class="field">ActivityName</span>, ja.<span class="field">ActivityExternalKey</span></pre>
+      <div class="callout tip">
+        <span class="callout-icon">💡</span>
+        <div>오픈·클릭·바운스를 집계하려면 <code>[_sent]</code>를 <code>[_open]</code>, <code>[_click]</code>, <code>[_bounce]</code>로 교체하고, JOIN 조건의 <code>s.</code>를 해당 별칭으로 변경하면 됩니다. 모든 Journey 집계 시 마지막 <code>AND j.JourneyName = ...</code> 줄을 삭제하세요.</div>
+      </div>
+    </section>
+
+    <section id="sql-jb-bounce">
+      <h3>Journey 바운스 Contact 추출 (EmailBouncesByJourney)</h3>
+      <p>Journey에서 이메일이 바운스된 Contact의 주소 정보를 추출해 다이렉트 메일 발송에 활용하는 패턴입니다.</p>
+      <pre><span class="kw">SELECT</span>
+  j.<span class="field">JourneyName</span>,
+  j.<span class="field">VersionNumber</span>,
+  ja.<span class="field">ActivityName</span> <span class="kw">AS</span> EmailName,
+  s.<span class="field">EventDate</span>   <span class="kw">AS</span> SendTime,
+  b.<span class="field">EventDate</span>   <span class="kw">AS</span> BounceTime,
+  su.<span class="field">EmailAddress</span>,
+  su.<span class="field">SubscriberKey</span> <span class="kw">AS</span> ContactKey,
+  cpd.<span class="field">AddressLine1</span>,
+  cpd.<span class="field">City</span>, cpd.<span class="field">State</span>, cpd.<span class="field">Zip</span>
+<span class="kw">FROM</span> [_sent] <span class="kw">AS</span> s
+<span class="kw">INNER JOIN</span> [_journeyactivity] <span class="kw">AS</span> ja
+  <span class="kw">ON</span> s.<span class="field">TriggererSendDefinitionObjectID</span>
+     = ja.<span class="field">JourneyActivityObjectID</span>
+<span class="kw">INNER JOIN</span> [_journey] <span class="kw">AS</span> j
+  <span class="kw">ON</span> ja.<span class="field">VersionID</span> = j.<span class="field">VersionID</span>
+<span class="kw">INNER JOIN</span> [_bounce] <span class="kw">AS</span> b
+  <span class="kw">ON</span>  s.<span class="field">JobID</span>        = b.<span class="field">JobID</span>
+  <span class="kw">AND</span> s.<span class="field">ListID</span>       = b.<span class="field">ListID</span>
+  <span class="kw">AND</span> s.<span class="field">BatchID</span>      = b.<span class="field">BatchID</span>
+  <span class="kw">AND</span> s.<span class="field">SubscriberID</span> = b.<span class="field">SubscriberID</span>
+<span class="kw">INNER JOIN</span> [_subscribers] <span class="kw">AS</span> su
+  <span class="kw">ON</span> b.<span class="field">SubscriberID</span> = su.<span class="field">SubscriberID</span>
+<span class="kw">INNER JOIN</span> [ContactProfileData] <span class="kw">AS</span> cpd
+  <span class="kw">ON</span> su.<span class="field">SubscriberKey</span> = cpd.<span class="field">ContactKey</span>
+<span class="kw">WHERE</span> ja.<span class="field">ActivityType</span> <span class="kw">IN</span> (<span class="str">'EMAIL'</span>, <span class="str">'EMAILV2'</span>)
+  <span class="kw">AND</span> j.<span class="field">JourneyName</span> = <span class="str">'YOUR_JOURNEY_NAME'</span></pre>
+      <div class="callout note">
+        <span class="callout-icon">📌</span>
+        <div><code>ContactProfileData</code>는 사용자 정의 DE로, 주소 필드가 있는 회원 정보 DE를 JOIN합니다. 실제 환경의 DE명으로 교체하세요.</div>
+      </div>
+    </section>
+
+    <section id="sql-intermediate">
+      <h3>중간 테이블 패턴 (장기 쿼리 분리)</h3>
+      <p>여러 Data View를 한 번에 JOIN하면 30분 타임아웃 위험이 있습니다. 단계별 중간 테이블로 분리하면 각 쿼리 실행 시간이 단축됩니다.</p>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Step</th><th>Query</th><th>대상 DE</th><th>설명</th></tr></thead>
+          <tbody>
+            <tr><td>Step 1</td><td>JobTable Query</td><td>JobTable</td><td><code>_job</code>에서 특정 이메일 Job 정보 추출</td></tr>
+            <tr><td>Step 2</td><td>OpenTable Query</td><td>OpenTable</td><td><code>_open</code>에서 고유 오픈 JobID·SubscriberID 추출</td></tr>
+            <tr><td>Step 3</td><td>SubscriberTable Query</td><td>SubscriberTable</td><td>OpenTable과 <code>_subscribers</code>를 JOIN해 이메일 주소 포함</td></tr>
+            <tr><td>Step 4</td><td>Final Query</td><td>OpensIn30Days</td><td>위 3개 중간 DE를 JOIN해 최종 결과 생성. Data Action: <strong>Overwrite</strong></td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="callout tip">
+        <span class="callout-icon">💡</span>
+        <div>각 Step은 독립 DE에 Overwrite로 저장하고, 다음 Step에서 그 DE를 참조합니다. Step 1→2→3→4 순서가 보장되므로 하나의 자동화 내 순차 Step으로 구성하세요.</div>
+      </div>
+    </section>
+  </section>
+
+  <hr class="divider">
+
+  <!-- ══════════════════════════════════════════
+       JOURNEY BUILDER
+  ══════════════════════════════════════════ -->
+
+  <section id="jb-overview">
+    <h2>Journey Builder 개요</h2>
+    <p>Journey Builder는 Contact의 행동·속성·시간에 따라 자동으로 분기하고 개인화 메시지를 발송하는 고객 여정 자동화 도구입니다. Single Send, Transactional Send, Multi-Step Journey 세 유형을 지원합니다.</p>
+
+    <div class="callout warning">
+      <span class="callout-icon">⚠️</span>
+      <div><strong>사전 조건 확인:</strong> Journey Builder에서 Contact 속성(회원등급, 구매일 등)을 Decision Split 조건으로 사용하려면 해당 DE가 반드시 Contact Builder Attribute Group에 연결되어 있어야 합니다. 미설정 시 속성값이 빈 값으로 반환됩니다.</div>
+    </div>
+  </section>
+
+  <hr class="divider">
+
+  <!-- ──── Entry Sources ──── -->
+  <section id="jb-entry">
+    <h2>Entry Sources — 진입 소스</h2>
+    <p>Entry Source는 어떤 Contact가 Journey에 진입할지 결정합니다. 캔버스 상단에 반드시 1개 배치해야 합니다.</p>
+
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Entry Source</th><th>트리거</th><th>대표 케이스</th></tr></thead>
+        <tbody>
+          <tr>
+            <td><strong>Data Extension</strong></td>
+            <td>지정 DE의 Contact. 배치(스케줄) 또는 수동 진입</td>
+            <td>주간 뉴스레터, 세그먼트 캠페인, 생일 여정(매일 스케줄)</td>
+          </tr>
+          <tr>
+            <td><strong>API Event</strong></td>
+            <td>외부 시스템이 REST API 호출 시 즉시 진입</td>
+            <td>회원가입 환영, 구매 확인, 장바구니 이탈(실시간)</td>
+          </tr>
+          <tr>
+            <td><strong>Salesforce Data Event</strong></td>
+            <td>CRM의 Lead/Contact/Opportunity 레코드 생성·변경 시</td>
+            <td>Lead 생성 → 환영 이메일, Opportunity Stage 변경 → 알림</td>
+          </tr>
+          <tr>
+            <td><strong>Salesforce Audience</strong></td>
+            <td>Audience Builder 세그먼트 갱신 시 변경된 Contact</td>
+            <td>등급 변경 고객, VIP 승급 알림</td>
+          </tr>
+          <tr>
+            <td><strong>CloudPages</strong></td>
+            <td>CloudPages Form 제출 시</td>
+            <td>이벤트 등록 후속 여정, 설문 응답 분기</td>
+          </tr>
+          <tr>
+            <td><strong>Inbound Chat</strong></td>
+            <td>WhatsApp·SMS 수신 시</td>
+            <td>키워드 응답 기반 자동화</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <section id="jb-de-entry">
+      <h3>Data Extension Entry Source 설정</h3>
+      <div class="steps">
+        <div class="step"><div class="step-num">1</div><div class="step-body">Canvas에 <strong>Data Extension</strong> 드래그</div></div>
+        <div class="step"><div class="step-num">2</div><div class="step-body">Sendable DE 선택 (Contact Key가 있는 DE)</div></div>
+        <div class="step"><div class="step-num">3</div><div class="step-body"><strong>Filter Contacts</strong>: 추가 조건으로 진입 범위 좁히기 (옵션)</div></div>
+        <div class="step"><div class="step-num">4</div><div class="step-body">Schedule 설정: 1회 / 반복 / 수동. 반복 선택 시 Re-entry 기간 설정</div></div>
+        <div class="step"><div class="step-num">5</div><div class="step-body">Summary 검토 → Done</div></div>
+      </div>
+      <div class="callout note">
+        <span class="callout-icon">📌</span>
+        <div><strong>Entry Source DE 설계 원칙:</strong> 여러 DE 데이터가 필요하면 Automation Studio SQL Query로 먼저 단일 DE에 병합하고 그 DE를 Entry Source로 사용하세요. Filter 조건에 사용할 속성도 Entry Source DE에 포함되어야 합니다 — Contact Builder 속성보다 Entry DE 속성을 우선 활용하면 처리 속도가 빠릅니다.</div>
+      </div>
+    </section>
+
+    <section id="jb-api-entry">
+      <h3>API Event Entry Source</h3>
+      <p>외부 시스템(웹사이트, 앱, CRM)에서 REST API를 호출해 즉시 Journey에 Contact를 진입시킵니다. 실시간 트리거가 필요한 여정(가입 환영, 구매 완료)에 필수입니다.</p>
+      <div class="steps">
+        <div class="step"><div class="step-num">1</div><div class="step-body">Journey Builder → <strong>Create Event</strong> → API Event 생성 (이름·External Key 설정)</div></div>
+        <div class="step"><div class="step-num">2</div><div class="step-body">Event에 포함할 데이터 필드 정의 (이름, 이메일, 주문번호 등)</div></div>
+        <div class="step"><div class="step-num">3</div><div class="step-body">Canvas에 API Event 드래그 → 생성한 Event 선택</div></div>
+        <div class="step"><div class="step-num">4</div><div class="step-body">Journey 활성화 후 외부 시스템에서 REST API 호출: <br><code>POST /interaction/v1/events</code> → EventDefinitionKey + ContactKey + 데이터 페이로드</div></div>
+      </div>
+      <div class="callout tip">
+        <span class="callout-icon">💡</span>
+        <div>Automation Studio의 <strong>Fire Event Activity</strong>(Type ID: 749)를 사용하면 배치 DE에서 대량 Contact를 API Event Journey에 진입시킬 수 있습니다. 실시간 API와 배치 자동화를 함께 사용할 때 활용합니다.</div>
+      </div>
+    </section>
+
+    <section id="jb-sf-entry">
+      <h3>Salesforce Data Event</h3>
+      <p>CRM의 Lead/Contact 레코드 생성·필드 변경 시 자동으로 Journey에 진입합니다. Marketing Cloud Connect 필요.</p>
+      <div class="callout warning">
+        <span class="callout-icon">⚠️</span>
+        <div><strong>APEX 한도 주의:</strong> Salesforce Data Event는 Flow Builder/Process Builder와 함께 동일 Object Save 순서에 실행됩니다. APEX Future 호출 50건 한도, DML 한도 등 APEX Governor Limits 초과 위험이 있습니다. 복잡한 CRM 자동화가 이미 있는 org에서는 설계 전 검토가 필요합니다.</div>
+      </div>
+    </section>
+  </section>
+
+  <hr class="divider">
+
+  <!-- ──── Canvas Activities ──── -->
+  <section id="jb-canvas">
+    <h2>Canvas Activities</h2>
+
+    <section id="jb-send">
+      <h3>Send Activities — 발송</h3>
+      <div class="jb-act-box">
+        <div class="jb-act-icon">📧</div>
+        <div class="jb-act-body">
+          <strong>Email</strong>
+          <p>Content Builder의 이메일 발송. HTS(High Throughput Sending) 활성화 권장. STO, 발송 시간 제한 설정 가능. Journey 내 각 이메일은 독립 External Key로 관리</p>
+        </div>
+      </div>
+      <div class="jb-act-box">
+        <div class="jb-act-icon">📱</div>
+        <div class="jb-act-body">
+          <strong>SMS</strong>
+          <p>MobileConnect SMS 발송. Contact의 MobileNumber 필드 필요. Opt-in 상태 자동 확인</p>
+        </div>
+      </div>
+      <div class="jb-act-box">
+        <div class="jb-act-icon">🔔</div>
+        <div class="jb-act-body">
+          <strong>Push</strong>
+          <p>MobilePush 앱 푸시 알림. Contact의 DeviceToken 필요. iOS/Android 각각 설정</p>
+        </div>
+      </div>
+      <div class="jb-act-box">
+        <div class="jb-act-icon">💬</div>
+        <div class="jb-act-body">
+          <strong>In-App Message</strong>
+          <p>앱 오픈 시 표시되는 인앱 메시지. MobilePush SDK 필요</p>
+        </div>
+      </div>
+      <div class="jb-act-box">
+        <div class="jb-act-icon">☁️</div>
+        <div class="jb-act-body">
+          <strong>Advertising</strong>
+          <p>Facebook/Instagram/Google 광고 대상에 Contact 추가·제거. Marketing Cloud Advertising 필요</p>
+        </div>
+      </div>
+    </section>
+
+    <section id="jb-split">
+      <h3>Split Activities — 분기</h3>
+      <div class="jb-act-box">
+        <div class="jb-act-icon">🔀</div>
+        <div class="jb-act-body">
+          <strong>Engagement Split</strong>
+          <p>이전 이메일의 오픈·클릭 여부로 분기. "이메일 열람한 사람 → A 경로, 미열람 → B 경로". 이메일 Activity 다음에만 배치 가능</p>
+        </div>
+      </div>
+      <div class="jb-act-box">
+        <div class="jb-act-icon">📊</div>
+        <div class="jb-act-body">
+          <strong>Decision Split</strong>
+          <p>Contact 속성(등급, 구매일, 지역 등) 조건으로 최대 10개 경로 분기. Entry Source DE 또는 Contact Builder Attribute Group 필드 사용. 가장 많이 쓰이는 분기 유형</p>
+        </div>
+      </div>
+      <div class="jb-act-box">
+        <div class="jb-act-icon">🎲</div>
+        <div class="jb-act-body">
+          <strong>Random Split</strong>
+          <p>Contact를 지정 비율로 무작위 분배. A/B 테스트, 대조군 설정, 트래픽 분산에 사용. 최대 10개 경로, 합계 100%</p>
+        </div>
+      </div>
+      <div class="jb-act-box">
+        <div class="jb-act-icon">🏆</div>
+        <div class="jb-act-body">
+          <strong>Path Optimizer</strong>
+          <p>여러 이메일 버전 중 성과 기준(오픈율·클릭율)으로 자동 선정. 일정 기간 후 승자 경로에 나머지 Contact 자동 발송</p>
+        </div>
+      </div>
+    </section>
+
+    <section id="jb-wait">
+      <h3>Wait Activities — 대기</h3>
+      <div class="jb-act-box">
+        <div class="jb-act-icon">⏳</div>
+        <div class="jb-act-body">
+          <strong>Wait by Duration</strong>
+          <p>지정 일수·시간 대기 후 다음 단계 진행. "3일 후", "1주일 후" 패턴의 기본 Wait</p>
+        </div>
+      </div>
+      <div class="jb-act-box">
+        <div class="jb-act-icon">📅</div>
+        <div class="jb-act-body">
+          <strong>Wait by Attribute</strong>
+          <p>Contact의 날짜 속성(생일, 만료일)을 기준으로 대기. "생일 3일 전", "만료일 당일" 시점에 다음 단계 실행</p>
+        </div>
+      </div>
+      <div class="jb-act-box">
+        <div class="jb-act-icon">🕐</div>
+        <div class="jb-act-body">
+          <strong>Wait Until</strong>
+          <p>특정 날짜·시간까지 대기 후 진행. 이벤트 당일, 시즌 오픈일 등 고정 날짜 기준 여정에 활용</p>
+        </div>
+      </div>
+    </section>
+
+    <section id="jb-update">
+      <h3>Update &amp; Admin Activities</h3>
+      <div class="jb-act-box">
+        <div class="jb-act-icon">✏️</div>
+        <div class="jb-act-body">
+          <strong>Update Contact</strong>
+          <p>Contact의 DE 또는 Attribute Group 필드값 업데이트. Journey 내에서 등급 변경, 포인트 추가, 상태 플래그 설정에 활용</p>
+        </div>
+      </div>
+      <div class="jb-act-box">
+        <div class="jb-act-icon">🚪</div>
+        <div class="jb-act-body">
+          <strong>Journey End</strong>
+          <p>Contact의 여정을 종료하고 다음 여정 진입을 허용하도록 처리. 명시적 종료 지점 설정 권장</p>
+        </div>
+      </div>
+      <div class="jb-act-box">
+        <div class="jb-act-icon">🔗</div>
+        <div class="jb-act-body">
+          <strong>Salesforce Activity</strong>
+          <p>CRM에 Task·Event 생성, Contact 필드 업데이트. Marketing Cloud Connect 필요. 영업팀 알림 자동화에 활용</p>
+        </div>
+      </div>
+      <div class="jb-act-box">
+        <div class="jb-act-icon">🏷️</div>
+        <div class="jb-act-body">
+          <strong>Einstein STO</strong>
+          <p>개인별 최적 발송 시간 자동 결정. 이메일 Activity 설정에서 활성화. 계정당 최대 72시간 학습 기간 필요</p>
+        </div>
+      </div>
+    </section>
+  </section>
+
+  <hr class="divider">
+
+  <!-- ──── 성능 최적화 ──── -->
+  <section id="jb-best-practice">
+    <h2>성능 최적화</h2>
+    <div class="callout note">
+      <span class="callout-icon">📌</span>
+      <div><strong>HTS(High Throughput Sending):</strong> 이메일 Activity가 있는 모든 Journey에 HTS를 활성화하세요. HTS는 처리량을 높이고 병렬 Journey 실행 시 지연을 줄입니다. HTS 미활성 Journey가 하나라도 있으면 전체 계정 성능에 영향이 생길 수 있습니다.</div>
+    </div>
+
+    <ul>
+      <li><strong>Entry Source 필터 최소화:</strong> Entry Source에 Filter를 추가하면 진입 처리 속도가 낮아집니다. 가능하면 Automation Studio Query에서 미리 필터링된 DE를 사용하세요</li>
+      <li><strong>Decision Split → Contact 속성 우선:</strong> Entry Source DE에 속성이 포함되어 있으면 Contact Builder 조회 없이 바로 분기. 속성을 Entry DE에 포함시키세요</li>
+      <li><strong>Journey 시작 시간 분산:</strong> 여러 Journey가 동시에 시작하면 처리 자원 경쟁이 발생합니다. System Priority 설정과 시작 시간 스태거링으로 완화하세요</li>
+      <li><strong>One-to-Many DE 주의:</strong> Contact Builder에 One-to-Many 관계 DE가 연결되어 있으면 Decision Split에서 같은 속성값이 여러 번 나타날 수 있습니다</li>
+      <li><strong>30일 이상 쿼리 타임아웃:</strong> Entry Source DE를 만들 때 30일 이상 범위 쿼리는 타임아웃 위험이 있습니다. 중간 테이블 패턴을 사용하세요</li>
+    </ul>
+  </section>
+
+  <hr class="divider">
+
+  <!-- ──── 실전 Journey 패턴 ──── -->
+  <section id="jb-patterns">
+    <h2>실전 Journey 패턴</h2>
+
+    <section id="pattern-welcome">
+      <h3 id="pattern-welcome">Welcome Series — 신규 회원 환영</h3>
+      <p>회원 가입 즉시 API Event로 진입. 브랜드 소개 → 혜택 안내 → 첫 구매 유도 3단계 이메일을 순차 발송합니다.</p>
+
+      <div class="flow-box">
+        <div class="flow-step">API Event<br><small>회원가입</small></div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-step">Email 1<br><small>환영 인사</small></div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-step">Wait 2일</div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-step">Email 2<br><small>브랜드 스토리</small></div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-step">Wait 3일</div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-step">Decision<br><small>이메일 클릭?</small></div>
+      </div>
+      <div class="flow-box">
+        <div class="flow-step" style="background:var(--green-bg);color:var(--green)">Yes → Email 3<br><small>첫구매 쿠폰</small></div>
+        <div class="flow-arrow">|</div>
+        <div class="flow-step" style="background:var(--amber-bg);color:var(--amber)">No → Email 3<br><small>인기상품 추천</small></div>
+      </div>
+
+      <ul style="margin-top:16px">
+        <li><strong>Entry Source:</strong> API Event — 회원가입 시스템에서 REST API 호출</li>
+        <li><strong>Re-entry:</strong> 비활성화 (동일 회원 중복 진입 방지)</li>
+        <li><strong>Engagement Split 대신 Decision Split 활용:</strong> 오픈보다 클릭이 명확한 의도 신호</li>
+        <li><strong>Wait 기간:</strong> B2B는 영업일 기준, B2C는 일반 요일 무관</li>
+      </ul>
+    </section>
+
+    <section id="pattern-birthday">
+      <h3 id="pattern-birthday">생일 자동화 — Wait by Attribute</h3>
+      <p>매일 새벽 Automation Studio가 오늘 생일인 회원을 DE에 추출 → Journey는 매일 해당 DE를 Entry Source로 체크해 생일 당일에 이메일 발송합니다.</p>
+
+      <div class="flow-box">
+        <div class="flow-step" style="background:var(--purple-bg);color:var(--purple)">AS Query<br><small>생일 회원 추출</small></div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-step">DE Entry<br><small>매일 스케줄</small></div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-step">Wait by Attr<br><small>생일 당일</small></div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-step">Email<br><small>생일 축하쿠폰</small></div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-step">Wait 3일</div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-step">Engagement<br><small>쿠폰 사용?</small></div>
+      </div>
+
+      <div class="callout tip">
+        <span class="callout-icon">💡</span>
+        <div>
+          <strong>생일 쿼리 예시:</strong><br>
+          <code>WHERE MONTH(BirthDate) = MONTH(GETDATE()) AND DAY(BirthDate) = DAY(GETDATE())</code><br>
+          생일이 없는 회원은 제외하고, NULL 값을 가진 BirthDate 필드는 WHERE절에서 자동 제외됩니다.
+        </div>
+      </div>
+    </section>
+
+    <section id="pattern-reengagement">
+      <h3 id="pattern-reengagement">Re-engagement — 90일 비활성 재활성화</h3>
+      <p>90일 이상 이메일 오픈·클릭이 없는 구독자를 발굴해 재활성화를 시도합니다. 무응답 시 수신거부 처리로 발송 리스트를 정리합니다.</p>
+
+      <div class="flow-box">
+        <div class="flow-step" style="background:var(--purple-bg);color:var(--purple)">AS Query<br><small>90일 비활성 추출</small></div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-step">DE Entry<br><small>매주 월요일</small></div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-step">Email 1<br><small>보고 싶어요</small></div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-step">Wait 7일</div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-step">Engagement<br><small>오픈 여부</small></div>
+      </div>
+      <div class="flow-box">
+        <div class="flow-step" style="background:var(--green-bg);color:var(--green)">Yes<br>→ Email 2<br><small>특별 혜택</small></div>
+        <div class="flow-arrow">|</div>
+        <div class="flow-step" style="background:var(--amber-bg);color:var(--amber)">No<br>→ Email 2<br><small>마지막 기회</small></div>
+      </div>
+      <div class="flow-box" style="margin-top:4px">
+        <div class="flow-step" style="background:var(--red-bg);color:var(--red)">최종 미오픈<br>→ Update Contact<br><small>Unsubscribe 처리</small></div>
+      </div>
+
+      <pre><span class="cm">-- 90일 이상 비활성 구독자 추출</span>
+<span class="cm">-- 최근 90일 내 오픈 또는 클릭이 없는 구독자</span>
+<span class="kw">SELECT DISTINCT</span>
+  s.<span class="field">SubscriberKey</span>,
+  s.<span class="field">EmailAddress</span>
+<span class="kw">FROM</span> [MasterDE] s
+<span class="kw">WHERE</span> s.<span class="field">SubscriberKey</span> <span class="kw">NOT IN</span> (
+  <span class="kw">SELECT</span> <span class="field">SubscriberKey</span>
+  <span class="kw">FROM</span> [_open]
+  <span class="kw">WHERE</span> <span class="field">EventDate</span> > <span class="fn">DATEADD</span>(day, -90, <span class="fn">GETDATE</span>())
+    <span class="kw">AND</span> <span class="field">IsUnique</span> = 1
+)
+<span class="kw">AND</span> s.<span class="field">SubscriberKey</span> <span class="kw">NOT IN</span> (
+  <span class="kw">SELECT</span> <span class="field">SubscriberKey</span>
+  <span class="kw">FROM</span> [_click]
+  <span class="kw">WHERE</span> <span class="field">EventDate</span> > <span class="fn">DATEADD</span>(day, -90, <span class="fn">GETDATE</span>())
+    <span class="kw">AND</span> <span class="field">IsUnique</span> = 1
+)</pre>
+
+      <div class="callout warning">
+        <span class="callout-icon">⚠️</span>
+        <div><strong>오픈 데이터 신뢰도 주의:</strong> Apple Mail Privacy Protection 등으로 인해 오픈 데이터는 과대 집계될 수 있습니다. 재활성화 여부는 오픈보다 <strong>클릭</strong>을 기준으로 판단하는 것이 더 정확합니다. Engagement Split 대신 Decision Split으로 <code>_click</code> 기반 클릭 여부를 확인하세요.</div>
+      </div>
+    </section>
+  </section>
+
+</div>
+</div>
+
+<script>
+const tocItems = document.querySelectorAll('.toc-item');
+const sections = document.querySelectorAll('section[id]');
+const observer = new IntersectionObserver(entries => {
+  entries.forEach(entry => {
+    if(entry.isIntersecting){
+      tocItems.forEach(t => t.classList.remove('active'));
+      const active = document.querySelector('.toc-item[href="#' + entry.target.id + '"]');
+      if(active) active.classList.add('active');
+    }
+  });
+}, {rootMargin: '-20% 0px -70% 0px'});
+sections.forEach(s => observer.observe(s));
+tocItems.forEach(item => {
+  item.addEventListener('click', e => {
+    e.preventDefault();
+    const target = document.querySelector(item.getAttribute('href'));
+    if(target) target.scrollIntoView({behavior:'smooth'});
+  });
+});
+</script>
+</body>
+</html>

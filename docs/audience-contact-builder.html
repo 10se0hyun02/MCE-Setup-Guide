@@ -1,0 +1,487 @@
+﻿<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Audience Builder & Contact Builder — MCE 가이드</title>
+<link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable.min.css">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --primary:#0070D2;--primary-light:#EAF4FF;--primary-dark:#005FB2;
+  --text:#1a1a1a;--text-sub:#555;--text-muted:#888;
+  --border:#E0E0E0;--bg:#F9F9F9;--white:#fff;
+  --green:#0E7C59;--green-bg:#E6F5F0;
+  --amber:#8A5700;--amber-bg:#FFF4E0;
+  --red:#B91C1C;--red-bg:#FEF2F2;
+  --purple:#6B21A8;--purple-bg:#F5F3FF;
+  --sidebar-w:260px;
+  --font:'Pretendard Variable','Pretendard',system-ui,sans-serif;
+}
+body{font-family:var(--font);font-size:16px;line-height:1.75;color:var(--text);background:var(--bg)}
+a{color:var(--primary);text-decoration:none}
+a:hover{text-decoration:underline}
+.layout{display:flex;min-height:100vh}
+.sidebar{position:sticky;top:0;height:100vh;overflow-y:auto;width:var(--sidebar-w);min-width:var(--sidebar-w);background:var(--white);border-right:1px solid var(--border);padding:24px 0}
+.sidebar-logo{padding:0 20px 20px;border-bottom:1px solid var(--border);margin-bottom:12px}
+.sidebar-logo .back{font-size:12px;color:var(--text-muted);display:block;margin-bottom:8px}
+.sidebar-logo h1{font-size:13px;font-weight:700;color:var(--text);line-height:1.4}
+.sidebar-logo .badge{display:inline-block;margin-top:6px;font-size:10px;padding:2px 8px;background:var(--primary-light);color:var(--primary-dark);border-radius:20px;font-weight:600}
+.toc-label{font-size:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--text-muted);padding:10px 20px 4px}
+.toc-item{display:block;padding:7px 20px;font-size:12.5px;color:var(--text-sub);border-left:2px solid transparent;transition:all .1s}
+.toc-item:hover,.toc-item.active{color:var(--primary);background:var(--primary-light);border-left-color:var(--primary);text-decoration:none}
+.toc-sub{padding-left:32px;font-size:12px}
+.content{flex:1;padding:48px 64px;background:var(--white)}
+@media(max-width:900px){.sidebar{display:none}.content{padding:28px 20px}}
+.doc-eyebrow{font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--text-muted);margin-bottom:8px}
+h1.doc-title{font-size:30px;font-weight:800;line-height:1.25;margin-bottom:12px}
+.doc-meta{font-size:13px;color:var(--text-muted);padding-bottom:24px;border-bottom:1px solid var(--border);margin-bottom:36px}
+h2{font-size:21px;font-weight:700;margin:44px 0 14px;padding-top:8px;scroll-margin-top:24px}
+h3{font-size:16px;font-weight:700;margin:28px 0 10px;scroll-margin-top:24px}
+h4{font-size:14px;font-weight:700;margin:20px 0 8px;color:var(--text-sub)}
+p{margin-bottom:14px}
+ul,ol{padding-left:22px;margin-bottom:14px}
+li{margin-bottom:6px}
+code{background:#F1F5F9;color:#0F172A;padding:1px 5px;border-radius:4px;font-size:14px;font-family:'Consolas','Courier New',monospace}
+.callout{display:flex;gap:12px;padding:14px 16px;border-radius:8px;border-left:4px solid;margin:20px 0;font-size:13.5px;line-height:1.65}
+.callout-icon{font-size:16px;flex-shrink:0;margin-top:1px}
+.callout.note{background:#F0F4FF;border-color:#6B8CFE;color:#1E3A8A}
+.callout.warning{background:var(--amber-bg);border-color:#F59E0B;color:var(--amber)}
+.callout.danger{background:var(--red-bg);border-color:#EF4444;color:var(--red)}
+.callout.tip{background:var(--green-bg);border-color:#10B981;color:var(--green)}
+.callout strong{font-weight:700}
+.table-wrap{overflow-x:auto;margin:20px 0}
+table{width:100%;border-collapse:collapse;font-size:14px}
+th{text-align:left;padding:10px 12px;background:var(--bg);font-weight:700;font-size:13px;text-transform:uppercase;letter-spacing:.04em;color:var(--text-sub);border-bottom:2px solid var(--border)}
+td{padding:10px 12px;border-bottom:1px solid var(--border);vertical-align:top;line-height:1.55}
+tr:last-child td{border-bottom:none}
+tr:hover td{background:var(--bg)}
+.steps{margin:16px 0}
+.step{display:flex;gap:14px;margin-bottom:14px;align-items:flex-start}
+.step-num{flex-shrink:0;width:26px;height:26px;border-radius:50%;background:var(--primary);color:#fff;font-size:12px;font-weight:700;display:flex;align-items:center;justify-content:center}
+.step-body{flex:1;padding-top:2px}
+.tag{display:inline-block;font-size:11px;font-weight:600;padding:2px 8px;border-radius:20px;vertical-align:middle}
+.tag.blue{background:var(--primary-light);color:var(--primary-dark)}
+.tag.green{background:var(--green-bg);color:var(--green)}
+.tag.amber{background:var(--amber-bg);color:var(--amber)}
+.tag.red{background:var(--red-bg);color:var(--red)}
+.divider{border:none;border-top:1px solid var(--border);margin:40px 0}
+section{scroll-margin-top:20px}
+.flow-box{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin:16px 0}
+.flow-step{background:var(--primary-light);color:var(--primary-dark);border-radius:8px;padding:10px 16px;font-size:13px;font-weight:600;text-align:center}
+.flow-arrow{color:var(--text-muted);font-size:18px;flex-shrink:0}
+</style>
+</head>
+<body>
+<div class="layout">
+
+<aside class="sidebar">
+  <div class="sidebar-logo">
+    <a class="back" href="../index.html">← MCE 구축 가이드로 돌아가기</a>
+    <h1>Audience Builder &amp; Contact Builder</h1>
+    <span class="badge">세그멘테이션 & 데이터 모델</span>
+  </div>
+
+  <div class="toc-label">Audience Builder</div>
+  <a class="toc-item" href="#ab-overview">Audience Builder 개요</a>
+  <a class="toc-item toc-sub" href="#ab-concepts">핵심 개념</a>
+  <a class="toc-item" href="#ab-create">Audience 생성 절차</a>
+  <a class="toc-item toc-sub" href="#ab-filter">Filter 탭 설정</a>
+  <a class="toc-item toc-sub" href="#ab-segment">Segment 탭 설정</a>
+  <a class="toc-item toc-sub" href="#ab-exclusion">Exclusion 탭</a>
+  <a class="toc-item" href="#ab-publish">Audience 발행</a>
+  <a class="toc-item" href="#ab-dimension">Dimension Package</a>
+  <a class="toc-item" href="#ab-reporting">Audience Builder 리포팅</a>
+
+  <div class="toc-label">Contact Builder</div>
+  <a class="toc-item" href="#cb-overview">Contact Builder 개요</a>
+  <a class="toc-item" href="#cb-attribute-group">Attribute Group 생성</a>
+  <a class="toc-item toc-sub" href="#cb-cardinality">관계 설정 (Cardinality)</a>
+  <a class="toc-item" href="#cb-data-sources">Data Sources</a>
+  <a class="toc-item toc-sub" href="#cb-sync-ds">Synchronized Data Sources</a>
+  <a class="toc-item" href="#cb-all-contacts">All Contacts</a>
+  <a class="toc-item" href="#cb-contact-delete">Contact Delete</a>
+</aside>
+
+<div class="content">
+  <div class="doc-eyebrow">Marketing Cloud Engagement · 세그멘테이션 & 데이터 모델</div>
+  <h1 class="doc-title">Audience Builder &amp; Contact Builder</h1>
+  <p class="doc-meta">Audience Builder로 정교한 세그먼트를 구성하고, Contact Builder로 DE 간 데이터 관계를 설계합니다. Journey Builder의 Decision Split 조건, 발송 대상 세분화 모두 이 두 앱이 기반입니다.<br>출처: Salesforce 공식 문서 <em>Engagement: Audience Builder and Contact Builder</em> (2026.06.23)</p>
+
+  <!-- ──── Audience Builder 개요 ──── -->
+  <section id="ab-overview">
+    <h2>Audience Builder 개요</h2>
+    <p>Audience Builder는 MCE 계정에 저장된 Contact 데이터를 기반으로 동적 대상 그룹을 만드는 앱입니다. 공통 Subscriber Key로 연결된 모든 List, Group, Data Extension의 속성과 행동 데이터를 조합해 정교한 Audience와 Segment를 구성할 수 있습니다.</p>
+
+    <div class="callout note">
+      <span class="callout-icon">📌</span>
+      <div><strong>Enterprise 2.0 전용 기능:</strong> Business Unit 필터 등 일부 고급 기능은 Enterprise 2.0 계정에서만 사용 가능합니다. 계정 유형에 따라 사용 가능한 기능이 다를 수 있습니다.</div>
+    </div>
+
+    <section id="ab-concepts">
+      <h3>핵심 개념</h3>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>개념</th><th>설명</th><th>비고</th></tr></thead>
+          <tbody>
+            <tr>
+              <td><strong>Audience</strong></td>
+              <td>Contact 집합. 속성·행동 값의 변화에 따라 동적으로 구성원이 변경됨</td>
+              <td>Sendable DE와 연결. OMM이 채널·발송 추적에 활용</td>
+            </tr>
+            <tr>
+              <td><strong>Segment</strong></td>
+              <td>Audience 내 사용자 정의 기준을 충족하는 하위 그룹</td>
+              <td>분석 및 타겟팅 용도. Segment 없이 Audience만 사용 가능</td>
+            </tr>
+            <tr>
+              <td><strong>Filter</strong></td>
+              <td>Attribute Library 조건으로 Audience 구성원 범위를 좁히는 기능</td>
+              <td>Filter 없으면 계정 전체 Contact이 대상</td>
+            </tr>
+            <tr>
+              <td><strong>Exclusion</strong></td>
+              <td>특정 조건의 Contact을 Audience/Segment에서 제외하는 기능</td>
+              <td>Exclusions 탭에서 설정. 구 방식의 Is Not/Not in List 대체</td>
+            </tr>
+            <tr>
+              <td><strong>Attribute Library</strong></td>
+              <td>Audience 생성 시 사용할 수 있는 Contact 속성 목록</td>
+              <td>Contact Builder Attribute Group에서 등록된 속성이 표시됨</td>
+            </tr>
+            <tr>
+              <td><strong>Publish Definition</strong></td>
+              <td>발행된 Audience가 저장되는 DE. Email Studio 등에서 재사용 가능</td>
+              <td>Audience 데이터 익스텐션 폴더에 저장</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+  </section>
+
+  <hr class="divider">
+
+  <!-- ──── Audience 생성 절차 ──── -->
+  <section id="ab-create">
+    <h2>Audience 생성 절차</h2>
+    <div class="flow-box">
+      <div class="flow-step">Audience Builder 접속</div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-step">Filter 탭<br>구성원 범위 설정</div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-step">Segment 탭<br>하위 그룹 설정</div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-step">Exclusion 탭<br>제외 조건 설정</div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-step">Publish 탭<br>채널 선택 후 발행</div>
+    </div>
+
+    <section id="ab-filter">
+      <h3>Filter 탭 — Audience 범위 설정</h3>
+      <div class="steps">
+        <div class="step"><div class="step-num">1</div><div class="step-body">Audience Builder → <strong>Create Audience</strong> 클릭 (또는 저장된 Audience 선택)</div></div>
+        <div class="step"><div class="step-num">2</div><div class="step-body">Audience 이름 입력 후 Done 클릭</div></div>
+        <div class="step"><div class="step-num">3</div><div class="step-body">Filter 탭에서 Attribute Library의 항목을 캔버스로 드래그 → 값과 연산자(Equals, Greater than, Range 등) 설정</div></div>
+        <div class="step"><div class="step-num">4</div><div class="step-body">여러 조건 그룹화: 3개 이상 조건 드래그 후 인접 조건 사이의 그룹 아이콘 클릭</div></div>
+        <div class="step"><div class="step-num">5</div><div class="step-body">그룹 연산자 변경: AND / OR / INCLUDE 선택</div></div>
+      </div>
+
+      <div class="callout tip">
+        <span class="callout-icon">💡</span>
+        <div><strong>Subscriber Key 사용 권장:</strong> Audience Builder는 Subscriber Key 기반 사용을 권장합니다. 이메일 주소를 키로 사용할 수도 있지만, Subscriber Key를 사용해야 멀티채널 데이터 통합이 정확히 이루어집니다.</div>
+      </div>
+    </section>
+
+    <section id="ab-segment">
+      <h3>Segment 탭 — 하위 그룹 설정</h3>
+      <p>Segment는 Audience 내에서 추가 기준으로 분리한 하위 그룹입니다. 분석 리포팅과 AMPScript 동적 콘텐츠 연동에 활용됩니다.</p>
+      <div class="steps">
+        <div class="step"><div class="step-num">1</div><div class="step-body">Segment 탭 → Attribute Library에서 조건 드래그 (또는 저장된 Segment Template 사용)</div></div>
+        <div class="step"><div class="step-num">2</div><div class="step-body">Segment 편집: 조건 추가, 레이블 변경, Tracking Code 설정</div></div>
+        <div class="step"><div class="step-num">3</div><div class="step-body"><strong>Cap 설정 (선택):</strong> 건수 또는 비율로 Segment 크기 제한 — 초과 시 무작위 추출</div></div>
+        <div class="step"><div class="step-num">4</div><div class="step-body">Refresh Counts 클릭으로 건수 확인</div></div>
+      </div>
+
+      <div class="callout note">
+        <span class="callout-icon">📌</span>
+        <div><strong>AMPScript 연동:</strong> Segment 할당 정보를 AMPScript와 SSJS로 조회해 이메일 내 콘텐츠 결정에 활용할 수 있습니다. Contact가 속한 Segment에 따라 다른 배너·쿠폰을 표시하는 패턴에 사용됩니다.</div>
+      </div>
+    </section>
+
+    <section id="ab-exclusion">
+      <h3>Exclusion 탭 — 발송 제외 조건</h3>
+      <p>특정 속성을 가진 Contact를 Audience 또는 Segment에서 제외합니다. 구 버전의 "Is Not", "Does Not Contain", "Not in List" 연산자를 대체하는 공식 방법입니다.</p>
+      <div class="callout warning">
+        <span class="callout-icon">⚠️</span>
+        <div><strong>구 연산자 마이그레이션:</strong> 기존에 Is Not / Does Not Contain / Not in List 연산자를 사용한 Audience는 여전히 동작하지만, 신규 제외 조건은 반드시 Exclusions 탭을 사용해 재구성하세요.</div>
+      </div>
+    </section>
+  </section>
+
+  <hr class="divider">
+
+  <!-- ──── Audience 발행 ──── -->
+  <section id="ab-publish">
+    <h2>Audience 발행 (Publish)</h2>
+    <p>Audience를 발행하면 채널별 DE(Publish Definition)가 생성됩니다. Email Studio, Journey Builder 등에서 이 DE를 발송 대상으로 사용할 수 있습니다.</p>
+
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>채널</th><th>앱</th><th>발행 효과</th></tr></thead>
+        <tbody>
+          <tr><td><strong>Email</strong></td><td>Email Studio</td><td>Sendable 이메일 DE 생성. Email Studio 구독자 탭 Audience 폴더에 저장</td></tr>
+          <tr><td><strong>MobileConnect</strong></td><td>MobileConnect</td><td>MobileConnect 내 Contact 리스트 생성</td></tr>
+          <tr><td><strong>MobilePush</strong></td><td>MobilePush</td><td>MobilePush 내 Contact 리스트 생성</td></tr>
+          <tr><td><strong>Entire Population</strong></td><td>없음</td><td>Non-sendable Audience DE 생성. 모든 채널 구독자 포함</td></tr>
+          <tr><td><strong>Salesforce</strong></td><td>Sales Cloud</td><td>Salesforce Sendable DE 생성. Salesforce Contact/Lead ID가 있는 구독자만 트래킹 데이터 전송</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="callout note">
+      <span class="callout-icon">📌</span>
+      <div>발행 시 Segment별 속성 추가(Append)가 가능합니다. Segment 할당 정보를 DE 필드로 포함시켜 이메일 발송 시 AMPScript에서 활용할 수 있습니다.</div>
+    </div>
+  </section>
+
+  <hr class="divider">
+
+  <!-- ──── Dimension Package ──── -->
+  <section id="ab-dimension">
+    <h2>Dimension Package</h2>
+    <p>Dimension Package는 Audience Builder가 Subscriber 데이터와 상호작용하는 방식을 정의합니다. 원시 속성(raw attributes)을 Attribute Library에서 읽기 쉬운 정보로 변환합니다.</p>
+
+    <div class="callout tip">
+      <span class="callout-icon">💡</span>
+      <div>Dimension Package는 Contact Builder Attribute Group에 연결된 DE의 필드를 Audience Builder에서 사용할 수 있도록 매핑합니다. Attribute Group 설정이 선행되어야 Dimension Package가 정상 동작합니다.</div>
+    </div>
+  </section>
+
+  <hr class="divider">
+
+  <!-- ──── Reporting ──── -->
+  <section id="ab-reporting">
+    <h2>Audience Builder 리포팅</h2>
+    <p>Audience Builder는 표준 이메일 리포트 섹션에 Segment명 기준 캠페인 지표를 제공합니다. 어느 Segment가 높은 오픈율/클릭율을 보이는지 분석해 다음 캠페인 대상 선정에 활용하세요.</p>
+
+    <div class="callout note">
+      <span class="callout-icon">📌</span>
+      <div><strong>성능 특성:</strong> 모든 Audience Builder 구현은 고유한 성능 특성을 갖습니다. 계정의 Contact 수, Attribute 수, 조건 복잡도에 따라 발행 시간이 달라집니다. 구현 전 팀과 성능 기대치를 사전에 논의하세요.</div>
+    </div>
+  </section>
+
+  <hr class="divider">
+
+  <!-- ──── Contact Builder 개요 ──── -->
+  <section id="cb-overview">
+    <h2>Contact Builder 개요</h2>
+    <p>Contact Builder는 MCE 계정 내 모든 채널(Email, SMS, Push, Journey)에 걸친 Contact 데이터를 중앙에서 관리하는 앱입니다. DE 간 관계를 시각적으로 설계하고, Journey Builder의 Decision Split 조건 등에 필요한 Attribute Group을 구성합니다.</p>
+
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>구성 요소</th><th>기능</th></tr></thead>
+        <tbody>
+          <tr><td><strong>All Contacts</strong></td><td>계정 내 전체 Contact 뷰. 채널별·소스별·수정일별 필터 제공</td></tr>
+          <tr><td><strong>Attribute Groups</strong></td><td>DE 간 관계를 정의하는 데이터 모델. Journey Builder 조건 참조에 필수</td></tr>
+          <tr><td><strong>Data Designer</strong></td><td>Attribute Group을 시각적으로 구성하는 캔버스 툴</td></tr>
+          <tr><td><strong>Data Sources</strong></td><td>System(자동), Synchronized(CRM), Custom(외부) 데이터 소스 관리</td></tr>
+          <tr><td><strong>Contact Delete</strong></td><td>Contact 레코드 전체 삭제(GDPR/개인정보보호법 대응)</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="callout warning">
+      <span class="callout-icon">⚠️</span>
+      <div><strong>Contact Builder 사용자 권한:</strong> Access / View All Contacts / Delete Contacts / Administer Contact Data Model 4가지 권한이 별도로 관리됩니다. 구축 담당자는 Administer 권한, 일반 운영자는 Access + View만 부여하는 방식을 권장합니다.</div>
+    </div>
+  </section>
+
+  <hr class="divider">
+
+  <!-- ──── Attribute Group ──── -->
+  <section id="cb-attribute-group">
+    <h2>Attribute Group 생성</h2>
+    <p>Attribute Group은 Contact 레코드와 관련 DE를 연결하는 데이터 모델입니다. Journey Builder Decision Split에서 "회원 등급", "최근 구매일" 같은 DE 필드를 조건으로 사용하려면 반드시 해당 DE가 Attribute Group에 연결되어 있어야 합니다.</p>
+
+    <div class="steps">
+      <div class="step"><div class="step-num">1</div><div class="step-body">Contact Builder → <strong>Create Attribute Group</strong> 클릭</div></div>
+      <div class="step"><div class="step-num">2</div><div class="step-body">Attribute Group 이름 입력 후 저장</div></div>
+      <div class="step"><div class="step-num">3</div><div class="step-body">캔버스에서 Contact 레코드 아이콘 클릭 → <strong>Link DE</strong>로 첫 번째 DE 연결</div></div>
+      <div class="step"><div class="step-num">4</div><div class="step-body">관계(Cardinality) 선택: One-to-One / Many-to-One / Many-to-Many</div></div>
+      <div class="step"><div class="step-num">5</div><div class="step-body">연결 속성(Link Attribute) 선택: Contact 레코드와 DE의 같은 데이터 타입 필드 매핑 (필드명은 달라도 됨)</div></div>
+      <div class="step"><div class="step-num">6</div><div class="step-body">추가 DE 연결: 첫 번째 DE에 연결된 다른 DE를 체인 방식으로 추가</div></div>
+    </div>
+
+    <section id="cb-cardinality">
+      <h3>관계 설정 (Cardinality)</h3>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>관계</th><th>의미</th><th>사용 예시</th></tr></thead>
+          <tbody>
+            <tr><td><strong>One-to-One</strong></td><td>Contact 1명당 DE 레코드 1개</td><td>회원정보 DE, 등급 DE</td></tr>
+            <tr><td><strong>One-to-Many</strong> (Many-to-One)</td><td>Contact 1명당 DE 레코드 여러 개</td><td>구매이력 DE, 이벤트 참여 DE</td></tr>
+            <tr><td><strong>Many-to-Many</strong></td><td>복잡한 N:M 관계</td><td>상품-카테고리 매핑 등 복잡한 연동</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="callout danger">
+        <span class="callout-icon">🚫</span>
+        <div><strong>ContactID Mapping 주의:</strong> MCE 내부적으로 Contact를 식별하는 ContactID는 직접 MCE에서 추출한 데이터와만 연결할 계획이 아니라면 비활성화 상태로 두세요. 외부 데이터 소스와 연결할 때는 ContactKey(Subscriber Key)를 사용합니다.</div>
+      </div>
+    </section>
+  </section>
+
+  <hr class="divider">
+
+  <!-- ──── Data Sources ──── -->
+  <section id="cb-data-sources">
+    <h2>Data Sources</h2>
+    <p>Contact Builder의 Data Sources는 데이터가 어디서 왔는지 출처를 관리합니다. 세 가지 유형이 있습니다.</p>
+
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>유형</th><th>설명</th><th>관리 방법</th></tr></thead>
+        <tbody>
+          <tr>
+            <td><strong>System</strong></td>
+            <td>MCE가 자동 생성하는 기본 데이터 구조 (Email Studio, Mobile 앱 등)</td>
+            <td>자동 관리. 수동 수정 불가</td>
+          </tr>
+          <tr>
+            <td><strong>Synchronized</strong></td>
+            <td>Marketing Cloud Connect를 통해 Salesforce CRM에서 자동 동기화</td>
+            <td>동기화 대상 오브젝트·필드 선택, 주기 설정</td>
+          </tr>
+          <tr>
+            <td><strong>Custom</strong></td>
+            <td>외부 시스템 데이터를 식별하기 위해 수동으로 지정하는 출처</td>
+            <td>Attribute를 Custom 소스에 직접 할당</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <section id="cb-sync-ds">
+      <h3>Synchronized Data Sources (CRM 연동)</h3>
+      <p>Marketing Cloud Connect가 설치된 경우, Salesforce CRM의 Contact, Lead, Account, 커스텀 오브젝트 데이터를 MCE DE로 자동 동기화합니다.</p>
+
+      <div class="steps">
+        <div class="step"><div class="step-num">1</div><div class="step-body">Contact Builder → Data Sources → Synchronized 탭</div></div>
+        <div class="step"><div class="step-num">2</div><div class="step-body">동기화할 오브젝트 선택 (Contact, Lead, Account 우선 동기화 권장)</div></div>
+        <div class="step"><div class="step-num">3</div><div class="step-body">동기화할 필드 체크 → Next</div></div>
+        <div class="step"><div class="step-num">4</div><div class="step-body">레코드 범위 선택: 전체 / 이메일 있는 레코드만 / 특정 날짜 이후 생성 / Boolean 필터</div></div>
+        <div class="step"><div class="step-num">5</div><div class="step-body">저장 후 동기화 완료 대기 (처음에는 시간 소요)</div></div>
+      </div>
+
+      <div class="callout warning">
+        <span class="callout-icon">⚠️</span>
+        <div><strong>Synchronized DE 사용 제한:</strong> Synchronized Data Source로 생성된 DE는 Primary Sendable DE로 직접 사용할 수 없습니다. 발송 대상 DE는 별도 Standard DE를 만들고, Synchronized DE에서 Query Activity로 데이터를 복사하는 방식을 사용하세요.</div>
+      </div>
+
+      <div class="callout note">
+        <span class="callout-icon">📌</span>
+        <div><strong>멀티 BU 환경:</strong> 동일 Salesforce System User로 연결된 모든 BU가 같은 동기화 데이터를 공유합니다. BU 5개를 초과하면 서버 성능 저하가 발생할 수 있습니다. 필드 추가·삭제 등 소스 변경은 모든 연결된 BU에 영향을 미칩니다.</div>
+      </div>
+
+      <h4>동기화 순서 권장</h4>
+      <div class="flow-box">
+        <div class="flow-step">User</div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-step">Contact</div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-step">Lead</div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-step">Account</div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-step">Custom Objects</div>
+      </div>
+      <p style="font-size:13px;color:var(--text-muted)">커스텀 오브젝트에는 Contact, Lead, User와의 관계 필드가 반드시 필요합니다. 상위 오브젝트를 먼저 동기화해야 관계 방향이 올바르게 설정됩니다.</p>
+    </section>
+  </section>
+
+  <hr class="divider">
+
+  <!-- ──── All Contacts ──── -->
+  <section id="cb-all-contacts">
+    <h2>All Contacts</h2>
+    <p>All Contacts 탭은 MCE 계정 내 모든 Contact를 단일 뷰로 보여줍니다. Channel, Source, Type, Population 기준으로 필터링할 수 있습니다.</p>
+
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>필터</th><th>설명</th></tr></thead>
+        <tbody>
+          <tr><td>All Contacts</td><td>계정 내 전체 Contact</td></tr>
+          <tr><td>Populations</td><td>Population에 할당된 Contact</td></tr>
+          <tr><td>Last Modified</td><td>지정 기간 내 정보 변경된 Contact</td></tr>
+          <tr><td>Source</td><td>특정 방식으로 유입된 Contact (Email, API, Import 등)</td></tr>
+          <tr><td>Channel</td><td>특정 채널과 연결된 Contact (Email Studio, MobileConnect 등)</td></tr>
+          <tr><td>Type</td><td>Contact 유입 소스 유형. 기본값 (0)은 사용자 입력</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <hr class="divider">
+
+  <!-- ──── Contact Delete ──── -->
+  <section id="cb-contact-delete">
+    <h2>Contact Delete</h2>
+    <p>GDPR, 개인정보보호법 등의 삭제 요청에 대응합니다. Contact Delete는 계정 내 해당 Contact의 <strong>모든 데이터</strong>를 영구 삭제합니다 — Sendable DE 레코드, 트래킹 데이터, 선호 설정까지 포함됩니다.</p>
+
+    <div class="callout danger">
+      <span class="callout-icon">🚫</span>
+      <div><strong>복구 불가:</strong> 삭제된 Contact 정보는 복원할 수 없습니다. 삭제 전 반드시 해당 DE를 백업 파일로 내보내세요. 삭제 후 동일 ContactKey가 다시 추가되면 새로운 고유 ID를 받으며, 이전 데이터는 연결되지 않습니다.</div>
+    </div>
+
+    <h3>Contact Delete 절차</h3>
+    <div class="steps">
+      <div class="step"><div class="step-num">1</div><div class="step-body">Contact Builder → 설정에서 <strong>Contact Delete 활성화</strong> (Admin 권한 필요)</div></div>
+      <div class="step"><div class="step-num">2</div><div class="step-body">삭제 대상 Contact 확인 및 백업 DE 내보내기</div></div>
+      <div class="step"><div class="step-num">3</div><div class="step-body">Contact Builder → All Contacts에서 해당 Contact 선택 후 Delete 실행</div></div>
+      <div class="step"><div class="step-num">4</div><div class="step-body">삭제 진행 상태 확인: Contact Builder → <strong>Contact Analytics</strong> (최근 30일 삭제 이력 조회)</div></div>
+      <div class="step"><div class="step-num">5</div><div class="step-body">삭제 요청 처리 이력 보관 DE에 일시·요청 경로 기록 (법적 증빙)</div></div>
+    </div>
+
+    <h3>Best Practices</h3>
+    <ul>
+      <li><strong>1회 최대 100만 건</strong> 삭제 가능. 초과 시 여러 번 나누어 실행</li>
+      <li>불필요한 Sendable DE 사전 정리 → 삭제 속도 향상</li>
+      <li>Enterprise 2.0 계정: 삭제는 반드시 Parent BU에서 시작</li>
+      <li>삭제 전 진행 중인 Journey에서 해당 Contact 처리 방침 확인 (자동 제거됨)</li>
+      <li>Suppression Period(억제 기간) 동안은 해당 Contact 정보에 접근 불가하며, Final Deletion 후 완전 제거</li>
+    </ul>
+
+    <div class="callout note">
+      <span class="callout-icon">📌</span>
+      <div><strong>CRM Sync 중지와 Contact Delete 차이:</strong> Salesforce Connect에서 Contact 동기화를 중지하면 Synchronized DE에서는 제거되지만 Contacts 프레임워크에는 남아 있습니다. 완전 삭제가 필요하면 Contact Delete를 별도로 실행해야 합니다.</div>
+    </div>
+  </section>
+
+</div>
+</div>
+
+<script>
+const tocItems = document.querySelectorAll('.toc-item');
+const sections = document.querySelectorAll('section[id]');
+const observer = new IntersectionObserver(entries => {
+  entries.forEach(entry => {
+    if(entry.isIntersecting){
+      tocItems.forEach(t => t.classList.remove('active'));
+      const active = document.querySelector('.toc-item[href="#' + entry.target.id + '"]');
+      if(active) active.classList.add('active');
+    }
+  });
+}, {rootMargin: '-20% 0px -70% 0px'});
+sections.forEach(s => observer.observe(s));
+tocItems.forEach(item => {
+  item.addEventListener('click', e => {
+    e.preventDefault();
+    const target = document.querySelector(item.getAttribute('href'));
+    if(target) target.scrollIntoView({behavior:'smooth'});
+  });
+});
+</script>
+</body>
+</html>

@@ -1,0 +1,18 @@
+{
+  "source": "회의록",
+  "meetingDate": "2026-06-22",
+  "meetingTitle": "위클리 미팅",
+  "participants": "조서현",
+  "processedAt": "2026-06-22T00:00:00+09:00",
+  "todos": [],
+  "issues": [],
+  "communications": [
+    {
+      "date": "2026-06-22",
+      "type": "대면미팅",
+      "participants": "조서현",
+      "summary": "위클리 미팅 진행. 회의록에 구체적인 논의 내용이 기록되지 않음.",
+      "nextAction": ""
+    }
+  ]
+}

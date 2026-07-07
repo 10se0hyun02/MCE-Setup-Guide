@@ -1,0 +1,849 @@
+﻿<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Email Studio — MCE 가이드</title>
+<link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable.min.css">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --primary:#0070D2;--primary-light:#EAF4FF;--primary-dark:#005FB2;
+  --text:#1a1a1a;--text-sub:#555;--text-muted:#888;
+  --border:#E0E0E0;--bg:#F9F9F9;--white:#fff;
+  --green:#0E7C59;--green-bg:#E6F5F0;
+  --amber:#8A5700;--amber-bg:#FFF4E0;
+  --red:#B91C1C;--red-bg:#FEF2F2;
+  --purple:#6B21A8;--purple-bg:#F5F3FF;
+  --gray:#444;--gray-bg:#F3F4F6;
+  --sidebar-w:248px;
+  --font:'Pretendard Variable','Pretendard',system-ui,sans-serif;
+}
+body{font-family:var(--font);font-size:16px;line-height:1.75;color:var(--text);background:var(--bg)}
+a{color:var(--primary);text-decoration:none}
+a:hover{text-decoration:underline}
+.layout{display:flex;min-height:100vh}
+.sidebar{position:sticky;top:0;height:100vh;overflow-y:auto;width:var(--sidebar-w);min-width:var(--sidebar-w);background:var(--white);border-right:1px solid var(--border);padding:24px 0}
+.sidebar-logo{padding:0 20px 20px;border-bottom:1px solid var(--border);margin-bottom:12px}
+.sidebar-logo .back{font-size:12px;color:var(--text-muted);display:block;margin-bottom:8px}
+.sidebar-logo h1{font-size:13px;font-weight:700;color:var(--text);line-height:1.4}
+.sidebar-logo .badge{display:inline-block;margin-top:6px;font-size:10px;padding:2px 8px;background:var(--primary-light);color:var(--primary-dark);border-radius:20px;font-weight:600}
+.toc-label{font-size:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--text-muted);padding:10px 20px 4px}
+.toc-item{display:block;padding:7px 20px;font-size:12.5px;color:var(--text-sub);border-left:2px solid transparent;transition:all .1s}
+.toc-item:hover,.toc-item.active{color:var(--primary);background:var(--primary-light);border-left-color:var(--primary);text-decoration:none}
+.toc-sub{padding-left:32px;font-size:12px}
+.content{flex:1;padding:48px 64px;background:var(--white)}
+@media(max-width:900px){.sidebar{display:none}.content{padding:28px 20px}}
+.doc-eyebrow{font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--text-muted);margin-bottom:8px}
+h1.doc-title{font-size:30px;font-weight:800;line-height:1.25;margin-bottom:12px}
+.doc-meta{font-size:13px;color:var(--text-muted);padding-bottom:24px;border-bottom:1px solid var(--border);margin-bottom:36px}
+h2{font-size:21px;font-weight:700;margin:44px 0 14px;padding-top:8px;scroll-margin-top:24px}
+h3{font-size:16px;font-weight:700;margin:28px 0 10px;scroll-margin-top:24px}
+h4{font-size:14px;font-weight:700;margin:20px 0 8px;color:var(--text-sub)}
+p{margin-bottom:14px}
+ul,ol{padding-left:22px;margin-bottom:14px}
+li{margin-bottom:6px}
+code{background:#F1F5F9;color:#0F172A;padding:1px 5px;border-radius:4px;font-size:14px;font-family:'Consolas','Courier New',monospace}
+pre{background:#0F172A;color:#E2E8F0;padding:16px 18px;border-radius:8px;font-size:13px;line-height:1.65;overflow-x:auto;margin:16px 0;font-family:'Consolas','Courier New',monospace}
+pre .kw{color:#93C5FD}
+pre .fn{color:#6EE7B7}
+pre .str{color:#FCD34D}
+pre .cm{color:#94A3B8;font-style:italic}
+pre .field{color:#C4B5FD}
+.callout{display:flex;gap:12px;padding:14px 16px;border-radius:8px;border-left:4px solid;margin:20px 0;font-size:13.5px;line-height:1.65}
+.callout-icon{font-size:16px;flex-shrink:0;margin-top:1px}
+.callout.note{background:#F0F4FF;border-color:#6B8CFE;color:#1E3A8A}
+.callout.warning{background:var(--amber-bg);border-color:#F59E0B;color:var(--amber)}
+.callout.danger{background:var(--red-bg);border-color:#EF4444;color:var(--red)}
+.callout.tip{background:var(--green-bg);border-color:#10B981;color:var(--green)}
+.callout strong{font-weight:700}
+.table-wrap{overflow-x:auto;margin:20px 0}
+table{width:100%;border-collapse:collapse;font-size:14px}
+th{text-align:left;padding:10px 12px;background:var(--bg);font-weight:700;font-size:13px;text-transform:uppercase;letter-spacing:.04em;color:var(--text-sub);border-bottom:2px solid var(--border)}
+td{padding:10px 12px;border-bottom:1px solid var(--border);vertical-align:top;line-height:1.55}
+tr:last-child td{border-bottom:none}
+tr:hover td{background:var(--bg)}
+.steps{margin:16px 0}
+.step{display:flex;gap:14px;margin-bottom:14px;align-items:flex-start}
+.step-num{flex-shrink:0;width:26px;height:26px;border-radius:50%;background:var(--primary);color:#fff;font-size:12px;font-weight:700;display:flex;align-items:center;justify-content:center}
+.step-body{flex:1;padding-top:2px}
+.tag{display:inline-block;font-size:11px;font-weight:600;padding:2px 8px;border-radius:20px;vertical-align:middle}
+.tag.blue{background:var(--primary-light);color:var(--primary-dark)}
+.tag.green{background:var(--green-bg);color:var(--green)}
+.tag.amber{background:var(--amber-bg);color:var(--amber)}
+.tag.red{background:var(--red-bg);color:var(--red)}
+.tag.gray{background:var(--gray-bg);color:var(--gray)}
+.tag.purple{background:var(--purple-bg);color:var(--purple)}
+.divider{border:none;border-top:1px solid var(--border);margin:40px 0}
+section{scroll-margin-top:20px}
+
+/* Email Studio 전용 */
+.status-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:12px;margin:16px 0}
+.status-card{border-radius:8px;padding:14px;border:2px solid}
+.status-card .sc-label{font-size:12px;font-weight:700;margin-bottom:4px}
+.status-card .sc-desc{font-size:12px;line-height:1.5}
+.status-card.green{border-color:#0E7C59;background:#E6F5F0}
+.status-card.green .sc-label{color:#0E7C59}
+.status-card.yellow{border-color:#B45309;background:#FFFBEB}
+.status-card.yellow .sc-label{color:#B45309}
+.status-card.gray{border-color:#6B7280;background:#F3F4F6}
+.status-card.gray .sc-label{color:#4B5563}
+.status-card.red{border-color:#B91C1C;background:#FEF2F2}
+.status-card.red .sc-label{color:#B91C1C}
+.status-card.dark{border-color:#1F2937;background:#F9FAFB}
+.status-card.dark .sc-label{color:#1F2937}
+
+.bounce-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:16px 0}
+.bounce-card{border-radius:8px;padding:14px;border:1px solid var(--border);background:var(--bg)}
+.bounce-card .bc-type{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.05em;margin-bottom:6px}
+.bounce-card .bc-name{font-size:14px;font-weight:700;margin-bottom:6px}
+.bounce-card .bc-desc{font-size:12.5px;color:var(--text-sub);line-height:1.55}
+.bounce-card.soft .bc-type{color:#B45309}
+.bounce-card.hard .bc-type{color:var(--red)}
+.bounce-card.block .bc-type{color:var(--purple)}
+.bounce-card.tech .bc-type{color:var(--text-muted)}
+
+.lc-flow{display:flex;align-items:center;gap:0;margin:20px 0;flex-wrap:wrap}
+.lc-box{background:var(--primary-light);border:1.5px solid var(--primary);color:var(--primary-dark);padding:8px 14px;border-radius:6px;font-size:13px;font-weight:700}
+.lc-arrow{color:var(--text-muted);font-size:18px;padding:0 6px;flex-shrink:0}
+.lc-box.gray{background:var(--gray-bg);border-color:#9CA3AF;color:var(--gray)}
+.lc-box.amber{background:var(--amber-bg);border-color:#F59E0B;color:var(--amber)}
+
+.unsub-row{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;margin:16px 0}
+.unsub-card{border-radius:8px;padding:14px;border:1px solid var(--border);background:var(--bg)}
+.unsub-card .uc-level{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--text-muted);margin-bottom:4px}
+.unsub-card .uc-name{font-size:14px;font-weight:700;margin-bottom:6px}
+.unsub-card .uc-desc{font-size:12px;color:var(--text-sub);line-height:1.5}
+
+.admin-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin:16px 0}
+.admin-card{border-radius:8px;padding:14px;border:1px solid var(--border);background:var(--bg)}
+.admin-card .ac-name{font-size:13px;font-weight:700;margin-bottom:4px}
+.admin-card .ac-desc{font-size:12.5px;color:var(--text-sub);line-height:1.5}
+
+.err-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:8px;margin:16px 0}
+.err-row{background:var(--bg);border:1px solid var(--border);border-radius:6px;padding:10px 12px;display:flex;gap:10px;align-items:flex-start}
+.err-code{font-family:monospace;font-size:13px;font-weight:700;color:var(--red);min-width:24px;flex-shrink:0}
+.err-body .err-name{font-size:12px;font-weight:700;color:var(--text);line-height:1.3}
+.err-body .err-desc{font-size:11.5px;color:var(--text-sub);line-height:1.4;margin-top:2px}
+</style>
+</head>
+<body>
+<div class="layout">
+
+<!-- ===== SIDEBAR ===== -->
+<nav class="sidebar">
+  <div class="sidebar-logo">
+    <a href="../index.html" class="back">← MCE 구축 가이드</a>
+    <h1>Email Studio</h1>
+    <span class="badge">Email Studio</span>
+  </div>
+
+  <div class="toc-label">개요 & 관리자 설정</div>
+  <a href="#overview" class="toc-item">Email Studio 개요</a>
+  <a href="#admin" class="toc-item">Admin 설정 항목</a>
+  <a href="#sap" class="toc-item toc-sub">SAP (발신자 인증)</a>
+  <a href="#send-logging" class="toc-item toc-sub">Send Logging</a>
+  <a href="#txn-recon" class="toc-item toc-sub">Transactional Reconciliation</a>
+  <a href="#auto-suppression" class="toc-item toc-sub">Auto-Suppression List</a>
+  <a href="#import" class="toc-item">Import 요구사항</a>
+
+  <div class="toc-label">구독자 관리</div>
+  <a href="#subscriber-status" class="toc-item">구독자 상태 5종</a>
+  <a href="#bounce" class="toc-item">Bounce 유형 분류</a>
+  <a href="#unsub" class="toc-item">수신거부 3단계</a>
+  <a href="#list-unsub-header" class="toc-item toc-sub">List-Unsubscribe Header</a>
+  <a href="#profile-center" class="toc-item toc-sub">Profile / Subscription Center</a>
+
+  <div class="toc-label">Lists vs Data Extensions</div>
+  <a href="#list-vs-de" class="toc-item">비교 & 선택 기준</a>
+  <a href="#publication-lists" class="toc-item toc-sub">Publication Lists</a>
+
+  <div class="toc-label">발송</div>
+  <a href="#triggered-sends" class="toc-item">Triggered Sends</a>
+  <a href="#ts-lifecycle" class="toc-item toc-sub">라이프사이클</a>
+  <a href="#ts-attributes" class="toc-item toc-sub">주요 속성</a>
+  <a href="#list-detective" class="toc-item toc-sub">List Detective</a>
+  <a href="#ab-test" class="toc-item">A/B Testing</a>
+  <a href="#send-throttling" class="toc-item">Send Throttling</a>
+  <a href="#multipart-mime" class="toc-item">Multipart MIME</a>
+
+  <div class="toc-label">오류 코드</div>
+  <a href="#error-codes" class="toc-item">발송 에러 코드 표</a>
+</nav>
+
+<!-- ===== CONTENT ===== -->
+<main class="content">
+
+  <div class="doc-eyebrow">MCE 가이드 · Email Studio</div>
+  <h1 class="doc-title">Email Studio 심화 가이드</h1>
+  <p class="doc-meta">출처: Salesforce 공식 문서 <code>engagement_email_studio_6-23-2026.pdf</code> (366p) · 2026-06-23 작성</p>
+
+  <!-- ===== 개요 ===== -->
+  <section id="overview">
+    <h2>Email Studio 개요</h2>
+    <p>Email Studio는 Marketing Cloud Engagement(MCE)의 핵심 앱으로, 이메일 작성·발송·구독자 관리·성과 추적을 담당합니다. 발송 유형에 따라 세 가지 채널로 구분됩니다.</p>
+
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>발송 유형</th><th>설명</th><th>주요 도구</th></tr></thead>
+        <tbody>
+          <tr>
+            <td><span class="tag blue">Promotional</span></td>
+            <td>뉴스레터·캠페인 등 마케팅 목적 대량 발송. Commercial send classification 사용</td>
+            <td>Guided Send, User-initiated Send</td>
+          </tr>
+          <tr>
+            <td><span class="tag green">Transactional</span></td>
+            <td>주문확인·비밀번호 재설정 등 트랜잭션 이메일. 수신거부된 구독자에게도 발송 가능</td>
+            <td>Triggered Send (Transactional classification)</td>
+          </tr>
+          <tr>
+            <td><span class="tag amber">Triggered</span></td>
+            <td>API 호출·이벤트에 의해 개인별 자동 발송. Journey Builder와 통합 운용</td>
+            <td>Triggered Send Definition, REST API</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="callout note">
+      <span class="callout-icon">ℹ️</span>
+      <div><strong>Commercial vs Transactional:</strong> Send Classification 설정이 발송 유형을 결정합니다. Transactional으로 설정하면 수신거부(Unsubscribed) 상태의 구독자에게도 이메일이 전송되므로 반드시 실제 트랜잭션성 이메일에만 사용해야 합니다.</div>
+    </div>
+  </section>
+
+  <hr class="divider">
+
+  <!-- ===== ADMIN ===== -->
+  <section id="admin">
+    <h2>Admin 설정 항목</h2>
+    <p>Email Studio → Admin 메뉴에서 계정 전역 발송 설정을 관리합니다.</p>
+
+    <div class="admin-grid">
+      <div class="admin-card">
+        <div class="ac-name">BrandBuilder</div>
+        <div class="ac-desc">이메일 기본 스타일(폰트·색상·버튼·레이아웃) 정의. Content Builder 이메일 기본 외관에 적용됨</div>
+      </div>
+      <div class="admin-card">
+        <div class="ac-name">Subject Line Validation</div>
+        <div class="ac-desc">발송 전 제목 검증. 스팸 트리거 단어·ALL CAPS·특수문자 과다 등을 자동 경고</div>
+      </div>
+      <div class="admin-card">
+        <div class="ac-name">Send Throttling</div>
+        <div class="ac-desc">시간당 발송 수 제한 설정. 새 IP 워밍업·ISP 레퓨테이션 관리 시 사용</div>
+      </div>
+      <div class="admin-card">
+        <div class="ac-name">CC / BCC</div>
+        <div class="ac-desc">발송 이메일의 참조/숨은참조 주소 지정. 준법감시·감사 목적 아카이빙에 활용</div>
+      </div>
+      <div class="admin-card">
+        <div class="ac-name">iOS Universal Links</div>
+        <div class="ac-desc">Apple Universal Link 설정. Apple Mail Privacy Protection(MPP) 환경에서 클릭 추적 정확도 향상</div>
+      </div>
+      <div class="admin-card">
+        <div class="ac-name">Reply Mail Management</div>
+        <div class="ac-desc">수신 회신 이메일 처리. 자동 답장·수신거부 처리·특정 주소로 포워딩 설정</div>
+      </div>
+    </div>
+
+    <h3 id="sap">SAP — Sender Authentication Package</h3>
+    <p>SAP는 MCE 계정의 이메일 발신 신뢰도를 높이는 인증 패키지입니다. 다음 세 가지 구성요소로 이루어집니다.</p>
+
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>구성요소</th><th>설명</th><th>효과</th></tr></thead>
+        <tbody>
+          <tr>
+            <td><strong>Private Domain</strong></td>
+            <td>발신 도메인을 <code>@brand.com</code>으로 설정 (기본 <code>@salesforce.com</code> 대신)</td>
+            <td>브랜드 도메인 기반 SPF/DKIM 인증, 도메인 레퓨테이션 직접 관리</td>
+          </tr>
+          <tr>
+            <td><strong>Custom Branding (Tracking Domain)</strong></td>
+            <td>링크 추적·이미지 호스팅 URL을 브랜드 도메인으로 변경 (<code>click.brand.com</code>)</td>
+            <td>피싱 경고 방지, URL 일관성, 브랜드 신뢰도 향상</td>
+          </tr>
+          <tr>
+            <td><strong>Dedicated IP</strong></td>
+            <td>공유 IP 대신 고객 전용 IP 할당</td>
+            <td>타 고객 발송 행동에 영향받지 않는 독립 레퓨테이션 확보, IP Warming 필요</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="callout warning">
+      <span class="callout-icon">⚠️</span>
+      <div><strong>Dedicated IP 전환 시:</strong> IP Warming 없이 갑자기 대량 발송하면 스팸 필터에 차단될 수 있습니다. 최소 4~6주 워밍업 스케줄(하루 200건→500건→1,000건→…)을 계획하세요.</div>
+    </div>
+
+    <h3 id="send-logging">Send Logging</h3>
+    <p>발송 런타임 정보(수신자, 발송일시, 발송 결과 등)를 Data Extension에 실시간 저장하는 기능입니다.</p>
+    <ul>
+      <li>Email Studio → Admin → Send Logging에서 활성화</li>
+      <li>로그를 저장할 DE를 지정하고 저장할 필드를 선택 (JobID, BatchID, SubscriberKey, EmailName, EventDate 등)</li>
+      <li>AMPScript로 <code>%%[SET @jobid = AttributeValue("jobid")]%%</code> 방식으로 런타임 값 참조 가능</li>
+      <li>Intelligence Reports와 연동해 발송 분석 확장에 활용</li>
+    </ul>
+
+    <div class="callout note">
+      <span class="callout-icon">ℹ️</span>
+      <div><strong>용도:</strong> 고객별 발송 이력 추적, A/B 테스트 결과 분석, 개인화 배치 발송 감사에 유용합니다. 데이터 보존 기간은 DE 설정에 따라 달라집니다.</div>
+    </div>
+
+    <h3 id="txn-recon">Transactional Reconciliation</h3>
+    <p>Triggered Send의 최종 발송 상태를 추적하는 기능입니다. 예상 발송 수 대비 실제 완료·실패 건수를 집계할 수 있습니다.</p>
+
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>구성요소</th><th>설명</th></tr></thead>
+        <tbody>
+          <tr>
+            <td><code>Sendable_Reconcilable_Data_Extension</code></td>
+            <td>트랜잭션 발송 요청을 기록하는 DE 템플릿. 필수 필드: <code>TransactionKey</code>(중복 방지), <code>EmailAddress</code>, <code>SubscriberKey</code>, <code>Status</code></td>
+          </tr>
+          <tr>
+            <td><code>_ReconcilableDispositionView</code></td>
+            <td>시스템 Data View. 각 트랜잭션의 최종 처리 상태(발송완료/에러/수신거부 등)를 조회할 수 있음</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <pre><span class="cm">-- 트랜잭션 발송 결과 집계 쿼리</span>
+<span class="kw">SELECT</span>
+  rdv.<span class="field">TransactionKey</span>,
+  rdv.<span class="field">Status</span>,        <span class="cm">-- Sent / Error / Unsubscribed 등</span>
+  rdv.<span class="field">ErrorCode</span>,
+  rdv.<span class="field">EventDate</span>
+<span class="kw">FROM</span> <span class="fn">_ReconcilableDispositionView</span> rdv
+<span class="kw">JOIN</span> <span class="fn">Sendable_Reconcilable_Data_Extension</span> src
+  <span class="kw">ON</span> rdv.<span class="field">TransactionKey</span> = src.<span class="field">TransactionKey</span>
+<span class="kw">WHERE</span> rdv.<span class="field">EventDate</span> > <span class="fn">DATEADD</span>(day, -1, <span class="fn">GETDATE</span>())</pre>
+
+    <h3 id="auto-suppression">Auto-Suppression List</h3>
+    <p>특정 이메일 주소 또는 도메인을 모든 발송에서 자동으로 제외하는 기능입니다.</p>
+    <ul>
+      <li>Email Studio → Admin → Auto-Suppression Lists에서 관리</li>
+      <li>적용 범위: 선택한 BU 또는 전체 Account</li>
+      <li>활용 사례: 내부 테스트 주소 보호, 경쟁사 도메인 제외, VIP 고객 발송 오류 방지</li>
+      <li>Exclusion List와 달리 Journey·Automation 발송 모두에 자동 적용됨</li>
+    </ul>
+  </section>
+
+  <hr class="divider">
+
+  <!-- ===== IMPORT ===== -->
+  <section id="import">
+    <h2>Import 요구사항</h2>
+    <p>Lists 또는 Data Extension으로 구독자를 일괄 임포트할 때 파일 형식과 열 순서를 맞춰야 합니다.</p>
+
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>항목</th><th>요구사항</th></tr></thead>
+        <tbody>
+          <tr><td>파일 형식</td><td>CSV 또는 Tab-delimited (.txt)</td></tr>
+          <tr><td>헤더 행</td><td>권장 (첫 번째 행이 열 이름). 없으면 열 순서로 매핑</td></tr>
+          <tr><td>이메일 열 위치</td><td><strong>마지막 열에 배치</strong> 권장 — 중간 열에 있으면 파싱 오류 가능</td></tr>
+          <tr><td>인코딩</td><td>UTF-8 권장. BOM 없이 저장</td></tr>
+          <tr><td>최대 파일 크기</td><td>단일 임포트 파일: 최대 10 MB (FTP 배치 임포트 시 제한 없음)</td></tr>
+          <tr><td>중복 처리</td><td>기본: 최신 레코드로 업데이트. Lists는 SubscriberKey 기준 중복 제거</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="callout warning">
+      <span class="callout-icon">⚠️</span>
+      <div><strong>이메일 열 위치:</strong> 이메일 주소를 반드시 파일의 마지막 열에 배치하세요. Salesforce 공식 문서의 명시 권고사항입니다.</div>
+    </div>
+  </section>
+
+  <hr class="divider">
+
+  <!-- ===== 구독자 상태 ===== -->
+  <section id="subscriber-status">
+    <h2>구독자 상태 5종</h2>
+    <p>모든 구독자는 이메일 주소별로 상태가 관리됩니다. 상태에 따라 이메일 수신 여부가 결정됩니다.</p>
+
+    <div class="status-grid">
+      <div class="status-card green">
+        <div class="sc-label">Active</div>
+        <div class="sc-desc">정상 수신 상태. Commercial 및 Transactional 이메일 모두 수신</div>
+      </div>
+      <div class="status-card yellow">
+        <div class="sc-label">Bounced</div>
+        <div class="sc-desc">Hard Bounce 1회 발생 시 전환. Commercial 발송 중단. Transactional은 계속 수신 가능</div>
+      </div>
+      <div class="status-card gray">
+        <div class="sc-label">Held / Undeliverable</div>
+        <div class="sc-desc">Soft Bounce 3회 누적(15일 이상 경과 조건) 시 전환. 모든 발송 차단</div>
+      </div>
+      <div class="status-card red">
+        <div class="sc-label">Unsubscribed</div>
+        <div class="sc-desc">수신거부 처리됨. Commercial 발송 차단. Transactional classification은 발송 가능</div>
+      </div>
+      <div class="status-card dark">
+        <div class="sc-label">Deleted</div>
+        <div class="sc-desc">계정에서 완전 삭제. 재구독·재임포트 시 Active로 복원 불가(별도 처리 필요)</div>
+      </div>
+    </div>
+
+    <div class="callout note">
+      <span class="callout-icon">ℹ️</span>
+      <div><strong>Held 전환 조건 (Soft Bounce):</strong> Soft Bounce 3회 발생 + 첫 바운스 이후 15일이 경과해야 Held로 전환됩니다. 15일 이내 3회 바운스는 카운트만 누적하고 상태가 유지됩니다.</div>
+    </div>
+  </section>
+
+  <hr class="divider">
+
+  <!-- ===== BOUNCE ===== -->
+  <section id="bounce">
+    <h2>Bounce 유형 분류</h2>
+    <p>이메일 바운스는 원인에 따라 4가지로 구분됩니다. 유형별로 상태 전환 규칙이 다릅니다.</p>
+
+    <div class="bounce-grid">
+      <div class="bounce-card soft">
+        <div class="bc-type">Soft Bounce</div>
+        <div class="bc-name">일시적 수신 불가</div>
+        <div class="bc-desc">
+          <strong>원인:</strong><br>
+          • Inactive Account (계정 비활성)<br>
+          • Mailbox Full (사서함 용량 초과)<br>
+          • Temporary Domain Failure (도메인 일시 장애)<br>
+          • Other (기타 일시적 원인)<br><br>
+          <strong>전환:</strong> 3회 누적 + 15일 경과 → <span class="tag gray" style="font-size:11px">Held</span>
+        </div>
+      </div>
+      <div class="bounce-card hard">
+        <div class="bc-type">Hard Bounce</div>
+        <div class="bc-name">영구적 수신 불가</div>
+        <div class="bc-desc">
+          <strong>원인:</strong><br>
+          • User Unknown (존재하지 않는 주소)<br>
+          • Domain Not Found (존재하지 않는 도메인)<br><br>
+          <strong>전환:</strong> 1회 발생 즉시 → <span class="tag amber" style="font-size:11px">Bounced</span><br><br>
+          재활성화: Email Studio → Subscribers에서 수동 Active 변경 후 재테스트 필요
+        </div>
+      </div>
+      <div class="bounce-card block">
+        <div class="bc-type">Block Bounce</div>
+        <div class="bc-name">ISP 차단</div>
+        <div class="bc-desc">
+          <strong>원인:</strong><br>
+          • ISP가 발신 IP 또는 도메인을 스팸 차단 목록에 등재<br>
+          • 스팸 신고율 과다로 인한 ISP 정책 차단<br><br>
+          <strong>대응:</strong> Postmaster Tools(Gmail/Yahoo) 확인, Salesforce Support에 IP 평판 조회 요청, 발송 목록 정제
+        </div>
+      </div>
+      <div class="bounce-card tech">
+        <div class="bc-type">Technical Bounce</div>
+        <div class="bc-name">기술적 오류</div>
+        <div class="bc-desc">
+          <strong>원인:</strong><br>
+          • 수신 서버 구성 오류<br>
+          • 연결 타임아웃<br>
+          • 메시지 크기 초과<br><br>
+          <strong>특징:</strong> Soft/Hard/Block으로 분류되지 않는 기타 기술적 실패. 구독자 상태에는 바로 영향 없음
+        </div>
+      </div>
+    </div>
+
+    <div class="callout tip">
+      <span class="callout-icon">✅</span>
+      <div><strong>바운스 관리 팁:</strong> Automation Studio에서 <code>_bounce</code> Data View를 주기적으로 쿼리하여 Hard Bounce / Block Bounce 누적 주소를 정제하면 전체 도메인 레퓨테이션을 유지할 수 있습니다.</div>
+    </div>
+  </section>
+
+  <hr class="divider">
+
+  <!-- ===== 수신거부 ===== -->
+  <section id="unsub">
+    <h2>수신거부 관리 — 3단계</h2>
+    <p>수신거부는 범위에 따라 세 단계로 처리됩니다.</p>
+
+    <div class="unsub-row">
+      <div class="unsub-card">
+        <div class="uc-level">Level 1</div>
+        <div class="uc-name">List-level Unsubscribe</div>
+        <div class="uc-desc">특정 List 또는 Publication List에서만 수신거부. 다른 리스트의 이메일은 계속 수신. Publication Lists 세분화 시 권장</div>
+      </div>
+      <div class="unsub-card">
+        <div class="uc-level">Level 2</div>
+        <div class="uc-name">Universal Unsubscribe</div>
+        <div class="uc-desc">"Unsubscribe from All" — 계정 전체 Commercial 이메일 수신거부. <code>_subscribers</code> 테이블에 Unsubscribed 상태 기록</div>
+      </div>
+      <div class="unsub-card">
+        <div class="uc-level">Level 3</div>
+        <div class="uc-name">Feedback Loop (FBL)</div>
+        <div class="uc-desc">ISP(Gmail·Yahoo 등)가 스팸 신고를 Salesforce에 ARF 형식으로 전달. 자동으로 수신거부 처리됨</div>
+      </div>
+    </div>
+
+    <h3 id="list-unsub-header">List-Unsubscribe Header</h3>
+    <p>이메일 헤더에 수신거부 링크를 추가해 ISP 인터페이스(Gmail 상단 "Unsubscribe" 버튼)에 표시되도록 합니다.</p>
+
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>방식</th><th>형식</th><th>특징</th></tr></thead>
+        <tbody>
+          <tr>
+            <td>Mail-to</td>
+            <td><code>List-Unsubscribe: &lt;mailto:unsub@brand.com?subject=unsub&gt;</code></td>
+            <td>이메일 기반 수신거부. 구형 ISP 지원</td>
+          </tr>
+          <tr>
+            <td>HTTP (One-Click)</td>
+            <td><code>List-Unsubscribe: &lt;https://click.brand.com/unsub?...&gt;</code> + <code>List-Unsubscribe-Post: List-Unsubscribe=One-Click</code></td>
+            <td>RFC 8058 One-Click. Gmail·Yahoo 2024 발송자 정책 필수 요건</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="callout danger">
+      <span class="callout-icon">🔴</span>
+      <div><strong>2024 Gmail/Yahoo 발송자 정책:</strong> 하루 5,000건 이상 발송 시 One-Click Unsubscribe(RFC 8058) 구현이 필수입니다. MCE SAP Custom Tracking Domain 설정 후 Email Studio에서 자동 삽입 옵션을 활성화하세요.</div>
+    </div>
+
+    <h3 id="profile-center">Profile Center / Subscription Center</h3>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>페이지</th><th>기능</th><th>URL 변수</th></tr></thead>
+        <tbody>
+          <tr>
+            <td><strong>Profile Center</strong></td>
+            <td>구독자 개인 정보(이름·생년월일 등 Attributes) 직접 수정</td>
+            <td><code>%%profile_center_url%%</code></td>
+          </tr>
+          <tr>
+            <td><strong>Subscription Center</strong></td>
+            <td>구독 리스트 선택·해지. Universal Unsubscribe 포함</td>
+            <td><code>%%subscription_center_url%%</code></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <hr class="divider">
+
+  <!-- ===== LIST VS DE ===== -->
+  <section id="list-vs-de">
+    <h2>Lists vs Data Extensions</h2>
+    <p>구독자 저장 방식을 Lists로 할지 Data Extension으로 할지는 프로젝트 규모와 개인화 요구에 따라 결정합니다.</p>
+
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>기준</th><th>Lists</th><th>Data Extensions</th></tr></thead>
+        <tbody>
+          <tr><td>구독자 관리</td><td>All Subscribers 연동. 구독 상태 자동 관리</td><td>독립 테이블. 상태 관리는 _subscribers 별도 조회</td></tr>
+          <tr><td>필드 구성</td><td>고정 Profile Attributes 사용</td><td>완전 커스텀 필드 설계 가능</td></tr>
+          <tr><td>개인화</td><td>기본 Attribute 참조만 가능</td><td>복잡한 DE 관계·Lookup 함수 사용 가능</td></tr>
+          <tr><td>B2C 대규모</td><td>수백만 건 이상 비권장</td><td>대용량 최적화. 인덱스·파티션 설계 가능</td></tr>
+          <tr><td>Automation 연동</td><td>제한적 (Query 결과를 List로 출력 불가)</td><td>SQL Query → DE 출력 → Journey 진입 최적</td></tr>
+          <tr><td>권장 시나리오</td><td>소규모·단순 이메일 발송, Lists 기반 기존 환경 유지</td><td>신규 구축 시 항상 DE 방식 권장</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3 id="publication-lists">Publication Lists</h3>
+    <p>구독자가 수신거부할 수 있는 리스트의 세분화 단위입니다. "뉴스레터", "프로모션", "이벤트 알림" 등 유형별로 별도 Publication List를 만들어 관리합니다.</p>
+    <ul>
+      <li><strong>장점:</strong> 구독자가 전체 수신거부 대신 원하는 유형만 해지 가능 → 이탈률 감소</li>
+      <li><strong>Subscription Center 연동:</strong> <code>%%subscription_center_url%%</code>에서 각 Publication List의 구독·해지 UI 자동 생성</li>
+      <li><strong>AMPScript 조회:</strong> <code>LookupRows("_ListSubscribers","SubscriberKey",@sk)</code>로 구독 여부 확인 가능</li>
+    </ul>
+  </section>
+
+  <hr class="divider">
+
+  <!-- ===== TRIGGERED SENDS ===== -->
+  <section id="triggered-sends">
+    <h2>Triggered Sends</h2>
+    <p>Triggered Send는 API 호출 또는 시스템 이벤트로 개별 구독자에게 즉시 이메일을 발송하는 기능입니다. 주문확인·비밀번호 재설정·환영 이메일 등 실시간 트랜잭션 발송에 최적입니다.</p>
+
+    <h3 id="ts-lifecycle">라이프사이클</h3>
+    <div class="lc-flow">
+      <div class="lc-box">Draft</div>
+      <span class="lc-arrow">→</span>
+      <div class="lc-box">Start</div>
+      <span class="lc-arrow">→</span>
+      <div class="lc-box" style="background:var(--green-bg);border-color:var(--green);color:var(--green)">Active</div>
+      <span class="lc-arrow">→</span>
+      <div class="lc-box amber">Pause</div>
+      <span class="lc-arrow">→</span>
+      <div class="lc-box">Start</div>
+      <span class="lc-arrow">→</span>
+      <div class="lc-box gray">Archive</div>
+    </div>
+
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>상태</th><th>설명</th><th>API 호출 결과</th></tr></thead>
+        <tbody>
+          <tr><td><span class="tag blue">Draft</span></td><td>생성 완료, 미활성화 상태</td><td>큐잉 대기 (시작 후 발송)</td></tr>
+          <tr><td><span class="tag green">Active</span></td><td>Start 후 정상 동작 중</td><td>즉시 발송</td></tr>
+          <tr><td><span class="tag amber">Paused</span></td><td>일시 중지. 요청은 최대 14일간 큐에 보관</td><td>큐에 적재 (재시작 후 발송)</td></tr>
+          <tr><td><span class="tag gray">Archived</span></td><td>완전 중단</td><td>에러 반환 (큐 비워짐)</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="callout warning">
+      <span class="callout-icon">⚠️</span>
+      <div><strong>14일 큐 만료:</strong> Paused 상태에서 14일이 지나면 대기 중인 요청이 자동 삭제됩니다. 장기 유지보수 시 Pause 대신 Archive 후 신규 생성을 고려하세요.</div>
+    </div>
+
+    <h3 id="ts-attributes">주요 속성 설정</h3>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>속성</th><th>설명</th></tr></thead>
+        <tbody>
+          <tr><td><code>Send Classification</code></td><td>Commercial 또는 Transactional 선택. Transactional은 수신거부자에게도 발송</td></tr>
+          <tr><td><code>Triggered Send DE</code></td><td>발송 데이터를 수신하는 Sendable DE 지정. API 페이로드 필드와 매핑</td></tr>
+          <tr><td><code>Priority</code></td><td>High / Medium / Low. High는 큐 우선 처리 (추가 비용 발생 가능)</td></tr>
+          <tr><td><code>Allow Unsubscribed</code></td><td>Transactional 선택 시 수신거부자 포함 여부</td></tr>
+          <tr><td><code>Multipart MIME</code></td><td>HTML + Plain Text 동시 발송. 클라이언트가 지원하는 형식 자동 선택</td></tr>
+          <tr><td><code>List Detective</code></td><td>발송 전 스팸 트랩·알려진 불량 주소 자동 스캔 및 제외</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3 id="list-detective">List Detective</h3>
+    <p>Triggered Send 실행 시 자동으로 수신자 목록을 스캔하여 발송 레퓨테이션을 보호하는 기능입니다.</p>
+    <ul>
+      <li>스팸 트랩 주소 탐지 (ISP가 의도적으로 배포한 모니터링 주소)</li>
+      <li>알려진 불량 이메일 주소(Role-based address: <code>admin@</code>, <code>info@</code>, <code>noreply@</code> 등) 제외</li>
+      <li>차단된 주소는 에러 코드 <code>120</code>으로 기록</li>
+      <li>Admin → List Detective에서 스캔 수준(Standard / Aggressive) 설정 가능</li>
+    </ul>
+  </section>
+
+  <hr class="divider">
+
+  <!-- ===== A/B TEST ===== -->
+  <section id="ab-test">
+    <h2>A/B Testing</h2>
+    <p>두 가지 이메일 버전(Condition A / B)을 테스트 그룹에 발송한 후, 성과 기준에 따라 승리 버전을 나머지 구독자에게 자동 발송합니다.</p>
+
+    <h3>테스트 가능한 요소</h3>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>테스트 항목</th><th>설명</th><th>주의사항</th></tr></thead>
+        <tbody>
+          <tr><td>Subject Line</td><td>제목 줄 두 가지 버전 비교</td><td>Dynamic Subject Line 사용 이메일과 조합 시 기본 제목이 사용됨</td></tr>
+          <tr><td>From Name</td><td>발신자 이름 두 가지 버전 비교</td><td>—</td></tr>
+          <tr><td>Content</td><td>이메일 본문 전체 두 가지 버전 비교</td><td>AMPScript·Dynamic Content 포함 이메일 가능</td></tr>
+          <tr><td>Preheader Text</td><td>미리보기 텍스트 두 가지 버전 비교</td><td>—</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3>승자 선정 기준</h3>
+    <ul>
+      <li><strong>최고 고유 오픈율(Highest Unique Open Rate):</strong> 테스트 기간 종료 시 Condition A/B 중 고유 오픈율이 높은 버전을 승자로 선택</li>
+      <li><strong>최고 클릭율(Highest Click-Through Rate):</strong> 클릭율이 높은 버전 선택</li>
+      <li>승자 결정 후 나머지 구독자(Remainder)에게 자동 발송</li>
+    </ul>
+
+    <h3>Test Distribution</h3>
+    <p>A/B 테스트 시작 시 시스템이 먼저 전체 수신자를 분할합니다. 대용량 리스트에서는 분할 처리에 시간이 소요될 수 있으므로 예약 발송 시 여유 시간을 확보하세요.</p>
+
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>A/B 테스트 상태</th><th>설명</th></tr></thead>
+        <tbody>
+          <tr><td><span class="tag gray">Unscheduled</span></td><td>생성되었으나 예약 미완료</td></tr>
+          <tr><td><span class="tag blue">Scheduled</span></td><td>발송 예약 완료, 대기 중</td></tr>
+          <tr><td><span class="tag amber">Initializing</span></td><td>A/B/Remainder 그룹 분할 처리 중</td></tr>
+          <tr><td><span class="tag green">Active</span></td><td>Condition A·B 발송 완료, 결과 수집 중</td></tr>
+          <tr><td><span class="tag purple">Complete</span></td><td>승자 확정, Remainder 발송 완료</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="callout note">
+      <span class="callout-icon">ℹ️</span>
+      <div><strong>Dynamic Content와 A/B 테스트:</strong> Dynamic Content 또는 AMPScript가 포함된 이메일에도 A/B 테스트를 실행할 수 있습니다. 단, 두 개의 이메일 본문으로 테스트할 때 Dynamic Subject Line이 있으면 기본(default) 제목이 사용됩니다.</div>
+    </div>
+  </section>
+
+  <hr class="divider">
+
+  <!-- ===== SEND THROTTLING ===== -->
+  <section id="send-throttling">
+    <h2>Send Throttling</h2>
+    <p>시간당 발송 수를 제한하여 ISP에 과도한 트래픽이 집중되는 것을 방지합니다.</p>
+    <ul>
+      <li>Email Studio → Admin → Send Throttling에서 설정</li>
+      <li>단위: 시간당 발송 건수</li>
+      <li><strong>주요 활용 시나리오:</strong>
+        <ul>
+          <li>신규 IP Warming 단계: 시간당 200건→500건→1,000건 점진적 증가</li>
+          <li>대용량 캠페인 발송 시 ISP별 조절</li>
+          <li>서버 부하 분산 (백엔드 처리 시스템 보호)</li>
+        </ul>
+      </li>
+    </ul>
+  </section>
+
+  <hr class="divider">
+
+  <!-- ===== MULTIPART MIME ===== -->
+  <section id="multipart-mime">
+    <h2>Multipart MIME</h2>
+    <p>HTML 버전과 Plain Text 버전을 동시에 포함하는 이메일 형식입니다. 이메일 클라이언트가 지원 유형에 따라 자동으로 적합한 버전을 표시합니다.</p>
+
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>설정 위치</th><th>방법</th></tr></thead>
+        <tbody>
+          <tr><td>Triggered Send</td><td>Triggered Send Definition 설정 시 "Multipart MIME" 체크박스 활성화</td></tr>
+          <tr><td>Standard Send</td><td>이메일 발송 마법사 → 고급 설정에서 Plain Text 버전 추가</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="callout tip">
+      <span class="callout-icon">✅</span>
+      <div><strong>권장:</strong> Triggered Send(주문확인·알림 등)는 Multipart MIME을 항상 활성화하세요. 일부 기업용 이메일 클라이언트는 Plain Text만 처리하며, SPF/DKIM 검증에도 도움이 됩니다.</div>
+    </div>
+  </section>
+
+  <hr class="divider">
+
+  <!-- ===== ERROR CODES ===== -->
+  <section id="error-codes">
+    <h2>발송 에러 코드 표</h2>
+    <p>Triggered Send 또는 일반 발송 실패 시 <code>_bounce</code> / <code>_unsubscribe</code> / Send Log DE에 기록되는 주요 에러 코드입니다.</p>
+
+    <div class="err-grid">
+      <div class="err-row">
+        <div class="err-code">1</div>
+        <div class="err-body">
+          <div class="err-name">Unsubscribed</div>
+          <div class="err-desc">구독자가 수신거부 상태. Commercial 발송 차단</div>
+        </div>
+      </div>
+      <div class="err-row">
+        <div class="err-code">2</div>
+        <div class="err-body">
+          <div class="err-name">Held / Bounced</div>
+          <div class="err-desc">바운스 누적으로 Held 또는 Bounced 상태</div>
+        </div>
+      </div>
+      <div class="err-row">
+        <div class="err-code">4</div>
+        <div class="err-body">
+          <div class="err-name">Missing Email</div>
+          <div class="err-desc">이메일 주소 필드 값 없음</div>
+        </div>
+      </div>
+      <div class="err-row">
+        <div class="err-code">5</div>
+        <div class="err-body">
+          <div class="err-name">Invalid Email</div>
+          <div class="err-desc">이메일 주소 형식 오류</div>
+        </div>
+      </div>
+      <div class="err-row">
+        <div class="err-code">23</div>
+        <div class="err-body">
+          <div class="err-name">Subscriber Key Not Found</div>
+          <div class="err-desc">SubscriberKey가 All Subscribers에 없음</div>
+        </div>
+      </div>
+      <div class="err-row">
+        <div class="err-code">28</div>
+        <div class="err-body">
+          <div class="err-name">Opt Out List</div>
+          <div class="err-desc">Publication List 수준 수신거부</div>
+        </div>
+      </div>
+      <div class="err-row">
+        <div class="err-code">33</div>
+        <div class="err-body">
+          <div class="err-name">Account Level Opt Out</div>
+          <div class="err-desc">Universal Unsubscribe(전체 수신거부)</div>
+        </div>
+      </div>
+      <div class="err-row">
+        <div class="err-code">70</div>
+        <div class="err-body">
+          <div class="err-name">Auto-Suppression</div>
+          <div class="err-desc">Auto-Suppression List에 의해 제외됨</div>
+        </div>
+      </div>
+      <div class="err-row">
+        <div class="err-code">72</div>
+        <div class="err-body">
+          <div class="err-name">Subscriber Deleted</div>
+          <div class="err-desc">구독자가 삭제된 상태</div>
+        </div>
+      </div>
+      <div class="err-row">
+        <div class="err-code">120</div>
+        <div class="err-body">
+          <div class="err-name">List Detective Exclusion</div>
+          <div class="err-desc">List Detective 스캔에서 스팸 트랩 등으로 차단</div>
+        </div>
+      </div>
+      <div class="err-row">
+        <div class="err-code">130</div>
+        <div class="err-body">
+          <div class="err-name">Globally Unsubscribed</div>
+          <div class="err-desc">글로벌 수준(Salesforce 인프라) 수신거부</div>
+        </div>
+      </div>
+      <div class="err-row">
+        <div class="err-code">200</div>
+        <div class="err-body">
+          <div class="err-name">Triggered Send Archived</div>
+          <div class="err-desc">Triggered Send가 Archive 상태여서 발송 불가</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="callout note">
+      <span class="callout-icon">ℹ️</span>
+      <div><strong>에러 코드 조회:</strong> Automation Studio에서 <code>_bounce</code> Data View를 쿼리하거나, Send Log DE에 <code>ErrorCode</code> 필드를 추가하여 실시간 모니터링하세요. 코드 <code>1·2·28·33</code>은 데이터 품질 문제, 코드 <code>120</code>은 목록 정제 신호입니다.</div>
+    </div>
+
+    <h3>에러 코드 활용 쿼리</h3>
+    <pre><span class="cm">-- 최근 24시간 발송 에러 코드별 집계</span>
+<span class="kw">SELECT</span>
+  sl.<span class="field">ErrorCode</span>,
+  <span class="fn">COUNT</span>(*) <span class="kw">AS</span> <span class="field">ErrorCount</span>
+<span class="kw">FROM</span> <span class="fn">SendLog_DE</span> sl          <span class="cm">-- Send Logging DE 이름으로 변경</span>
+<span class="kw">WHERE</span> sl.<span class="field">EventDate</span> > <span class="fn">DATEADD</span>(hour, -24, <span class="fn">GETDATE</span>())
+  <span class="kw">AND</span> sl.<span class="field">ErrorCode</span> <span class="kw">IS NOT NULL</span>
+<span class="kw">GROUP BY</span> sl.<span class="field">ErrorCode</span>
+<span class="kw">ORDER BY</span> <span class="field">ErrorCount</span> <span class="kw">DESC</span></pre>
+  </section>
+
+  <hr class="divider">
+
+  <p style="font-size:13px;color:var(--text-muted)">출처: Salesforce 공식 문서 <em>Engagement: Email Studio</em> (366p, 2026-06-23 수집) · <a href="../index.html">← MCE 구축 가이드로 돌아가기</a></p>
+
+</main>
+</div>
+
+<script>
+// Sidebar TOC active highlight on scroll
+const sections = document.querySelectorAll('section[id]');
+const tocItems = document.querySelectorAll('.toc-item');
+function onScroll() {
+  let current = '';
+  sections.forEach(s => {
+    if (window.scrollY >= s.offsetTop - 80) current = s.id;
+  });
+  tocItems.forEach(a => {
+    const href = a.getAttribute('href');
+    a.classList.toggle('active', href === '#' + current);
+  });
+}
+window.addEventListener('scroll', onScroll, { passive: true });
+onScroll();
+</script>
+</body>
+</html>

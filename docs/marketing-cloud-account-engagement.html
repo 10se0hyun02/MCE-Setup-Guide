@@ -1,0 +1,707 @@
+﻿<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Marketing Cloud Account Engagement (MCAE) — MCE 가이드</title>
+<link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable.min.css">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --primary:#0070D2;--primary-light:#EAF4FF;--primary-dark:#005FB2;
+  --text:#1a1a1a;--text-sub:#555;--text-muted:#888;
+  --border:#E0E0E0;--bg:#F9F9F9;--white:#fff;
+  --green:#0E7C59;--green-bg:#E6F5F0;
+  --amber:#8A5700;--amber-bg:#FFF4E0;
+  --red:#B91C1C;--red-bg:#FEF2F2;
+  --purple:#6B21A8;--purple-bg:#F5F3FF;
+  --sidebar-w:270px;
+  --font:'Pretendard Variable','Pretendard',system-ui,sans-serif;
+}
+body{font-family:var(--font);font-size:16px;line-height:1.75;color:var(--text);background:var(--bg)}
+a{color:var(--primary);text-decoration:none}
+a:hover{text-decoration:underline}
+.layout{display:flex;min-height:100vh}
+.sidebar{position:sticky;top:0;height:100vh;overflow-y:auto;width:var(--sidebar-w);min-width:var(--sidebar-w);background:var(--white);border-right:1px solid var(--border);padding:24px 0}
+.sidebar-logo{padding:0 20px 20px;border-bottom:1px solid var(--border);margin-bottom:12px}
+.sidebar-logo .back{font-size:12px;color:var(--text-muted);display:block;margin-bottom:8px}
+.sidebar-logo h1{font-size:13px;font-weight:700;color:var(--text);line-height:1.4}
+.sidebar-logo .badge{display:inline-block;margin-top:6px;font-size:10px;padding:2px 8px;background:var(--purple-bg);color:var(--purple);border-radius:20px;font-weight:600}
+.toc-label{font-size:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--text-muted);padding:10px 20px 4px}
+.toc-item{display:block;padding:7px 20px;font-size:12.5px;color:var(--text-sub);border-left:2px solid transparent;transition:all .1s}
+.toc-item:hover,.toc-item.active{color:var(--primary);background:var(--primary-light);border-left-color:var(--primary);text-decoration:none}
+.toc-sub{padding-left:32px;font-size:12px}
+.content{flex:1;padding:48px 64px;background:var(--white)}
+@media(max-width:900px){.sidebar{display:none}.content{padding:28px 20px}}
+.doc-eyebrow{font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--text-muted);margin-bottom:8px}
+h1.doc-title{font-size:30px;font-weight:800;line-height:1.25;margin-bottom:12px}
+.doc-meta{font-size:13px;color:var(--text-muted);padding-bottom:24px;border-bottom:1px solid var(--border);margin-bottom:36px}
+h2{font-size:21px;font-weight:700;margin:44px 0 14px;padding-top:8px;scroll-margin-top:24px}
+h3{font-size:16px;font-weight:700;margin:28px 0 10px;scroll-margin-top:24px}
+h4{font-size:14px;font-weight:700;margin:20px 0 8px;color:var(--text-sub)}
+p{margin-bottom:14px}
+ul,ol{padding-left:22px;margin-bottom:14px}
+li{margin-bottom:6px}
+code{background:#F1F5F9;color:#0F172A;padding:1px 5px;border-radius:4px;font-size:14px;font-family:'Consolas','Courier New',monospace}
+.callout{display:flex;gap:12px;padding:14px 16px;border-radius:8px;border-left:4px solid;margin:20px 0;font-size:13.5px;line-height:1.65}
+.callout-icon{font-size:16px;flex-shrink:0;margin-top:1px}
+.callout.note{background:#F0F4FF;border-color:#6B8CFE;color:#1E3A8A}
+.callout.warning{background:var(--amber-bg);border-color:#F59E0B;color:var(--amber)}
+.callout.danger{background:var(--red-bg);border-color:#EF4444;color:var(--red)}
+.callout.tip{background:var(--green-bg);border-color:#10B981;color:var(--green)}
+.callout.purple{background:var(--purple-bg);border-color:#A855F7;color:var(--purple)}
+.callout strong{font-weight:700}
+.table-wrap{overflow-x:auto;margin:20px 0}
+table{width:100%;border-collapse:collapse;font-size:14px}
+th{text-align:left;padding:10px 12px;background:var(--bg);font-weight:700;font-size:13px;text-transform:uppercase;letter-spacing:.04em;color:var(--text-sub);border-bottom:2px solid var(--border)}
+td{padding:10px 12px;border-bottom:1px solid var(--border);vertical-align:top;line-height:1.55}
+tr:last-child td{border-bottom:none}
+tr:hover td{background:var(--bg)}
+.steps{margin:16px 0}
+.step{display:flex;gap:14px;margin-bottom:14px;align-items:flex-start}
+.step-num{flex-shrink:0;width:26px;height:26px;border-radius:50%;background:var(--primary);color:#fff;font-size:12px;font-weight:700;display:flex;align-items:center;justify-content:center}
+.step-body{flex:1;padding-top:2px}
+.tag{display:inline-block;font-size:11px;font-weight:600;padding:2px 8px;border-radius:20px;vertical-align:middle}
+.tag.blue{background:var(--primary-light);color:var(--primary-dark)}
+.tag.green{background:var(--green-bg);color:var(--green)}
+.tag.amber{background:var(--amber-bg);color:var(--amber)}
+.tag.red{background:var(--red-bg);color:var(--red)}
+.tag.purple{background:var(--purple-bg);color:var(--purple)}
+.divider{border:none;border-top:1px solid var(--border);margin:40px 0}
+section{scroll-margin-top:20px}
+.compare-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin:20px 0}
+.compare-card{border:1px solid var(--border);border-radius:10px;overflow:hidden}
+.compare-card .cc-head{padding:12px 16px;font-weight:700;font-size:13px}
+.compare-card .cc-head.blue{background:var(--primary-light);color:var(--primary-dark)}
+.compare-card .cc-head.purple{background:var(--purple-bg);color:var(--purple)}
+.compare-card ul{padding:12px 16px 12px 32px;font-size:13px}
+.compare-card li{margin-bottom:4px}
+.score-table{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:12px;margin:16px 0}
+.score-card{background:var(--bg);border:1px solid var(--border);border-radius:8px;padding:12px 14px}
+.score-card .sc-action{font-size:13px;font-weight:600;color:var(--text);margin-bottom:4px}
+.score-card .sc-pts{font-size:18px;font-weight:800;color:var(--primary)}
+.score-card .sc-desc{font-size:11px;color:var(--text-muted);margin-top:2px}
+.flow-box{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin:16px 0}
+.flow-step{background:var(--primary-light);color:var(--primary-dark);border-radius:8px;padding:10px 16px;font-size:13px;font-weight:600;text-align:center;min-width:90px}
+.flow-arrow{color:var(--text-muted);font-size:18px;flex-shrink:0}
+.es-step-box{display:flex;align-items:flex-start;gap:14px;padding:12px 16px;border:1px solid var(--border);border-radius:8px;margin-bottom:10px}
+.es-step-icon{font-size:22px;flex-shrink:0;width:32px;text-align:center}
+.es-step-body strong{display:block;font-size:14px;font-weight:700;margin-bottom:2px}
+.es-step-body p{margin:0;font-size:13px;color:var(--text-sub);line-height:1.55}
+</style>
+</head>
+<body>
+<div class="layout">
+
+<aside class="sidebar">
+  <div class="sidebar-logo">
+    <a class="back" href="../index.html">← MCE 구축 가이드로 돌아가기</a>
+    <h1>Marketing Cloud Account Engagement</h1>
+    <span class="badge">MCAE / Pardot — B2B 마케팅 자동화</span>
+  </div>
+
+  <div class="toc-label">개요 & 비교</div>
+  <a class="toc-item" href="#overview">MCAE 개요</a>
+  <a class="toc-item toc-sub" href="#mce-vs-mcae">MCE vs MCAE 비교</a>
+  <a class="toc-item" href="#prospects">Prospects & Visitors</a>
+
+  <div class="toc-label">리드 관리</div>
+  <a class="toc-item" href="#lists">Lists (정적·동적)</a>
+  <a class="toc-item" href="#scoring">Scoring (활동 점수)</a>
+  <a class="toc-item toc-sub" href="#scoring-categories">Scoring Categories</a>
+  <a class="toc-item" href="#grading">Grading (프로필 적합도)</a>
+
+  <div class="toc-label">캠페인 & 자동화</div>
+  <a class="toc-item" href="#engagement-studio">Engagement Studio</a>
+  <a class="toc-item toc-sub" href="#es-steps">Step 유형</a>
+  <a class="toc-item toc-sub" href="#es-sample">샘플 플로우</a>
+  <a class="toc-item" href="#forms-landing">Forms & Landing Pages</a>
+  <a class="toc-item toc-sub" href="#form-handlers">Form Handlers</a>
+  <a class="toc-item" href="#email">이메일 발송</a>
+
+  <div class="toc-label">Salesforce CRM 연동</div>
+  <a class="toc-item" href="#crm-sync">CRM 동기화</a>
+  <a class="toc-item toc-sub" href="#user-sync">User Sync</a>
+  <a class="toc-item" href="#connected-campaigns">Connected Campaigns</a>
+
+  <div class="toc-label">AI & Analytics</div>
+  <a class="toc-item" href="#einstein">Einstein 기능</a>
+  <a class="toc-item" href="#reporting">리포팅</a>
+</aside>
+
+<div class="content">
+  <div class="doc-eyebrow">Salesforce · B2B 마케팅 자동화</div>
+  <h1 class="doc-title">Marketing Cloud Account Engagement (MCAE)</h1>
+  <p class="doc-meta">구 이름 Pardot. B2B 마케팅 자동화 플랫폼으로, 리드 스코어링·그레이딩·너처링·Salesforce CRM 양방향 동기화가 핵심입니다. MCE(이메일/SMS 대량 발송 중심)와 목적이 다릅니다.<br>출처: Salesforce 공식 문서 <em>Marketing Cloud Account Engagement</em> (2026.06.23)</p>
+
+  <!-- ──── 개요 ──── -->
+  <section id="overview">
+    <h2>MCAE 개요</h2>
+    <p>MCAE는 복잡한 B2B 세일즈 사이클을 지원하는 마케팅 자동화 플랫폼입니다. 잠재 고객(Prospect)의 웹사이트 방문, 이메일 열람, 폼 제출 등 모든 디지털 행동을 추적하고 점수화해, 영업팀이 구매 가능성 높은 리드에 집중할 수 있도록 합니다.</p>
+
+    <section id="mce-vs-mcae">
+      <h3>MCE vs MCAE — 언제 어떤 걸 쓰나?</h3>
+      <div class="compare-grid">
+        <div class="compare-card">
+          <div class="cc-head blue">Marketing Cloud Engagement (MCE)</div>
+          <ul>
+            <li>대상: B2C, 대량 구독자</li>
+            <li>채널: 이메일, SMS, Push, In-App, Ads</li>
+            <li>핵심: 개인화 이메일 대량 발송, 실시간 캠페인</li>
+            <li>리드 관리: 기본 Subscriber 중심</li>
+            <li>CRM 연동: Marketing Cloud Connect (선택)</li>
+            <li>발송 단위: 수백만 건/일 가능</li>
+            <li>개인화: AMPScript, Server-Side JS</li>
+          </ul>
+        </div>
+        <div class="compare-card">
+          <div class="cc-head purple">Marketing Cloud Account Engagement (MCAE)</div>
+          <ul>
+            <li>대상: B2B, 소규모 고가치 리드</li>
+            <li>채널: 이메일, Landing Page, Form</li>
+            <li>핵심: 리드 점수화, 너처링, CRM 통합</li>
+            <li>리드 관리: Prospect 생애주기 전체 추적</li>
+            <li>CRM 연동: 기본 내장 (필수), 양방향 실시간 동기화</li>
+            <li>발송 단위: 수천~수만 건/캠페인</li>
+            <li>개인화: HML(Handlebars-like), 동적 콘텐츠</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="callout note">
+        <span class="callout-icon">📌</span>
+        <div><strong>MCE + MCAE 동시 운영:</strong> 실제로 두 제품을 함께 쓰는 기업이 많습니다. MCAE로 초기 리드를 너처링해 Hot Lead로 발전시키고, 계약 후 온보딩·리텐션 이메일은 MCE로 대량 발송하는 패턴이 일반적입니다.</div>
+      </div>
+    </section>
+  </section>
+
+  <hr class="divider">
+
+  <!-- ──── Prospects & Visitors ──── -->
+  <section id="prospects">
+    <h2>Prospects &amp; Visitors</h2>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>개념</th><th>설명</th><th>비고</th></tr></thead>
+        <tbody>
+          <tr>
+            <td><strong>Visitor</strong></td>
+            <td>웹사이트를 방문했지만 아직 식별되지 않은 익명 사용자. IP 기반으로 회사명을 역방향 조회</td>
+            <td>쿠키 기반. 폼 제출 시 Prospect로 전환</td>
+          </tr>
+          <tr>
+            <td><strong>Prospect</strong></td>
+            <td>이메일 주소가 확인된 마케팅 데이터베이스의 개인. 모든 활동이 추적됨</td>
+            <td>Salesforce Contact 또는 Lead와 매핑</td>
+          </tr>
+          <tr>
+            <td><strong>Prospect Activity</strong></td>
+            <td>이메일 열람, 클릭, 폼 제출, 페이지 방문 등 모든 행동 이력</td>
+            <td>Scoring 계산의 원천 데이터</td>
+          </tr>
+          <tr>
+            <td><strong>Do Not Email</strong></td>
+            <td>발송 수신 거부 상태. 이 상태의 Prospect에는 마케팅 이메일 발송 불가</td>
+            <td>Operational 이메일은 발송 가능</td>
+          </tr>
+          <tr>
+            <td><strong>Opted Out</strong></td>
+            <td>수신 거부 처리된 Prospect</td>
+            <td>CRM의 Opted Out 체크박스와 동기화</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="callout tip">
+      <span class="callout-icon">💡</span>
+      <div><strong>Prospect 생성 방법:</strong> (1) MCAE 폼/랜딩페이지 제출, (2) 이메일 링크 클릭으로 쿠키 심기, (3) API를 통한 직접 생성, (4) CSV/임포트, (5) Salesforce Contact/Lead가 MCAE로 동기화될 때 자동 생성</div>
+    </div>
+  </section>
+
+  <hr class="divider">
+
+  <!-- ──── Lists ──── -->
+  <section id="lists">
+    <h2>Lists (정적·동적)</h2>
+    <p>Lists는 이메일 발송 대상 또는 Engagement Studio 입장 조건에 사용됩니다.</p>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>유형</th><th>설명</th><th>용도</th></tr></thead>
+        <tbody>
+          <tr>
+            <td><strong>Static List</strong></td>
+            <td>직접 수동 추가/제거하거나 임포트로 구성하는 리스트</td>
+            <td>특정 이벤트 참석자, 타겟 계정 리스트</td>
+          </tr>
+          <tr>
+            <td><strong>Dynamic List</strong></td>
+            <td>규칙 기반 자동 관리. 조건에 맞는 Prospect가 자동 추가·제거됨</td>
+            <td>리드 점수 50점 이상, 특정 회사명, 특정 직책</td>
+          </tr>
+          <tr>
+            <td><strong>Suppression List</strong></td>
+            <td>발송 제외 대상 리스트. Engagement Studio 수신 억제에 사용</td>
+            <td>경쟁사 이메일 도메인, 이미 고객인 계정</td>
+          </tr>
+          <tr>
+            <td><strong>Test List</strong></td>
+            <td>실제 발송 전 테스트 전송 전용 리스트</td>
+            <td>마케팅 팀 내부 테스트</td>
+          </tr>
+          <tr>
+            <td><strong>Seed List</strong></td>
+            <td>모든 이메일 발송 시 자동으로 포함되는 수신자 리스트</td>
+            <td>감사·컴플라이언스 목적 내부 CC</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="callout note">
+      <span class="callout-icon">📌</span>
+      <div><strong>Dynamic List 활용 팁:</strong> 리드 점수·그레이드 조건으로 Dynamic List를 만들면 영업 적격 리드(SQL)를 자동 분류할 수 있습니다. 예: Score ≥ 100 AND Grade ≥ B → "Hot Lead" Dynamic List → CRM에 자동 Task 생성</div>
+    </div>
+  </section>
+
+  <hr class="divider">
+
+  <!-- ──── Scoring ──── -->
+  <section id="scoring">
+    <h2>Scoring — 활동 기반 점수</h2>
+    <p>Scoring은 Prospect의 관심도와 구매 의도를 정량화합니다. 활동 유형에 따라 양수·음수 점수가 자동 부여됩니다.</p>
+
+    <div class="score-table">
+      <div class="score-card"><div class="sc-action">Form Submit</div><div class="sc-pts">+50</div><div class="sc-desc">가장 강력한 의도 신호</div></div>
+      <div class="score-card"><div class="sc-action">Email Open</div><div class="sc-pts">+5</div><div class="sc-desc">관심 신호. 반복 오픈 시 누적</div></div>
+      <div class="score-card"><div class="sc-action">Email Link Click</div><div class="sc-pts">+5</div><div class="sc-desc">콘텐츠 관심 신호</div></div>
+      <div class="score-card"><div class="sc-action">Page View</div><div class="sc-pts">+1</div><div class="sc-desc">방문당 1점. 반복 방문 누적</div></div>
+      <div class="score-card"><div class="sc-action">File Download</div><div class="sc-pts">+5</div><div class="sc-desc">콘텐츠 자산 다운로드</div></div>
+      <div class="score-card"><div class="sc-action">Custom Redirect</div><div class="sc-pts">+5</div><div class="sc-desc">추적 링크 클릭</div></div>
+      <div class="score-card"><div class="sc-action">Video Watch</div><div class="sc-pts">+10</div><div class="sc-desc">영상 콘텐츠 시청</div></div>
+      <div class="score-card"><div class="sc-action">Webinar Attend</div><div class="sc-pts">+20</div><div class="sc-desc">웨비나 실제 참석</div></div>
+      <div class="score-card"><div class="sc-action">Email Unsubscribe</div><div class="sc-pts">-25</div><div class="sc-desc">관심도 하락 신호</div></div>
+      <div class="score-card"><div class="sc-action">Email Bounce</div><div class="sc-pts">-25</div><div class="sc-desc">반송 발생</div></div>
+      <div class="score-card"><div class="sc-action">Form Error</div><div class="sc-pts">-5</div><div class="sc-desc">폼 제출 실패</div></div>
+      <div class="score-card"><div class="sc-action">Score Decay</div><div class="sc-pts">-X</div><div class="sc-desc">비활성 기간 경과 시 자동 감점</div></div>
+    </div>
+
+    <div class="callout warning">
+      <span class="callout-icon">⚠️</span>
+      <div><strong>점수 = 관심도, Grade = 적합도:</strong> 점수가 높다고 무조건 좋은 리드가 아닙니다. 학생이 교육 자료를 많이 다운받으면 점수는 높지만 구매 가능성은 낮을 수 있습니다. 반드시 점수 + 그레이드를 함께 사용해 MQL/SQL을 정의하세요.</div>
+    </div>
+
+    <section id="scoring-categories">
+      <h3>Scoring Categories</h3>
+      <p>제품 라인, 관심 영역별로 별도 점수 카테고리를 운영할 수 있습니다. 예를 들어 "클라우드 제품" 폼 제출은 클라우드 카테고리 +50점, "교육" 페이지 방문은 교육 카테고리 +1점 식으로 분리 추적합니다.</p>
+      <p>Scoring Category는 Prospect 상세 화면에 별도 집계되어, 영업 담당자가 어느 제품에 관심이 있는지 한눈에 파악할 수 있습니다.</p>
+    </section>
+  </section>
+
+  <hr class="divider">
+
+  <!-- ──── Grading ──── -->
+  <section id="grading">
+    <h2>Grading — 프로필 적합도</h2>
+    <p>Grading은 행동(Activity)이 아닌 <strong>프로필 정보</strong>(직책, 업종, 회사 규모 등)가 이상적인 고객 프로필(ICP)과 얼마나 일치하는지 나타냅니다.</p>
+
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>등급</th><th>의미</th><th>대응 방식</th></tr></thead>
+        <tbody>
+          <tr><td><strong class="tag green">A+</strong></td><td>완벽한 프로필 적합</td><td>즉시 영업 배정</td></tr>
+          <tr><td><strong class="tag green">A</strong></td><td>높은 적합도</td><td>우선 순위 너처링 → 영업 패스</td></tr>
+          <tr><td><strong class="tag blue">B</strong></td><td>양호한 적합도</td><td>중간 강도 너처링</td></tr>
+          <tr><td><strong class="tag amber">C</strong></td><td>보통 적합도</td><td>일반 너처링 유지</td></tr>
+          <tr><td><strong class="tag amber">D</strong></td><td>낮은 적합도</td><td>관계 유지 자동화</td></tr>
+          <tr><td><strong class="tag red">F</strong></td><td>부적합 프로필</td><td>마케팅 비용 최소화</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3>Profile & Criteria 설정</h3>
+    <p>Admin → Profiles에서 이상적 고객 프로필을 정의합니다. 각 Profile에는 Criteria(조건)와 점수 가중치를 설정합니다.</p>
+    <ul>
+      <li><strong>직책(Job Title):</strong> CTO, VP Engineering → Grade +, 인턴 → Grade -</li>
+      <li><strong>업종(Industry):</strong> 금융·제조·의료 → Grade +, 개인 사용자 → Grade -</li>
+      <li><strong>회사 규모(Employees):</strong> 1,000명 이상 → Grade +</li>
+      <li><strong>Country:</strong> 한국·일본·미국 → Grade +, 특정 지역 → Grade -</li>
+    </ul>
+
+    <div class="callout tip">
+      <span class="callout-icon">💡</span>
+      <div><strong>MQL 정의 예시:</strong> Score ≥ 100 AND Grade ≥ B → MQL(Marketing Qualified Lead). 이 조건을 Dynamic List로 만들고 Engagement Studio에서 Salesforce Task 자동 생성 → 영업팀 배정 플로우를 구성하세요.</div>
+    </div>
+  </section>
+
+  <hr class="divider">
+
+  <!-- ──── Engagement Studio ──── -->
+  <section id="engagement-studio">
+    <h2>Engagement Studio</h2>
+    <p>Engagement Studio는 MCAE의 핵심 너처링 도구입니다. 시간 지연, 이메일 발송, CRM 액션, 리드 분기 등을 시각적 플로우로 구성해 완전 자동화된 너처링 프로그램을 운영합니다.</p>
+
+    <div class="callout note">
+      <span class="callout-icon">📌</span>
+      <div><strong>Engagement Studio ≠ Journey Builder:</strong> 목적이 다릅니다. Engagement Studio는 B2B 리드 너처링(수주 사이클 전반)에 특화되어 있으며, 기본 단위가 "며칠 후 다음 액션"입니다. Journey Builder는 B2C 실시간 개인화 여정에 최적화되어 있습니다.</div>
+    </div>
+
+    <section id="es-steps">
+      <h3>Step 유형</h3>
+
+      <div class="es-step-box">
+        <div class="es-step-icon">⚡</div>
+        <div class="es-step-body">
+          <strong>Action</strong>
+          <p>플로우 내에서 즉시 실행되는 작업. 이메일 발송, List 추가/제거, Score 변경, CRM Task 생성, 알림 발송, 태그 추가 등</p>
+        </div>
+      </div>
+
+      <div class="es-step-box">
+        <div class="es-step-icon">🔀</div>
+        <div class="es-step-body">
+          <strong>Decision</strong>
+          <p>Prospect 속성·활동을 평가해 Yes/No 분기. 이메일 오픈 여부, 폼 제출 여부, Score 임계값 초과, 특정 List 포함 여부 등. Yes와 No 두 경로로 분기</p>
+        </div>
+      </div>
+
+      <div class="es-step-box">
+        <div class="es-step-icon">⏰</div>
+        <div class="es-step-body">
+          <strong>Trigger</strong>
+          <p>특정 이벤트 발생을 일정 기간 기다렸다가 분기. 예: "5일 이내 이메일 클릭 여부" 확인 후 클릭 → A 경로, 미클릭 → B 경로. Decision과 달리 대기 시간이 포함됨</p>
+        </div>
+      </div>
+
+      <div class="es-step-box">
+        <div class="es-step-icon">⏳</div>
+        <div class="es-step-body">
+          <strong>Wait (End)</strong>
+          <p>지정 일수 대기 후 다음 단계 진행. 이메일 → Wait 3일 → Decision 패턴이 기본 구조</p>
+        </div>
+      </div>
+    </section>
+
+    <section id="es-sample">
+      <h3>샘플 플로우 — B2B 리드 너처링</h3>
+      <div class="flow-box">
+        <div class="flow-step">입장<br><small>웨비나 등록 리스트</small></div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-step">이메일 1<br><small>감사 + 자료</small></div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-step">Wait 3일</div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-step">Trigger<br><small>이메일 클릭?</small></div>
+      </div>
+      <div class="flow-box" style="margin-top:4px">
+        <div class="flow-step" style="background:var(--green-bg);color:var(--green)">Yes: Score +15<br>→ 이메일 2</div>
+        <div class="flow-arrow">|</div>
+        <div class="flow-step" style="background:var(--amber-bg);color:var(--amber)">No: Wait 7일<br>→ Re-engagement</div>
+      </div>
+
+      <div class="callout tip">
+        <span class="callout-icon">💡</span>
+        <div><strong>Suppression List 필수:</strong> 프로그램 실행 중 이미 계약을 체결했거나 영업 중인 Prospect가 너처링 이메일을 받으면 혼란을 줍니다. 현재 고객 리스트와 영업 진행 중 리스트를 반드시 Suppression List로 등록하세요.</div>
+      </div>
+
+      <h4>프로그램 설정 주요 옵션</h4>
+      <ul>
+        <li><strong>Recipient Lists:</strong> 프로그램 대상 리스트 (Static 또는 Dynamic)</li>
+        <li><strong>Suppression Lists:</strong> 발송 제외 대상 리스트</li>
+        <li><strong>Schedule:</strong> 발송 허용 요일·시간 설정 (영업일 오전 9시~오후 6시 권장)</li>
+        <li><strong>Allow Re-entry:</strong> 동일 Prospect의 프로그램 재참가 허용 여부</li>
+        <li><strong>Pause Program:</strong> 전체 프로그램 일시 정지 가능</li>
+      </ul>
+    </section>
+  </section>
+
+  <hr class="divider">
+
+  <!-- ──── Forms & Landing Pages ──── -->
+  <section id="forms-landing">
+    <h2>Forms &amp; Landing Pages</h2>
+    <p>MCAE Forms는 웹사이트에 직접 임베드하거나 MCAE Landing Page에 삽입해 Prospect 정보를 수집합니다. 제출 즉시 Prospect 레코드가 생성·업데이트되고 Engagement Studio 트리거가 발동합니다.</p>
+
+    <h3>Form 주요 기능</h3>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>기능</th><th>설명</th></tr></thead>
+        <tbody>
+          <tr>
+            <td><strong>Progressive Profiling</strong></td>
+            <td>재방문자에게 이미 아는 필드는 숨기고 새 필드 표시. 매 방문마다 추가 정보 수집</td>
+          </tr>
+          <tr>
+            <td><strong>Dependent Fields</strong></td>
+            <td>다른 필드 값에 따라 조건부로 표시되는 필드. 예: Industry = Healthcare → 병원 규모 필드 표시</td>
+          </tr>
+          <tr>
+            <td><strong>Pre-fill</strong></td>
+            <td>이미 알고 있는 Prospect 정보 자동 채우기. 마찰 감소, 전환율 향상</td>
+          </tr>
+          <tr>
+            <td><strong>Honeypot</strong></td>
+            <td>사람 눈에 보이지 않는 필드. 봇이 채우면 스팸으로 처리</td>
+          </tr>
+          <tr>
+            <td><strong>Always Display Values</strong></td>
+            <td>체크 시 기존 값과 상관없이 항상 새 값으로 덮어쓰기</td>
+          </tr>
+          <tr>
+            <td><strong>Completion Actions</strong></td>
+            <td>제출 후 즉시 실행되는 자동화: Score 변경, List 추가, CRM 알림, 태그 추가 등</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <section id="form-handlers">
+      <h3>Form Handlers</h3>
+      <p>외부 웹사이트에 이미 자체 폼이 있다면 MCAE Form을 대체할 필요 없이 <strong>Form Handler</strong>를 사용합니다. 외부 폼 제출 데이터를 MCAE에 POST로 전달해 Prospect 레코드를 생성·업데이트합니다.</p>
+
+      <div class="steps">
+        <div class="step"><div class="step-num">1</div><div class="step-body">MCAE → Marketing → Forms → Form Handlers → Add Form Handler</div></div>
+        <div class="step"><div class="step-num">2</div><div class="step-body">외부 폼의 필드명과 MCAE Prospect 필드 매핑</div></div>
+        <div class="step"><div class="step-num">3</div><div class="step-body">Completion Actions 설정 (이메일, 담당자 알림, CRM Task 생성)</div></div>
+        <div class="step"><div class="step-num">4</div><div class="step-body">Endpoint URL 복사 → 외부 폼 action 속성에 붙여넣기</div></div>
+        <div class="step"><div class="step-num">5</div><div class="step-body">허용 도메인(Success/Error Location) 설정 → 스팸 방지</div></div>
+      </div>
+
+      <div class="callout warning">
+        <span class="callout-icon">⚠️</span>
+        <div><strong>kiosk mode:</strong> 같은 디바이스에서 여러 사람이 제출할 수 있는 환경(이벤트 등록 키오스크 등)에서는 Kiosk Mode를 활성화하세요. 쿠키 없이 각 제출을 독립 레코드로 처리합니다.</div>
+      </div>
+    </section>
+  </section>
+
+  <hr class="divider">
+
+  <!-- ──── 이메일 ──── -->
+  <section id="email">
+    <h2>이메일 발송</h2>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>유형</th><th>설명</th><th>특이사항</th></tr></thead>
+        <tbody>
+          <tr>
+            <td><strong>List Email</strong></td>
+            <td>특정 List를 대상으로 즉시/예약 발송하는 일반 마케팅 이메일</td>
+            <td>Opted Out Prospect 자동 제외. 리포팅: 오픈율·클릭율·수신거부율</td>
+          </tr>
+          <tr>
+            <td><strong>Engagement Studio Email</strong></td>
+            <td>Engagement Studio 플로우 내 Action으로 발송</td>
+            <td>플로우 단계별 발송. 개인 발송이므로 일정 달라짐</td>
+          </tr>
+          <tr>
+            <td><strong>Operational Email</strong></td>
+            <td>구매 확인, 계정 알림 등 거래적 성격의 이메일</td>
+            <td>Opted Out 상태에도 발송 가능. 오남용 주의</td>
+          </tr>
+          <tr>
+            <td><strong>A/B Test</strong></td>
+            <td>2개 버전 이메일의 오픈율·클릭율 비교 테스트</td>
+            <td>샘플 비율 설정 후 승자 자동 발송 또는 수동 선택</td>
+          </tr>
+          <tr>
+            <td><strong>Scheduled Send</strong></td>
+            <td>특정 날짜/시간에 자동 발송 예약</td>
+            <td>발송 전 취소 가능. 시간대는 계정 기본 시간대 기준</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="callout note">
+      <span class="callout-icon">📌</span>
+      <div><strong>Einstein Send Time Optimization (STO):</strong> 각 Prospect의 과거 이메일 오픈 패턴을 분석해 개인별 최적 발송 시간을 자동 계산합니다. B2B에서 오픈율을 평균 15~20% 향상시키는 효과가 있습니다.</div>
+    </div>
+  </section>
+
+  <hr class="divider">
+
+  <!-- ──── CRM 연동 ──── -->
+  <section id="crm-sync">
+    <h2>Salesforce CRM 동기화</h2>
+    <p>MCAE는 Salesforce CRM과 기본 양방향 동기화가 이루어집니다. Prospect ↔ Contact/Lead 가 자동으로 연결되어, 마케팅 활동 데이터가 실시간으로 CRM에 반영됩니다.</p>
+
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>방향</th><th>동기화 내용</th></tr></thead>
+        <tbody>
+          <tr>
+            <td>MCAE → CRM</td>
+            <td>Prospect 속성 변경(이름, 회사, 직책 등), Score, Grade, 활동 이력, Opt-out 상태</td>
+          </tr>
+          <tr>
+            <td>CRM → MCAE</td>
+            <td>Contact/Lead 필드 업데이트, Owner 변경, Campaign Membership, 사용자 정보</td>
+          </tr>
+          <tr>
+            <td>충돌(Conflict)</td>
+            <td>기본: CRM 값 우선. Prospect Last Modified 기준으로 덮어쓰기. 필드별 재정의 가능</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <section id="user-sync">
+      <h3>User Sync</h3>
+      <p>Salesforce User를 MCAE User로 자동 동기화합니다. Prospect의 Owner가 변경되면 영업 담당자에게 알림이 발송됩니다.</p>
+
+      <div class="callout warning">
+        <span class="callout-icon">⚠️</span>
+        <div><strong>User Sync 활성화 주의:</strong> User Sync를 활성화하면 Salesforce에 존재하지 않는 MCAE 전용 사용자는 비활성화됩니다. 활성화 전 사용자 목록을 반드시 검토하세요. 또한 사용자 역할(Role) 구조가 MCAE에도 반영됩니다.</div>
+      </div>
+    </section>
+  </section>
+
+  <hr class="divider">
+
+  <!-- ──── Connected Campaigns ──── -->
+  <section id="connected-campaigns">
+    <h2>Connected Campaigns</h2>
+    <p>Connected Campaigns는 MCAE 캠페인과 Salesforce Campaign을 1:1 연결합니다. 활성화하면 MCAE의 모든 캠페인 멤버십이 Salesforce Campaign에 실시간 반영되어, Salesforce Opportunity Influence와 Attribution 보고서를 사용할 수 있습니다.</p>
+
+    <div class="steps">
+      <div class="step"><div class="step-num">1</div><div class="step-body">MCAE Admin → Connectors → Salesforce → Connected Campaigns 활성화</div></div>
+      <div class="step"><div class="step-num">2</div><div class="step-body">기존 MCAE 캠페인을 Salesforce Campaign과 수동 매핑</div></div>
+      <div class="step"><div class="step-num">3</div><div class="step-body">신규 캠페인은 Salesforce에서 생성 → MCAE에 자동 연결</div></div>
+    </div>
+
+    <div class="callout note">
+      <span class="callout-icon">📌</span>
+      <div><strong>First Touch / Last Touch Attribution:</strong> Connected Campaigns가 활성화되어야 MCAE B2B MA Attribution 보고서에서 캠페인별 Opportunity 기여도를 정확히 측정할 수 있습니다.</div>
+    </div>
+  </section>
+
+  <hr class="divider">
+
+  <!-- ──── Einstein ──── -->
+  <section id="einstein">
+    <h2>Einstein 기능</h2>
+    <p>MCAE Einstein은 머신러닝 기반 AI 기능을 추가 제공합니다. Growth, Plus, Advanced, Premium 에디션에서 사용 가능합니다.</p>
+
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>기능</th><th>설명</th><th>활용</th></tr></thead>
+        <tbody>
+          <tr>
+            <td><strong>Einstein Behavior Scoring</strong></td>
+            <td>최근 활동 패턴을 AI가 분석해 구매 의도 점수(0~100) 실시간 산출</td>
+            <td>기존 Scoring이 누적 합산이라면, Behavior Score는 최근 행동 패턴 중심. 두 지표를 함께 활용</td>
+          </tr>
+          <tr>
+            <td><strong>Einstein Lead Scoring</strong></td>
+            <td>Salesforce의 과거 승인된 Opportunity 패턴을 학습해 유사 리드 자동 식별</td>
+            <td>영업팀에 "이 리드와 유사한 패턴의 리드가 과거 xx%로 성사됨" 인사이트 제공</td>
+          </tr>
+          <tr>
+            <td><strong>Send Time Optimization (STO)</strong></td>
+            <td>개인별 최적 이메일 발송 시간 자동 결정</td>
+            <td>List Email 설정 시 STO 옵션 활성화. 오픈율 향상</td>
+          </tr>
+          <tr>
+            <td><strong>Engagement Frequency</strong></td>
+            <td>Prospect의 이메일 피로도 자동 감지. 과잉 발송 경고</td>
+            <td>주 5회 이상 발송 시 수신거부율 급증 예방</td>
+          </tr>
+          <tr>
+            <td><strong>Campaign Insights</strong></td>
+            <td>캠페인 결과에 영향을 미친 상위 요인 자동 분석</td>
+            <td>"이번 캠페인에서 오픈율이 높았던 직책은 CTO(35%)" 형태의 자동 분석 제공</td>
+          </tr>
+          <tr>
+            <td><strong>Attribution AI</strong></td>
+            <td>Opportunity 영향에 기여한 캠페인을 AI가 가중치 산정</td>
+            <td>First Touch / Last Touch / Linear 외 AI 방식으로 멀티터치 Attribution 분석 가능</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="callout purple">
+      <span class="callout-icon">✨</span>
+      <div><strong>Einstein 사용 전 필수 조건:</strong> 충분한 데이터 볼륨이 필요합니다. Behavior Scoring은 최소 수천 개의 Prospect 활동 이력, Lead Scoring은 100건 이상의 Closed Won Opportunity가 있어야 의미 있는 모델이 생성됩니다. 초기 구축 단계에서는 기본 Scoring/Grading을 먼저 안정화하세요.</div>
+    </div>
+  </section>
+
+  <hr class="divider">
+
+  <!-- ──── Reporting ──── -->
+  <section id="reporting">
+    <h2>리포팅</h2>
+
+    <h3>List Email 통계</h3>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>지표</th><th>정의</th><th>참고 기준치 (B2B)</th></tr></thead>
+        <tbody>
+          <tr><td>Delivered Rate</td><td>발송 성공률 = (Sent - Bounced) / Sent</td><td>> 98% 목표</td></tr>
+          <tr><td>Open Rate</td><td>총 수신 중 오픈 비율 (멀티 오픈 포함)</td><td>20~30% 일반</td></tr>
+          <tr><td>Unique Open Rate</td><td>1인 1오픈으로 집계</td><td>15~25%</td></tr>
+          <tr><td>Click-to-Open (CTO)</td><td>오픈 중 클릭 비율</td><td>15~25%</td></tr>
+          <tr><td>Hard Bounce Rate</td><td>영구 반송 (주소 없음)</td><td>< 2% 유지 필수</td></tr>
+          <tr><td>Soft Bounce Rate</td><td>일시 반송 (메일함 가득 찬 등)</td><td>일시적 허용. 3회 연속 시 제거</td></tr>
+          <tr><td>Unsubscribe Rate</td><td>수신거부율</td><td>< 0.5% 유지 목표</td></tr>
+          <tr><td>Spam Complaint Rate</td><td>스팸 신고율</td><td>< 0.1% 유지 (ISP 블록 위험)</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3>B2B Marketing Analytics (B2BMA)</h3>
+    <p>B2BMA는 MCAE + CRM 데이터를 통합하는 Salesforce Analytics 기반 리포팅 앱입니다. Advanced 이상 에디션에서 제공됩니다.</p>
+    <ul>
+      <li><strong>Pipeline Report:</strong> 캠페인별 생성된 Opportunity 파이프라인 금액</li>
+      <li><strong>Attribution Report:</strong> 멀티터치 기여도 분석 (First Touch, Last Touch, Even Distribution, Position-Based)</li>
+      <li><strong>Engagement Studio Report:</strong> 프로그램 단계별 이탈·전환 퍼널</li>
+      <li><strong>Prospect Lifecycle Report:</strong> 리드에서 MQL → SQL → Opportunity 전환율 추적</li>
+      <li><strong>Account Dashboard:</strong> 계정(Account) 단위 참여도 집계</li>
+    </ul>
+
+    <div class="callout note">
+      <span class="callout-icon">📌</span>
+      <div><strong>Connected Campaigns 선행 필수:</strong> B2BMA에서 의미 있는 Attribution 분석을 하려면 Connected Campaigns가 활성화되어 있어야 합니다. Opportunity Influence 설정(Salesforce CRM → 캠페인 영향 추적 활성화)도 함께 확인하세요.</div>
+    </div>
+
+    <h3>Engagement History Dashboard</h3>
+    <p>MCAE 공식 Salesforce CRM 대시보드입니다. Contact/Lead 레코드 페이지에 직접 삽입되어, 영업 담당자가 CRM을 떠나지 않고 마케팅 활동 이력을 실시간으로 확인할 수 있습니다.</p>
+    <ul>
+      <li>최근 이메일 수신·오픈·클릭 이력</li>
+      <li>방문한 랜딩페이지 목록</li>
+      <li>제출한 폼 내역</li>
+      <li>참가한 캠페인 목록</li>
+      <li>현재 Score와 Grade</li>
+    </ul>
+
+    <div class="callout tip">
+      <span class="callout-icon">💡</span>
+      <div><strong>영업 담당자 활용:</strong> 영업 콜 전에 Engagement History Dashboard로 리드가 어떤 이메일을 열람했는지, 어떤 페이지를 방문했는지 확인하면 맞춤형 대화가 가능합니다. "저희 클라우드 솔루션 페이지를 3번 방문하셨던데요…" 같은 맥락 있는 영업이 가능해집니다.</div>
+    </div>
+  </section>
+
+</div>
+</div>
+
+<script>
+const tocItems = document.querySelectorAll('.toc-item');
+const sections = document.querySelectorAll('section[id]');
+const observer = new IntersectionObserver(entries => {
+  entries.forEach(entry => {
+    if(entry.isIntersecting){
+      tocItems.forEach(t => t.classList.remove('active'));
+      const active = document.querySelector('.toc-item[href="#' + entry.target.id + '"]');
+      if(active) active.classList.add('active');
+    }
+  });
+}, {rootMargin: '-20% 0px -70% 0px'});
+sections.forEach(s => observer.observe(s));
+tocItems.forEach(item => {
+  item.addEventListener('click', e => {
+    e.preventDefault();
+    const target = document.querySelector(item.getAttribute('href'));
+    if(target) target.scrollIntoView({behavior:'smooth'});
+  });
+});
+</script>
+</body>
+</html>

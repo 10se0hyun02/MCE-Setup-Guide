@@ -1,0 +1,999 @@
+﻿<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AMPScript 실전 가이드 — MCE</title>
+<link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable.min.css">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --primary:#0070D2;--primary-light:#EAF4FF;--primary-dark:#005FB2;
+  --text:#1a1a1a;--text-sub:#555;--text-muted:#888;
+  --border:#E0E0E0;--bg:#F9F9F9;--white:#fff;
+  --green:#0E7C59;--green-bg:#E6F5F0;
+  --amber:#8A5700;--amber-bg:#FFF4E0;
+  --red:#B91C1C;--red-bg:#FEF2F2;
+  --purple:#6B21A8;--purple-bg:#F5F3FF;
+  --sidebar-w:260px;
+  --font:'Pretendard Variable','Pretendard',system-ui,sans-serif;
+}
+body{font-family:var(--font);font-size:16px;line-height:1.75;color:var(--text);background:var(--bg)}
+a{color:var(--primary);text-decoration:none}
+a:hover{text-decoration:underline}
+.layout{display:flex;min-height:100vh}
+.sidebar{
+  position:sticky;top:0;height:100vh;overflow-y:auto;
+  width:var(--sidebar-w);min-width:var(--sidebar-w);
+  background:var(--white);border-right:1px solid var(--border);padding:24px 0;
+}
+.sidebar-logo{padding:0 20px 20px;border-bottom:1px solid var(--border);margin-bottom:12px}
+.sidebar-logo .back{font-size:12px;color:var(--text-muted);display:block;margin-bottom:8px}
+.sidebar-logo h1{font-size:13px;font-weight:700;color:var(--text);line-height:1.4}
+.sidebar-logo .badge{display:inline-block;margin-top:6px;font-size:10px;padding:2px 8px;background:var(--primary-light);color:var(--primary-dark);border-radius:20px;font-weight:600}
+.toc-label{font-size:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--text-muted);padding:10px 20px 4px}
+.toc-item{display:block;padding:7px 20px;font-size:12.5px;color:var(--text-sub);border-left:2px solid transparent;transition:all .1s;cursor:pointer}
+.toc-item:hover,.toc-item.active{color:var(--primary);background:var(--primary-light);border-left-color:var(--primary);text-decoration:none}
+.toc-sub{padding-left:32px;font-size:12px}
+.content{flex:1;padding:48px 64px;background:var(--white)}
+@media(max-width:900px){.sidebar{display:none}.content{padding:28px 20px}}
+.doc-eyebrow{font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--text-muted);margin-bottom:8px}
+h1.doc-title{font-size:30px;font-weight:800;line-height:1.25;margin-bottom:12px}
+.doc-meta{font-size:13px;color:var(--text-muted);padding-bottom:24px;border-bottom:1px solid var(--border);margin-bottom:36px}
+h2{font-size:21px;font-weight:700;margin:44px 0 14px;padding-top:8px;scroll-margin-top:24px}
+h3{font-size:16px;font-weight:700;margin:28px 0 10px;scroll-margin-top:24px}
+h4{font-size:14px;font-weight:700;margin:20px 0 8px;color:var(--text-sub)}
+p{margin-bottom:14px}
+ul,ol{padding-left:22px;margin-bottom:14px}
+li{margin-bottom:6px}
+code{background:#F1F5F9;color:#0F172A;padding:1px 5px;border-radius:4px;font-size:14px;font-family:'Consolas','Courier New',monospace}
+.callout{display:flex;gap:12px;padding:14px 16px;border-radius:8px;border-left:4px solid;margin:20px 0;font-size:13.5px;line-height:1.65}
+.callout-icon{font-size:16px;flex-shrink:0;margin-top:1px}
+.callout.note{background:#F0F4FF;border-color:#6B8CFE;color:#1E3A8A}
+.callout.warning{background:var(--amber-bg);border-color:#F59E0B;color:var(--amber)}
+.callout.danger{background:var(--red-bg);border-color:#EF4444;color:var(--red)}
+.callout.tip{background:var(--green-bg);border-color:#10B981;color:var(--green)}
+.callout.purple{background:var(--purple-bg);border-color:#9333EA;color:var(--purple)}
+.callout strong{font-weight:700}
+.table-wrap{overflow-x:auto;margin:20px 0}
+table{width:100%;border-collapse:collapse;font-size:14px}
+th{text-align:left;padding:10px 12px;background:var(--bg);font-weight:700;font-size:13px;text-transform:uppercase;letter-spacing:.04em;color:var(--text-sub);border-bottom:2px solid var(--border)}
+td{padding:10px 12px;border-bottom:1px solid var(--border);vertical-align:top;line-height:1.55}
+tr:last-child td{border-bottom:none}
+tr:hover td{background:var(--bg)}
+.code-block{background:#1E293B;border-radius:8px;margin:16px 0;overflow:hidden;font-size:12.5px}
+.code-header{display:flex;align-items:center;justify-content:space-between;padding:8px 14px;background:#0F172A;color:#94A3B8;font-size:11px}
+.code-body{padding:16px;color:#E2E8F0;font-family:'Consolas','Courier New',monospace;white-space:pre;overflow-x:auto;line-height:1.6}
+.code-comment{color:#64748B}
+.code-keyword{color:#7DD3FC}
+.code-string{color:#86EFAC}
+.code-func{color:#FDE68A}
+.tag{display:inline-block;font-size:11px;font-weight:600;padding:2px 8px;border-radius:20px;vertical-align:middle}
+.tag.note{background:var(--primary-light);color:var(--primary-dark)}
+.tag.warn{background:var(--amber-bg);color:var(--amber)}
+.tag.req{background:#FEE2E2;color:#991B1B}
+.tag.opt{background:#F0FDF4;color:#166534}
+.divider{border:none;border-top:1px solid var(--border);margin:40px 0}
+section{scroll-margin-top:20px}
+.fn-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:16px 0}
+@media(max-width:700px){.fn-grid{grid-template-columns:1fr}}
+.fn-card{background:var(--bg);border:1px solid var(--border);border-radius:8px;padding:14px 16px}
+.fn-card .fn-name{font-weight:700;font-size:13px;color:var(--primary-dark);font-family:monospace;margin-bottom:6px}
+.fn-card .fn-desc{font-size:12.5px;color:var(--text-sub);line-height:1.5}
+.fn-card code{font-size:11.5px}
+</style>
+</head>
+<body>
+<div class="layout">
+
+<aside class="sidebar">
+  <div class="sidebar-logo">
+    <a class="back" href="../index.html">← MCE 구축 가이드로 돌아가기</a>
+    <h1>AMPScript 실전 가이드</h1>
+    <span class="badge">개인화 & 동적 콘텐츠</span>
+  </div>
+
+  <div class="toc-label">기초</div>
+  <a class="toc-item" href="#overview">AMPScript 개요</a>
+  <a class="toc-item toc-sub" href="#exec-env">실행 환경</a>
+  <a class="toc-item toc-sub" href="#syntax">기본 문법</a>
+  <a class="toc-item" href="#variables">변수 & 기본 함수</a>
+  <a class="toc-item toc-sub" href="#set-var">SET / VAR</a>
+  <a class="toc-item toc-sub" href="#iif">IIF 인라인 조건</a>
+  <a class="toc-item toc-sub" href="#empty">Empty / IsNull</a>
+
+  <div class="toc-label">제어 구조</div>
+  <a class="toc-item" href="#if-else">IF / ELSEIF / ELSE</a>
+  <a class="toc-item" href="#for-next">FOR / NEXT 반복문</a>
+
+  <div class="toc-label">DE 조회 & 수정</div>
+  <a class="toc-item" href="#lookup">Lookup</a>
+  <a class="toc-item" href="#lookup-rows">LookupRows / Row / Field</a>
+  <a class="toc-item" href="#de-write">DE 수정 함수</a>
+
+  <div class="toc-label">함수 레퍼런스</div>
+  <a class="toc-item" href="#string-fn">문자열 함수</a>
+  <a class="toc-item" href="#date-fn">날짜 함수</a>
+  <a class="toc-item" href="#math-fn">수학 함수</a>
+
+  <div class="toc-label">실전 패턴</div>
+  <a class="toc-item" href="#pattern-greeting">인삿말 개인화</a>
+  <a class="toc-item" href="#pattern-grade">등급별 콘텐츠 분기</a>
+  <a class="toc-item" href="#pattern-rows">구매이력 테이블 렌더링</a>
+  <a class="toc-item" href="#pattern-null">NULL 기본값 처리</a>
+  <a class="toc-item" href="#pattern-cloudpages">CloudPages 폼 처리</a>
+  <a class="toc-item" href="#pattern-unsub">커스텀 수신거부</a>
+  <a class="toc-item" href="#pattern-coupon">쿠폰코드 1:1 발급</a>
+</aside>
+
+<div class="content">
+  <div class="doc-eyebrow">Marketing Cloud Engagement · 개인화 코딩</div>
+  <h1 class="doc-title">AMPScript 실전 가이드</h1>
+  <p class="doc-meta">MCE 이메일·CloudPages에서 사용하는 서버 사이드 스크립트 언어. 변수·조건·DE 조회·동적 콘텐츠 생성 패턴을 실무 예제 중심으로 정리합니다.</p>
+
+  <!-- ───────────────── 개요 ───────────────── -->
+  <section id="overview">
+    <h2>AMPScript 개요</h2>
+    <p>AMPScript는 Salesforce Marketing Cloud 전용 서버 사이드 스크립트입니다. 이메일 발송 시점에 서버에서 실행되어 수신자별로 다른 콘텐츠를 렌더링합니다. HTML 안에 <code>%%[ ]%%</code> 블록으로 삽입하며, 변수 치환은 <code>%%변수명%%</code> 형식입니다.</p>
+
+    <section id="exec-env">
+      <h3>실행 환경</h3>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>환경</th><th>사용 위치</th><th>주의사항</th></tr></thead>
+          <tbody>
+            <tr><td><strong>Email Studio</strong></td><td>이메일 본문, 제목줄(Subject), Preheader</td><td>수신자 DE 데이터를 기준으로 실행. 발송 시 1회 실행</td></tr>
+            <tr><td><strong>CloudPages</strong></td><td>Landing Page, Smart Capture, Code Resource</td><td>페이지 요청마다 실행. <code>QueryParameter()</code>로 URL 파라미터 수신</td></tr>
+            <tr><td><strong>Content Builder</strong></td><td>HTML Block, Template</td><td>이메일에 삽입될 때 실행</td></tr>
+            <tr><td><strong>SMS (MobileConnect)</strong></td><td>메시지 본문</td><td>문자수 제한 주의. 이미지/HTML 사용 불가</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section id="syntax">
+      <h3>기본 문법 구조</h3>
+      <div class="code-block">
+        <div class="code-header"><span>AMPScript — 기본 구조</span></div>
+        <div class="code-body"><span class="code-comment">/* 1. 실행 블록: 로직 처리 (출력 없음) */</span>
+%%[
+  SET @변수명 = '값'
+  SET @fullName = Concat(@firstName, ' ', @lastName)
+]%%
+
+<span class="code-comment">/* 2. 인라인 치환: 변수 값을 HTML에 직접 출력 */</span>
+안녕하세요, %%=v(@fullName)=%% 님
+
+<span class="code-comment">/* 3. 인라인 함수 호출: =함수()= 형식 */</span>
+%%=Format(Now(), "yyyy-MM-dd")=%%
+
+<span class="code-comment">/* 4. 제목줄(Subject)에서도 동일하게 사용 가능 */</span>
+%%=v(@firstName)=%% 님을 위한 특별 혜택</div>
+      </div>
+
+      <div class="callout note">
+        <span class="callout-icon">📌</span>
+        <div><strong><code>v()</code> vs 직접 치환:</strong> <code>%%변수명%%</code>도 작동하지만, <code>%%=v(@변수명)=%%</code>가 공식 권장 방식입니다. 특히 변수값에 특수문자가 포함될 경우 <code>v()</code>를 쓰세요.</div>
+      </div>
+    </section>
+  </section>
+
+  <hr class="divider">
+
+  <!-- ───────────────── 변수 ───────────────── -->
+  <section id="variables">
+    <h2>변수 & 기본 함수</h2>
+
+    <section id="set-var">
+      <h3>SET / VAR</h3>
+      <p><code>SET</code>은 변수에 값을 할당합니다. 변수명은 반드시 <code>@</code>로 시작합니다. <code>VAR</code>로 미리 선언만 할 수도 있습니다.</p>
+      <div class="code-block">
+        <div class="code-header"><span>AMPScript — SET / VAR</span></div>
+        <div class="code-body">%%[
+  <span class="code-comment">/* 단순 값 할당 */</span>
+  SET @name   = 'Hong Gildong'
+  SET @age    = 30
+  SET @isVip  = TRUE
+
+  <span class="code-comment">/* 함수 결과 할당 */</span>
+  SET @today  = Now()
+  SET @upper  = UpperCase(@name)
+
+  <span class="code-comment">/* DE 필드값 할당 (발송 대상 DE의 필드) */</span>
+  SET @grade  = AttributeValue('MemberGrade')
+  SET @email  = AttributeValue('EmailAddress')
+
+  <span class="code-comment">/* VAR — 선언만 (초기값 없음, 나중에 SET 가능) */</span>
+  VAR @result
+]%%</div>
+      </div>
+
+      <div class="callout tip">
+        <span class="callout-icon">💡</span>
+        <div><strong>AttributeValue() vs Lookup():</strong> <code>AttributeValue('필드명')</code>은 발송 대상 DE의 해당 행 값을 그대로 가져옵니다. 다른 DE를 조회하려면 <code>Lookup()</code>을 사용하세요.</div>
+      </div>
+    </section>
+
+    <section id="iif">
+      <h3>IIF — 인라인 조건</h3>
+      <p>단순 참/거짓 분기를 한 줄로 처리합니다. IF 블록보다 가볍게 쓸 때 유용합니다.</p>
+      <div class="code-block">
+        <div class="code-header"><span>AMPScript — IIF(조건, 참값, 거짓값)</span></div>
+        <div class="code-body">%%[
+  SET @grade = AttributeValue('MemberGrade')
+
+  <span class="code-comment">/* 등급이 'VIP'면 '특별', 아니면 '일반' */</span>
+  SET @label = IIF(@grade == 'VIP', '특별', '일반')
+
+  <span class="code-comment">/* 빈값이면 기본값 세팅 */</span>
+  SET @name  = IIF(Empty(AttributeValue('Name')), '고객', AttributeValue('Name'))
+
+  <span class="code-comment">/* 숫자 비교 */</span>
+  SET @isAdult = IIF(AttributeValue('Age') >= 19, '성인', '미성년')
+]%%
+%%=v(@label)=%% 고객님께 드리는 혜택</div>
+      </div>
+    </section>
+
+    <section id="empty">
+      <h3>Empty() / IsNull()</h3>
+      <p>NULL이거나 빈 문자열인지 확인합니다. DE에서 가져온 값이 비어 있을 때 기본값 처리에 필수입니다.</p>
+      <div class="code-block">
+        <div class="code-header"><span>AMPScript — Empty / IsNull</span></div>
+        <div class="code-body">%%[
+  SET @name = AttributeValue('Name')
+
+  <span class="code-comment">/* Empty(): NULL 또는 빈 문자열이면 TRUE */</span>
+  IF Empty(@name) THEN
+    SET @name = '고객'
+  ENDIF
+
+  <span class="code-comment">/* IsNull(): 엄격한 NULL 체크 (빈 문자열은 FALSE) */</span>
+  IF IsNull(@name) THEN
+    SET @name = '고객'
+  ENDIF
+
+  <span class="code-comment">/* 실무에서는 Empty()를 권장 — NULL과 빈값 모두 처리 */</span>
+]%%</div>
+      </div>
+      <div class="callout warning">
+        <span class="callout-icon">⚠️</span>
+        <div><strong>NULL 미처리 위험:</strong> DE 필드값이 NULL인 채로 <code>Concat()</code>이나 수식에 사용하면 전체 결과가 빈값이 됩니다. 모든 DE 조회 후 반드시 <code>Empty()</code> 체크를 습관화하세요.</div>
+      </div>
+    </section>
+  </section>
+
+  <hr class="divider">
+
+  <!-- ───────────────── IF/ELSE ───────────────── -->
+  <section id="if-else">
+    <h2>IF / ELSEIF / ELSE / ENDIF</h2>
+    <p>다단계 조건 분기입니다. 등급·성별·지역 등 세그먼트별 다른 콘텐츠를 표시할 때 가장 많이 사용합니다.</p>
+
+    <div class="code-block">
+      <div class="code-header"><span>AMPScript — IF 다중 분기 (회원 등급별)</span></div>
+      <div class="code-body">%%[
+  SET @grade = AttributeValue('MemberGrade')
+]%%
+
+%%[ IF @grade == 'VIP' THEN ]%%
+  <div style="background:#FFD700;padding:20px">
+    <p>VIP 전용 혜택: 30% 할인 쿠폰이 준비되어 있습니다.</p>
+  </div>
+%%[ ELSEIF @grade == 'GOLD' THEN ]%%
+  <div style="background:#C0C0C0;padding:20px">
+    <p>GOLD 회원 전용: 20% 할인 쿠폰을 드립니다.</p>
+  </div>
+%%[ ELSEIF @grade == 'SILVER' THEN ]%%
+  <div style="background:#CD7F32;padding:20px">
+    <p>SILVER 회원 전용: 10% 할인 쿠폰을 드립니다.</p>
+  </div>
+%%[ ELSE ]%%
+  <div style="background:#F5F5F5;padding:20px">
+    <p>신규 회원 특별 혜택: 5% 할인 쿠폰을 드립니다.</p>
+  </div>
+%%[ ENDIF ]%%</div>
+    </div>
+
+    <h3>비교 연산자</h3>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>연산자</th><th>의미</th><th>예시</th></tr></thead>
+        <tbody>
+          <tr><td><code>==</code></td><td>같음 (대소문자 무시)</td><td><code>@grade == 'VIP'</code></td></tr>
+          <tr><td><code>!=</code></td><td>같지 않음</td><td><code>@status != 'inactive'</code></td></tr>
+          <tr><td><code>&gt;</code> <code>&lt;</code> <code>&gt;=</code> <code>&lt;=</code></td><td>숫자 비교</td><td><code>@age >= 19</code></td></tr>
+          <tr><td><code>AND</code></td><td>논리 AND</td><td><code>@age >= 19 AND @grade == 'VIP'</code></td></tr>
+          <tr><td><code>OR</code></td><td>논리 OR</td><td><code>@grade == 'VIP' OR @grade == 'GOLD'</code></td></tr>
+          <tr><td><code>NOT</code></td><td>부정</td><td><code>NOT Empty(@name)</code></td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="callout note">
+      <span class="callout-icon">📌</span>
+      <div><strong>HTML 태그 분리 패턴:</strong> <code>%%[ IF ... THEN ]%%</code>처럼 <code>]%%</code>와 HTML을 분리하면 이메일 HTML 구조를 유지하면서 AMPScript 블록을 삽입할 수 있습니다. 이 패턴이 실무 표준입니다.</div>
+    </div>
+  </section>
+
+  <hr class="divider">
+
+  <!-- ───────────────── FOR/NEXT ───────────────── -->
+  <section id="for-next">
+    <h2>FOR / NEXT — 반복문</h2>
+    <p><code>LookupRows()</code>로 조회한 행 집합을 순회할 때 주로 사용합니다. 구매이력 목록, 장바구니 상품, 추천 상품 리스트 렌더링에 필수입니다.</p>
+
+    <div class="code-block">
+      <div class="code-header"><span>AMPScript — FOR/NEXT 기본 구조</span></div>
+      <div class="code-body">%%[
+  SET @rows = LookupRows('OrderHistory_DE', 'ContactKey', @contactKey)
+  SET @rowCount = RowCount(@rows)
+]%%
+
+%%[ IF @rowCount > 0 THEN ]%%
+<table>
+  <tr><th>주문번호</th><th>상품명</th><th>금액</th></tr>
+  %%[ FOR @i = 1 TO @rowCount DO ]%%
+    %%[
+      SET @row       = Row(@rows, @i)
+      SET @orderNo   = Field(@row, 'OrderNumber')
+      SET @prodName  = Field(@row, 'ProductName')
+      SET @amount    = Field(@row, 'Amount')
+    ]%%
+  <tr>
+    <td>%%=v(@orderNo)=%%</td>
+    <td>%%=v(@prodName)=%%</td>
+    <td>%%=Format(@amount, 'N0')=%% 원</td>
+  </tr>
+  %%[ NEXT @i ]%%
+</table>
+%%[ ELSE ]%%
+<p>최근 구매 내역이 없습니다.</p>
+%%[ ENDIF ]%%</div>
+    </div>
+
+    <div class="callout warning">
+      <span class="callout-icon">⚠️</span>
+      <div><strong>반복 성능 주의:</strong> <code>FOR</code> 루프 안에서 <code>Lookup()</code>을 다시 호출하면 행 수만큼 DE 조회가 발생합니다. 가능하면 루프 전에 필요한 데이터를 모두 조회해 두거나, 루프 내 조회를 최소화하세요.</div>
+    </div>
+  </section>
+
+  <hr class="divider">
+
+  <!-- ───────────────── Lookup ───────────────── -->
+  <section id="lookup">
+    <h2>Lookup — 단일 값 조회</h2>
+    <p>DE에서 조건에 맞는 첫 번째 레코드의 특정 필드 값 하나를 반환합니다. 가장 자주 쓰는 DE 조회 함수입니다.</p>
+
+    <div class="code-block">
+      <div class="code-header"><span>AMPScript — Lookup(DE명, 반환필드, 조건필드, 조건값)</span></div>
+      <div class="code-body">%%[
+  SET @contactKey = AttributeValue('ContactKey')
+
+  <span class="code-comment">/* MemberInfo_DE에서 ContactKey가 일치하는 행의 Grade 필드 반환 */</span>
+  SET @grade = Lookup('MemberInfo_DE', 'Grade', 'ContactKey', @contactKey)
+
+  <span class="code-comment">/* 조건이 2개인 경우 (다중 조건) */</span>
+  SET @coupon = Lookup('Coupon_DE', 'CouponCode',
+                       'ContactKey', @contactKey,
+                       'IsUsed',     'false')
+
+  <span class="code-comment">/* 조회 결과가 없으면 NULL 반환 → Empty()로 체크 필수 */</span>
+  IF Empty(@grade) THEN
+    SET @grade = 'GENERAL'
+  ENDIF
+]%%</div>
+    </div>
+
+    <div class="callout danger">
+      <span class="callout-icon">🚫</span>
+      <div><strong>Lookup 결과가 여러 행인 경우:</strong> 조건에 맞는 행이 여러 개여도 Lookup은 첫 번째 행만 반환합니다. 여러 행을 순회해야 하면 <code>LookupRows()</code>를 사용하세요.</div>
+    </div>
+  </section>
+
+  <hr class="divider">
+
+  <!-- ───────────────── LookupRows ───────────────── -->
+  <section id="lookup-rows">
+    <h2>LookupRows / LookupOrderedRows</h2>
+    <p>조건에 맞는 여러 행을 행 집합(Rowset)으로 반환합니다. <code>RowCount()</code>로 건수 확인, <code>Row()</code>로 개별 행 접근, <code>Field()</code>로 필드값 추출합니다.</p>
+
+    <div class="code-block">
+      <div class="code-header"><span>AMPScript — LookupRows 핵심 함수 세트</span></div>
+      <div class="code-body">%%[
+  SET @ck = AttributeValue('ContactKey')
+
+  <span class="code-comment">/* 전체 조회 */</span>
+  SET @rows = LookupRows('Cart_DE', 'ContactKey', @ck)
+
+  <span class="code-comment">/* 정렬 조회: LookupOrderedRows(DE, 최대행수, 정렬필드, 정렬방향, 조건필드, 조건값) */</span>
+  SET @recentRows = LookupOrderedRows('OrderHistory_DE', 3,
+                                      'OrderDate DESC',
+                                      'ContactKey', @ck)
+
+  SET @cnt = RowCount(@rows)
+
+  IF @cnt > 0 THEN
+    FOR @i = 1 TO @cnt DO
+      SET @row   = Row(@rows, @i)
+      SET @item  = Field(@row, 'ProductName')
+      SET @price = Field(@row, 'Price')
+      SET @qty   = Field(@row, 'Quantity')
+    NEXT @i
+  ENDIF
+]%%</div>
+    </div>
+
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>함수</th><th>역할</th><th>반환값</th></tr></thead>
+        <tbody>
+          <tr><td><code>LookupRows(DE, 필드, 값)</code></td><td>조건 일치 전체 행 조회</td><td>Rowset</td></tr>
+          <tr><td><code>LookupOrderedRows(DE, N, 정렬, 필드, 값)</code></td><td>정렬 후 최대 N행 조회</td><td>Rowset</td></tr>
+          <tr><td><code>RowCount(rowset)</code></td><td>행 수 반환</td><td>Number</td></tr>
+          <tr><td><code>Row(rowset, index)</code></td><td>index번째 행 반환 (1부터 시작)</td><td>Row</td></tr>
+          <tr><td><code>Field(row, '필드명')</code></td><td>행에서 필드 값 추출</td><td>값 (타입 유지)</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <hr class="divider">
+
+  <!-- ───────────────── DE 수정 ───────────────── -->
+  <section id="de-write">
+    <h2>DE 수정 함수</h2>
+    <p>CloudPages에서 폼 제출, 구독 처리 등 DE에 데이터를 쓸 때 사용합니다. <strong>이메일 본문에서는 사용 불가</strong> — CloudPages(Landing Page)에서만 실행됩니다.</p>
+
+    <div class="code-block">
+      <div class="code-header"><span>AMPScript — DE 쓰기 함수 (CloudPages 전용)</span></div>
+      <div class="code-body">%%[
+  <span class="code-comment">/* UpsertDE: PK가 일치하면 UPDATE, 없으면 INSERT */</span>
+  UpsertDE('Subscriber_DE',
+    1,                        <span class="code-comment">/* PK 필드 수 */</span>
+    'ContactKey', @ck,        <span class="code-comment">/* PK */</span>
+    'EmailAddress', @email,
+    'OptIn',       'true',
+    'OptInDate',   Now()
+  )
+
+  <span class="code-comment">/* InsertDE: 무조건 새 행 추가 */</span>
+  InsertDE('FormLog_DE',
+    'ContactKey',  @ck,
+    'SubmittedAt', Now(),
+    'FormData',    @formData
+  )
+
+  <span class="code-comment">/* UpdateDE: 조건 일치 행 업데이트 */</span>
+  UpdateDE('Member_DE',
+    1,
+    'ContactKey', @ck,
+    'IsActive',   'false',
+    'UnsubDate',  Now()
+  )
+
+  <span class="code-comment">/* DeleteDE: 조건 일치 행 삭제 (신중히 사용) */</span>
+  DeleteDE('TempQueue_DE', 1, 'JobID', @jobId)
+]%%</div>
+    </div>
+
+    <div class="callout danger">
+      <span class="callout-icon">🚫</span>
+      <div><strong>이메일 본문에서 DE 쓰기 금지:</strong> 이메일 Preview나 Test Send 시에도 AMPScript가 실행되므로, 이메일 본문에 <code>UpsertDE</code> 등을 넣으면 테스트할 때마다 실제 DE에 데이터가 기록됩니다.</div>
+    </div>
+  </section>
+
+  <hr class="divider">
+
+  <!-- ───────────────── 문자열 함수 ───────────────── -->
+  <section id="string-fn">
+    <h2>문자열 함수</h2>
+    <div class="fn-grid">
+      <div class="fn-card">
+        <div class="fn-name">Concat(값1, 값2, ...)</div>
+        <div class="fn-desc">문자열 연결<br><code>Concat('안녕', @name, '님')</code></div>
+      </div>
+      <div class="fn-card">
+        <div class="fn-name">Substring(값, 시작, 길이)</div>
+        <div class="fn-desc">부분 문자열 추출 (시작=1)<br><code>Substring(@phone, 1, 3)</code> → 010</div>
+      </div>
+      <div class="fn-card">
+        <div class="fn-name">Length(값)</div>
+        <div class="fn-desc">문자열 길이 반환<br><code>Length(@name)</code></div>
+      </div>
+      <div class="fn-card">
+        <div class="fn-name">Replace(값, 찾기, 바꾸기)</div>
+        <div class="fn-desc">문자열 치환<br><code>Replace(@phone, '-', '')</code></div>
+      </div>
+      <div class="fn-card">
+        <div class="fn-name">Trim(값)</div>
+        <div class="fn-desc">앞뒤 공백 제거<br><code>Trim(@email)</code></div>
+      </div>
+      <div class="fn-card">
+        <div class="fn-name">UpperCase(값) / LowerCase(값)</div>
+        <div class="fn-desc">대소문자 변환<br><code>LowerCase(@email)</code></div>
+      </div>
+      <div class="fn-card">
+        <div class="fn-name">ProperCase(값)</div>
+        <div class="fn-desc">첫 글자만 대문자<br><code>ProperCase('hong gildong')</code></div>
+      </div>
+      <div class="fn-card">
+        <div class="fn-name">IndexOf(값, 찾기)</div>
+        <div class="fn-desc">문자 위치 반환 (없으면 0)<br><code>IndexOf(@email, '@')</code></div>
+      </div>
+    </div>
+
+    <div class="code-block">
+      <div class="code-header"><span>AMPScript — 문자열 실전 예제</span></div>
+      <div class="code-body">%%[
+  SET @email = AttributeValue('EmailAddress')
+  SET @name  = AttributeValue('Name')
+
+  <span class="code-comment">/* 이메일에서 도메인 추출 */</span>
+  SET @atPos  = IndexOf(@email, '@')
+  SET @domain = Substring(@email, ADD(@atPos, 1), SUBTRACT(Length(@email), @atPos))
+
+  <span class="code-comment">/* 이름이 빈값이면 이메일 앞부분을 이름으로 사용 */</span>
+  IF Empty(@name) THEN
+    SET @name = Substring(@email, 1, SUBTRACT(@atPos, 1))
+  ENDIF
+
+  <span class="code-comment">/* 전화번호 하이픈 제거 후 뒷 4자리 마스킹 */</span>
+  SET @phone  = AttributeValue('Phone')
+  SET @masked = Concat(Substring(@phone, 1, 7), '-****')
+]%%</div>
+    </div>
+  </section>
+
+  <hr class="divider">
+
+  <!-- ───────────────── 날짜 함수 ───────────────── -->
+  <section id="date-fn">
+    <h2>날짜 함수</h2>
+    <div class="fn-grid">
+      <div class="fn-card">
+        <div class="fn-name">Now()</div>
+        <div class="fn-desc">현재 일시 반환 (UTC 기준)<br><code>Now()</code></div>
+      </div>
+      <div class="fn-card">
+        <div class="fn-name">SystemDateToLocalDate(date)</div>
+        <div class="fn-desc">UTC → BU 타임존 변환<br><code>SystemDateToLocalDate(Now())</code></div>
+      </div>
+      <div class="fn-card">
+        <div class="fn-name">DateAdd(date, 수, 단위)</div>
+        <div class="fn-desc">날짜 가감. 단위: D/M/Y/H/MI<br><code>DateAdd(Now(), 7, 'D')</code></div>
+      </div>
+      <div class="fn-card">
+        <div class="fn-name">DateDiff(단위, date1, date2)</div>
+        <div class="fn-desc">두 날짜 차이 반환<br><code>DateDiff('D', @joinDate, Now())</code></div>
+      </div>
+      <div class="fn-card">
+        <div class="fn-name">FormatDate(date, 형식)</div>
+        <div class="fn-desc">날짜 포맷 변환<br><code>FormatDate(Now(), 'YYYY-MM-DD')</code></div>
+      </div>
+      <div class="fn-card">
+        <div class="fn-name">Format(값, 형식)</div>
+        <div class="fn-desc">숫자·날짜 포맷<br><code>Format(@amount, 'N0')</code> → 1,000</div>
+      </div>
+    </div>
+
+    <div class="code-block">
+      <div class="code-header"><span>AMPScript — 날짜 실전 예제</span></div>
+      <div class="code-body">%%[
+  <span class="code-comment">/* 오늘 날짜 (KST 기준, BU 타임존이 Asia/Seoul인 경우) */</span>
+  SET @today    = SystemDateToLocalDate(Now())
+  SET @todayStr = FormatDate(@today, 'YYYY년 MM월 DD일')
+
+  <span class="code-comment">/* 가입 후 경과 일수 */</span>
+  SET @joinDate  = AttributeValue('JoinDate')
+  SET @daysSince = DateDiff('D', @joinDate, Now())
+
+  <span class="code-comment">/* 쿠폰 만료일 (오늘 + 30일) */</span>
+  SET @expiry    = DateAdd(Now(), 30, 'D')
+  SET @expiryStr = FormatDate(@expiry, 'YYYY-MM-DD')
+]%%
+
+이 쿠폰은 %%=v(@expiryStr)=%% 까지 사용 가능합니다.</div>
+    </div>
+
+    <div class="callout warning">
+      <span class="callout-icon">⚠️</span>
+      <div><strong>Now()는 UTC 기준:</strong> MCE 내부 시간은 UTC입니다. 이메일에 날짜를 표시할 때 <code>SystemDateToLocalDate(Now())</code>로 BU 타임존(KST = UTC+9)으로 변환하세요. 미변환 시 9시간 차이가 납니다.</div>
+    </div>
+  </section>
+
+  <hr class="divider">
+
+  <!-- ───────────────── 수학 함수 ───────────────── -->
+  <section id="math-fn">
+    <h2>수학 함수</h2>
+    <div class="fn-grid">
+      <div class="fn-card">
+        <div class="fn-name">Add(a, b) / Subtract(a, b)</div>
+        <div class="fn-desc">덧셈 / 뺄셈<br><code>Add(@price, @tax)</code></div>
+      </div>
+      <div class="fn-card">
+        <div class="fn-name">Multiply(a, b) / Divide(a, b)</div>
+        <div class="fn-desc">곱셈 / 나눗셈<br><code>Multiply(@price, 0.9)</code></div>
+      </div>
+      <div class="fn-card">
+        <div class="fn-name">Mod(a, b)</div>
+        <div class="fn-desc">나머지 연산<br><code>Mod(@index, 2)</code> → 홀짝 판별</div>
+      </div>
+      <div class="fn-card">
+        <div class="fn-name">Round(값, 자릿수)</div>
+        <div class="fn-desc">반올림<br><code>Round(@rate, 1)</code> → 소수 1자리</div>
+      </div>
+    </div>
+  </section>
+
+  <hr class="divider">
+
+  <!-- ───────────────── 실전 패턴 ───────────────── -->
+  <section id="pattern-greeting">
+    <h2>실전 패턴 ① — 인삿말 개인화</h2>
+    <p>수신자 이름을 개인화하되, 이름이 없을 때 안전하게 대체 처리합니다.</p>
+    <div class="code-block">
+      <div class="code-header"><span>AMPScript — 인삿말 개인화 (NULL 처리 포함)</span></div>
+      <div class="code-body">%%[
+  SET @firstName = AttributeValue('FirstName')
+  SET @lastName  = AttributeValue('LastName')
+
+  <span class="code-comment">/* 이름 조합: 성+이름, 둘 다 없으면 '고객' */</span>
+  IF NOT Empty(@lastName) AND NOT Empty(@firstName) THEN
+    SET @displayName = Concat(@lastName, @firstName)
+  ELSEIF NOT Empty(@lastName) THEN
+    SET @displayName = @lastName
+  ELSEIF NOT Empty(@firstName) THEN
+    SET @displayName = @firstName
+  ELSE
+    SET @displayName = '고객'
+  ENDIF
+
+  <span class="code-comment">/* 발송 시간에 따른 인삿말 */</span>
+  SET @hour = DatePart(SystemDateToLocalDate(Now()), 'H')
+  IF @hour < 12 THEN
+    SET @greeting = '좋은 아침입니다'
+  ELSEIF @hour < 18 THEN
+    SET @greeting = '안녕하세요'
+  ELSE
+    SET @greeting = '좋은 저녁입니다'
+  ENDIF
+]%%
+
+<h2>%%=v(@greeting)=%%, %%=v(@displayName)=%% 님!</h2></div>
+    </div>
+  </section>
+
+  <hr class="divider">
+
+  <section id="pattern-grade">
+    <h2>실전 패턴 ② — 등급별 콘텐츠 분기</h2>
+    <p>회원 등급에 따라 다른 혜택 배너와 쿠폰을 보여주는 패턴입니다.</p>
+    <div class="code-block">
+      <div class="code-header"><span>AMPScript — 등급별 쿠폰 & 배너 분기</span></div>
+      <div class="code-body">%%[
+  SET @ck    = AttributeValue('ContactKey')
+  SET @grade = Lookup('MemberInfo_DE', 'Grade', 'ContactKey', @ck)
+
+  IF Empty(@grade) THEN
+    SET @grade = 'GENERAL'
+  ENDIF
+
+  <span class="code-comment">/* 등급별 쿠폰 코드 조회 */</span>
+  SET @coupon = Lookup('CouponPool_DE', 'CouponCode',
+                       'Grade',    @grade,
+                       'IsIssued', 'false')
+
+  <span class="code-comment">/* 발급된 쿠폰 사용 처리 */</span>
+  IF NOT Empty(@coupon) THEN
+    UpdateDE('CouponPool_DE', 2,
+             'Grade',    @grade,
+             'CouponCode', @coupon,
+             'IsIssued', 'true',
+             'IssuedTo',  @ck,
+             'IssuedAt',  Now())
+  ENDIF
+
+  <span class="code-comment">/* 등급별 할인율 설정 */</span>
+  SET @discountRate = IIF(@grade == 'VIP',    '30%',
+                      IIF(@grade == 'GOLD',   '20%',
+                      IIF(@grade == 'SILVER', '10%', '5%')))
+]%%
+
+<p>%%=v(@displayName)=%% 님의 등급: <strong>%%=v(@grade)=%%</strong></p>
+<p>할인율: %%=v(@discountRate)=%%</p>
+%%[ IF NOT Empty(@coupon) THEN ]%%
+<p>쿠폰코드: <strong>%%=v(@coupon)=%%</strong></p>
+%%[ ELSE ]%%
+<p>현재 사용 가능한 쿠폰이 없습니다.</p>
+%%[ ENDIF ]%%</div>
+    </div>
+  </section>
+
+  <hr class="divider">
+
+  <section id="pattern-rows">
+    <h2>실전 패턴 ③ — 구매이력 테이블 렌더링</h2>
+    <p>최근 구매 3건을 이메일에 테이블로 표시합니다. <code>LookupOrderedRows</code>로 최신순 정렬 후 FOR 루프로 렌더링합니다.</p>
+    <div class="code-block">
+      <div class="code-header"><span>AMPScript — 구매이력 테이블 (최근 3건)</span></div>
+      <div class="code-body">%%[
+  SET @ck   = AttributeValue('ContactKey')
+  SET @rows = LookupOrderedRows('OrderHistory_DE', 3,
+                                'OrderDate DESC',
+                                'ContactKey', @ck)
+  SET @cnt  = RowCount(@rows)
+]%%
+
+%%[ IF @cnt > 0 THEN ]%%
+<table width="100%" cellpadding="0" cellspacing="0" border="0"
+       style="border-collapse:collapse;font-size:13px">
+  <tr style="background:#F5F5F5">
+    <th style="padding:10px;text-align:left">주문번호</th>
+    <th style="padding:10px;text-align:left">상품명</th>
+    <th style="padding:10px;text-align:right">금액</th>
+    <th style="padding:10px;text-align:center">상태</th>
+  </tr>
+  %%[ FOR @i = 1 TO @cnt DO ]%%
+  %%[
+    SET @row      = Row(@rows, @i)
+    SET @orderNo  = Field(@row, 'OrderNumber')
+    SET @prodName = Field(@row, 'ProductName')
+    SET @amount   = Field(@row, 'Amount')
+    SET @status   = Field(@row, 'OrderStatus')
+    SET @bgColor  = IIF(MOD(@i, 2) == 0, '#FAFAFA', '#FFFFFF')
+  ]%%
+  <tr style="background:%%=v(@bgColor)=%%">
+    <td style="padding:10px;border-bottom:1px solid #EEE">%%=v(@orderNo)=%%</td>
+    <td style="padding:10px;border-bottom:1px solid #EEE">%%=v(@prodName)=%%</td>
+    <td style="padding:10px;border-bottom:1px solid #EEE;text-align:right">
+      %%=Format(@amount, 'N0')=%% 원
+    </td>
+    <td style="padding:10px;border-bottom:1px solid #EEE;text-align:center">%%=v(@status)=%%</td>
+  </tr>
+  %%[ NEXT @i ]%%
+</table>
+%%[ ELSE ]%%
+<p style="color:#888">최근 구매 내역이 없습니다.</p>
+%%[ ENDIF ]%%</div>
+    </div>
+  </section>
+
+  <hr class="divider">
+
+  <section id="pattern-null">
+    <h2>실전 패턴 ④ — NULL 기본값 처리 템플릿</h2>
+    <p>이메일 발송 전 필수 개인화 필드의 NULL 처리를 블록 상단에 한꺼번에 정의합니다. 대규모 이메일에서 가장 많이 발생하는 오류를 예방합니다.</p>
+    <div class="code-block">
+      <div class="code-header"><span>AMPScript — 이메일 상단 NULL 처리 표준 블록</span></div>
+      <div class="code-body">%%[
+  <span class="code-comment">/* ── 기본 인적 사항 ── */</span>
+  SET @name      = AttributeValue('Name')
+  SET @email     = AttributeValue('EmailAddress')
+  SET @grade     = AttributeValue('MemberGrade')
+  SET @phone     = AttributeValue('Phone')
+
+  <span class="code-comment">/* NULL 기본값 처리 */</span>
+  IF Empty(@name)  THEN SET @name  = '고객'    ENDIF
+  IF Empty(@grade) THEN SET @grade = 'GENERAL' ENDIF
+  IF Empty(@phone) THEN SET @phone = '미등록'  ENDIF
+
+  <span class="code-comment">/* ── 날짜 관련 ── */</span>
+  SET @joinDate   = AttributeValue('JoinDate')
+  SET @lastPurchase = AttributeValue('LastPurchaseDate')
+
+  IF Empty(@joinDate) THEN
+    SET @joinDateStr = '정보 없음'
+  ELSE
+    SET @joinDateStr = FormatDate(@joinDate, 'YYYY-MM-DD')
+  ENDIF
+
+  IF Empty(@lastPurchase) THEN
+    SET @daysSince = 0
+  ELSE
+    SET @daysSince = DateDiff('D', @lastPurchase, Now())
+  ENDIF
+
+  <span class="code-comment">/* ── 금액 관련 ── */</span>
+  SET @point = AttributeValue('AvailablePoint')
+  IF Empty(@point) THEN SET @point = 0 ENDIF
+  SET @pointStr = Concat(Format(@point, 'N0'), 'P')
+]%%</div>
+    </div>
+  </section>
+
+  <hr class="divider">
+
+  <section id="pattern-cloudpages">
+    <h2>실전 패턴 ⑤ — CloudPages 폼 처리</h2>
+    <p>이메일 링크에 <code>subkey</code>를 파라미터로 전달하면 CloudPages에서 수신자를 식별하고 DE를 업데이트할 수 있습니다.</p>
+    <div class="code-block">
+      <div class="code-header"><span>AMPScript — 이메일 내 링크 (파라미터 포함)</span></div>
+      <div class="code-body"><span class="code-comment">/* 이메일 본문에서 CloudPage URL에 ContactKey 전달 */</span>
+%%[
+  SET @ck    = AttributeValue('ContactKey')
+  SET @grade = AttributeValue('MemberGrade')
+  SET @pageUrl = Concat(
+    'https://pages.brand.co.kr/survey?',
+    'ck=',    URLEncode(@ck),
+    '&grade=', URLEncode(@grade)
+  )
+]%%
+
+<a href="%%=v(@pageUrl)=%%">설문 참여하기</a></div>
+    </div>
+
+    <div class="code-block">
+      <div class="code-header"><span>AMPScript — CloudPages Landing Page (파라미터 수신 & DE 저장)</span></div>
+      <div class="code-body">%%[
+  <span class="code-comment">/* URL 파라미터 수신 */</span>
+  SET @ck    = QueryParameter('ck')
+  SET @grade = QueryParameter('grade')
+  SET @answer = QueryParameter('answer')   <span class="code-comment">/* 폼 제출값 */</span>
+
+  <span class="code-comment">/* 파라미터 유효성 검사 */</span>
+  IF Empty(@ck) THEN
+    Redirect('https://www.brand.co.kr/error')
+  ENDIF
+
+  <span class="code-comment">/* 폼 제출 시 처리 (POST 방식) */</span>
+  SET @method = RequestParameter('__RequestMethod')
+  IF @method == 'POST' THEN
+    SET @answer = RequestParameter('survey_answer')
+
+    UpsertDE('SurveyResult_DE',
+      1,
+      'ContactKey', @ck,
+      'Answer',     @answer,
+      'SubmittedAt', Now()
+    )
+    SET @submitted = 'Y'
+  ENDIF
+]%%
+
+%%[ IF @submitted == 'Y' THEN ]%%
+<h2>응답해 주셔서 감사합니다!</h2>
+%%[ ELSE ]%%
+<form method="post">
+  <input type="radio" name="survey_answer" value="A"> 매우 만족<br>
+  <input type="radio" name="survey_answer" value="B"> 만족<br>
+  <input type="radio" name="survey_answer" value="C"> 보통<br>
+  <button type="submit">제출</button>
+</form>
+%%[ ENDIF ]%%</div>
+    </div>
+  </section>
+
+  <hr class="divider">
+
+  <section id="pattern-unsub">
+    <h2>실전 패턴 ⑥ — 커스텀 수신거부 페이지</h2>
+    <p>이메일 내 수신거부 링크 → CloudPages 랜딩 → AllSubscribers 수신거부 처리 + 자체 DE 업데이트.</p>
+    <div class="code-block">
+      <div class="code-header"><span>AMPScript — 이메일 내 수신거부 링크</span></div>
+      <div class="code-body">%%[
+  SET @subKey = _subscriberkey         <span class="code-comment">/* 시스템 변수 */</span>
+  SET @jobId  = _jobid
+  SET @unsubUrl = Concat(
+    'https://pages.brand.co.kr/unsub?',
+    'sk=', URLEncode(@subKey),
+    '&jid=', @jobId
+  )
+]%%
+<a href="%%=v(@unsubUrl)=%%">수신거부</a></div>
+    </div>
+
+    <div class="code-block">
+      <div class="code-header"><span>AMPScript — CloudPages 수신거부 처리</span></div>
+      <div class="code-body">%%[
+  SET @sk  = QueryParameter('sk')
+  SET @jid = QueryParameter('jid')
+
+  IF NOT Empty(@sk) THEN
+    <span class="code-comment">/* MCE AllSubscribers 수신거부 처리 */</span>
+    UnsubscribeSubscriberEmail(@sk)
+
+    <span class="code-comment">/* 자체 Master DE도 동기화 */</span>
+    UpdateDE('Master_DE', 1,
+             'ContactKey', @sk,
+             'EmailOptIn', 'false',
+             'UnsubDate',  Now())
+
+    SET @done = 'Y'
+  ENDIF
+]%%
+
+%%[ IF @done == 'Y' THEN ]%%
+<h2>수신거부가 완료되었습니다.</h2>
+<p>앞으로 마케팅 이메일을 보내드리지 않겠습니다.</p>
+%%[ ELSE ]%%
+<p>잘못된 접근입니다.</p>
+%%[ ENDIF ]%%</div>
+    </div>
+  </section>
+
+  <hr class="divider">
+
+  <section id="pattern-coupon">
+    <h2>실전 패턴 ⑦ — 쿠폰코드 1:1 발급</h2>
+    <p>쿠폰 풀 DE에서 미발급 쿠폰을 선착순으로 배정하고, 이메일에 수신자별 고유 쿠폰코드를 출력합니다. 중복 발급을 방지하려면 <code>UpsertDE</code>로 발급 상태를 즉시 업데이트합니다.</p>
+    <div class="code-block">
+      <div class="code-header"><span>AMPScript — 1:1 쿠폰 발급 패턴</span></div>
+      <div class="code-body">%%[
+  SET @ck = AttributeValue('ContactKey')
+
+  <span class="code-comment">/* 이미 발급된 쿠폰이 있는지 먼저 확인 */</span>
+  SET @existingCoupon = Lookup('CouponIssue_DE', 'CouponCode',
+                               'ContactKey', @ck)
+
+  IF NOT Empty(@existingCoupon) THEN
+    <span class="code-comment">/* 재발송 방지: 기발급 쿠폰 재사용 */</span>
+    SET @myCoupon = @existingCoupon
+  ELSE
+    <span class="code-comment">/* 미발급 쿠폰 1건 조회 */</span>
+    SET @newCoupon = Lookup('CouponPool_DE', 'CouponCode',
+                            'IsIssued', 'false')
+
+    IF NOT Empty(@newCoupon) THEN
+      <span class="code-comment">/* 발급 처리 (race condition 최소화를 위해 즉시 업데이트) */</span>
+      UpdateDE('CouponPool_DE', 1,
+               'CouponCode', @newCoupon,
+               'IsIssued',   'true',
+               'IssuedTo',   @ck,
+               'IssuedAt',   Now())
+
+      InsertDE('CouponIssue_DE',
+               'ContactKey', @ck,
+               'CouponCode', @newCoupon,
+               'IssuedAt',   Now())
+
+      SET @myCoupon = @newCoupon
+    ELSE
+      SET @myCoupon = ''  <span class="code-comment">/* 쿠폰 소진 */</span>
+    ENDIF
+  ENDIF
+]%%
+
+%%[ IF NOT Empty(@myCoupon) THEN ]%%
+<p>회원님 전용 쿠폰코드: <strong style="font-size:20px;letter-spacing:2px">%%=v(@myCoupon)=%%</strong></p>
+%%[ ELSE ]%%
+<p>죄송합니다. 쿠폰이 모두 소진되었습니다.</p>
+%%[ ENDIF ]%%</div>
+    </div>
+
+    <div class="callout purple">
+      <span class="callout-icon">💡</span>
+      <div><strong>대량 발송 시 Race Condition:</strong> 동시 발송 환경에서 <code>Lookup → UpdateDE</code> 사이에 동일 쿠폰이 중복 배정될 수 있습니다. 쿠폰 중복 방지가 매우 중요한 경우 Automation Studio로 사전에 ContactKey:CouponCode 매핑 DE를 만들어두고 이메일에서 조회만 하는 방식을 사용하세요.</div>
+    </div>
+  </section>
+
+</div>
+</div>
+
+<script>
+const tocItems = document.querySelectorAll('.toc-item');
+const sections = document.querySelectorAll('section[id]');
+
+const observer = new IntersectionObserver(entries => {
+  entries.forEach(entry => {
+    if(entry.isIntersecting){
+      tocItems.forEach(t => t.classList.remove('active'));
+      const active = document.querySelector('.toc-item[href="#' + entry.target.id + '"]');
+      if(active) active.classList.add('active');
+    }
+  });
+}, {rootMargin: '-20% 0px -70% 0px'});
+
+sections.forEach(s => observer.observe(s));
+
+tocItems.forEach(item => {
+  item.addEventListener('click', e => {
+    e.preventDefault();
+    const target = document.querySelector(item.getAttribute('href'));
+    if(target) target.scrollIntoView({behavior:'smooth'});
+  });
+});
+</script>
+</body>
+</html>
