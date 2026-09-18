@@ -3334,14 +3334,15 @@ async function fetchSlackThread(url){
 
   const {channelId, ts} = parsed;
   const token = saved.value;
-  const headers = {'Authorization':`Bearer ${token}`};
 
-  // Fetch thread messages + channel info in parallel
-  const [threadRes, channelRes] = await Promise.all([
-    fetch(`https://slack.com/api/conversations.replies?${new URLSearchParams({channel:channelId,ts,limit:'200',inclusive:'true'})}`,{headers}),
-    fetch(`https://slack.com/api/conversations.info?${new URLSearchParams({channel:channelId})}`,{headers}),
+  // 토큰을 쿼리 파라미터로 전달 (Authorization 헤더는 Slack CORS에서 차단됨)
+  const slackFetch = (endpoint, params) =>
+    fetch(`https://slack.com/api/${endpoint}?${new URLSearchParams({token, ...params})}`).then(r=>r.json());
+
+  const [threadData, channelData] = await Promise.all([
+    slackFetch('conversations.replies', {channel:channelId, ts, limit:'200', inclusive:'true'}),
+    slackFetch('conversations.info', {channel:channelId}),
   ]);
-  const [threadData, channelData] = await Promise.all([threadRes.json(), channelRes.json()]);
   if(!threadData.ok) throw new Error(`Slack 오류: ${threadData.error}`);
 
   const channelName = channelData.ok
@@ -3353,8 +3354,7 @@ async function fetchSlackThread(url){
   const userMap = {};
   await Promise.all(userIds.map(async uid=>{
     try{
-      const r = await fetch(`https://slack.com/api/users.info?user=${uid}`,{headers});
-      const d = await r.json();
+      const d = await slackFetch('users.info', {user:uid});
       if(d.ok) userMap[uid] = d.user?.profile?.display_name || d.user?.real_name || uid;
     }catch(_){ userMap[uid]=uid; }
   }));
