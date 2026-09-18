@@ -1,9 +1,34 @@
-// Slack API 프록시 서버 (Node.js 내장 모듈만 사용)
+// 로컬 프록시 서버 (Slack + Anthropic API)
 // 실행: node slack-proxy.js
 const http = require('http');
 const https = require('https');
 
 const PORT = 3002;
+
+function httpsPost(hostname, path, headers, body) {
+  return new Promise((resolve, reject) => {
+    const req = https.request({ hostname, path, method: 'POST', headers }, res => {
+      let data = '';
+      res.on('data', chunk => data += chunk);
+      res.on('end', () => resolve(data));
+    });
+    req.on('error', reject);
+    req.write(body);
+    req.end();
+  });
+}
+
+function httpsGet(hostname, path, headers) {
+  return new Promise((resolve, reject) => {
+    const req = https.request({ hostname, path, method: 'GET', headers }, res => {
+      let data = '';
+      res.on('data', chunk => data += chunk);
+      res.on('end', () => resolve(data));
+    });
+    req.on('error', reject);
+    req.end();
+  });
+}
 
 http.createServer((req, res) => {
   res.setHeader('Access-Control-Allow-Origin', '*');
@@ -15,32 +40,37 @@ http.createServer((req, res) => {
 
   let body = '';
   req.on('data', chunk => body += chunk);
-  req.on('end', () => {
+  req.on('end', async () => {
     try {
-      const { token, endpoint, params } = JSON.parse(body);
-      const query = new URLSearchParams(params || {}).toString();
-      const options = {
-        hostname: 'slack.com',
-        path: `/api/${endpoint}${query ? '?' + query : ''}`,
-        method: 'GET',
-        headers: { 'Authorization': `Bearer ${token}` }
-      };
-      const proxyReq = https.request(options, proxyRes => {
-        let data = '';
-        proxyRes.on('data', chunk => data += chunk);
-        proxyRes.on('end', () => {
-          res.writeHead(200, { 'Content-Type': 'application/json' });
-          res.end(data);
+      const payload = JSON.parse(body);
+
+      if (payload.service === 'anthropic') {
+        // Anthropic API 프록시
+        const { apiKey, messages, model, max_tokens } = payload;
+        const reqBody = JSON.stringify({ model, max_tokens, messages });
+        const result = await httpsPost('api.anthropic.com', '/v1/messages', {
+          'x-api-key': apiKey,
+          'anthropic-version': '2023-06-01',
+          'content-type': 'application/json',
+        }, reqBody);
+        res.writeHead(200, { 'Content-Type': 'application/json' });
+        res.end(result);
+
+      } else {
+        // Slack API 프록시
+        const { token, endpoint, params } = payload;
+        const query = new URLSearchParams(params || {}).toString();
+        const path = `/api/${endpoint}${query ? '?' + query : ''}`;
+        const result = await httpsGet('slack.com', path, {
+          'Authorization': `Bearer ${token}`
         });
-      });
-      proxyReq.on('error', err => {
-        res.writeHead(500);
-        res.end(JSON.stringify({ ok: false, error: err.message }));
-      });
-      proxyReq.end();
+        res.writeHead(200, { 'Content-Type': 'application/json' });
+        res.end(result);
+      }
+
     } catch (e) {
-      res.writeHead(400);
+      res.writeHead(500);
       res.end(JSON.stringify({ ok: false, error: e.message }));
     }
   });
-}).listen(PORT, () => console.log(`Slack proxy: http://localhost:${PORT}`));
+}).listen(PORT, () => console.log(`프록시 서버 실행 중: http://localhost:${PORT}`));

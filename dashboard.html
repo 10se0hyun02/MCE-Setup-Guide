@@ -3412,15 +3412,12 @@ JSON 형식:
   "messages": [{"speaker":"","datetime":"","content":"","mentions":[]}]
 }`;
 
-  const res = await fetch('https://api.anthropic.com/v1/messages',{
+  const res = await fetch('http://localhost:3002',{
     method:'POST',
-    headers:{
-      'x-api-key': saved.value,
-      'anthropic-version': '2023-06-01',
-      'content-type': 'application/json',
-      'anthropic-dangerous-allow-browser': 'true',
-    },
+    headers:{'content-type':'application/json'},
     body: JSON.stringify({
+      service: 'anthropic',
+      apiKey: saved.value,
       model: 'claude-haiku-4-5-20251001',
       max_tokens: 2048,
       messages:[{role:'user', content: prompt}]
