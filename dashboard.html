@@ -3337,7 +3337,7 @@ async function fetchSlackThread(url){
 
   // 로컬 프록시 경유 (Slack API는 브라우저에서 직접 호출 불가 - CORS/보안 제한)
   const slackFetch = (endpoint, params) =>
-    fetch('http://localhost:3002', {
+    fetch('http://localhost:3099', {
       method: 'POST',
       headers: {'Content-Type': 'application/json'},
       body: JSON.stringify({token, endpoint, params: params||{}}),
@@ -3412,7 +3412,7 @@ JSON 형식:
   "messages": [{"speaker":"","datetime":"","content":"","mentions":[]}]
 }`;
 
-  const res = await fetch('http://localhost:3002',{
+  const res = await fetch('http://localhost:3099',{
     method:'POST',
     headers:{'content-type':'application/json'},
     body: JSON.stringify({
