@@ -6280,9 +6280,13 @@ document.getElementById('import-input').addEventListener('change',e=>{
   importData(e.target.files[0]);
   e.target.value='';
 });
-document.getElementById('modal').addEventListener('click', e=>e.stopPropagation());
+let _modalMousedownOnOverlay = false;
+document.getElementById('modal-overlay').addEventListener('mousedown', e=>{
+  _modalMousedownOnOverlay = e.target === document.getElementById('modal-overlay');
+});
 document.getElementById('modal-overlay').addEventListener('click', e=>{
-  if(e.target.dataset.preventClose!=='1') closeModal();
+  if(_modalMousedownOnOverlay && e.target === document.getElementById('modal-overlay') && e.target.dataset.preventClose!=='1') closeModal();
+  _modalMousedownOnOverlay = false;
 });
 document.getElementById('modal-close').addEventListener('click', closeModal);
 
