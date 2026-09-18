@@ -2242,7 +2242,7 @@ async function renderBriefing(){
         <div class="briefing-kpi-num">${openIssues.length}<span class="briefing-kpi-total"> 건${highIssues.length ? ` (고 ${highIssues.length})` : ''}</span></div>
         <div class="briefing-kpi-label">미해결 이슈</div>
       </div>
-      ${isSFMCType(project?.projectType)
+      ${project?.projectType === 'Salesforce Marketing Cloud 구축'
         ? `<div class="briefing-kpi-card">
         <div class="briefing-kpi-num">${pct}<span class="briefing-kpi-total"> %</span></div>
         <div class="briefing-kpi-label">MCE 구축 진행률</div>
@@ -2275,9 +2275,9 @@ async function renderBriefing(){
   }
   secB += `</div>`;
 
-  // ── 섹션 D: 구축 진행현황(SFMC) / 최근 커뮤니케이션(기타)
+  // ── 섹션 D: 구축 진행현황(구축) / 최근 커뮤니케이션(운영/기타)
   let secD;
-  if(isSFMCType(project?.projectType)){
+  if(project?.projectType === 'Salesforce Marketing Cloud 구축'){
     secD = `<div class="briefing-section">
     <div class="briefing-section-title">📈 구축 진행현황</div>
     <div style="margin-bottom:10px">
