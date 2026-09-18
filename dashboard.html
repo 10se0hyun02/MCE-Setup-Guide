@@ -1363,6 +1363,10 @@ const COMM_TYPE_META = {
   '대면미팅': { cls:'ct-meet',  icon:'🤝' },
   '메신저':   { cls:'ct-msg',   icon:'💬' },
 };
+const SFMC_TYPES = ['Salesforce Marketing Cloud 구축','Salesforce Marketing Cloud 운영'];
+function isSFMCType(t){ return SFMC_TYPES.includes(t) || t==='Salesforce MarketingCloud'; }
+const PROJECT_TYPES = [...SFMC_TYPES,'Salesforce Core','기타'];
+
 const COMM_CHANNELS = ['Gmail','Slack','전화','대면미팅','기타'];
 const COMM_CHANNEL_META = {
   'Gmail':    { cls:'ct-email', icon:'📧' },
@@ -1745,10 +1749,10 @@ function renderHeader(){
   if(project.projectType) meta.push(project.projectType);
   if(project.startDate||project.endDate) meta.push(`📅 ${project.startDate||'?'} ~ ${project.endDate||'?'}`);
   if(project.manager) meta.push(`👤 ${project.manager}`);
-  if(project.edition && project.projectType==='Salesforce MarketingCloud') meta.push(`📦 ${project.edition}`);
+  if(project.edition && isSFMCType(project.projectType)) meta.push(`📦 ${project.edition}`);
   document.getElementById('proj-meta').innerHTML = meta.map(m=>`<span class="meta-item">${esc(m)}</span>`).join('');
 
-  const isSFMC = project.projectType === 'Salesforce MarketingCloud';
+  const isSFMC = isSFMCType(project.projectType);
   document.getElementById('steps-tab-btn').style.display = isSFMC ? '' : 'none';
   document.getElementById('steps-tab-sep').style.display = isSFMC ? '' : 'none';
   if(!isSFMC && STEPS_TABS.has(currentTab)){
@@ -2238,7 +2242,7 @@ async function renderBriefing(){
         <div class="briefing-kpi-num">${openIssues.length}<span class="briefing-kpi-total"> 건${highIssues.length ? ` (고 ${highIssues.length})` : ''}</span></div>
         <div class="briefing-kpi-label">미해결 이슈</div>
       </div>
-      ${project?.projectType==='Salesforce MarketingCloud'
+      ${isSFMCType(project?.projectType)
         ? `<div class="briefing-kpi-card">
         <div class="briefing-kpi-num">${pct}<span class="briefing-kpi-total"> %</span></div>
         <div class="briefing-kpi-label">MCE 구축 진행률</div>
@@ -2273,7 +2277,7 @@ async function renderBriefing(){
 
   // ── 섹션 D: 구축 진행현황(SFMC) / 최근 커뮤니케이션(기타)
   let secD;
-  if(project?.projectType === 'Salesforce MarketingCloud'){
+  if(isSFMCType(project?.projectType)){
     secD = `<div class="briefing-section">
     <div class="briefing-section-title">📈 구축 진행현황</div>
     <div style="margin-bottom:10px">
@@ -5771,11 +5775,11 @@ async function showProjectModal(isFirst=false){
     </div>
     <div class="form-row">
       <label>프로젝트 유형 *</label>
-      <select id="f-project-type" onchange="document.getElementById('f-edition-row').style.display=this.value==='Salesforce MarketingCloud'?'':'none'">
-        ${['Salesforce MarketingCloud','Salesforce Core','기타'].map(t=>`<option value="${t}"${(p?.projectType||'기타')===t?' selected':''}>${t}</option>`).join('')}
+      <select id="f-project-type" onchange="document.getElementById('f-edition-row').style.display=isSFMCType(this.value)?'':'none'">
+        ${PROJECT_TYPES.map(t=>`<option value="${t}"${(p?.projectType||'기타')===t?' selected':''}>${t}</option>`).join('')}
       </select>
     </div>
-    <div class="form-row" id="f-edition-row" style="display:${(p?.projectType||'기타')==='Salesforce MarketingCloud'?'':'none'}">
+    <div class="form-row" id="f-edition-row" style="display:${isSFMCType(p?.projectType||'기타')?'':'none'}">
       <label>MCE 에디션</label>
       <select id="f-edition">
         ${['Corporate','Enterprise','Advanced','Select',''].map(e=>`<option value="${e}"${(p?.edition||'')=== e?' selected':''}>${e||'—'}</option>`).join('')}
