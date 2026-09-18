@@ -6280,8 +6280,9 @@ document.getElementById('import-input').addEventListener('change',e=>{
   importData(e.target.files[0]);
   e.target.value='';
 });
+document.getElementById('modal').addEventListener('click', e=>e.stopPropagation());
 document.getElementById('modal-overlay').addEventListener('click', e=>{
-  if(e.target===document.getElementById('modal-overlay')&&e.target.dataset.preventClose!=='1') closeModal();
+  if(e.target.dataset.preventClose!=='1') closeModal();
 });
 document.getElementById('modal-close').addEventListener('click', closeModal);
 
