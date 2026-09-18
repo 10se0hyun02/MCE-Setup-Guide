@@ -1752,7 +1752,7 @@ function renderHeader(){
   if(project.edition && isSFMCType(project.projectType)) meta.push(`📦 ${project.edition}`);
   document.getElementById('proj-meta').innerHTML = meta.map(m=>`<span class="meta-item">${esc(m)}</span>`).join('');
 
-  const isSFMC = isSFMCType(project.projectType);
+  const isSFMC = project.projectType === 'Salesforce Marketing Cloud 구축' || project.projectType === 'Salesforce MarketingCloud';
   document.getElementById('steps-tab-btn').style.display = isSFMC ? '' : 'none';
   document.getElementById('steps-tab-sep').style.display = isSFMC ? '' : 'none';
   if(!isSFMC && STEPS_TABS.has(currentTab)){
