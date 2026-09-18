@@ -648,6 +648,34 @@ body{
   position:sticky;bottom:0;background:var(--bg);
 }
 
+/* ── COMM SIDE PANEL ── */
+.comm-side-panel{
+  position:fixed;top:0;right:0;width:min(640px,50vw);height:100vh;
+  background:var(--bg2);border-left:1px solid var(--border2);
+  box-shadow:-6px 0 32px rgba(0,0,0,.14);
+  transform:translateX(100%);transition:transform .25s cubic-bezier(.4,0,.2,1);
+  display:flex;flex-direction:column;z-index:500;
+}
+.comm-side-panel.open{transform:translateX(0)}
+.comm-panel-header{
+  padding:16px 20px;border-bottom:1px solid var(--border);
+  display:flex;align-items:center;justify-content:space-between;flex-shrink:0;
+  background:var(--bg2);position:sticky;top:0;z-index:1;
+}
+.comm-panel-title{font-weight:700;font-size:15px}
+.comm-panel-close{background:none;border:none;font-size:18px;cursor:pointer;color:var(--text3);padding:2px 6px;border-radius:4px}
+.comm-panel-close:hover{background:var(--bg3);color:var(--text)}
+.comm-panel-body{flex:1;overflow-y:auto;padding:20px}
+.comm-panel-footer{
+  padding:14px 20px;border-top:1px solid var(--border);
+  display:flex;gap:8px;justify-content:flex-end;flex-shrink:0;background:var(--bg2);
+}
+.comm-panel-backdrop{
+  position:fixed;inset:0;background:rgba(0,0,0,.2);
+  opacity:0;pointer-events:none;transition:opacity .25s;z-index:499;
+}
+.comm-panel-backdrop.open{opacity:1;pointer-events:auto}
+
 /* ── FORM ── */
 .form-row{margin-bottom:14px}
 .form-row label{display:block;font-size:12px;font-weight:600;color:var(--text2);margin-bottom:5px}
@@ -1051,6 +1079,7 @@ body{
 .btn-ai-parse:disabled{opacity:.5;cursor:not-allowed}
 .ai-parsing-spinner{display:inline-block;width:12px;height:12px;border:2px solid rgba(255,255,255,.4);border-top-color:#fff;border-radius:50%;animation:spin .7s linear infinite}
 @keyframes spin{to{transform:rotate(360deg)}}
+@keyframes fadeInUp{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
 .parsed-fields{border:1px solid var(--border);border-radius:var(--radius);padding:12px 14px;background:var(--bg);font-size:13px;margin-bottom:14px;display:none}
 .parsed-field-row{display:flex;gap:8px;align-items:baseline;padding:4px 0;border-bottom:1px solid var(--border)}
 .parsed-field-row:last-child{border-bottom:none}
@@ -1301,6 +1330,17 @@ body{
   </div>
 </div>
 
+<!-- COMM SIDE PANEL -->
+<div class="comm-panel-backdrop" id="comm-panel-backdrop"></div>
+<div class="comm-side-panel" id="comm-side-panel">
+  <div class="comm-panel-header">
+    <span class="comm-panel-title" id="comm-panel-title">커뮤니케이션 추가</span>
+    <button class="comm-panel-close" id="comm-panel-close">✕</button>
+  </div>
+  <div class="comm-panel-body" id="comm-panel-body"></div>
+  <div class="comm-panel-footer" id="comm-panel-footer"></div>
+</div>
+
 <!-- MODAL -->
 <div class="modal-overlay hidden" id="modal-overlay">
   <div class="modal" id="modal">
@@ -1509,7 +1549,7 @@ function fileIcon(mimeType){
 
 // ── APP STATE ─────────────────────────────────────────────────────
 const db = new DB();
-let currentTab = 'briefing';
+let currentTab = (()=>{ try{ return localStorage.getItem('lastTab')||'briefing'; }catch(e){ return 'briefing'; } })();
 let currentSubTab = 'todo';
 const WORKSPACE_TABS = new Set(['meeting','comm','files','issues','notes','todo','snippet']);
 const STEPS_TABS = new Set(['steps','steps-seonopen','steps-d2c','steps-o2o']);
@@ -1765,6 +1805,7 @@ function renderTab(tab){
   clearSelCells(true);
   currentTab = tab;
   selectedItem = null;
+  try{ localStorage.setItem('lastTab', tab); }catch(e){}
   const isWorkspace = WORKSPACE_TABS.has(tab);
   const isSteps = STEPS_TABS.has(tab);
   if(isWorkspace) currentSubTab = tab;
@@ -3377,6 +3418,17 @@ async function fetchSlackThread(url){
 }
 
 // ── COMM AI PARSE ────────────────────────────────────────────────
+function stripSlackMarkdown(text){
+  if(!text) return text;
+  return text
+    .replace(/\[#[A-Z0-9]+\]\s*/g, '')   // [#C09AA4VBSSH] 채널 ID 제거
+    .replace(/\*([^*]+)\*/g, '$1')         // *bold* → bold
+    .replace(/_([^_]+)_/g, '$1')           // _italic_ → italic
+    .replace(/`([^`]+)`/g, '$1')           // `code` → code
+    .replace(/~([^~]+)~/g, '$1')           // ~strike~ → strike
+    .trim();
+}
+
 async function parseCommWithAI(rawText){
   const saved = await db.get('settings','anthropicApiKey');
   if(!saved?.value) throw new Error('API 키가 없습니다. ⚙️ Agent 설정에서 Anthropic API 키를 입력해주세요.');
@@ -3389,16 +3441,14 @@ ${rawText}
 추출 규칙:
 - channel: 원문 형식으로 자동 감지. Gmail 형식(From:/Date:/Subject: 헤더) → "Gmail", Slack 형식(이름 + 시간 패턴) → "Slack", 그 외 → "전화"/"대면미팅"/"기타"
 - direction: 모두 같은 조직이면 "내부", 외부 회사/이메일 도메인이 있으면 "외부"
-- subject: 이메일이면 Subject 줄, Slack이면 첫 번째 메시지 내용을 그대로 한 줄로 (요약하지 말고 원문 첫 메시지 사용)
+- subject: 이메일이면 Subject 줄, Slack이면 첫 번째 메시지 내용 한 줄로. Slack 마크다운 제거 필수: *bold* → bold, \`code\` → code, ~strike~ → strike, [#채널ID] 같은 채널 태그 제거
 - counterparty: direction이 "외부"일 때 상대방 회사명 또는 이름. 없으면 null
 - owner: @멘션된 사람 배열. 없으면 []
-- summary: 전체 내용을 2-3문장으로 요약
+- summary: 대화의 흐름과 결과를 상세히 정리. 누가 무엇을 제안/요청했고 어떻게 논의됐으며 최종적으로 무엇이 결정됐는지 흐름 중심으로 서술 (단순 요약 X, 대화 맥락과 결론 O). 줄바꿈은 \\n으로 이스케이프
 - action_items: 명확한 할일/액션아이템 배열. 없으면 []
-- messages: 메시지별 배열
-  - speaker: Gmail이면 From: 값, Slack이면 발화자 이름
-  - datetime: ISO 8601. Gmail이면 Date: 헤더 파싱, Slack이면 날짜+시간 추론 (날짜 없으면 오늘 날짜 사용)
-  - content: 해당 메시지 본문 (간결하게)
-  - mentions: 이 메시지에서 @언급된 사람 배열
+
+중요: 모든 문자열 값 안에서 줄바꿈은 \\n으로, 큰따옴표는 \\"로 이스케이프하세요.
+JSON 외 어떤 텍스트도 출력하지 마세요.
 
 JSON 형식:
 {
@@ -3408,8 +3458,7 @@ JSON 형식:
   "counterparty": null,
   "owner": [],
   "summary": "",
-  "action_items": [],
-  "messages": [{"speaker":"","datetime":"","content":"","mentions":[]}]
+  "action_items": []
 }`;
 
   const res = await fetch('http://localhost:3099',{
@@ -3419,7 +3468,7 @@ JSON 형식:
       service: 'anthropic',
       apiKey: saved.value,
       model: 'claude-haiku-4-5-20251001',
-      max_tokens: 2048,
+      max_tokens: 4096,
       messages:[{role:'user', content: prompt}]
     })
   });
@@ -3432,15 +3481,30 @@ JSON 형식:
   const jsonMatch = text.match(/\{[\s\S]*\}/);
   if(!jsonMatch) throw new Error('AI 응답을 파싱할 수 없습니다.');
   let jsonStr = jsonMatch[0];
-  // 흔한 JSON 오류 정리: trailing comma, 줄바꿈이 포함된 문자열 등
-  jsonStr = jsonStr
-    .replace(/,\s*([}\]])/g, '$1');          // trailing comma 제거
+  // JSON 문자열 내부 제어문자 이스케이프 (문자 단위 파서)
+  function fixJsonStr(s) {
+    let out = '', inStr = false, esc = false;
+    for (let i = 0; i < s.length; i++) {
+      const c = s[i];
+      if (esc) { out += c; esc = false; continue; }
+      if (c === '\\' && inStr) { out += c; esc = true; continue; }
+      if (c === '"') { out += c; inStr = !inStr; continue; }
+      if (inStr) {
+        if (c === '\n') { out += '\\n'; continue; }
+        if (c === '\r') { out += '\\r'; continue; }
+        if (c === '\t') { out += '\\t'; continue; }
+      }
+      out += c;
+    }
+    return out;
+  }
+  jsonStr = fixJsonStr(jsonStr).replace(/,\s*([}\]])/g, '$1');
   try {
     return JSON.parse(jsonStr);
   } catch(e) {
-    // 파싱 실패 시 content 필드만이라도 추출해서 반환
-    const summary = text.replace(/\{[\s\S]*\}/, '').trim() || text.slice(0, 500);
-    return { channel:'기타', direction:'외부', subject:'', counterparty:null, owner:[], summary, action_items:[], messages:[] };
+    console.error('JSON 파싱 실패:', e.message);
+    console.error('파싱 시도한 JSON (앞 300자):', jsonStr.slice(0,300));
+    throw new Error('AI 응답을 파싱할 수 없습니다: ' + e.message);
   }
 }
 
@@ -3543,7 +3607,7 @@ function renderCommCards(items, el){
     const owners = (c.owner||[]).filter(Boolean);
     const ownerHtml = owners.length ? `<div class="comm-owner-row">${owners.map(o=>`<span class="owner-chip">${esc(o)}</span>`).join('')}</div>` : '';
     const actions = (c.actionItems||[]).filter(Boolean);
-    const actionHtml = actions.length ? `<div class="comm-action-items">${actions.map(a=>`<div class="comm-action-item">→ ${esc(a)}</div>`).join('')}</div>` : '';
+    const actionHtml = actions.length ? `<div class="comm-action-items">${actions.map(a=>`<div class="comm-action-item">${esc(a)}</div>`).join('')}</div>` : '';
     const msgs = c.messages||[];
     const msgToggle = msgs.length ? `
       <div class="comm-messages-wrap">
@@ -3655,7 +3719,7 @@ async function showCommModal(id){
           <button class="btn-ai-parse" id="btn-slack-fetch" onclick="runSlackFetch()" style="white-space:nowrap;padding:8px 14px">가져오기</button>
         </div>
       </div>
-      <div class="ai-parse-section" style="margin-top:0;border-top:none;padding-top:0">
+      <div id="raw-input-section" class="ai-parse-section" style="margin-top:0;border-top:none;padding-top:0;${p?'display:none':''}">
         <div class="ai-parse-header">
           <span>원문 직접 입력</span>
           <span style="color:var(--text3);font-size:12px">Slack 복붙, 이메일, 메모 등 자유롭게</span>
@@ -3663,8 +3727,23 @@ async function showCommModal(id){
         <textarea id="f-raw" class="ai-parse-textarea" rows="6" placeholder="내용을 그대로 붙여넣거나 직접 입력하세요.
 AI가 발화자·날짜·담당자·요약·액션아이템을 자동으로 구분합니다."></textarea>
         <button class="btn-ai-parse" id="btn-ai-parse" onclick="runAIParse()">AI 정리</button>
+        <div id="ai-progress-wrap" style="display:none;margin-top:10px">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:4px">
+            <span style="font-size:12px;color:var(--text3)">AI 분석 중...</span>
+            <span id="ai-elapsed" style="font-size:12px;color:var(--text3);font-variant-numeric:tabular-nums">0s</span>
+          </div>
+          <div style="height:4px;background:var(--bg3);border-radius:99px;overflow:hidden">
+            <div id="ai-progress-bar" style="height:100%;width:0%;background:var(--blue);border-radius:99px;transition:width .3s ease"></div>
+          </div>
+        </div>
       </div>
-      <div class="parsed-fields" id="parsed-fields" style="${p?'':'display:none'}">
+      <div class="parsed-fields" id="parsed-fields" style="${p?'display:block':'display:none'}">
+        <div style="display:flex;align-items:center;gap:8px;margin-bottom:14px;padding-top:4px">
+          <div style="flex:1;height:1px;background:var(--border2)"></div>
+          <span style="font-size:12px;font-weight:600;color:var(--blue);white-space:nowrap">✦ AI 분석 결과</span>
+          <div style="flex:1;height:1px;background:var(--border2)"></div>
+          <button onclick="(()=>{const s=document.getElementById('raw-input-section');s.style.display=s.style.display==='none'?'':'none';this.textContent=s.style.display===''?'원문 접기':'원문 보기';})()" style="font-size:11px;color:var(--text3);background:none;border:1px solid var(--border2);border-radius:6px;padding:2px 8px;cursor:pointer;white-space:nowrap">${p?'원문 보기':'원문 접기'}</button>
+        </div>
         <div class="form-row-2" style="margin-bottom:10px">
           <div class="form-row" style="margin:0">
             <label>채널</label>
@@ -3692,26 +3771,18 @@ AI가 발화자·날짜·담당자·요약·액션아이템을 자동으로 구�
             <input type="text" id="f-owner" placeholder="이름 쉼표 구분" value="${esc((p?.owner||[]).join(', '))}">
           </div>
         </div>
-        ${hasMessages?`
+        ${item?.sourceUrl?`
         <div class="form-row" style="margin-bottom:10px">
-          <label>메시지 (${p.messages.length}건)</label>
-          <div class="comm-messages-wrap" style="border:1px solid var(--bg3);border-radius:var(--radius);padding:8px;max-height:160px;overflow-y:auto;background:var(--bg)">
-            ${p.messages.map((m,i)=>`
-              <div class="comm-msg-row" style="margin-bottom:6px;padding-bottom:6px;${i<p.messages.length-1?'border-bottom:1px solid var(--bg3)':''}">
-                <span class="comm-msg-speaker">${esc(m.speaker||'?')}</span>
-                <span class="comm-msg-time">${esc(m.datetime?m.datetime.replace('T',' ').slice(0,16):'')}</span>
-                <div class="comm-msg-content" style="margin-top:3px;font-size:13px;color:var(--text2)">${esc(m.content||'')}</div>
-              </div>`).join('')}
-          </div>
+          <a href="${esc(item.sourceUrl)}" target="_blank" rel="noopener" style="display:inline-flex;align-items:center;gap:6px;font-size:13px;color:var(--blue);text-decoration:none;border:1px solid var(--blue);border-radius:6px;padding:6px 12px;background:var(--bg)">↗ 원문 바로가기</a>
         </div>`:''}
         ${hasSummary?`
         <div class="form-row" style="margin-bottom:10px">
           <label>요약</label>
-          <textarea id="f-summary" rows="3" style="resize:vertical">${esc(p.summary)}</textarea>
+          <textarea id="f-summary" style="resize:vertical;min-height:72px;overflow:hidden">${esc(p.summary)}</textarea>
         </div>`:`
         <div class="form-row" style="margin-bottom:10px">
           <label>요약</label>
-          <textarea id="f-summary" rows="3" style="resize:vertical" placeholder="커뮤니케이션 내용을 간략히 요약하세요"></textarea>
+          <textarea id="f-summary" style="resize:vertical;min-height:72px;overflow:hidden" placeholder="커뮤니케이션 내용을 간략히 요약하세요"></textarea>
         </div>`}
         ${hasActions?`
         <div class="form-row" style="margin-bottom:4px">
@@ -3726,7 +3797,7 @@ AI가 발화자·날짜·담당자·요약·액션아이템을 자동으로 구�
     `;
   }
 
-  showModal('커뮤니케이션 '+(isEdit?'수정':'추가'), buildModalHtml(parsed), [
+  openCommPanel('커뮤니케이션 '+(isEdit?'수정':'추가'), buildModalHtml(parsed), [
     {label: isEdit?'수정 저장':'저장', cls:'btn-primary', action: async()=>{
       const pf = document.getElementById('parsed-fields');
       if(!pf || pf.style.display==='none'){
@@ -3739,7 +3810,7 @@ AI가 발화자·날짜·담당자·요약·액션아이템을 자동으로 구�
           createdAt: item?.createdAt||Date.now(), loggedAt: Date.now(),
         };
         await db.put('communications', obj);
-        closeModal(); renderTab('comm'); return;
+        closeCommPanel(); renderTab('comm'); return;
       }
       const subject = document.getElementById('f-subject')?.value.trim()||'';
       const summary = document.getElementById('f-summary')?.value.trim()||'';
@@ -3749,6 +3820,7 @@ AI가 발화자·날짜·담당자·요약·액션아이템을 자동으로 구�
       const counterparty = document.getElementById('f-counterparty')?.value.trim()||'';
       const firstMsgDate = (parsed?.messages?.[0]?.datetime||'').slice(0,10);
       const today2 = new Date().toISOString().slice(0,10);
+      const savedSourceUrl = document.getElementById('f-slack-url')?.value.trim() || item?.sourceUrl || '';
       const newObj = {
         id: item?.id||genId(), projectId: PROJECT_ID,
         channel: document.getElementById('f-channel').value,
@@ -3758,24 +3830,24 @@ AI가 발화자·날짜·담당자·요약·액션아이템을 자동으로 구�
         summary,
         actionItems: actionsRaw.split('\n').map(s=>s.trim()).filter(Boolean),
         messages: parsed?.messages||[],
+        sourceUrl: savedSourceUrl,
         date: firstMsgDate||today2,
         type: document.getElementById('f-channel').value,
         participants: ownerRaw, content: summary,
         createdAt: item?.createdAt||Date.now(), loggedAt: Date.now(),
       };
-      // 신규 저장일 때만 유사 항목 검사
       if(!isEdit){
         const similar = await findSimilarComm(subject, counterparty);
         if(similar){
-          closeModal();
+          closeCommPanel();
           showMergeConfirm(similar, newObj);
           return;
         }
       }
       await db.put('communications', newObj);
-      closeModal(); renderTab('comm');
+      closeCommPanel(); renderTab('comm');
     }},
-    {label:'취소', cls:'btn-ghost', action:()=>closeModal()},
+    {label:'취소', cls:'btn-ghost', action:()=>closeCommPanel()},
     ...(isEdit?[{label:'삭제', cls:'btn-danger', action:()=>deleteComm(id)}]:[])
   ]);
 
@@ -3792,22 +3864,19 @@ AI가 발화자·날짜·담당자·요약·액션아이템을 자동으로 구�
       if(ta) ta.value = raw;
       // AI 정리 실행
       await window.runAIParse();
-      // 채널명·참여자 자동 입력 (AI 정리 후 덮어쓰기)
+      // 채널명·참여자·방향 자동 입력 (AI 정리 후 덮어쓰기)
       const subjectEl = document.getElementById('f-subject');
       const counterpartyEl = document.getElementById('f-counterparty');
       const ownerEl = document.getElementById('f-owner');
+      const directionEl = document.getElementById('f-direction');
+      // Slack URL 가져오기 = 외부채널 → direction 강제 외부
+      if(directionEl) directionEl.value = '외부';
+      // counterparty: AI가 못 찾으면 채널명으로
       if(counterpartyEl && !counterpartyEl.value) counterpartyEl.value = `#${channelName}`;
-      if(counterpartyEl && counterpartyEl.value && !counterpartyEl.value.startsWith('#')){
-        // 채널명을 subject 앞에 표기
-      }
       // 참여자 목록: AI가 owner를 못 찾은 경우 speakers로 채움
       if(ownerEl && !ownerEl.value && speakers.length) ownerEl.value = speakers.join(', ');
-      // 채널명을 제목 앞에 추가
-      if(subjectEl && channelName){
-        if(!subjectEl.value.startsWith(`[#${channelName}]`)){
-          subjectEl.value = `[#${channelName}] ${subjectEl.value}`.trim();
-        }
-      }
+      // subject Slack 마크다운 제거
+      if(subjectEl) subjectEl.value = stripSlackMarkdown(subjectEl.value);
     }catch(e){
       alert('Slack 가져오기 실패: '+e.message);
     }finally{
@@ -3821,69 +3890,83 @@ AI가 발화자·날짜·담당자·요약·액션아이템을 자동으로 구�
     if(!raw){alert('원문을 먼저 붙여넣어주세요.');return;}
     const btn = document.getElementById('btn-ai-parse');
     btn.disabled = true;
-    btn.innerHTML = '<span class="spin" style="display:inline-block;animation:spin 1s linear infinite">⟳</span> AI 분석 중...';
+    btn.innerHTML = '<span style="display:inline-block;animation:spin 1s linear infinite">⟳</span> AI 분석 중...';
+
+    // 진행 바 시작
+    const wrap = document.getElementById('ai-progress-wrap');
+    const bar = document.getElementById('ai-progress-bar');
+    const elapsedEl = document.getElementById('ai-elapsed');
+    const startTime = Date.now();
+    const EXPECTED_MS = 8000; // 예상 소요 시간 기준 (8초)
+    if(wrap){ wrap.style.display=''; bar.style.width='0%'; elapsedEl.textContent='0s'; }
+    const progressTid = setInterval(()=>{
+      const elapsed = Date.now() - startTime;
+      const pct = Math.min(95, (elapsed / EXPECTED_MS) * 100); // 95%까지만 채움
+      if(bar) bar.style.width = pct + '%';
+      if(elapsedEl) elapsedEl.textContent = Math.floor(elapsed/1000) + 's';
+    }, 300);
+
     try{
       parsed = await parseCommWithAI(raw);
-      // Rebuild parsed fields section with new data
-      const pf = document.getElementById('parsed-fields');
-      // Build messages html
-      const msgs = parsed.messages||[];
-      const msgHtml = msgs.length ? `
-        <div class="form-row" style="margin-bottom:10px">
-          <label>메시지 (${msgs.length}건)</label>
-          <div class="comm-messages-wrap" style="border:1px solid var(--bg3);border-radius:var(--radius);padding:8px;max-height:160px;overflow-y:auto;background:var(--bg)">
-            ${msgs.map((m,i)=>`
-              <div class="comm-msg-row" style="margin-bottom:6px;padding-bottom:6px;${i<msgs.length-1?'border-bottom:1px solid var(--bg3)':''}">
-                <span class="comm-msg-speaker">${esc(m.speaker||'?')}</span>
-                <span class="comm-msg-time">${esc((m.datetime||'').replace('T',' ').slice(0,16))}</span>
-                <div class="comm-msg-content" style="margin-top:3px;font-size:13px;color:var(--text2)">${esc(m.content||'')}</div>
-              </div>`).join('')}
-          </div>
-        </div>` : '';
-      pf.innerHTML = `
-        <div class="form-row-2" style="margin-bottom:10px">
-          <div class="form-row" style="margin:0">
-            <label>채널</label>
-            <select id="f-channel">
-              ${COMM_CHANNELS.map(ch2=>`<option${parsed.channel===ch2?' selected':''}>${esc(ch2)}</option>`).join('')}
-            </select>
-          </div>
-          <div class="form-row" style="margin:0">
-            <label>방향</label>
-            <select id="f-direction">
-              <option${parsed.direction==='외부'?' selected':''}>외부</option>
-              <option${parsed.direction==='내부'?' selected':''}>내부</option>
-            </select>
-          </div>
+      if(parsed.subject) parsed.subject = stripSlackMarkdown(parsed.subject);
+      // 패널 바디 전체를 결과 화면으로 교체
+      const sourceUrl = document.getElementById('f-slack-url')?.value.trim()||'';
+      const panelBody = document.getElementById('comm-panel-body');
+      panelBody.innerHTML = `
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px">
+          <span style="font-size:13px;font-weight:600;color:var(--blue)">✦ AI 분석 결과</span>
+          <button onclick="restoreCommPanelInput()" style="font-size:12px;color:var(--text3);background:none;border:1px solid var(--border2);border-radius:6px;padding:3px 10px;cursor:pointer">← 원문으로</button>
         </div>
-        <div class="form-row" style="margin-bottom:10px">
-          <label>제목 / 주제</label>
-          <input type="text" id="f-subject" value="${esc(parsed.subject||'')}">
-        </div>
-        <div class="form-row-2" style="margin-bottom:10px">
-          <div class="form-row" style="margin:0">
-            <label>상대방 (외부)</label>
-            <input type="text" id="f-counterparty" value="${esc(parsed.counterparty||'')}">
+        <div id="parsed-fields">
+          <div class="form-row-2" style="margin-bottom:10px">
+            <div class="form-row" style="margin:0">
+              <label>채널</label>
+              <select id="f-channel">
+                ${COMM_CHANNELS.map(ch2=>`<option${parsed.channel===ch2?' selected':''}>${esc(ch2)}</option>`).join('')}
+              </select>
+            </div>
+            <div class="form-row" style="margin:0">
+              <label>방향</label>
+              <select id="f-direction">
+                <option${parsed.direction==='외부'?' selected':''}>외부</option>
+                <option${parsed.direction==='내부'?' selected':''}>내부</option>
+              </select>
+            </div>
           </div>
-          <div class="form-row" style="margin:0">
-            <label>담당자</label>
-            <input type="text" id="f-owner" value="${esc((parsed.owner||[]).join(', '))}">
+          <div class="form-row" style="margin-bottom:10px">
+            <label>제목 / 주제</label>
+            <input type="text" id="f-subject" value="${esc(parsed.subject||'')}">
           </div>
-        </div>
-        ${msgHtml}
-        <div class="form-row" style="margin-bottom:10px">
-          <label>요약</label>
-          <textarea id="f-summary" rows="3" style="resize:vertical">${esc(parsed.summary||'')}</textarea>
-        </div>
-        <div class="form-row" style="margin-bottom:4px">
-          <label>액션아이템</label>
-          <textarea id="f-actions" rows="3" style="resize:vertical">${esc((parsed.action_items||[]).join('\n'))}</textarea>
+          <div class="form-row-2" style="margin-bottom:10px">
+            <div class="form-row" style="margin:0">
+              <label>상대방 (외부)</label>
+              <input type="text" id="f-counterparty" value="${esc(parsed.counterparty||'')}">
+            </div>
+            <div class="form-row" style="margin:0">
+              <label>담당자</label>
+              <input type="text" id="f-owner" value="${esc((parsed.owner||[]).join(', '))}">
+            </div>
+          </div>
+          ${sourceUrl ? `<div class="form-row" style="margin-bottom:10px"><a href="${esc(sourceUrl)}" target="_blank" rel="noopener" style="display:inline-flex;align-items:center;gap:6px;font-size:13px;color:var(--blue);text-decoration:none;border:1px solid var(--blue);border-radius:6px;padding:6px 12px;background:var(--bg)">↗ 원문 바로가기</a></div>` : ''}
+          <div class="form-row" style="margin-bottom:10px">
+            <label>요약</label>
+            <textarea id="f-summary" style="resize:vertical;min-height:72px;overflow:hidden">${esc(parsed.summary||'')}</textarea>
+          </div>
+          <div class="form-row" style="margin-bottom:4px">
+            <label>액션아이템</label>
+            <textarea id="f-actions" rows="3" style="resize:vertical">${esc((parsed.action_items||[]).join('\n'))}</textarea>
+          </div>
         </div>
       `;
-      pf.style.display = '';
+      panelBody.scrollTop = 0;
+      const summaryTa = document.getElementById('f-summary');
+      if(summaryTa){ summaryTa.style.height='auto'; summaryTa.style.height=summaryTa.scrollHeight+'px'; }
     }catch(e){
       alert('AI 정리 실패: '+e.message);
     }finally{
+      clearInterval(progressTid);
+      if(bar){ bar.style.width='100%'; }
+      setTimeout(()=>{ if(wrap) wrap.style.display='none'; }, 400);
       if(btn){btn.disabled=false;btn.textContent='AI 정리';}
     }
   };
@@ -3892,7 +3975,7 @@ AI가 발화자·날짜·담당자·요약·액션아이템을 자동으로 구�
   if(parsed){
     setTimeout(()=>{
       const pf = document.getElementById('parsed-fields');
-      if(pf) pf.style.display='';
+      if(pf) pf.style.display='block';
     },30);
   }
 }
@@ -6007,6 +6090,38 @@ async function importGmailSync(file){
 }
 
 // ── MODAL CORE ────────────────────────────────────────────────────
+// ── COMM SIDE PANEL ───────────────────────────────────────────────
+function openCommPanel(title, bodyHtml, buttons=[]){
+  document.getElementById('comm-panel-title').textContent = title;
+  document.getElementById('comm-panel-body').innerHTML = bodyHtml;
+  window._commPanelState = { title, bodyHtml, buttons };
+  const footer = document.getElementById('comm-panel-footer');
+  footer.innerHTML = '';
+  buttons.forEach(b=>{
+    const btn = document.createElement('button');
+    btn.className = b.cls||'btn-ghost';
+    btn.textContent = b.label;
+    btn.addEventListener('click', async()=>{ const r=await b.action(); if(r===false) return; });
+    footer.appendChild(btn);
+  });
+  document.getElementById('comm-side-panel').classList.add('open');
+  document.getElementById('comm-panel-backdrop').classList.add('open');
+  document.getElementById('comm-panel-body').scrollTop = 0;
+}
+function restoreCommPanelInput(){
+  const s = window._commPanelState;
+  if(!s) return;
+  openCommPanel(s.title, s.bodyHtml, s.buttons);
+}
+function closeCommPanel(){
+  document.getElementById('comm-side-panel').classList.remove('open');
+  document.getElementById('comm-panel-backdrop').classList.remove('open');
+}
+document.addEventListener('DOMContentLoaded', ()=>{
+  document.getElementById('comm-panel-close').addEventListener('click', closeCommPanel);
+  document.getElementById('comm-panel-backdrop').addEventListener('click', closeCommPanel);
+});
+
 function showModal(title, bodyHtml, buttons=[], preventClose=false, wide=false){
   document.getElementById('modal').classList.toggle('modal-wide', wide);
   document.getElementById('modal-title').textContent=title;
