@@ -1681,6 +1681,7 @@ async function importFromQueue(){
 
 async function openAgentSettings(){
   const savedKey = await db.get('settings','anthropicApiKey');
+  const savedSlack = await db.get('settings','slackToken');
   showModal('⚙️ Agent 설정', `
     <p style="font-size:14px;color:var(--text2);margin-bottom:16px;line-height:1.6">
       Agent 루틴이 생성하는 파일을 대시보드에서 읽으려면<br>프로젝트 폴더와 연결해야 합니다.
@@ -1692,16 +1693,26 @@ async function openAgentSettings(){
         <div style="font-size:12px;color:var(--text3);margin-top:3px">briefing-data.json, weekly-data.json, dashboard-data.json이 저장되는 위치</div>
       </div>
     </div>
-    <div class="form-row" style="border-top:1px solid var(--border);padding-top:14px">
-      <label>Anthropic API 키 (커뮤니케이션 AI 정리 기능)</label>
-      <input type="password" id="f-api-key" placeholder="sk-ant-..." value="${esc(savedKey?.value||'')}">
-      <div class="form-hint">브라우저 로컬에만 저장됩니다. 커뮤니케이션 AI 정리 시 사용됩니다.</div>
+    <div style="border-top:1px solid var(--border);padding-top:14px;display:flex;flex-direction:column;gap:12px">
+      <div class="form-row" style="margin:0">
+        <label>Anthropic API 키 (AI 정리 기능)</label>
+        <input type="password" id="f-api-key" placeholder="sk-ant-..." value="${esc(savedKey?.value||'')}">
+        <div class="form-hint">브라우저 로컬에만 저장됩니다.</div>
+      </div>
+      <div class="form-row" style="margin:0">
+        <label>Slack 토큰 (스레드 가져오기)</label>
+        <input type="password" id="f-slack-token" placeholder="xoxb-... 또는 xoxp-..." value="${esc(savedSlack?.value||'')}">
+        <div class="form-hint">채널 읽기 권한이 있는 Bot 또는 User 토큰. 브라우저 로컬에만 저장됩니다.</div>
+      </div>
     </div>`,
     [{label:'저장', cls:'btn-primary', action:async()=>{
       const h = await setupSyncDir();
       const key = document.getElementById('f-api-key').value.trim();
+      const slackToken = document.getElementById('f-slack-token').value.trim();
       if(key) await db.put('settings',{key:'anthropicApiKey', value:key});
+      if(slackToken) await db.put('settings',{key:'slackToken', value:slackToken});
       closeModal();
+      showToast('설정이 저장되었습니다');
     }},{label:'닫기', cls:'btn-ghost', action:()=>closeModal()}]
   );
 }
@@ -3278,6 +3289,71 @@ function renderStepsO2O(){
   document.querySelectorAll('#sesco-o2o-content table').forEach(makeSescoTableResizable);
 }
 
+// ── SLACK FETCH ──────────────────────────────────────────────────
+function parseSlackUrl(url){
+  // https://workspace.slack.com/archives/C12345678/p1234567890123456
+  // https://app.slack.com/client/TXXXXXXXX/C12345678/thread/C12345678-1234567890.123456
+  try{
+    const u = new URL(url);
+    const parts = u.pathname.split('/').filter(Boolean);
+    // /archives/CXXXXX/pTIMESTAMP
+    const archIdx = parts.indexOf('archives');
+    if(archIdx>=0 && parts[archIdx+1] && parts[archIdx+2]){
+      const channelId = parts[archIdx+1];
+      const raw = parts[archIdx+2]; // p1234567890123456
+      if(raw.startsWith('p')){
+        const ts = raw.slice(1,11)+'.'+raw.slice(11); // 1234567890.123456
+        return {channelId, ts};
+      }
+    }
+    // thread/CXXXXX-TIMESTAMP
+    const threadIdx = parts.indexOf('thread');
+    if(threadIdx>=0 && parts[threadIdx+1]){
+      const [channelId, ts] = parts[threadIdx+1].split('-');
+      if(channelId && ts) return {channelId, ts};
+    }
+  }catch(_){}
+  return null;
+}
+
+async function fetchSlackThread(url){
+  const saved = await db.get('settings','slackToken');
+  if(!saved?.value) throw new Error('Slack 토큰이 없습니다. ⚙️ Agent 설정에서 Slack 토큰을 입력해주세요.');
+  const parsed = parseSlackUrl(url.trim());
+  if(!parsed) throw new Error('Slack 스레드 URL 형식을 인식할 수 없습니다.\n예: https://xxx.slack.com/archives/C.../p...');
+
+  const {channelId, ts} = parsed;
+  const params = new URLSearchParams({channel: channelId, ts, limit:'200', inclusive:'true'});
+  const res = await fetch(`https://slack.com/api/conversations.replies?${params}`,{
+    headers:{'Authorization':`Bearer ${saved.value}`}
+  });
+  if(!res.ok) throw new Error(`Slack API 오류: ${res.status}`);
+  const data = await res.json();
+  if(!data.ok) throw new Error(`Slack 오류: ${data.error}`);
+
+  // Get user IDs to resolve names
+  const userIds = [...new Set((data.messages||[]).map(m=>m.user).filter(Boolean))];
+  const userMap = {};
+  await Promise.all(userIds.map(async uid=>{
+    try{
+      const r = await fetch(`https://slack.com/api/users.info?user=${uid}`,{
+        headers:{'Authorization':`Bearer ${saved.value}`}
+      });
+      const d = await r.json();
+      if(d.ok) userMap[uid] = d.user?.profile?.display_name || d.user?.real_name || uid;
+    }catch(_){ userMap[uid]=uid; }
+  }));
+
+  // Format as readable text for AI parsing
+  const lines = (data.messages||[]).map(m=>{
+    const speaker = userMap[m.user] || m.username || m.user || '알수없음';
+    const dt = m.ts ? new Date(parseFloat(m.ts)*1000).toISOString() : '';
+    const text = (m.text||'').replace(/<@([A-Z0-9]+)>/g, (_,uid)=>`@${userMap[uid]||uid}`);
+    return `[${dt.replace('T',' ').slice(0,16)}] ${speaker}: ${text}`;
+  });
+  return lines.join('\n');
+}
+
 // ── COMM AI PARSE ────────────────────────────────────────────────
 async function parseCommWithAI(rawText){
   const saved = await db.get('settings','anthropicApiKey');
@@ -3542,13 +3618,21 @@ async function showCommModal(id){
     return `
       <div class="ai-parse-section">
         <div class="ai-parse-header">
-          <span>원문 붙여넣기</span>
-          <span style="color:var(--text3);font-size:12px">Slack 스레드, Gmail 이메일, 메모 등 그대로 붙여넣으세요</span>
+          <span>Slack 스레드 URL</span>
+          <span style="color:var(--text3);font-size:12px">링크 붙여넣기 → 자동으로 내용 가져옴</span>
         </div>
-        <textarea id="f-raw" class="ai-parse-textarea" rows="7" placeholder="Slack 스레드, Gmail 이메일 등 원문을 그대로 붙여넣으세요.
-AI가 채널, 방향, 제목, 발화자별 메시지, 담당자, 요약, 액션아이템을 자동으로 구분합니다.
-
-직접 입력도 가능합니다. 아래 필드를 바로 채워도 됩니다."></textarea>
+        <div style="display:flex;gap:8px;align-items:center">
+          <input type="text" id="f-slack-url" placeholder="https://workspace.slack.com/archives/C.../p..." style="flex:1;font-size:13px;padding:8px 10px;border:1px solid var(--border);border-radius:var(--radius);background:var(--bg2);color:var(--text)">
+          <button class="btn-ai-parse" id="btn-slack-fetch" onclick="runSlackFetch()" style="white-space:nowrap;padding:8px 14px">가져오기</button>
+        </div>
+      </div>
+      <div class="ai-parse-section" style="margin-top:0;border-top:none;padding-top:0">
+        <div class="ai-parse-header">
+          <span>원문 직접 입력</span>
+          <span style="color:var(--text3);font-size:12px">Slack 복붙, 이메일, 메모 등 자유롭게</span>
+        </div>
+        <textarea id="f-raw" class="ai-parse-textarea" rows="6" placeholder="내용을 그대로 붙여넣거나 직접 입력하세요.
+AI가 발화자·날짜·담당자·요약·액션아이템을 자동으로 구분합니다."></textarea>
         <button class="btn-ai-parse" id="btn-ai-parse" onclick="runAIParse()">AI 정리</button>
       </div>
       <div class="parsed-fields" id="parsed-fields" style="${p?'':'display:none'}">
@@ -3659,6 +3743,26 @@ AI가 채널, 방향, 제목, 발화자별 메시지, 담당자, 요약, 액션�
     {label:'취소', cls:'btn-ghost', action:()=>closeModal()},
     ...(isEdit?[{label:'삭제', cls:'btn-danger', action:()=>deleteComm(id)}]:[])
   ]);
+
+  // Slack fetch handler
+  window.runSlackFetch = async function(){
+    const url = document.getElementById('f-slack-url')?.value.trim();
+    if(!url){alert('Slack 스레드 URL을 입력해주세요.');return;}
+    const btn = document.getElementById('btn-slack-fetch');
+    btn.disabled = true;
+    btn.innerHTML = '<span style="display:inline-block;animation:spin 1s linear infinite">⟳</span> 가져오는 중...';
+    try{
+      const raw = await fetchSlackThread(url);
+      const ta = document.getElementById('f-raw');
+      if(ta) ta.value = raw;
+      // Auto-run AI parse
+      await window.runAIParse();
+    }catch(e){
+      alert('Slack 가져오기 실패: '+e.message);
+    }finally{
+      if(btn){btn.disabled=false;btn.textContent='가져오기';}
+    }
+  };
 
   // Attach AI parse handler
   window.runAIParse = async function(){
