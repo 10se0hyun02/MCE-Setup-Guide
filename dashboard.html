@@ -3431,7 +3431,18 @@ JSON 형식:
   const text = data.content[0].text.trim();
   const jsonMatch = text.match(/\{[\s\S]*\}/);
   if(!jsonMatch) throw new Error('AI 응답을 파싱할 수 없습니다.');
-  return JSON.parse(jsonMatch[0]);
+  let jsonStr = jsonMatch[0];
+  // 흔한 JSON 오류 정리: trailing comma, 줄바꿈이 포함된 문자열 등
+  jsonStr = jsonStr
+    .replace(/,\s*([}\]])/g, '$1')           // trailing comma 제거
+    .replace(/[ -]/g, ' '); // 제어문자 공백 치환
+  try {
+    return JSON.parse(jsonStr);
+  } catch(e) {
+    // 파싱 실패 시 content 필드만이라도 추출해서 반환
+    const summary = text.replace(/\{[\s\S]*\}/, '').trim() || text.slice(0, 500);
+    return { channel:'기타', direction:'외부', subject:'', counterparty:null, owner:[], summary, action_items:[], messages:[] };
+  }
 }
 
 // ── COMM TAB ─────────────────────────────────────────────────────
