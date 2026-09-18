@@ -3335,9 +3335,13 @@ async function fetchSlackThread(url){
   const {channelId, ts} = parsed;
   const token = saved.value;
 
-  // 토큰을 쿼리 파라미터로 전달 (Authorization 헤더는 Slack CORS에서 차단됨)
+  // 로컬 프록시 경유 (Slack API는 브라우저에서 직접 호출 불가 - CORS/보안 제한)
   const slackFetch = (endpoint, params) =>
-    fetch(`https://slack.com/api/${endpoint}?${new URLSearchParams({token, ...params})}`).then(r=>r.json());
+    fetch('http://localhost:3002', {
+      method: 'POST',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify({token, endpoint, params: params||{}}),
+    }).then(r=>r.json());
 
   const [threadData, channelData] = await Promise.all([
     slackFetch('conversations.replies', {channel:channelId, ts, limit:'200', inclusive:'true'}),
