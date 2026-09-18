@@ -3434,8 +3434,7 @@ JSON 형식:
   let jsonStr = jsonMatch[0];
   // 흔한 JSON 오류 정리: trailing comma, 줄바꿈이 포함된 문자열 등
   jsonStr = jsonStr
-    .replace(/,\s*([}\]])/g, '$1')           // trailing comma 제거
-    .replace(/[ -]/g, ' '); // 제어문자 공백 치환
+    .replace(/,\s*([}\]])/g, '$1');          // trailing comma 제거
   try {
     return JSON.parse(jsonStr);
   } catch(e) {
