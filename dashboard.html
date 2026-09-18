@@ -3333,35 +3333,43 @@ async function fetchSlackThread(url){
   if(!parsed) throw new Error('Slack 스레드 URL 형식을 인식할 수 없습니다.\n예: https://xxx.slack.com/archives/C.../p...');
 
   const {channelId, ts} = parsed;
-  const params = new URLSearchParams({channel: channelId, ts, limit:'200', inclusive:'true'});
-  const res = await fetch(`https://slack.com/api/conversations.replies?${params}`,{
-    headers:{'Authorization':`Bearer ${saved.value}`}
-  });
-  if(!res.ok) throw new Error(`Slack API 오류: ${res.status}`);
-  const data = await res.json();
-  if(!data.ok) throw new Error(`Slack 오류: ${data.error}`);
+  const token = saved.value;
+  const headers = {'Authorization':`Bearer ${token}`};
 
-  // Get user IDs to resolve names
-  const userIds = [...new Set((data.messages||[]).map(m=>m.user).filter(Boolean))];
+  // Fetch thread messages + channel info in parallel
+  const [threadRes, channelRes] = await Promise.all([
+    fetch(`https://slack.com/api/conversations.replies?${new URLSearchParams({channel:channelId,ts,limit:'200',inclusive:'true'})}`,{headers}),
+    fetch(`https://slack.com/api/conversations.info?${new URLSearchParams({channel:channelId})}`,{headers}),
+  ]);
+  const [threadData, channelData] = await Promise.all([threadRes.json(), channelRes.json()]);
+  if(!threadData.ok) throw new Error(`Slack 오류: ${threadData.error}`);
+
+  const channelName = channelData.ok
+    ? (channelData.channel?.name || channelData.channel?.id || channelId)
+    : channelId;
+
+  // Resolve user names
+  const userIds = [...new Set((threadData.messages||[]).map(m=>m.user).filter(Boolean))];
   const userMap = {};
   await Promise.all(userIds.map(async uid=>{
     try{
-      const r = await fetch(`https://slack.com/api/users.info?user=${uid}`,{
-        headers:{'Authorization':`Bearer ${saved.value}`}
-      });
+      const r = await fetch(`https://slack.com/api/users.info?user=${uid}`,{headers});
       const d = await r.json();
       if(d.ok) userMap[uid] = d.user?.profile?.display_name || d.user?.real_name || uid;
     }catch(_){ userMap[uid]=uid; }
   }));
 
+  const speakers = [...new Set(userIds.map(uid=>userMap[uid]||uid))];
+
   // Format as readable text for AI parsing
-  const lines = (data.messages||[]).map(m=>{
+  const lines = (threadData.messages||[]).map(m=>{
     const speaker = userMap[m.user] || m.username || m.user || '알수없음';
     const dt = m.ts ? new Date(parseFloat(m.ts)*1000).toISOString() : '';
     const text = (m.text||'').replace(/<@([A-Z0-9]+)>/g, (_,uid)=>`@${userMap[uid]||uid}`);
     return `[${dt.replace('T',' ').slice(0,16)}] ${speaker}: ${text}`;
   });
-  return lines.join('\n');
+
+  return { raw: lines.join('\n'), channelName, speakers };
 }
 
 // ── COMM AI PARSE ────────────────────────────────────────────────
@@ -3762,11 +3770,27 @@ AI가 발화자·날짜·담당자·요약·액션아이템을 자동으로 구�
     btn.disabled = true;
     btn.innerHTML = '<span style="display:inline-block;animation:spin 1s linear infinite">⟳</span> 가져오는 중...';
     try{
-      const raw = await fetchSlackThread(url);
+      const {raw, channelName, speakers} = await fetchSlackThread(url);
       const ta = document.getElementById('f-raw');
       if(ta) ta.value = raw;
-      // Auto-run AI parse
+      // AI 정리 실행
       await window.runAIParse();
+      // 채널명·참여자 자동 입력 (AI 정리 후 덮어쓰기)
+      const subjectEl = document.getElementById('f-subject');
+      const counterpartyEl = document.getElementById('f-counterparty');
+      const ownerEl = document.getElementById('f-owner');
+      if(counterpartyEl && !counterpartyEl.value) counterpartyEl.value = `#${channelName}`;
+      if(counterpartyEl && counterpartyEl.value && !counterpartyEl.value.startsWith('#')){
+        // 채널명을 subject 앞에 표기
+      }
+      // 참여자 목록: AI가 owner를 못 찾은 경우 speakers로 채움
+      if(ownerEl && !ownerEl.value && speakers.length) ownerEl.value = speakers.join(', ');
+      // 채널명을 제목 앞에 추가
+      if(subjectEl && channelName){
+        if(!subjectEl.value.startsWith(`[#${channelName}]`)){
+          subjectEl.value = `[#${channelName}] ${subjectEl.value}`.trim();
+        }
+      }
     }catch(e){
       alert('Slack 가져오기 실패: '+e.message);
     }finally{
