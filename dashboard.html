@@ -3385,7 +3385,7 @@ ${rawText}
 추출 규칙:
 - channel: 원문 형식으로 자동 감지. Gmail 형식(From:/Date:/Subject: 헤더) → "Gmail", Slack 형식(이름 + 시간 패턴) → "Slack", 그 외 → "전화"/"대면미팅"/"기타"
 - direction: 모두 같은 조직이면 "내부", 외부 회사/이메일 도메인이 있으면 "외부"
-- subject: 이메일 Subject 줄 또는 대화 주제를 한 줄로
+- subject: 이메일이면 Subject 줄, Slack이면 첫 번째 메시지 내용을 그대로 한 줄로 (요약하지 말고 원문 첫 메시지 사용)
 - counterparty: direction이 "외부"일 때 상대방 회사명 또는 이름. 없으면 null
 - owner: @멘션된 사람 배열. 없으면 []
 - summary: 전체 내용을 2-3문장으로 요약
@@ -3719,7 +3719,6 @@ AI가 발화자·날짜·담당자·요약·액션아이템을 자동으로 구�
     {label: isEdit?'수정 저장':'저장', cls:'btn-primary', action: async()=>{
       const pf = document.getElementById('parsed-fields');
       if(!pf || pf.style.display==='none'){
-        // No parsed fields: save raw text as legacy
         const raw = document.getElementById('f-raw')?.value.trim()||'';
         if(!raw){alert('내용을 입력하거나 AI 정리를 해주세요.');return false;}
         const today = new Date().toISOString().slice(0,10);
@@ -3736,26 +3735,33 @@ AI가 발화자·날짜·담당자·요약·액션아이템을 자동으로 구�
       if(!subject && !summary){alert('제목 또는 요약을 입력해주세요.');return false;}
       const actionsRaw = document.getElementById('f-actions')?.value||'';
       const ownerRaw = document.getElementById('f-owner')?.value||'';
+      const counterparty = document.getElementById('f-counterparty')?.value.trim()||'';
       const firstMsgDate = (parsed?.messages?.[0]?.datetime||'').slice(0,10);
       const today2 = new Date().toISOString().slice(0,10);
-      const obj = {
+      const newObj = {
         id: item?.id||genId(), projectId: PROJECT_ID,
         channel: document.getElementById('f-channel').value,
         direction: document.getElementById('f-direction').value,
-        subject,
-        counterparty: document.getElementById('f-counterparty')?.value.trim()||'',
+        subject, counterparty,
         owner: ownerRaw.split(',').map(s=>s.trim()).filter(Boolean),
         summary,
         actionItems: actionsRaw.split('\n').map(s=>s.trim()).filter(Boolean),
         messages: parsed?.messages||[],
-        // legacy compat
         date: firstMsgDate||today2,
         type: document.getElementById('f-channel').value,
-        participants: ownerRaw,
-        content: summary,
+        participants: ownerRaw, content: summary,
         createdAt: item?.createdAt||Date.now(), loggedAt: Date.now(),
       };
-      await db.put('communications', obj);
+      // 신규 저장일 때만 유사 항목 검사
+      if(!isEdit){
+        const similar = await findSimilarComm(subject, counterparty);
+        if(similar){
+          closeModal();
+          showMergeConfirm(similar, newObj);
+          return;
+        }
+      }
+      await db.put('communications', newObj);
       closeModal(); renderTab('comm');
     }},
     {label:'취소', cls:'btn-ghost', action:()=>closeModal()},
@@ -3878,6 +3884,70 @@ AI가 발화자·날짜·담당자·요약·액션아이템을 자동으로 구�
       if(pf) pf.style.display='';
     },30);
   }
+}
+
+async function findSimilarComm(subject, counterparty){
+  const all = await db.getByIndex('communications','projectId',PROJECT_ID);
+  const thirtyDaysAgo = Date.now() - 30*24*60*60*1000;
+  const recent = all.filter(c=>(c.loggedAt||c.createdAt||0) > thirtyDaysAgo);
+
+  // 키워드 overlap 계산
+  const subjectTokens = (subject||'').replace(/\[#[^\]]+\]/g,'').split(/[\s,\[\]·\-\/]+/).filter(s=>s.length>1);
+
+  for(const c of recent){
+    const cTokens = (c.subject||c.content||'').split(/[\s,\[\]·\-\/]+/).filter(s=>s.length>1);
+    const overlap = subjectTokens.filter(t=>cTokens.some(ct=>ct.includes(t)||t.includes(ct)));
+    const sameChannel = counterparty && c.counterparty && (
+      c.counterparty.toLowerCase()===counterparty.toLowerCase()
+    );
+    if(sameChannel && overlap.length>=1) return c;
+    if(!sameChannel && overlap.length>=3) return c;
+  }
+  return null;
+}
+
+function showMergeConfirm(existing, newObj){
+  const existDate = existing.date||(existing.messages?.[0]?.datetime||'').slice(0,10)||'';
+  const newMsgCount = (newObj.messages||[]).length;
+  showModal('기존 기록과 합칠까요?', `
+    <div style="background:var(--bg);border-radius:var(--radius);padding:12px 14px;margin-bottom:14px">
+      <div style="font-size:12px;color:var(--text3);margin-bottom:4px">${esc(existDate)}</div>
+      <div style="font-size:13px;font-weight:600;color:var(--text);margin-bottom:4px">${esc(existing.subject||existing.content||'제목 없음')}</div>
+      <div style="font-size:12px;color:var(--text2)">메시지 ${(existing.messages||[]).length}건 · ${esc(existing.counterparty||'')}</div>
+    </div>
+    <p style="font-size:13px;color:var(--text2);line-height:1.6">
+      비슷한 기록이 있습니다.<br>
+      새 메시지 <strong>${newMsgCount}건</strong>을 기존 기록에 이어서 추가할까요?
+    </p>
+  `,[
+    {label:'이어서 저장', cls:'btn-primary', action: async()=>{
+      // 기존 메시지에 새 메시지 병합 (datetime 기준 정렬, 중복 제거)
+      const existMsgs = existing.messages||[];
+      const newMsgs = newObj.messages||[];
+      const existKeys = new Set(existMsgs.map(m=>m.datetime+m.speaker+m.content.slice(0,20)));
+      const freshMsgs = newMsgs.filter(m=>!existKeys.has(m.datetime+m.speaker+(m.content||'').slice(0,20)));
+      const merged = [...existMsgs, ...freshMsgs].sort((a,b)=>(a.datetime||'').localeCompare(b.datetime||''));
+      // 액션아이템 병합
+      const existActions = new Set(existing.actionItems||[]);
+      const mergedActions = [...existActions, ...(newObj.actionItems||[]).filter(a=>!existActions.has(a))];
+      const updated = {
+        ...existing,
+        messages: merged,
+        actionItems: mergedActions,
+        summary: existing.summary || newObj.summary,
+        date: merged[0]?.datetime?.slice(0,10) || existing.date,
+        loggedAt: Date.now(),
+      };
+      await db.put('communications', updated);
+      closeModal(); renderTab('comm');
+      showToast(`기존 기록에 메시지 ${freshMsgs.length}건 추가됨`);
+    }},
+    {label:'별도 저장', cls:'btn-ghost', action: async()=>{
+      await db.put('communications', newObj);
+      closeModal(); renderTab('comm');
+    }},
+    {label:'취소', cls:'btn-ghost', action:()=>closeModal()},
+  ]);
 }
 
 async function deleteComm(id){
