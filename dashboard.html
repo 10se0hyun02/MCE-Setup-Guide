@@ -1716,11 +1716,11 @@ async function openAgentSettings(){
       </div>
     </div>`,
     [{label:'저장', cls:'btn-primary', action:async()=>{
-      const h = await setupSyncDir();
       const key = document.getElementById('f-api-key').value.trim();
       const slackToken = document.getElementById('f-slack-token').value.trim();
       if(key) await db.put('settings',{key:'anthropicApiKey', value:key});
       if(slackToken) await db.put('settings',{key:'slackToken', value:slackToken});
+      try{ await setupSyncDir(); }catch(_){} // 폴더 선택은 선택사항
       closeModal();
       showToast('설정이 저장되었습니다');
     }},{label:'닫기', cls:'btn-ghost', action:()=>closeModal()}]
