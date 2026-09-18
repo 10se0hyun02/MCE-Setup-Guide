@@ -1562,7 +1562,7 @@ async function autoSaveDashboard(dirHandle){
     const issues = await db.getByIndex('issues','projectId',PROJECT_ID);
     const notes = await db.getByIndex('notes','projectId',PROJECT_ID);
     const todos = await db.getByIndex('todos','projectId',PROJECT_ID);
-    const threads = await new Promise(r=>{const req=db.transaction('threads','readonly').objectStore('threads').getAll();req.onsuccess=()=>r(req.result);});
+    const threads = await db.getAll('threads');
     const data = {
       version:4, exportedAt:new Date().toISOString(),
       project:p, communications:comms, issues, notes, todos, threads
