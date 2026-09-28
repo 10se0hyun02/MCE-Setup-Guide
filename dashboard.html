@@ -1027,6 +1027,80 @@ body{
 .briefing-kpi-total{font-size:14px;font-weight:400;color:var(--text3)}
 .briefing-kpi-label{font-size:12px;color:var(--text3);margin-top:6px}
 
+/* ── KICKOFF TAB ── */
+.kickoff-pane{flex:1;padding:32px 48px;overflow-y:auto;height:100%;box-sizing:border-box}
+.kickoff-inner{max-width:1100px;margin:0 auto}
+.ko-header{background:linear-gradient(135deg,var(--blue) 0%,#5856d6 100%);border-radius:var(--radius-lg);padding:28px 32px;margin-bottom:32px;color:#fff}
+.ko-header h1{font-size:20px;font-weight:700;margin-bottom:6px}
+.ko-header p{font-size:13px;opacity:.85;margin:0}
+.ko-header .ko-badges{display:flex;gap:8px;margin-top:14px;flex-wrap:wrap}
+.ko-badge{background:rgba(255,255,255,.18);border:1px solid rgba(255,255,255,.3);border-radius:99px;padding:3px 12px;font-size:11px;font-weight:600;color:#fff;white-space:nowrap}
+.ko-section{margin-bottom:36px}
+.ko-section-title{font-size:13px;font-weight:700;color:var(--text2);margin-bottom:14px;padding-bottom:8px;border-bottom:2px solid var(--blue);display:flex;align-items:center;gap:8px;letter-spacing:.02em}
+.ko-grid2{display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-bottom:0}
+.ko-card{background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius-lg);padding:20px 22px;box-shadow:var(--shadow)}
+.ko-card-title{font-size:11px;font-weight:700;color:var(--text3);letter-spacing:.08em;text-transform:uppercase;margin-bottom:12px}
+.ko-info-table{width:100%;border-collapse:collapse;font-size:13px}
+.ko-info-table tr{border-bottom:1px solid var(--border)}
+.ko-info-table tr:last-child{border-bottom:none}
+.ko-info-table th{width:130px;padding:8px 0;color:var(--text3);font-weight:500;vertical-align:top;white-space:nowrap}
+.ko-info-table td{padding:8px 0 8px 8px;color:var(--text);line-height:1.5}
+.ko-obj-item{display:flex;gap:12px;padding:10px 0;border-bottom:1px solid var(--border)}
+.ko-obj-item:last-child{border-bottom:none}
+.ko-obj-num{width:24px;height:24px;border-radius:50%;background:var(--blue-bg);color:var(--blue);font-size:12px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px}
+.ko-obj-body h4{font-size:13px;font-weight:600;color:var(--text);margin-bottom:4px}
+.ko-obj-body p{font-size:12px;color:var(--text2);line-height:1.6;margin:0}
+.ko-scope-table{width:100%;border-collapse:collapse;font-size:12px}
+.ko-scope-table th{background:var(--bg3);color:var(--text2);font-weight:600;padding:8px 10px;text-align:left;border:1px solid var(--border2);font-size:11px;white-space:nowrap}
+.ko-scope-table td{padding:8px 10px;border:1px solid var(--border);color:var(--text);vertical-align:top;line-height:1.5}
+.ko-scope-table tr:hover td{background:rgba(59,130,246,.04)}
+.ko-cat-badge{display:inline-block;padding:2px 8px;border-radius:4px;font-size:10px;font-weight:700;white-space:nowrap}
+.ko-cat-pm{background:var(--purple-bg);color:var(--purple)}
+.ko-cat-design{background:var(--amber-bg);color:var(--amber)}
+.ko-cat-dc{background:var(--green-bg);color:var(--green)}
+.ko-cat-sales{background:var(--blue-bg);color:var(--blue)}
+.ko-cat-mca{background:var(--red-bg);color:var(--red)}
+.ko-phase-list{display:flex;flex-direction:column;gap:10px}
+.ko-phase-item{display:flex;gap:14px;align-items:flex-start;padding:12px 14px;background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius);box-shadow:var(--shadow)}
+.ko-phase-num{width:28px;height:28px;border-radius:50%;background:var(--blue);color:#fff;font-size:12px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.ko-phase-body h4{font-size:13px;font-weight:600;color:var(--text);margin:0 0 3px}
+.ko-phase-body p{font-size:12px;color:var(--text3);margin:0}
+.ko-phase-body .ko-phase-who{font-size:11px;color:var(--blue);font-weight:600;margin-top:4px}
+.ko-stake-list{display:flex;flex-direction:column;gap:8px}
+.ko-stake-item{background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius);padding:12px 14px;box-shadow:var(--shadow)}
+.ko-stake-name{font-size:12px;font-weight:700;color:var(--text);margin-bottom:6px}
+.ko-stake-roles{font-size:11px;color:var(--text2);line-height:1.7;padding-left:2px}
+/* 간트 차트 */
+.ko-gantt-wrap{overflow-x:auto;border-radius:var(--radius);border:1px solid var(--border)}
+.ko-gantt{width:100%;border-collapse:collapse;font-size:12px}
+.ko-gantt th{background:var(--bg3);color:var(--text2);font-weight:600;padding:8px 10px;text-align:center;border:1px solid var(--border2);white-space:nowrap;font-size:11px}
+.ko-gantt th:first-child{text-align:left;width:220px}
+.ko-gantt td{padding:6px 10px;border:1px solid var(--border);color:var(--text2);font-size:11px;vertical-align:middle}
+.ko-gantt td:first-child{font-weight:500;color:var(--text);background:var(--bg2);white-space:nowrap}
+.ko-gantt .gantt-bar{background:var(--blue);border-radius:3px;height:18px;width:100%;display:block;opacity:.75}
+.ko-gantt .gantt-bar.bar-pm{background:#5856d6}
+.ko-gantt .gantt-bar.bar-design{background:var(--amber)}
+.ko-gantt .gantt-bar.bar-dc{background:var(--green)}
+.ko-gantt .gantt-bar.bar-mca{background:var(--red)}
+.ko-gantt .gantt-bar.bar-post{background:var(--text3)}
+.ko-gantt .gantt-ms{text-align:center;font-size:10px;font-weight:700;color:var(--blue)}
+.ko-gantt .gantt-ms-diamond{font-size:14px}
+.ko-milestone-list{display:flex;gap:10px;flex-wrap:wrap;margin-top:14px}
+.ko-milestone-item{display:flex;align-items:center;gap:8px;background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius);padding:8px 14px;box-shadow:var(--shadow)}
+.ko-milestone-date{font-size:11px;font-weight:700;color:var(--blue);white-space:nowrap}
+.ko-milestone-label{font-size:12px;color:var(--text)}
+/* 조직도 */
+.ko-org-tier{margin-bottom:16px}
+.ko-org-tier-label{font-size:10px;font-weight:700;color:var(--text3);letter-spacing:.08em;text-transform:uppercase;margin-bottom:8px}
+.ko-org-members{display:flex;flex-wrap:wrap;gap:8px}
+.ko-member-chip{display:flex;align-items:center;gap:8px;background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius);padding:8px 12px;box-shadow:var(--shadow)}
+.ko-member-avatar{width:30px;height:30px;border-radius:50%;background:var(--blue-bg);color:var(--blue);font-size:12px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.ko-member-info h5{font-size:12px;font-weight:600;color:var(--text);margin:0 0 1px}
+.ko-member-info p{font-size:10px;color:var(--text3);margin:0}
+.ko-parts-table{width:100%;border-collapse:collapse;font-size:12px}
+.ko-parts-table th{background:var(--bg3);color:var(--text2);font-weight:600;padding:8px 10px;text-align:left;border:1px solid var(--border2);font-size:11px}
+.ko-parts-table td{padding:8px 10px;border:1px solid var(--border);color:var(--text);line-height:1.5}
+.ko-note{background:var(--amber-bg);border:1px solid var(--amber);border-radius:var(--radius);padding:10px 14px;font-size:12px;color:var(--text2);margin-top:12px;line-height:1.6}
 /* ── COMM TYPE COLORS ── */
 .ct-email { --ct-c:#2e7de9; --ct-b:#dce8fb }
 .ct-phone { --ct-c:#587539; --ct-b:#ddeec8 }
@@ -1227,6 +1301,8 @@ body{
   <button id="steps-tab-btn" data-tab-group="steps">📊 MCE 구축현황</button>
   <div class="tab-sep"></div>
   <button data-tab-group="workspace">📋 업무 기록</button>
+  <div class="tab-sep"></div>
+  <button data-tab="kickoff">🚀 킥오프</button>
 </nav>
 
 <!-- STEPS SUB TAB NAV -->
@@ -1834,7 +1910,7 @@ function renderTab(tab){
 
   const el = document.getElementById('tab-content');
   el.innerHTML = '';
-  const fns = {briefing:renderBriefing,steps:renderSteps,'steps-seonopen':renderStepsSeonopen,'steps-d2c':renderStepsD2C,'steps-o2o':renderStepsO2O,meeting:renderMeeting,comm:renderComm,files:renderFiles,issues:renderIssues,notes:renderNotes,todo:renderTodo,snippet:renderSnippets};
+  const fns = {briefing:renderBriefing,kickoff:renderKickoff,steps:renderSteps,'steps-seonopen':renderStepsSeonopen,'steps-d2c':renderStepsD2C,'steps-o2o':renderStepsO2O,meeting:renderMeeting,comm:renderComm,files:renderFiles,issues:renderIssues,notes:renderNotes,todo:renderTodo,snippet:renderSnippets};
   fns[tab]();
   if(tab!=='briefing') autoSaveDashboard();
 }
@@ -2220,6 +2296,367 @@ async function showMeetingExtractModal(m){
 }
 
 // ── BRIEFING TAB ─────────────────────────────────────────────────
+// ── KICKOFF TAB ──────────────────────────────────────────────────
+function renderKickoff(){
+  const el = document.getElementById('tab-content');
+  el.innerHTML = `<div class="kickoff-pane"><div class="kickoff-inner">
+
+    <!-- 헤더 배너 -->
+    <div class="ko-header">
+      <h1>🚀 Solta Medical Korea — Salesforce Marketing Campaign Design</h1>
+      <p>킥오프 미팅 기준 프로젝트 개요 · 범위 · 일정 · 조직 (2026. 09. 28)</p>
+      <div class="ko-badges">
+        <span class="ko-badge">계약 기간: 2026.08.03 ~ 2027.02.03</span>
+        <span class="ko-badge">디자인 기간: 2026.09.28 ~ 2026.11.20 (8주)</span>
+        <span class="ko-badge">테스트·교육: 2027년 2월 (TBD)</span>
+      </div>
+    </div>
+
+    <!-- 01 프로젝트 개요 -->
+    <div class="ko-section">
+      <div class="ko-section-title">01 · 프로젝트 개요</div>
+      <div class="ko-grid2">
+        <div class="ko-card">
+          <div class="ko-card-title">기본 정보</div>
+          <table class="ko-info-table">
+            <tr><th>프로젝트</th><td>Solta Medical Korea Salesforce Marketing Campaign Design Project</td></tr>
+            <tr><th>클라이언트</th><td>Solta Medical Korea<br><span style="color:var(--text3);font-size:11px">글로벌: Solta Medical, Inc. (Bausch Health)</span></td></tr>
+            <tr><th>벤더</th><td>MILVUS Co., Ltd.</td></tr>
+            <tr><th>계약 기간</th><td>2026.08.03 ~ 2027.02.03</td></tr>
+            <tr><th>디자인 기간</th><td>2026.09.28 ~ 2026.11.20 (8주)</td></tr>
+            <tr><th>테스트·교육</th><td>2027년 2월 예정 <span style="color:var(--text3)">(글로벌 구축 완료 후 확정 TBD)</span></td></tr>
+            <tr><th>킥오프</th><td>2026.09.28 (월)</td></tr>
+          </table>
+          <div class="ko-note" style="margin-top:14px">⚙️ <strong>일정 조정</strong>: 견적서 3개월 → 킥오프 지연으로 2개월(8주)로 단축. 범위 유지, 업무 병행 처리로 재배열.</div>
+        </div>
+        <div class="ko-card">
+          <div class="ko-card-title">프로젝트 목표</div>
+          <div class="ko-obj-item">
+            <div class="ko-obj-num">1</div>
+            <div class="ko-obj-body">
+              <h4>캠페인 설계 (Solta KR 요건 기반)</h4>
+              <p>이해관계자 인터뷰·요건 분석을 통한 캠페인 시나리오 3건<br>타겟 오디언스 세그먼트 및 세부 저니 설계</p>
+            </div>
+          </div>
+          <div class="ko-obj-item">
+            <div class="ko-obj-num">2</div>
+            <div class="ko-obj-body">
+              <h4>데이터·UI 설계 문서화</h4>
+              <p>Data Cloud 인터페이스 명세<br>Lightning UI 레이아웃 설계 및 KPI 대시보드 계획 (1페이지)</p>
+            </div>
+          </div>
+          <div class="ko-obj-item">
+            <div class="ko-obj-num">3</div>
+            <div class="ko-obj-body">
+              <h4>글로벌 구축 연계 및 운영 내재화</h4>
+              <p>글로벌 구현사에 설계 패키지 인계<br>구축 후 발송 테스트 지원, KR 매뉴얼 제작 및 사용자 교육</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 02 프로젝트 범위 -->
+    <div class="ko-section">
+      <div class="ko-section-title">02 · 프로젝트 범위</div>
+      <div class="ko-card" style="padding:0;overflow:hidden">
+        <div style="overflow-x:auto">
+          <table class="ko-scope-table">
+            <thead>
+              <tr>
+                <th style="width:80px">카테고리</th>
+                <th style="width:200px">작업 영역</th>
+                <th>세부 업무</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><span class="ko-cat-badge ko-cat-pm">PM</span></td>
+                <td>거버넌스 및 프로그램 관리</td>
+                <td>프로젝트 진행 관리 및 리더십 (WBS, 커뮤니케이션 계획, 산출물 관리)</td>
+              </tr>
+              <tr>
+                <td><span class="ko-cat-badge ko-cat-pm">PM</span></td>
+                <td>비즈니스 요건</td>
+                <td>이해관계자 인터뷰, 클라이언트 요건·니즈 분석, 데이터 통합 범위 정의 및 통합 설계</td>
+              </tr>
+              <tr>
+                <td><span class="ko-cat-badge ko-cat-design">Design</span></td>
+                <td>크리에이티브 콘텐츠 및 디지털 에셋</td>
+                <td>콘텐츠 기획 (3~5건), 디자인 에셋(이미지) 제작 (3~5건), 콘텐츠별 링크·URL 검수</td>
+              </tr>
+              <tr>
+                <td><span class="ko-cat-badge ko-cat-dc">DC</span></td>
+                <td>Data Cloud 요건 및 명세</td>
+                <td>캠페인 세그먼트 기준 설계, 인터페이스 명세서 작성</td>
+              </tr>
+              <tr>
+                <td><span class="ko-cat-badge ko-cat-sales">Sales Cloud</span></td>
+                <td>Lightning UI / Analytics &amp; Dashboard MVP</td>
+                <td>Lightning UI 레이아웃 설계, KPI 모니터링 대시보드 계획 (1페이지)</td>
+              </tr>
+              <tr>
+                <td><span class="ko-cat-badge ko-cat-mca">MCA</span></td>
+                <td>캠페인 저니 설계</td>
+                <td>캠페인 시나리오 설계 (3건), 타겟 오디언스 세그먼트 정의, 세부 캠페인 설계 (트리거·분기)</td>
+              </tr>
+              <tr>
+                <td><span class="ko-cat-badge ko-cat-mca">MCA</span></td>
+                <td>캠페인 구축 및 실행</td>
+                <td>캠페인 자동화 스케줄링 설정 (3건), A/B 테스트 설정, 최종 론칭 전 테스트 발송 및 QA</td>
+              </tr>
+              <tr>
+                <td><span class="ko-cat-badge ko-cat-mca">MCA</span></td>
+                <td>캠페인 모니터링·최적화 / 교육</td>
+                <td>통합 시나리오 테스트 (메시지 발송 테스트 지원), KR 전용 매뉴얼 제작·배포, 사용자 교육</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <div class="ko-note">* 테스트·매뉴얼 분량은 전체 구축 범위에 따라 변동 가능. 메시지 채널·콘텐츠 수·시나리오 채널은 추후 확정 (TBD).</div>
+    </div>
+
+    <!-- 03 프로젝트 프레임워크 -->
+    <div class="ko-section">
+      <div class="ko-section-title">03 · 프로젝트 프레임워크</div>
+      <div class="ko-grid2">
+        <div>
+          <div class="ko-card-title" style="font-size:11px;font-weight:700;color:var(--text3);letter-spacing:.08em;text-transform:uppercase;margin-bottom:10px">이해관계자 및 역할</div>
+          <div class="ko-stake-list">
+            <div class="ko-stake-item">
+              <div class="ko-stake-name">🏢 Solta Medical Korea</div>
+              <div class="ko-stake-roles">• 비즈니스 요건 및 마케팅 목표 제공<br>• 인터뷰 참여 및 자료 제공<br>• 콘텐츠 검토 및 브랜드 가이드라인 제공</div>
+            </div>
+            <div class="ko-stake-item">
+              <div class="ko-stake-name">🔧 MILVUS Co., Ltd.</div>
+              <div class="ko-stake-roles">• 요건 분석 및 데이터 통합 범위 정의<br>• 캠페인 시나리오·저니·세그먼트 설계<br>• 콘텐츠 기획 및 디자인 에셋 제작<br>• 인터페이스 명세·UI·대시보드 계획<br>• 설계 패키지 인계, 테스트 지원, 교육</div>
+            </div>
+            <div class="ko-stake-item">
+              <div class="ko-stake-name">🌐 글로벌 PMO·구현사 (Solta Medical, Inc. / Bausch Health)</div>
+              <div class="ko-stake-roles">• 설계 문서 기반 솔루션 개발 및 구축<br>• 구축 일정 및 환경 제공<br>• 테스트 환경 및 계정 제공</div>
+            </div>
+          </div>
+        </div>
+        <div>
+          <div class="ko-card-title" style="font-size:11px;font-weight:700;color:var(--text3);letter-spacing:.08em;text-transform:uppercase;margin-bottom:10px">프로젝트 단계</div>
+          <div class="ko-phase-list">
+            <div class="ko-phase-item">
+              <div class="ko-phase-num">1</div>
+              <div class="ko-phase-body">
+                <h4>설계 — KR 요건 수집 및 설계 문서 작성</h4>
+                <p>26.09.28 ~ 11.20 (8주)</p>
+                <div class="ko-phase-who">주관: MILVUS</div>
+              </div>
+            </div>
+            <div class="ko-phase-item">
+              <div class="ko-phase-num">2</div>
+              <div class="ko-phase-body">
+                <h4>글로벌 구축 및 개발</h4>
+                <p>글로벌 일정 기준 (TBD)</p>
+                <div class="ko-phase-who">주관: Accenture</div>
+              </div>
+            </div>
+            <div class="ko-phase-item">
+              <div class="ko-phase-num">3</div>
+              <div class="ko-phase-body">
+                <h4>테스트 및 교육 — 발송 테스트, KR 매뉴얼</h4>
+                <p>2027년 2월 (TBD)</p>
+                <div class="ko-phase-who">주관: MILVUS</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 04 프로젝트 일정 -->
+    <div class="ko-section">
+      <div class="ko-section-title">04 · 프로젝트 일정 (8주 디자인 스케줄)</div>
+      <div class="ko-gantt-wrap">
+        <table class="ko-gantt">
+          <thead>
+            <tr>
+              <th>워크스트림</th>
+              <th>W1<br><span style="font-weight:400;opacity:.7">9/28</span></th>
+              <th>W2<br><span style="font-weight:400;opacity:.7">10/5</span></th>
+              <th>W3<br><span style="font-weight:400;opacity:.7">10/12</span></th>
+              <th>W4<br><span style="font-weight:400;opacity:.7">10/19</span></th>
+              <th>W5<br><span style="font-weight:400;opacity:.7">10/26</span></th>
+              <th>W6<br><span style="font-weight:400;opacity:.7">11/2</span></th>
+              <th>W7<br><span style="font-weight:400;opacity:.7">11/9</span></th>
+              <th>W8<br><span style="font-weight:400;opacity:.7">11/16</span></th>
+              <th>'27.02<br><span style="font-weight:400;opacity:.7">TBD</span></th>
+              <th style="text-align:left;width:220px">산출물</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>1. 킥오프 &amp; 기획</td>
+              <td><span class="gantt-bar bar-pm"></span></td>
+              <td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td>
+              <td style="font-size:11px;color:var(--text2)">킥오프 덱, WBS, 커뮤니케이션 계획</td>
+            </tr>
+            <tr>
+              <td>2. 비즈니스 요건</td>
+              <td><span class="gantt-bar bar-pm"></span></td>
+              <td><span class="gantt-bar bar-pm"></span></td>
+              <td></td><td></td><td></td><td></td><td></td><td></td><td></td>
+              <td style="font-size:11px;color:var(--text2)">요건 정의서, 데이터 통합 범위</td>
+            </tr>
+            <tr>
+              <td>3. 크리에이티브 콘텐츠 &amp; 에셋</td>
+              <td></td>
+              <td><span class="gantt-bar bar-design"></span></td>
+              <td><span class="gantt-bar bar-design"></span></td>
+              <td><span class="gantt-bar bar-design"></span></td>
+              <td><span class="gantt-bar bar-design"></span></td>
+              <td></td><td></td><td></td><td></td>
+              <td style="font-size:11px;color:var(--text2)">시나리오별 메시지 콘텐츠 (카피·이미지, 3~5건)</td>
+            </tr>
+            <tr>
+              <td>4. Data Cloud 요건 &amp; 명세</td>
+              <td></td>
+              <td><span class="gantt-bar bar-dc"></span></td>
+              <td><span class="gantt-bar bar-dc"></span></td>
+              <td><span class="gantt-bar bar-dc"></span></td>
+              <td></td><td></td><td></td><td></td><td></td>
+              <td style="font-size:11px;color:var(--text2)">인터페이스 명세서 (세그먼트 기준 포함)</td>
+            </tr>
+            <tr>
+              <td>5. Lightning UI / Dashboard MVP</td>
+              <td></td><td></td><td></td>
+              <td><span class="gantt-bar bar-dc"></span></td>
+              <td><span class="gantt-bar bar-dc"></span></td>
+              <td><span class="gantt-bar bar-dc"></span></td>
+              <td></td><td></td><td></td>
+              <td style="font-size:11px;color:var(--text2)">UI 레이아웃 설계, KPI 대시보드 계획 (1페이지)</td>
+            </tr>
+            <tr>
+              <td>6. 캠페인 저니 설계</td>
+              <td></td>
+              <td><span class="gantt-bar bar-mca"></span></td>
+              <td><span class="gantt-bar bar-mca"></span></td>
+              <td><span class="gantt-bar bar-mca"></span></td>
+              <td><span class="gantt-bar bar-mca"></span></td>
+              <td></td><td></td><td></td><td></td>
+              <td style="font-size:11px;color:var(--text2)">캠페인 저니 시나리오 설계 (3건)</td>
+            </tr>
+            <tr>
+              <td>7. 캠페인 실행 &amp; 설정</td>
+              <td></td><td></td><td></td><td></td><td></td>
+              <td><span class="gantt-bar bar-mca"></span></td>
+              <td><span class="gantt-bar bar-mca"></span></td>
+              <td><span class="gantt-bar bar-mca"></span></td>
+              <td></td>
+              <td style="font-size:11px;color:var(--text2)">실행 설정 매뉴얼, 글로벌 인계용 설계 패키지</td>
+            </tr>
+            <tr style="opacity:.6">
+              <td>8. 캠페인 모니터링·최적화</td>
+              <td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td>
+              <td><span class="gantt-bar bar-post"></span></td>
+              <td style="font-size:11px;color:var(--text2)">테스트 시나리오 및 결과 리포트</td>
+            </tr>
+            <tr style="opacity:.6">
+              <td>9. 교육</td>
+              <td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td>
+              <td><span class="gantt-bar bar-post"></span></td>
+              <td style="font-size:11px;color:var(--text2)">KR 사용자 매뉴얼</td>
+            </tr>
+            <tr style="background:var(--bg3)">
+              <td style="font-weight:700;font-size:11px;color:var(--blue)">◆ 마일스톤</td>
+              <td class="gantt-ms"><span class="gantt-ms-diamond" title="킥오프 9/28">◆</span></td>
+              <td class="gantt-ms"><span class="gantt-ms-diamond" title="요건 확정 10/9">◆</span></td>
+              <td></td><td></td>
+              <td class="gantt-ms"><span class="gantt-ms-diamond" title="시나리오·콘텐츠 확정 10/30">◆</span></td>
+              <td></td><td></td>
+              <td class="gantt-ms"><span class="gantt-ms-diamond" title="설계 인계 11/20">◆</span></td>
+              <td></td>
+              <td style="font-size:11px;color:var(--blue)">킥오프 · 요건 확정 · 시나리오 확정 · 설계 인계</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="ko-milestone-list">
+        <div class="ko-milestone-item"><span class="ko-milestone-date">◆ 9/28</span><span class="ko-milestone-label">킥오프</span></div>
+        <div class="ko-milestone-item"><span class="ko-milestone-date">◆ 10/9</span><span class="ko-milestone-label">요건 확정 (Sign-off)</span></div>
+        <div class="ko-milestone-item"><span class="ko-milestone-date">◆ 10/30</span><span class="ko-milestone-label">시나리오·콘텐츠 확정 (Sign-off)</span></div>
+        <div class="ko-milestone-item"><span class="ko-milestone-date">◆ 11/20</span><span class="ko-milestone-label">설계 인계 (Design Handover)</span></div>
+        <div class="ko-milestone-item" style="opacity:.6"><span class="ko-milestone-date">◆ '27.02</span><span class="ko-milestone-label">테스트·교육 (TBD)</span></div>
+      </div>
+      <div class="ko-note">* 8·9단계(2027년 2월)는 글로벌 구축 완료 후 확정 (TBD). 색상: <span style="color:#5856d6">■ PM</span> · <span style="color:var(--amber)">■ Design</span> · <span style="color:var(--green)">■ DC/Sales</span> · <span style="color:var(--red)">■ MCA</span></div>
+    </div>
+
+    <!-- 05 프로젝트 조직 -->
+    <div class="ko-section">
+      <div class="ko-section-title">05 · 프로젝트 조직</div>
+      <div class="ko-card" style="margin-bottom:16px">
+        <div class="ko-card-title">프로젝트 관리자 (PM)</div>
+        <div style="display:flex;align-items:center;gap:14px">
+          <div class="ko-member-avatar" style="width:40px;height:40px;font-size:15px">B</div>
+          <div>
+            <div style="font-size:14px;font-weight:700;color:var(--text)">이병문 (Brent) — Director</div>
+            <div style="font-size:12px;color:var(--text2);margin-top:3px">• 전체 프로젝트 및 리스크 관리</div>
+            <div style="font-size:12px;color:var(--text2)">• Solta Korea 및 글로벌 PMO 단일 창구 (Single PoC)</div>
+          </div>
+        </div>
+      </div>
+      <div class="ko-org-tier">
+        <div class="ko-org-tier-label">Strategic — 방향 설정 및 의사결정</div>
+        <div class="ko-org-members">
+          <div class="ko-member-chip"><div class="ko-member-avatar">B</div><div class="ko-member-info"><h5>이병문 (Brent)</h5><p>Director / PM</p></div></div>
+          <div class="ko-member-chip"><div class="ko-member-avatar">E</div><div class="ko-member-info"><h5>김성태 (Ellen)</h5><p>Strategic</p></div></div>
+        </div>
+      </div>
+      <div class="ko-org-tier">
+        <div class="ko-org-tier-label">Tactical — 설계 리더십 및 품질 관리</div>
+        <div class="ko-org-members">
+          <div class="ko-member-chip"><div class="ko-member-avatar">E</div><div class="ko-member-info"><h5>김성태 (Ellen)</h5><p>Tactical Lead</p></div></div>
+          <div class="ko-member-chip"><div class="ko-member-avatar">C</div><div class="ko-member-info"><h5>김창환 (Carson)</h5><p>Tactical</p></div></div>
+          <div class="ko-member-chip"><div class="ko-member-avatar">K</div><div class="ko-member-info"><h5>김승연 (Kelly)</h5><p>Tactical</p></div></div>
+        </div>
+      </div>
+      <div class="ko-org-tier">
+        <div class="ko-org-tier-label">Operational — 산출물 제작 및 실행</div>
+        <div class="ko-org-members">
+          <div class="ko-member-chip"><div class="ko-member-avatar">D</div><div class="ko-member-info"><h5>조서현 (Della)</h5><p>Operational</p></div></div>
+          <div class="ko-member-chip"><div class="ko-member-avatar">M</div><div class="ko-member-info"><h5>김이현 (Melissa)</h5><p>Operational</p></div></div>
+          <div class="ko-member-chip"><div class="ko-member-avatar">C</div><div class="ko-member-info"><h5>김창환 (Carson)</h5><p>Operational</p></div></div>
+          <div class="ko-member-chip"><div class="ko-member-avatar">K</div><div class="ko-member-info"><h5>김승연 (Kelly)</h5><p>Operational</p></div></div>
+        </div>
+      </div>
+      <div class="ko-card" style="margin-top:16px;padding:0;overflow:hidden">
+        <div style="overflow-x:auto">
+          <table class="ko-parts-table">
+            <thead>
+              <tr>
+                <th>파트</th>
+                <th>담당자</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr><td>요건 및 시나리오 설계</td><td>김성태 (Ellen), 김승연 (Kelly)</td></tr>
+              <tr><td>콘텐츠 및 디자인</td><td>김이현 (Melissa)</td></tr>
+              <tr><td>Data Cloud 설계</td><td>김창환 (Carson), 김성태 (Ellen)</td></tr>
+              <tr><td>Lightning UI 및 대시보드</td><td>조서현 (Della), 김승연 (Kelly)</td></tr>
+              <tr><td>캠페인 설정·테스트·교육</td><td>조서현 (Della), 김승연 (Kelly), 김창환 (Carson)</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+  </div></div>`;
+
+  // gantt bar 스타일 인라인 적용 (CSS 클래스가 이미 정의되어 있으나 span에 display:block 보장)
+  el.querySelectorAll('.gantt-bar').forEach(b=>{
+    b.style.display='block';
+    b.style.height='18px';
+    b.style.borderRadius='3px';
+    b.style.opacity='.8';
+  });
+}
+
 async function renderBriefing(){
   const el = document.getElementById('tab-content');
   el.innerHTML = '<div class="briefing-pane" id="briefing-root"></div>';
