@@ -354,6 +354,7 @@ body{
   transition:width .2s ease;
 }
 .thread-pane.open{border-left:1px solid var(--border2)}
+.thread-pane.overlay-mode{position:absolute;right:0;top:0;height:100%;z-index:50;box-shadow:-4px 0 20px rgba(0,0,0,.12);}
 .pane-resizer{
   width:0;flex-shrink:0;cursor:col-resize;
   background:var(--border2);position:relative;
@@ -794,7 +795,8 @@ body{
 
 /* ── TODO TAB ── */
 .todo-layout{display:flex;flex:1;overflow:hidden}
-.todo-cal-pane{width:256px;flex-shrink:0;border-right:1px solid var(--border2);overflow-y:auto;padding:16px;background:var(--bg2)}
+.todo-left-pane{width:220px;flex-shrink:0;border-right:1px solid var(--border2);display:flex;flex-direction:column;background:var(--bg2);overflow:hidden}
+.todo-cal-pane{flex-shrink:0;overflow-y:auto;padding:16px;background:var(--bg2);border-bottom:1px solid var(--border)}
 .todo-list-pane{flex:1;overflow:hidden;padding:20px;min-width:0;display:flex;flex-direction:column}
 .cal-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px}
 .cal-month-label{font-weight:700;font-size:14px;color:var(--text)}
@@ -912,6 +914,33 @@ body{
 .day-col-3 .todo-week-card:not(.rolled-card){border-left:2px solid var(--red)}
 .day-col-4 .todo-week-dow{color:var(--purple)}
 .day-col-4 .todo-week-card:not(.rolled-card){border-left:2px solid var(--purple)}
+/* ── BACKLOG PANE ── */
+.todo-backlog-pane{flex:1;display:flex;flex-direction:column;background:var(--bg2);overflow:hidden;min-height:0}
+.todo-backlog-header{display:flex;align-items:center;padding:12px 12px 8px;border-bottom:1px solid var(--border);flex-shrink:0}
+.todo-backlog-title{font-size:12px;font-weight:700;color:var(--text2);flex:1;letter-spacing:.04em}
+.todo-backlog-count{font-size:11px;color:var(--text3);background:var(--bg3);border-radius:99px;padding:1px 7px;margin-right:6px}
+.todo-backlog-add-row{padding:8px 10px;border-bottom:1px solid var(--border);flex-shrink:0;display:flex;gap:4px}
+.todo-backlog-add-row input{flex:1;border:1px solid var(--border2);border-radius:var(--radius);padding:6px 8px;font-size:12px;font-family:inherit;color:var(--text);background:var(--bg)}
+.todo-backlog-add-row input:focus{outline:none;border-color:var(--proj-color)}
+.todo-backlog-add-row button{background:var(--proj-color);color:#fff;border:none;border-radius:var(--radius);padding:5px 8px;font-size:14px;font-weight:700;cursor:pointer;flex-shrink:0;line-height:1}
+.todo-backlog-list{flex:1;overflow-y:auto;padding:8px;display:flex;flex-direction:column;gap:5px}
+.todo-backlog-item{display:flex;align-items:flex-start;gap:6px;padding:7px 8px;border:1px solid var(--border);border-radius:var(--radius);background:var(--bg);cursor:grab;font-size:12px;color:var(--text);line-height:1.4;word-break:break-word;transition:border-color .1s,box-shadow .1s}
+.todo-backlog-item:hover{border-color:var(--proj-color);box-shadow:0 2px 6px rgba(0,0,0,.07)}
+.todo-backlog-item:active{cursor:grabbing}
+.todo-backlog-item.is-dragging{opacity:.3}
+.backlog-drag-handle{color:var(--text3);flex-shrink:0;font-size:13px;line-height:1.4;user-select:none}
+.backlog-text{flex:1}
+.backlog-del{background:none;border:none;cursor:pointer;color:var(--text3);padding:0 2px;font-size:15px;line-height:1;flex-shrink:0;opacity:0;transition:opacity .1s}
+.todo-backlog-item:hover .backlog-del{opacity:1}
+.todo-backlog-empty{text-align:center;font-size:12px;color:var(--text3);padding:24px 8px;line-height:1.8}
+.backlog-group-header{font-size:11px;font-weight:700;color:var(--text3);letter-spacing:.05em;padding:10px 4px 4px;text-transform:uppercase;display:flex;align-items:center;gap:6px}
+.backlog-group-header::after{content:'';flex:1;height:1px;background:var(--border)}
+.backlog-group-header:first-child{padding-top:4px}
+.backlog-badge{display:inline-block;font-size:10px;font-weight:600;padding:1px 6px;border-radius:99px;background:var(--proj-color-bg);color:var(--proj-color);flex-shrink:0;white-space:nowrap}
+.backlog-step-header{font-size:11px;font-weight:600;color:var(--text2);padding:8px 4px 3px;border-top:1px solid var(--border);margin-top:4px}
+.todo-list-dropzone{border-radius:var(--radius-lg);border:2px dashed transparent;transition:border-color .15s,background .15s;min-height:40px}
+.todo-list-dropzone.drop-active{border-color:var(--blue)!important;background:var(--blue-bg)!important}
+.todo-week-col.backlog-drop-target{border:2px dashed var(--blue)!important;background:var(--blue-bg)!important}
 .todo-week-add{flex-shrink:0;border:none;border-top:1px solid var(--border);width:100%;padding:6px;background:none;color:var(--text3);font-size:12px;cursor:pointer;text-align:left}
 .todo-week-add:hover{background:var(--bg3);color:var(--text)}
 /* ── MONTHLY VIEW ── */
@@ -1395,6 +1424,7 @@ body{
       <button id="btn-agent-settings" class="sb-footer-btn" title="Agent 설정">Agent 설정</button>
       <button id="btn-export" class="sb-footer-btn">내보내기</button>
       <button id="btn-import" class="sb-footer-btn">가져오기</button>
+      <button id="btn-import-queue" class="sb-footer-btn">큐 가져오기</button>
       <input type="file" id="import-input" accept=".json" style="display:none">
     </div>
     <!-- 최하단: 검색 + 테마 -->
@@ -1565,6 +1595,7 @@ const COMM_TYPE_META = {
   '화상회의': { cls:'ct-video', icon:'🎥' },
   '대면미팅': { cls:'ct-meet',  icon:'🤝' },
   '메신저':   { cls:'ct-msg',   icon:'💬' },
+  '인터뷰':   { cls:'ct-meet',  icon:'🎙️' },
 };
 const SFMC_TYPES = ['Salesforce Marketing Cloud 구축','Salesforce Marketing Cloud 운영'];
 function isSFMCType(t){ return SFMC_TYPES.includes(t) || t==='Salesforce MarketingCloud'; }
@@ -1845,6 +1876,12 @@ async function importFromQueue(){
       <span style="margin:0 6px">·</span><span style="color:var(--text2)">${esc(c.summary||'').slice(0,60)}${(c.summary||'').length>60?'…':''}</span>
     </div>`).join('') || '<div style="color:var(--text3);font-size:13px">없음</div>';
 
+  const notesHtml = (q.notes||[]).map(n=>`
+    <div style="padding:5px 0;border-bottom:1px solid var(--border);font-size:13px">
+      <span style="font-weight:500;color:var(--text)">${esc(n.title||'(제목 없음)')}</span>
+      ${n.category?`<span style="color:var(--text3);font-size:11px;margin-left:8px">${esc(n.category)}</span>`:''}
+    </div>`).join('') || '<div style="color:var(--text3);font-size:13px">없음</div>';
+
   showModal(`${esc(q.meetingTitle||'회의록')} 가져오기`,`
     <div style="font-size:12px;color:var(--text3);margin-bottom:14px">${esc(q.meetingDate||'')} · ${esc(q.participants||'')}</div>
     <div style="margin-bottom:12px">
@@ -1855,35 +1892,52 @@ async function importFromQueue(){
       <div style="font-size:12px;font-weight:600;color:var(--text2);margin-bottom:6px">이슈 ${(q.issues||[]).length}개</div>
       ${issuesHtml}
     </div>
-    <div>
+    <div style="margin-bottom:12px">
       <div style="font-size:12px;font-weight:600;color:var(--text2);margin-bottom:6px">커뮤니케이션 ${(q.communications||[]).length}건</div>
       ${commHtml}
+    </div>
+    <div>
+      <div style="font-size:12px;font-weight:600;color:var(--text2);margin-bottom:6px">노트 ${(q.notes||[]).length}개</div>
+      ${notesHtml}
     </div>`,
     [{label:'가져오기', cls:'btn-primary', action: async()=>{
       const now = Date.now();
-      await Promise.all([
-        ...(q.todos||[]).map((t,i)=>db.put('todos',{
-          id:genId(), projectId:PROJECT_ID,
-          content:t.content||'', date:t.date||new Date().toISOString().slice(0,10),
-          assignee:t.assignee||'', memo:t.memo||'', time:'', deadline:'',
-          done:false, createdAt:now+i
-        })),
-        ...(q.issues||[]).map((is,i)=>db.put('issues',{
-          id:genId(), projectId:PROJECT_ID,
-          title:is.title||'', priority:is.priority||'medium',
-          description:is.description||'', status:'open',
-          createdAt:new Date().toISOString(), updatedAt:new Date().toISOString()
-        })),
-        ...(q.communications||[]).map((c,i)=>db.put('communications',{
-          id:genId(), projectId:PROJECT_ID,
-          date:c.date||new Date().toISOString().slice(0,10),
-          type:c.type||'대면미팅', participants:c.participants||'',
-          summary:c.summary||'', nextAction:c.nextAction||'',
-          createdAt:now+i
-        })),
+      // 중복 체크용 기존 데이터 로드
+      const [exTodos, exIssues, exComms, exNotes, exMeetings] = await Promise.all([
+        db.getByIndex('todos','projectId',PROJECT_ID),
+        db.getByIndex('issues','projectId',PROJECT_ID),
+        db.getByIndex('communications','projectId',PROJECT_ID),
+        db.getByIndex('notes','projectId',PROJECT_ID),
+        db.getByIndex('meetings','projectId',PROJECT_ID),
       ]);
+      let added={todos:0,issues:0,comms:0,notes:0,meetings:0};
+      for(const [i,t] of (q.todos||[]).entries()){
+        if(exTodos.some(e=>e.content===t.content&&e.date===t.date)) continue;
+        await db.put('todos',{id:genId(),projectId:PROJECT_ID,content:t.content||'',date:t.date||new Date().toISOString().slice(0,10),assignee:t.assignee||'',memo:t.memo||'',time:'',deadline:'',done:false,createdAt:now+i});
+        added.todos++;
+      }
+      for(const [i,is] of (q.issues||[]).entries()){
+        if(exIssues.some(e=>e.title===is.title)) continue;
+        await db.put('issues',{id:genId(),projectId:PROJECT_ID,title:is.title||'',priority:is.priority||'medium',description:is.description||'',status:'open',createdAt:new Date().toISOString(),updatedAt:new Date().toISOString()});
+        added.issues++;
+      }
+      for(const [i,c] of (q.communications||[]).entries()){
+        if(exComms.some(e=>e.date===c.date&&e.summary===c.summary)) continue;
+        await db.put('communications',{id:genId(),projectId:PROJECT_ID,date:c.date||new Date().toISOString().slice(0,10),type:c.type||'대면미팅',participants:c.participants||'',summary:c.summary||'',nextAction:c.nextAction||'',createdAt:now+i});
+        added.comms++;
+      }
+      for(const [i,n] of (q.notes||[]).entries()){
+        if(exNotes.some(e=>e.title===n.title)) continue;
+        await db.put('notes',{id:genId(),projectId:PROJECT_ID,title:n.title||'',category:n.category||'',content:n.content||'',order:null,createdAt:now+i,updatedAt:now+i});
+        added.notes++;
+      }
+      for(const [i,m] of (q.meetings||[]).entries()){
+        if(exMeetings.some(e=>e.title===m.title&&e.date===m.date)) continue;
+        await db.put('meetings',{id:genId(),projectId:PROJECT_ID,title:m.title||'',date:m.date||new Date().toISOString().slice(0,10),participants:m.participants||'',content:m.content||'',status:'draft',createdAt:now+i,updatedAt:now+i});
+        added.meetings++;
+      }
       await deleteSyncFile('import-queue.json');
-      showToast(`할일 ${(q.todos||[]).length}개, 이슈 ${(q.issues||[]).length}개, 커뮤니케이션 ${(q.communications||[]).length}건 추가됨`);
+      showToast(`추가됨 — 할일 ${added.todos}, 이슈 ${added.issues}, 커뮤니케이션 ${added.comms}, 노트 ${added.notes}, 회의록 ${added.meetings} (중복 제외)`);
       closeModal();
       renderBriefing();
     }},
@@ -1929,6 +1983,38 @@ async function openAgentSettings(){
   );
 }
 
+// ── BACKLOG SEED ──────────────────────────────────────────────────
+async function seedBacklog(){
+  const SEED = [
+    {id:'bl-001',content:'[킥오프] 시나리오 3개 목적·타겟·채널 확정',memo:'비즈니스 목표 / 타겟 세그먼트 / 발송 채널(카카오·SMS·Email)',assignee:'',group:'1단계. 시나리오 설계 전 (인터뷰·요건 수집)'},
+    {id:'bl-002',content:'[킥오프] AS-IS 현황 파악',memo:'현재 캠페인 운영 방식 / 고객 데이터 위치 / 기존 수신동의 데이터',assignee:'',group:'1단계. 시나리오 설계 전 (인터뷰·요건 수집)'},
+    {id:'bl-003',content:'[킥오프] 데이터 가용성 확인',memo:'DC 수집 가능 소스 목록 / 세그먼트 조건 구성 가능 여부 / 개인정보 처리 동의 범위',assignee:'',group:'1단계. 시나리오 설계 전 (인터뷰·요건 수집)'},
+    {id:'bl-004',content:'[킥오프] 시나리오 1 설계',memo:'트리거 조건 / 오디언스 세그먼트 / Journey 플로우 / 발송 콘텐츠 초안 / KPI 정의',assignee:'Milvus',group:'2단계. 시나리오별 설계'},
+    {id:'bl-005',content:'[킥오프] 시나리오 2 설계',memo:'트리거 조건 / 오디언스 세그먼트 / Journey 플로우 / 발송 콘텐츠 초안 / KPI 정의',assignee:'Milvus',group:'2단계. 시나리오별 설계'},
+    {id:'bl-006',content:'[킥오프] 시나리오 3 설계',memo:'트리거 조건 / 오디언스 세그먼트 / Journey 플로우 / 발송 콘텐츠 초안 / KPI 정의',assignee:'Milvus',group:'2단계. 시나리오별 설계'},
+    {id:'bl-007',content:'[킥오프] MLR/PRC 콘텐츠 검토 요청',memo:'콘텐츠 승인 후 Journey 빌드 진행',assignee:'Korea Business',group:'2단계. 시나리오별 설계'},
+    {id:'bl-008',content:'[킥오프] MC 환경 셋업 완료 확인',memo:'BU·사용자·역할 / 발신자·전송 프로필 / SMS 단문코드 조달',assignee:'Accenture',group:'3단계. 기술 환경 확인 (Accenture 의존)'},
+    {id:'bl-009',content:'[킥오프] Data Cloud 연동 확인',memo:'데이터 수집(Ingestion) 완료 / 세그먼트 활성화 가능 상태',assignee:'Accenture',group:'3단계. 기술 환경 확인 (Accenture 의존)'},
+    {id:'bl-010',content:'[킥오프] SSO 및 접근 권한 확인',memo:'',assignee:'',group:'3단계. 기술 환경 확인 (Accenture 의존)'},
+    {id:'bl-011',content:'[킥오프] Journey 빌드 완료 (시나리오 3개)',memo:'MC 내 자동화 구성 / 분기·발송 로직',assignee:'Milvus',group:'4단계. 구축 및 실행 전 검수'},
+    {id:'bl-012',content:'[킥오프] A/B 테스트 설정',memo:'필요 시 적용',assignee:'Milvus',group:'4단계. 구축 및 실행 전 검수'},
+    {id:'bl-013',content:'[킥오프] 테스트 발송 (내부 수신자 대상)',memo:'',assignee:'Milvus',group:'4단계. 구축 및 실행 전 검수'},
+    {id:'bl-014',content:'[킥오프] 수신거부·재구독 로직 동작 확인',memo:'',assignee:'',group:'4단계. 구축 및 실행 전 검수'},
+    {id:'bl-015',content:'[킥오프] 발송 전 최종 콘텐츠 검수',memo:'Korea Business 최종 승인 필요',assignee:'Korea Business',group:'4단계. 구축 및 실행 전 검수'},
+    {id:'bl-016',content:'[킥오프] 발송 스케줄 확정',memo:'',assignee:'',group:'4단계. 구축 및 실행 전 검수'},
+    {id:'bl-017',content:'[킥오프] KPI 대시보드 확인',memo:'오픈율·클릭률·전환율',assignee:'Milvus',group:'5단계. 실행 후 모니터링'},
+    {id:'bl-018',content:'[킥오프] 이상 발송 여부 모니터링',memo:'',assignee:'',group:'5단계. 실행 후 모니터링'},
+    {id:'bl-019',content:'[킥오프] 최적화 포인트 도출 및 다음 시나리오 반영',memo:'',assignee:'Milvus',group:'5단계. 실행 후 모니터링'},
+  ];
+  for(let i=0;i<SEED.length;i++){
+    const s=SEED[i];
+    const existing=await db.get('todos',s.id);
+    if(!existing || !existing.group){
+      await db.put('todos',{...(existing||{}),id:s.id,projectId:PROJECT_ID,date:existing?.date||'',content:s.content,time:existing?.time||'',assignee:existing?.assignee||s.assignee,deadline:existing?.deadline||'',memo:existing?.memo||s.memo,done:existing?.done||false,backlog:true,group:s.group||'',createdAt:existing?.createdAt||(1791300000000+i)});
+    }
+  }
+}
+
 // ── INIT ──────────────────────────────────────────────────────────
 async function init(){
   await db.init();
@@ -1936,6 +2022,7 @@ async function init(){
   if(!project){
     showProjectModal(true);
   } else {
+    await seedBacklog();
     renderHeader();
     renderTab(currentTab);
     autoSaveDashboard();
@@ -1948,6 +2035,8 @@ const SIDEBAR_NAV_GROUPS = [
   { label: '요약', items: [
     { tab: 'briefing', label: '브리핑' },
     { tab: 'kickoff',  label: '킥오프', kickoffOnly: true },
+    { tab: 'wbs',      label: 'WBS',      kickoffOnly: true },
+    { tab: 'wbs-cal',  label: '캘린더',  kickoffOnly: true },
   ]},
   { label: 'MCE 구축현황', buildOnly: true, items: [
     { tab: 'steps',          label: '진행현황' },
@@ -2056,7 +2145,7 @@ function renderTab(tab){
 
   const el = document.getElementById('tab-content');
   el.innerHTML = '';
-  const fns = {briefing:renderBriefing,kickoff:renderKickoff,steps:renderSteps,'steps-seonopen':renderStepsSeonopen,'steps-d2c':renderStepsD2C,'steps-o2o':renderStepsO2O,meeting:renderMeeting,comm:renderComm,files:renderFiles,issues:renderIssues,notes:renderNotes,todo:renderTodo,snippet:renderSnippets,timeline:renderTimeline};
+  const fns = {briefing:renderBriefing,kickoff:renderKickoff,wbs:renderWBS,'wbs-cal':renderWBSCalendar,steps:renderSteps,'steps-seonopen':renderStepsSeonopen,'steps-d2c':renderStepsD2C,'steps-o2o':renderStepsO2O,meeting:renderMeeting,comm:renderComm,files:renderFiles,issues:renderIssues,notes:renderNotes,todo:renderTodo,snippet:renderSnippets,timeline:renderTimeline};
   fns[tab]();
   if(tab!=='briefing') autoSaveDashboard();
 }
@@ -2800,6 +2889,493 @@ function renderKickoff(){
     b.style.borderRadius='3px';
     b.style.opacity='.8';
   });
+}
+
+// ── WBS TAB ───────────────────────────────────────────────────────
+function renderWBS(){
+  const el = document.getElementById('tab-content');
+  const WBS_DATA = [
+    { level:1, no:'1',    ko:'킥오프 & 기획',                         task:'Kick-off & Planning',                        start:'2026-10-06', end:'2026-10-16', days:11 },
+    { level:2, no:'1.1.', ko:'킥오프 미팅',                           task:'Kick-off meeting',                           start:'2026-10-06', end:'2026-10-06', days:1  },
+    { level:2, no:'1.2.', ko:'WBS 및 커뮤니케이션 플랜 확정',         task:'Finalize WBS and communication plan',        start:'2026-10-06', end:'2026-10-09', days:4  },
+    { level:2, no:'1.3.', ko:'기준 자료 요청 및 수집',                task:'Request and collect baseline materials',     start:'2026-10-06', end:'2026-10-16', days:11 },
+    { level:1, no:'2',    ko:'비즈니스 요건',                         task:'Business Requirements',                      start:'2026-10-06', end:'2026-10-16', days:11 },
+    { level:2, no:'2.1.', ko:'이해관계자 인터뷰',                     task:'Stakeholder interviews',                     start:'2026-10-06', end:'2026-10-09', days:4  },
+    { level:2, no:'2.2.', ko:'클라이언트 요건·니즈 분석',             task:'Client requirements and needs analysis',     start:'2026-10-12', end:'2026-10-16', days:5  },
+    { level:2, no:'2.3.', ko:'데이터 연동 범위 정의',                 task:'Data integration scope definition',          start:'2026-10-12', end:'2026-10-16', days:5  },
+    { level:2, no:'2.4.', ko:'요건 승인',                             task:'Requirements sign-off',                      start:'2026-10-15', end:'2026-10-16', days:2  },
+    { level:1, no:'3',    ko:'크리에이티브 콘텐츠 & 디지털 에셋',     task:'Creative Content & Digital Assets',          start:'2026-10-12', end:'2026-11-06', days:26 },
+    { level:2, no:'3.1.', ko:'콘텐츠 기획 (3~5건)',                   task:'Content planning (3~5)',                     start:'2026-10-12', end:'2026-10-23', days:12 },
+    { level:2, no:'3.2.', ko:'디자인 에셋 제작 (3~5건)',              task:'Design asset production (3~5)',              start:'2026-10-19', end:'2026-11-06', days:19 },
+    { level:2, no:'3.3.', ko:'콘텐츠별 링크·URL 검수',               task:'Link and URL verification per content',      start:'2026-11-02', end:'2026-11-06', days:5  },
+    { level:2, no:'3.4.', ko:'클라이언트 콘텐츠 검수 및 승인',        task:'Client content review and sign-off',         start:'2026-11-02', end:'2026-11-06', days:5  },
+    { level:1, no:'4',    ko:'Data Cloud 요건 및 명세',               task:'Data Cloud Requirements & Specs',            start:'2026-10-26', end:'2026-11-27', days:33 },
+    { level:2, no:'4.1.', ko:'레거시 데이터 소스·구조 검토',           task:'Legacy data source and structure review',    start:'2026-10-26', end:'2026-10-28', days:3  },
+    { level:2, no:'4.2.', ko:'캠페인 세그먼트 기준 설계',             task:'Campaign segment criteria design',           start:'2026-10-27', end:'2026-10-30', days:4  },
+    { level:2, no:'4.3.', ko:'인터페이스 명세서 초안',                task:'Interface specification draft',              start:'2026-10-28', end:'2026-10-30', days:3  },
+    { level:2, no:'4.4.', ko:'인터페이스 명세서 최종화',              task:'Interface specification finalization',       start:'2026-11-23', end:'2026-11-27', days:5  },
+    { level:1, no:'5',    ko:'Lightning UI / 애널리틱스 & 대시보드 MVP', task:'Lightning UI / Analytics & Dashboard MVP', start:'2026-11-02', end:'2026-11-20', days:19 },
+    { level:2, no:'5.1.', ko:'Lightning UI 레이아웃 설계',            task:'Lightning UI layout design',                 start:'2026-11-02', end:'2026-11-13', days:12 },
+    { level:2, no:'5.2.', ko:'KPI 정의',                              task:'KPI definition',                             start:'2026-11-09', end:'2026-11-13', days:5  },
+    { level:2, no:'5.3.', ko:'KPI 모니터링 대시보드 계획 (1페이지)',  task:'KPI monitoring dashboard plan (1 page)',     start:'2026-11-16', end:'2026-11-20', days:5  },
+    { level:1, no:'6',    ko:'캠페인 저니 설계',                      task:'Campaign Journey Design',                    start:'2026-10-12', end:'2026-11-06', days:26 },
+    { level:2, no:'6.1.', ko:'캠페인 시나리오 설계 (3건)',             task:'Campaign scenario design (3)',               start:'2026-10-12', end:'2026-10-23', days:12 },
+    { level:2, no:'6.2.', ko:'타겟 오디언스 세그먼트 정의',           task:'Target audience segment definition',         start:'2026-10-19', end:'2026-10-30', days:12 },
+    { level:2, no:'6.3.', ko:'세부 저니 설계 (트리거·분기)',           task:'Detailed journey design (triggers & splits)',start:'2026-10-26', end:'2026-11-06', days:12 },
+    { level:2, no:'6.4.', ko:'시나리오 검수 및 승인',                 task:'Scenario review and sign-off',               start:'2026-11-04', end:'2026-11-06', days:3  },
+    { level:1, no:'7',    ko:'캠페인 구축 및 실행',                   task:'Campaign Execution & Setup',                 start:'2026-11-09', end:'2026-11-27', days:19 },
+    { level:2, no:'7.1.', ko:'캠페인 자동화 스케줄링 설정 (3건)',     task:'Campaign automation scheduling def. (3)',    start:'2026-11-09', end:'2026-11-20', days:12 },
+    { level:2, no:'7.2.', ko:'A/B 테스트 설정 정의',                  task:'A/B test setup definition',                  start:'2026-11-16', end:'2026-11-20', days:5  },
+    { level:2, no:'7.3.', ko:'실행 설정 매뉴얼',                      task:'Execution setup manual',                     start:'2026-11-16', end:'2026-11-27', days:12 },
+    { level:2, no:'7.4.', ko:'글로벌 구축사 설계 패키지 전달',        task:'Design package handover to global implementer', start:'2026-11-25', end:'2026-11-27', days:3 },
+    { level:1, no:'8',    ko:'캠페인 모니터링 & 최적화',              task:'Campaign Monitoring & Optimization',         start:'2027-02-01', end:'2027-02-26', days:26 },
+    { level:2, no:'8.1.', ko:'테스트 시나리오 준비',                  task:'Test scenario preparation',                  start:'2027-02-01', end:'2027-02-05', days:5  },
+    { level:2, no:'8.2.', ko:'통합 시나리오 테스트',                  task:'Integrated scenario testing',                start:'2027-02-08', end:'2027-02-19', days:12 },
+    { level:2, no:'8.3.', ko:'테스트 결과 정리 및 권고안',            task:'Test results summary and recommendations',   start:'2027-02-22', end:'2027-02-26', days:5  },
+    { level:1, no:'9',    ko:'교육',                                   task:'Training',                                   start:'2027-02-08', end:'2027-02-26', days:19 },
+    { level:2, no:'9.1.', ko:'KR 사용자 매뉴얼 제작',                 task:'KR user manual creation',                    start:'2027-02-08', end:'2027-02-19', days:12 },
+    { level:2, no:'9.2.', ko:'사용자 교육',                           task:'User training',                              start:'2027-02-22', end:'2027-02-26', days:5  },
+  ];
+
+  // 이번 주 월~일 범위 계산
+  const today = new Date();
+  const dow = today.getDay(); // 0=일, 1=월 ...
+  const diffMon = dow === 0 ? -6 : 1 - dow;
+  const weekStart = new Date(today); weekStart.setDate(today.getDate() + diffMon); weekStart.setHours(0,0,0,0);
+  const weekEnd   = new Date(weekStart); weekEnd.setDate(weekStart.getDate() + 6); weekEnd.setHours(23,59,59,999);
+
+  const isThisWeek = d => {
+    const s = new Date(d.start), e = new Date(d.end);
+    return s <= weekEnd && e >= weekStart;
+  };
+
+  // 이번 주에 걸리는 phase 번호 수집
+  const activePhases = new Set(
+    WBS_DATA.filter(d => d.level === 2 && isThisWeek(d)).map(d => d.no.split('.')[0])
+  );
+
+  // ── 키컬러 기반 이번 주 강조 row 렌더러 ──────────────────────────
+  const label = d => `<span title="${esc(d.task)}">${esc(d.ko||d.task)}</span>`;
+  const makeKoreaRow = (d, i) => {
+    const thisWeek = d.level === 2 ? isThisWeek(d) : activePhases.has(d.no);
+    if(d.level === 1){
+      const badge = thisWeek
+        ? `<span style="margin-left:8px;font-size:10px;background:var(--proj-color,#2563eb);color:#fff;padding:1px 7px;border-radius:10px;font-weight:600;opacity:.9">이번 주</span>` : '';
+      return `<tr style="background:var(--proj-color-bg,#e8f0fe)">
+        <td style="font-weight:700;color:var(--proj-color,#2563eb);padding-left:12px">${esc(d.no)}</td>
+        <td style="font-weight:700;color:var(--proj-color,#2563eb)">${label(d)}${badge}</td>
+        <td style="color:var(--text2)">${esc(d.start)}</td>
+        <td style="color:var(--text2)">${esc(d.end)}</td>
+        <td style="color:var(--text2);text-align:center">${d.days}</td>
+      </tr>`;
+    }
+    if(thisWeek){
+      return `<tr style="background:var(--proj-color-bg,#e8f0fe);border-left:3px solid var(--proj-color,#2563eb)">
+        <td style="color:var(--proj-color,#2563eb);padding-left:20px;font-weight:700">${esc(d.no)}</td>
+        <td style="color:var(--proj-color,#2563eb);padding-left:24px;font-weight:700">${label(d)}</td>
+        <td style="color:var(--proj-color,#2563eb);font-weight:600">${esc(d.start)}</td>
+        <td style="color:var(--proj-color,#2563eb);font-weight:600">${esc(d.end)}</td>
+        <td style="color:var(--proj-color,#2563eb);text-align:center;font-weight:600">${d.days}</td>
+      </tr>`;
+    }
+    const bg = i%2===0 ? 'var(--bg)' : 'var(--bg2,#f9fafb)';
+    return `<tr style="background:${bg}">
+      <td style="color:var(--text3);padding-left:20px">${esc(d.no)}</td>
+      <td style="color:var(--text);padding-left:24px">${label(d)}</td>
+      <td style="color:var(--text2)">${esc(d.start)}</td>
+      <td style="color:var(--text2)">${esc(d.end)}</td>
+      <td style="color:var(--text3);text-align:center">${d.days}</td>
+    </tr>`;
+  };
+  const rows = WBS_DATA.map((d,i) => makeKoreaRow(d,i)).join('');
+
+  // ── 글로벌 일정 데이터 (솔타 일정_2026106.xlsx) ────────────────────
+  const GLOBAL_DATA = [
+    { level:1, ko:'기획 & 킥오프',                                          task:'Plan and Kick-Off',                                                       start:'2026-09-07', end:'2026-10-09', dur:'25d' },
+    { level:2, ko:'프로젝트 기획 및 킥오프',                                task:'Project Planning and Kick-Off',                                           start:'2026-09-07', end:'2026-10-09', dur:'25d' },
+    { level:3, ko:'팀 온보딩, 사이트 접근, 킥오프 덱 기획',                task:'Team onboarding, Site access and Kickoff deck planning',                  start:'2026-09-07', end:'2026-09-25', dur:'15d' },
+    { level:3, ko:'라이선스 프로비저닝',                                    task:'License provisioning',                                                    start:'2026-09-24', end:'2026-09-25', dur:'2d'  },
+    { level:3, ko:'Marketing Cloud 환경 준비',                              task:'Marketing Cloud environment preparation',                                 start:'2026-09-28', end:'2026-10-09', dur:'10d' },
+    { level:3, ko:'환경 준비, 권한 확인, 접근 설정',                       task:'Environment readiness, entitlement confirmation, access preparation',     start:'2026-09-28', end:'2026-10-02', dur:'5d'  },
+    { level:3, ko:'샌드박스 설정, 환경 설계, 구성 체크리스트',             task:'Sandbox setup, Environment design, configuration checklist',              start:'2026-10-05', end:'2026-10-09', dur:'5d'  },
+    { level:3, ko:'프로젝트 킥오프 미팅 ★',                                task:'Project Kick-off meeting ★',                                              start:'2026-10-05', end:'2026-10-05', dur:'0d'  },
+    { level:1, ko:'비즈니스 요건 및 설계',                                  task:'Business Requirements and Design',                                        start:'2026-10-05', end:'2026-11-19', dur:'34d' },
+    { level:2, ko:'비즈니스 요건',                                          task:'Business Requirements',                                                   start:'2026-10-06', end:'2026-10-22', dur:'14d' },
+    { level:3, ko:'디스커버리 워크숍',                                      task:'Discovery Workshop',                                                      start:'2026-10-06', end:'2026-10-08', dur:'1d'  },
+    { level:3, ko:'피드백 반영',                                            task:'Feedback incorporated',                                                   start:'2026-10-12', end:'2026-10-12', dur:'1d'  },
+    { level:3, ko:'최종 URS 검토',                                          task:'Final URS review',                                                        start:'2026-10-12', end:'2026-10-16', dur:'5d'  },
+    { level:3, ko:'URS 승인 및 사인오프 ★',                                 task:'URS approved and Sign-off ★',                                             start:'2026-10-22', end:'2026-10-22', dur:'0d'  },
+    { level:2, ko:'크리에이티브 콘텐츠 & 디지털 에셋',                     task:'Creative Content & Digital Assets',                                       start:'2026-10-16', end:'2026-11-12', dur:'20d' },
+    { level:3, ko:'콘텐츠 기획',                                            task:'Content planning',                                                        start:'2026-10-16', end:'2026-10-22', dur:'5d'  },
+    { level:3, ko:'디자인 에셋 제작',                                       task:'Design asset production',                                                 start:'2026-10-23', end:'2026-10-29', dur:'5d'  },
+    { level:3, ko:'콘텐츠별 링크·URL 검수',                                task:'Link and URL verification per content',                                   start:'2026-10-30', end:'2026-11-05', dur:'5d'  },
+    { level:3, ko:'콘텐츠 & 에셋 사인오프 ★',                              task:'Creative content & assets Sign-off ★',                                    start:'2026-11-12', end:'2026-11-12', dur:'0d'  },
+    { level:2, ko:'Data Cloud 요건 및 명세',                                task:'Data Cloud Requirements & Specs',                                         start:'2026-10-23', end:'2026-11-05', dur:'10d' },
+    { level:3, ko:'캠페인 세그먼트 기준 설계',                             task:'Campaign segment criteria design',                                        start:'2026-10-23', end:'2026-10-29', dur:'5d'  },
+    { level:3, ko:'인터페이스 명세서 최종화',                               task:'Interface specification finalization',                                    start:'2026-10-30', end:'2026-11-05', dur:'5d'  },
+    { level:3, ko:'Data Cloud 요건 사인오프 ★',                             task:'Data Cloud Requirements Sign-off ★',                                      start:'2026-11-05', end:'2026-11-05', dur:'0d'  },
+    { level:2, ko:'Lightning UI / 대시보드 MVP 요건',                       task:'Lightning UI / Analytics & Dashboards MVP Requirements',                  start:'2026-11-02', end:'2026-11-27', dur:'20d' },
+    { level:3, ko:'Lightning UI 레이아웃 설계',                             task:'Lightning UI layout design',                                              start:'2026-11-02', end:'2026-11-13', dur:'10d' },
+    { level:3, ko:'대시보드 기획',                                          task:'Dashboard planning',                                                      start:'2026-11-09', end:'2026-11-20', dur:'10d' },
+    { level:3, ko:'대시보드 기획 확정',                                     task:'Dashboard planning confirmation',                                         start:'2026-11-23', end:'2026-11-25', dur:'3d'  },
+    { level:3, ko:'대시보드 요건 사인오프 ★',                               task:'Dashboard Requirements Sign-off ★',                                       start:'2026-11-25', end:'2026-11-27', dur:'3d'  },
+    { level:2, ko:'캠페인 저니 설계',                                       task:'Campaign Journey Design',                                                 start:'2026-10-12', end:'2026-11-06', dur:'20d' },
+    { level:3, ko:'캠페인 시나리오 설계',                                   task:'Campaign scenario design',                                                start:'2026-10-12', end:'2026-10-23', dur:'10d' },
+    { level:3, ko:'타겟 오디언스 세그먼트 정의',                           task:'Target audience segment definition',                                      start:'2026-10-19', end:'2026-10-30', dur:'10d' },
+    { level:3, ko:'세부 저니 설계 (트리거·분기)',                           task:'Detailed journey design (triggers and splits)',                           start:'2026-10-26', end:'2026-11-06', dur:'5d'  },
+    { level:3, ko:'저니 맵 사인오프 ★',                                     task:'Journey maps sign-off ★',                                                 start:'2026-11-06', end:'2026-11-06', dur:'0d'  },
+    { level:1, ko:'Salesforce Marketing Cloud 설정 & 구성',                 task:'Salesforce Marketing Cloud Set-up & Configuration',                      start:'2026-10-14', end:'2026-12-11', dur:'43d' },
+    { level:2, ko:'MC 기반 설정',                                           task:'Marketing Cloud Foundation Set-up',                                      start:'2026-10-14', end:'2026-11-04', dur:'16d' },
+    { level:3, ko:'환경 설계 사인오프 ★',                                   task:'Environment design sign-off ★',                                           start:'2026-10-14', end:'2026-10-14', dur:'0d'  },
+    { level:3, ko:'샌드박스 MC 기반 설정',                                  task:'MC foundation setup in sandbox',                                          start:'2026-10-15', end:'2026-10-21', dur:'5d'  },
+    { level:3, ko:'운영환경 MC 기반 설정 (URS 승인 후)',                    task:'MC foundation setup in production (post-URS sign-off)',                   start:'2026-10-26', end:'2026-10-30', dur:'5d'  },
+    { level:3, ko:'인증 발송 도메인 설정 (DKIM/DMARC)',                    task:'Authenticated sending domain set-up (DKIM / DMARC)',                     start:'2026-10-26', end:'2026-10-28', dur:'3d'  },
+    { level:3, ko:'BU 사용자 접근·발신자 프로파일·동의 설정',              task:'Business unit user access, sender profiles and consent settings',         start:'2026-11-02', end:'2026-11-04', dur:'3d'  },
+    { level:2, ko:'데이터·웹·CRM 고객 기반 구성',                          task:'Data, Web, CRM Customer Foundation Configuration',                       start:'2026-10-26', end:'2026-11-27', dur:'25d' },
+    { level:3, ko:'CRM 데이터 스트림 및 데이터 모델 매핑',                 task:'CRM data streams and data model mapping',                                 start:'2026-10-26', end:'2026-10-30', dur:'5d'  },
+    { level:3, ko:'웹·폼 데이터 수집 (선호센터·동의 폼)',                  task:'Web / form data capture – preference centre and consent form',            start:'2026-11-02', end:'2026-11-06', dur:'5d'  },
+    { level:3, ko:'채널 구성 (이메일·구독·동의 규칙)',                     task:'Channel configuration – email, subscriptions and consent rules',          start:'2026-11-09', end:'2026-11-13', dur:'5d'  },
+    { level:3, ko:'한국 고객 데이터 필터링·품질 검수·테스트 데이터 로드',  task:'Korea customer data filtering, data quality checks and test data load',   start:'2026-11-16', end:'2026-11-20', dur:'5d'  },
+    { level:3, ko:'구성 명세서 검토',                                       task:'Configuration Specs review',                                              start:'2026-11-23', end:'2026-11-26', dur:'4d'  },
+    { level:3, ko:'구성 명세서 승인 ★',                                     task:'Configuration Specs approved ★',                                          start:'2026-11-27', end:'2026-11-27', dur:'1d'  },
+    { level:2, ko:'Data Cloud 설정·수집·인사이트·세그먼테이션',            task:'Data Cloud Set-up & Ingestion, Calculated Insights & Segmentation',      start:'2026-11-02', end:'2026-11-27', dur:'20d' },
+    { level:3, ko:'데이터 수집 (CRM·웹 데이터 스트림)',                    task:'Data ingestion – CRM and web data streams',                               start:'2026-11-02', end:'2026-11-06', dur:'5d'  },
+    { level:3, ko:'ID 레졸루션 룰셋 및 통합 프로파일 검증',               task:'Identity resolution rulesets and unified profile validation',             start:'2026-11-09', end:'2026-11-13', dur:'5d'  },
+    { level:3, ko:'Calculated Insights 빌드 및 검증',                       task:'Calculated insights build and validation',                                start:'2026-11-16', end:'2026-11-20', dur:'5d'  },
+    { level:3, ko:'세그먼트 및 활성화 대상 (이메일·SMS/카카오톡)',         task:'Segments and activation targets (Email, SMS / KakaoTalk)',                start:'2026-11-23', end:'2026-11-27', dur:'5d'  },
+    { level:2, ko:'Agentforce 요건 수집',                                   task:'Agentforce Requirement Gathering',                                        start:'2026-11-09', end:'2026-11-27', dur:'15d' },
+    { level:3, ko:'Agentforce / Marketing AI 유스케이스 디스커버리 워크숍', task:'Agentforce / Marketing AI use-case discovery workshop',                   start:'2026-11-09', end:'2026-11-13', dur:'5d'  },
+    { level:3, ko:'Agentforce 유스케이스·데이터 요건·가드레일·Flex Credit', task:'Agentforce use cases, data needs, guardrails and Flex Credit estimate',   start:'2026-11-16', end:'2026-11-20', dur:'5d'  },
+    { level:3, ko:'Agentforce 요건 검토 및 사인오프',                      task:'Agentforce requirements review and sign-off',                             start:'2026-11-23', end:'2026-11-27', dur:'5d'  },
+    { level:2, ko:'Lightning UI / 대시보드 MVP 구현',                       task:'Lightning UI / Analytics & Dashboards MVP Enablement',                   start:'2026-11-16', end:'2026-12-11', dur:'20d' },
+    { level:3, ko:'<태스크 1>',                                             task:'<Task 1>',                                                                start:'2026-11-16', end:'2026-11-20', dur:'5d'  },
+    { level:3, ko:'<태스크 2>',                                             task:'<Task 2>',                                                                start:'2026-11-23', end:'2026-11-27', dur:'5d'  },
+    { level:3, ko:'<태스크 3>',                                             task:'<Task 3>',                                                                start:'2026-11-30', end:'2026-12-04', dur:'5d'  },
+    { level:3, ko:'<태스크 4>',                                             task:'<Task 4>',                                                                start:'2026-12-07', end:'2026-12-11', dur:'5d'  },
+    { level:2, ko:'SMS & 카카오톡 설정',                                    task:'SMS and KakaoTalk Setup',                                                 start:'2026-11-09', end:'2026-11-27', dur:'15d' },
+    { level:3, ko:'발송 모듈 설정',                                         task:'Sending module set up',                                                   start:'2026-11-09', end:'2026-11-27', dur:'15d' },
+    { level:1, ko:'캠페인 구축·모니터링·최적화',                           task:'Campaign Build, Monitoring & Optimization',                              start:'2026-09-24', end:'2026-11-30', dur:'48d' },
+    { level:2, ko:'캠페인 구축 및 실행',                                    task:'Campaign Build & Execution',                                              start:'2026-11-09', end:'2026-11-27', dur:'15d' },
+    { level:3, ko:'캠페인 자동화 스케줄링 설정',                           task:'Campaign automation scheduling definition',                               start:'2026-11-09', end:'2026-11-20', dur:'15d' },
+    { level:3, ko:'A/B 테스트 설정 정의',                                   task:'A/B test setup definition',                                               start:'2026-11-16', end:'2026-11-20', dur:'5d'  },
+    { level:3, ko:'실행 설정 매뉴얼',                                       task:'Execution setup manual',                                                  start:'2026-11-16', end:'2026-11-27', dur:'10d' },
+    { level:2, ko:'캠페인 모니터링·최적화',                                task:'Campaign Monitoring & Optimization',                                      start:'2027-02-01', end:'2027-02-26', dur:'20d' },
+    { level:3, ko:'테스트 시나리오 준비',                                   task:'Test scenario preparation',                                               start:'2027-02-01', end:'2027-02-05', dur:'1d'  },
+    { level:3, ko:'통합 시나리오 테스트',                                   task:'Integrated scenario testing',                                             start:'2027-02-08', end:'2027-02-19', dur:'10d' },
+    { level:3, ko:'테스트 결과 정리 및 권고안',                            task:'Test results summary and recommendations',                                start:'2027-02-22', end:'2027-02-26', dur:'5d'  },
+    { level:1, ko:'시스템 통합 테스트 (SIT)',                               task:'System Integration Testing',                                              start:'2026-11-16', end:'2027-02-12', dur:'58d' },
+    { level:2, ko:'SIT 테스트 스크립트 준비',                               task:'SIT Test Scripts preparation',                                            start:'2026-11-16', end:'2026-12-29', dur:'30d' },
+    { level:2, ko:'SIT 테스트 스크립트 검토 및 승인',                      task:'SIT Test scripts review and approval',                                    start:'2026-12-30', end:'2027-01-15', dur:'11d' },
+    { level:2, ko:'SIT 사이클 1',                                           task:'SIT Cycle 1',                                                             start:'2027-01-18', end:'2027-01-22', dur:'5d'  },
+    { level:2, ko:'SIT 사이클 2',                                           task:'SIT Cycle 2',                                                             start:'2027-01-25', end:'2027-01-29', dur:'5d'  },
+    { level:2, ko:'SIT 사이클 3',                                           task:'SIT Cycle 3',                                                             start:'2027-02-01', end:'2027-02-10', dur:'5d'  },
+    { level:2, ko:'이슈 해결 및 완료',                                      task:'Issue resolution & close out',                                            start:'2027-02-11', end:'2027-02-12', dur:'2d'  },
+    { level:1, ko:'사용자 인수 테스트 (UAT)',                               task:'User Acceptance Testing',                                                 start:'2026-12-14', end:'2027-03-05', dur:'53d' },
+    { level:2, ko:'UAT 스크립트 작성',                                      task:'UAT Scripts creation',                                                    start:'2026-12-14', end:'2027-01-21', dur:'25d' },
+    { level:2, ko:'UAT 스크립트 검토 및 승인',                             task:'UAT Scripts review and approval',                                         start:'2027-01-22', end:'2027-02-12', dur:'13d' },
+    { level:2, ko:'UAT 사이클 1',                                           task:'UAT Cycle 1',                                                             start:'2027-02-15', end:'2027-02-19', dur:'5d'  },
+    { level:2, ko:'이슈 해결',                                              task:'Issue resolution',                                                        start:'2027-02-22', end:'2027-02-23', dur:'2d'  },
+    { level:2, ko:'UAT 사이클 2',                                           task:'UAT Cycle 2',                                                             start:'2027-02-24', end:'2027-03-02', dur:'5d'  },
+    { level:2, ko:'이슈 해결 및 사인오프 ★',                               task:'Issue resolution & sign off ★',                                           start:'2027-03-03', end:'2027-03-05', dur:'3d'  },
+    { level:1, ko:'사용자 교육 및 커뮤니케이션',                           task:'User Training & Communication',                                           start:'2027-03-08', end:'2027-03-19', dur:'10d' },
+    { level:2, ko:'사용자 교육 가이드 제작',                               task:'Create User Training guide',                                              start:'2027-03-08', end:'2027-03-19', dur:'10d' },
+    { level:2, ko:'커뮤니케이션 템플릿 제작',                              task:'Create communication templates',                                          start:'2027-03-08', end:'2027-03-19', dur:'10d' },
+    { level:1, ko:'배포 준비 및 배포',                                      task:'Prep and Deploy',                                                         start:'2027-03-08', end:'2027-03-15', dur:'6d'  },
+    { level:2, ko:'배포 전 작업',                                           task:'Pre-deployment tasks',                                                    start:'2027-03-08', end:'2027-03-12', dur:'5d'  },
+    { level:2, ko:'Go Live ★',                                              task:'Go Live ★',                                                               start:'2027-03-15', end:'2027-03-15', dur:'0d'  },
+  ];
+
+  const activeGlobal = new Set(
+    GLOBAL_DATA.filter(d => d.level > 1 && isThisWeek(d)).map(d => {
+      // 해당 태스크 위쪽 가장 가까운 L1 task를 찾기 위해 인덱스 활용
+      return d;
+    })
+  );
+
+  // 글로벌 이번 주 phase 인덱스 계산
+  const globalPhaseIdx = new Set();
+  let curPhaseI = -1;
+  GLOBAL_DATA.forEach((d, i) => {
+    if(d.level === 1) curPhaseI = i;
+    else if(isThisWeek(d)) globalPhaseIdx.add(curPhaseI);
+  });
+
+  const glabel = d => `<span title="${esc(d.task)}">${esc(d.ko||d.task)}</span>`;
+  const makeGlobalRow = (d, i) => {
+    const tw = d.level === 1 ? globalPhaseIdx.has(i) : isThisWeek(d);
+    const TEAL = '#0f766e'; const TEAL_BG = '#f0fdfa';
+    if(d.level === 1){
+      const badge = tw ? `<span style="margin-left:8px;font-size:10px;background:${TEAL};color:#fff;padding:1px 7px;border-radius:10px;font-weight:600;opacity:.9">이번 주</span>` : '';
+      return `<tr style="background:#e6fffa">
+        <td style="font-weight:700;color:${TEAL};padding-left:8px;font-size:11px">${esc(d.start)}</td>
+        <td style="font-weight:700;color:${TEAL}">${glabel(d)}${badge}</td>
+        <td style="color:#5eead4;font-size:11px">${esc(d.end)}</td>
+        <td></td>
+        <td style="color:#5eead4;text-align:center;font-size:11px">${d.dur}</td>
+      </tr>`;
+    }
+    if(d.level === 2){
+      const twStyle = tw ? `background:${TEAL_BG};border-left:3px solid ${TEAL}` : `background:var(--bg2,#f9fafb)`;
+      const twColor = tw ? TEAL : 'var(--text2)';
+      const twWeight = tw ? '700' : '600';
+      return `<tr style="${twStyle}">
+        <td style="color:${twColor};padding-left:16px;font-size:11px;font-weight:${twWeight}">${esc(d.start)}</td>
+        <td style="color:${twColor};padding-left:20px;font-weight:${twWeight}">${glabel(d)}</td>
+        <td style="color:${twColor};font-size:11px">${esc(d.end)}</td>
+        <td></td>
+        <td style="color:${twColor};text-align:center;font-size:11px">${d.dur}</td>
+      </tr>`;
+    }
+    const twStyle = tw ? `background:${TEAL_BG};border-left:3px solid ${TEAL}` : `background:${i%2===0?'var(--bg)':'var(--bg2,#f9fafb)'}`;
+    const twColor = tw ? TEAL : 'var(--text3)';
+    return `<tr style="${twStyle}">
+      <td style="color:${twColor};padding-left:24px;font-size:11px">${esc(d.start)}</td>
+      <td style="color:${tw?TEAL:'var(--text)'};padding-left:32px;font-size:12px;font-weight:${tw?'600':'400'}">${glabel(d)}</td>
+      <td style="color:${twColor};font-size:11px">${esc(d.end)}</td>
+      <td></td>
+      <td style="color:${twColor};text-align:center;font-size:11px">${d.dur}</td>
+    </tr>`;
+  };
+  const globalRows = GLOBAL_DATA.map((d,i) => makeGlobalRow(d,i)).join('');
+
+  const tableColGroup = `<colgroup>
+    <col style="width:120px"><col><col style="width:120px"><col style="width:20px"><col style="width:60px">
+  </colgroup>`;
+  const tableHead = `<thead><tr><th>Start</th><th>Phase / Task</th><th>End</th><th></th><th>Dur.</th></tr></thead>`;
+
+  el.innerHTML = `
+    <div class="kickoff-pane"><div class="kickoff-inner">
+      <div class="ko-header">
+        <h1>Solta Medical Korea — WBS</h1>
+        <p>Work Breakdown Structure · Base Date 2026-10-06</p>
+        <div class="ko-badges">
+          <span class="ko-badge">디자인: 2026-10-06 ~ 2026-11-27</span>
+          <span class="ko-badge">테스트·교육: 2027-02-01 ~ 2027-02-26</span>
+          <span class="ko-badge">9 Phase · 40 Tasks</span>
+        </div>
+      </div>
+
+      <!-- Korea WBS -->
+      <div class="ko-section">
+        <div class="ko-section-title" style="font-size:12px">Korea WBS (MILVUS)</div>
+        <div class="ko-card" style="padding:0;overflow:hidden">
+          <div style="overflow-x:auto">
+            <table class="ko-scope-table" style="table-layout:fixed">
+              <colgroup>
+                <col style="width:70px"><col><col style="width:130px"><col style="width:130px"><col style="width:70px">
+              </colgroup>
+              <thead><tr><th>No.</th><th>Phase / Task</th><th>Start</th><th>End</th><th>Days</th></tr></thead>
+              <tbody>${rows}</tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- Global Schedule -->
+      <div class="ko-section">
+        <div class="ko-section-title" style="font-size:12px;color:#0f766e;border-bottom-color:#0f766e">
+          Global Schedule (Accenture)
+          <span style="font-size:11px;font-weight:400;color:var(--text3);margin-left:8px">★ = 마일스톤 · 범위·일정은 Korea WBS와 상이할 수 있음</span>
+        </div>
+        <div class="ko-card" style="padding:0;overflow:hidden">
+          <div style="overflow-x:auto">
+            <table class="ko-scope-table" style="table-layout:fixed">${tableColGroup}${tableHead}
+              <tbody>${globalRows}</tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+    </div></div>
+  `;
+}
+
+// ── WBS CALENDAR (GANTT) TAB ──────────────────────────────────────
+function renderWBSCalendar(){
+  const el = document.getElementById('tab-content');
+
+  const today = new Date(); today.setHours(0,0,0,0);
+  const dow = today.getDay();
+  const thisMonStart = new Date(today);
+  thisMonStart.setDate(today.getDate() + (dow===0 ? -6 : 1-dow));
+
+  // ── Korea WBS rows ──
+  const KR = [
+    { ph:true,  no:'1',   ko:'킥오프 & 기획',                    s:'2026-10-06', e:'2026-10-16' },
+    { ph:false, no:'1.1', ko:'킥오프 미팅',                       s:'2026-10-06', e:'2026-10-06' },
+    { ph:false, no:'1.2', ko:'WBS·커뮤니케이션 플랜',            s:'2026-10-06', e:'2026-10-09' },
+    { ph:false, no:'1.3', ko:'기준 자료 수집',                    s:'2026-10-06', e:'2026-10-16' },
+    { ph:true,  no:'2',   ko:'비즈니스 요건',                     s:'2026-10-06', e:'2026-10-16' },
+    { ph:false, no:'2.1', ko:'이해관계자 인터뷰',                 s:'2026-10-06', e:'2026-10-09' },
+    { ph:false, no:'2.2', ko:'요건·니즈 분석',                    s:'2026-10-12', e:'2026-10-16' },
+    { ph:false, no:'2.3', ko:'데이터 연동 범위',                  s:'2026-10-12', e:'2026-10-16' },
+    { ph:false, no:'2.4', ko:'요건 승인',                         s:'2026-10-15', e:'2026-10-16' },
+    { ph:true,  no:'3',   ko:'크리에이티브 콘텐츠 & 에셋',       s:'2026-10-12', e:'2026-11-06' },
+    { ph:false, no:'3.1', ko:'콘텐츠 기획',                       s:'2026-10-12', e:'2026-10-23' },
+    { ph:false, no:'3.2', ko:'디자인 에셋 제작',                  s:'2026-10-19', e:'2026-11-06' },
+    { ph:false, no:'3.3', ko:'링크·URL 검수',                     s:'2026-11-02', e:'2026-11-06' },
+    { ph:false, no:'3.4', ko:'콘텐츠 검수·승인',                  s:'2026-11-02', e:'2026-11-06' },
+    { ph:true,  no:'4',   ko:'Data Cloud 요건·명세',              s:'2026-10-26', e:'2026-11-27' },
+    { ph:false, no:'4.1', ko:'레거시 데이터 검토',                s:'2026-10-26', e:'2026-10-28' },
+    { ph:false, no:'4.2', ko:'세그먼트 기준 설계',                s:'2026-10-27', e:'2026-10-30' },
+    { ph:false, no:'4.3', ko:'인터페이스 명세 초안',              s:'2026-10-28', e:'2026-10-30' },
+    { ph:false, no:'4.4', ko:'인터페이스 명세 최종화',            s:'2026-11-23', e:'2026-11-27' },
+    { ph:true,  no:'5',   ko:'Lightning UI / 대시보드 MVP',       s:'2026-11-02', e:'2026-11-20' },
+    { ph:false, no:'5.1', ko:'UI 레이아웃 설계',                  s:'2026-11-02', e:'2026-11-13' },
+    { ph:false, no:'5.2', ko:'KPI 정의',                          s:'2026-11-09', e:'2026-11-13' },
+    { ph:false, no:'5.3', ko:'KPI 대시보드 계획',                 s:'2026-11-16', e:'2026-11-20' },
+    { ph:true,  no:'6',   ko:'캠페인 저니 설계',                  s:'2026-10-12', e:'2026-11-06' },
+    { ph:false, no:'6.1', ko:'시나리오 설계',                     s:'2026-10-12', e:'2026-10-23' },
+    { ph:false, no:'6.2', ko:'세그먼트 정의',                     s:'2026-10-19', e:'2026-10-30' },
+    { ph:false, no:'6.3', ko:'세부 저니 설계',                    s:'2026-10-26', e:'2026-11-06' },
+    { ph:false, no:'6.4', ko:'시나리오 검수·승인',                s:'2026-11-04', e:'2026-11-06' },
+    { ph:true,  no:'7',   ko:'캠페인 구축·실행',                  s:'2026-11-09', e:'2026-11-27' },
+    { ph:false, no:'7.1', ko:'자동화 스케줄링 설정',              s:'2026-11-09', e:'2026-11-20' },
+    { ph:false, no:'7.2', ko:'A/B 테스트 설정',                   s:'2026-11-16', e:'2026-11-20' },
+    { ph:false, no:'7.3', ko:'실행 설정 매뉴얼',                  s:'2026-11-16', e:'2026-11-27' },
+    { ph:false, no:'7.4', ko:'글로벌 패키지 전달',                s:'2026-11-25', e:'2026-11-27' },
+    { ph:true,  no:'8',   ko:'캠페인 모니터링·최적화',            s:'2027-02-01', e:'2027-02-26' },
+    { ph:false, no:'8.1', ko:'테스트 시나리오 준비',              s:'2027-02-01', e:'2027-02-05' },
+    { ph:false, no:'8.2', ko:'통합 시나리오 테스트',              s:'2027-02-08', e:'2027-02-19' },
+    { ph:false, no:'8.3', ko:'결과 정리·권고안',                  s:'2027-02-22', e:'2027-02-26' },
+    { ph:true,  no:'9',   ko:'교육',                              s:'2027-02-08', e:'2027-02-26' },
+    { ph:false, no:'9.1', ko:'KR 사용자 매뉴얼 제작',             s:'2027-02-08', e:'2027-02-19' },
+    { ph:false, no:'9.2', ko:'사용자 교육',                       s:'2027-02-22', e:'2027-02-26' },
+  ];
+
+  // ── Global schedule rows (phases only) ──
+  const GL = [
+    { ko:'기획 & 킥오프',             s:'2026-09-07', e:'2026-10-09' },
+    { ko:'비즈니스 요건 및 설계',     s:'2026-10-05', e:'2026-11-19' },
+    { ko:'MC 설정 & 구성',            s:'2026-10-14', e:'2026-12-11' },
+    { ko:'캠페인 구축·모니터링',      s:'2026-09-24', e:'2026-11-30' },
+    { ko:'시스템 통합 테스트 (SIT)',  s:'2026-11-16', e:'2027-02-12' },
+    { ko:'사용자 인수 테스트 (UAT)',  s:'2026-12-14', e:'2027-03-05' },
+    { ko:'사용자 교육·커뮤니케이션', s:'2027-03-08', e:'2027-03-19' },
+    { ko:'배포 준비 & Go Live',       s:'2027-03-08', e:'2027-03-15' },
+  ];
+
+  // ── Generate Monday-aligned weeks ──
+  // 첫 태스크(2026-10-06)가 속한 주의 월요일부터 시작
+  const _anchor = new Date('2026-10-06');
+  const _anchorDow = _anchor.getDay();
+  const GANTT_START = new Date(_anchor);
+  GANTT_START.setDate(_anchor.getDate() + (_anchorDow === 0 ? -6 : 1 - _anchorDow));
+  const GANTT_END   = new Date('2027-03-15');
+  const weeks = [];
+  let cur = new Date(GANTT_START);
+  while(cur <= GANTT_END){
+    weeks.push(new Date(cur));
+    cur.setDate(cur.getDate() + 7);
+  }
+  const W = weeks.length;
+
+  const fmtMD = d => `${d.getMonth()+1}/${d.getDate()}`;
+
+  // Month header spans
+  const monthSpans = [];
+  let prevM = -1, span = 0, label = '';
+  weeks.forEach(w => {
+    const m = w.getMonth(), y = w.getFullYear();
+    const ml = `${y}.${String(m+1).padStart(2,'0')}`;
+    if(m !== prevM){ if(span) monthSpans.push({label, span}); prevM=m; span=1; label=ml; }
+    else span++;
+  });
+  if(span) monthSpans.push({label, span});
+
+  const overlap = (wStart, s, e) => {
+    const wEnd = new Date(wStart); wEnd.setDate(wStart.getDate()+6);
+    return new Date(s) <= wEnd && new Date(e) >= wStart;
+  };
+  const isTW = w => w.getTime() === thisMonStart.getTime();
+
+  // ── Row renderers ──
+  const krColor = 'var(--proj-color,#2563eb)';
+  const krBg    = 'var(--proj-color-bg,#e8f0fe)';
+  const glColor = '#14b8a6';
+  const glBg    = '#ccfbf1';
+
+  const cells = (item, barColor, barH, barTop, opacity=1) =>
+    weeks.map(w => {
+      const tw = isTW(w);
+      const active = overlap(w, item.s, item.e);
+      const bg = tw ? 'rgba(99,102,241,0.06)' : '';
+      const borderR = tw ? `border-right:1px solid rgba(99,102,241,.2)` : '';
+      if(!active) return `<td style="background:${bg};${borderR};padding:0"></td>`;
+      return `<td style="background:${bg};${borderR};padding:0;position:relative">
+        <div style="position:absolute;left:2px;right:2px;top:${barTop};height:${barH};background:${barColor};border-radius:3px;opacity:${opacity}"></div>
+      </td>`;
+    }).join('');
+
+  const krRows = KR.map(r => {
+    const labelStyle = r.ph
+      ? `font-weight:700;color:${krColor};font-size:12px`
+      : `color:var(--text2);font-size:11px;padding-left:20px`;
+    const trBg = r.ph ? `background:${krBg}` : '';
+    const barH = r.ph ? '10px' : '6px';
+    const barTop = r.ph ? '7px' : '9px';
+    const op = r.ph ? '1' : '0.65';
+    return `<tr style="height:24px;${trBg}">
+      <td style="${labelStyle};white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:180px;padding:0 6px;border-right:2px solid var(--border2)" title="${esc(r.ko)}">${esc(r.no)}  ${esc(r.ko)}</td>
+      ${cells(r, krColor, barH, barTop, op)}
+    </tr>`;
+  }).join('');
+
+  const glRows = GL.map(r => {
+    return `<tr style="height:22px">
+      <td style="font-weight:600;color:#0f766e;font-size:11px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:180px;padding:0 6px;border-right:2px solid var(--border2)" title="${esc(r.ko)}">${esc(r.ko)}</td>
+      ${cells(r, glColor, '10px', '6px', '0.85')}
+    </tr>`;
+  }).join('');
+
+  const monthHd = monthSpans.map(m =>
+    `<th colspan="${m.span}" style="background:var(--bg3,#f1f5f9);font-size:11px;font-weight:700;color:var(--text2);padding:4px 6px;text-align:center;border-right:1px solid var(--border2);border-bottom:1px solid var(--border2)">${m.label}</th>`
+  ).join('');
+
+  const weekHd = weeks.map(w => {
+    const tw = isTW(w);
+    return `<th style="background:${tw?'var(--proj-color-bg,#e8f0fe)':'var(--bg2)'};font-size:9px;font-weight:${tw?700:400};color:${tw?'var(--proj-color,#2563eb)':'var(--text3)'};padding:2px 1px;text-align:center;min-width:34px;border-right:1px solid var(--border);border-bottom:1px solid var(--border2)">${fmtMD(w)}</th>`;
+  }).join('');
+
+  const sectionRow = (label, bg, color) =>
+    `<tr><td colspan="${W+1}" style="background:${bg};padding:3px 8px;font-size:11px;font-weight:700;color:${color};letter-spacing:.05em">${label}</td></tr>`;
+
+  el.innerHTML = `
+    <div class="kickoff-pane"><div class="kickoff-inner" style="max-width:none">
+      <div class="ko-header">
+        <h1>Solta Medical Korea — 일정 캘린더</h1>
+        <p>WBS Gantt Chart · 주 단위 (2026.10 ~ 2027.03)</p>
+        <div class="ko-badges">
+          <span class="ko-badge" style="background:var(--proj-color-bg,#e8f0fe);color:var(--proj-color,#2563eb)">■ Korea WBS — MILVUS</span>
+          <span class="ko-badge" style="background:#f0fdfa;color:#0f766e">■ 글로벌 일정 — Accenture</span>
+          <span class="ko-badge">강조 = 이번 주</span>
+        </div>
+      </div>
+      <div class="ko-section" style="margin-top:0">
+        <div style="overflow-x:auto;-webkit-overflow-scrolling:touch">
+          <table style="border-collapse:collapse;width:max-content;min-width:100%">
+            <thead>
+              <tr>
+                <th style="min-width:180px;background:var(--bg3);border-right:2px solid var(--border2);border-bottom:1px solid var(--border2)"></th>
+                ${monthHd}
+              </tr>
+              <tr>
+                <th style="background:var(--bg2);border-right:2px solid var(--border2)"></th>
+                ${weekHd}
+              </tr>
+            </thead>
+            <tbody>
+              ${sectionRow('KOREA WBS — MILVUS', 'var(--proj-color-bg,#e8f0fe)', 'var(--proj-color,#2563eb)')}
+              ${krRows}
+              <tr><td colspan="${W+1}" style="height:6px"></td></tr>
+              ${sectionRow('GLOBAL SCHEDULE — ACCENTURE', '#e6fffa', '#0f766e')}
+              ${glRows}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div></div>
+  `;
 }
 
 async function renderBriefing(){
@@ -4223,7 +4799,7 @@ ${rawText}
 - subject: 이메일이면 Subject 줄, Slack이면 첫 번째 메시지 내용 한 줄로. Slack 마크다운 제거 필수: *bold* → bold, \`code\` → code, ~strike~ → strike, [#채널ID] 같은 채널 태그 제거
 - counterparty: direction이 "외부"일 때 상대방 회사명 또는 이름. 없으면 null
 - owner: @멘션된 사람 배열. 없으면 []
-- summary: 대화의 흐름과 결과를 상세히 정리. 누가 무엇을 제안/요청했고 어떻게 논의됐으며 최종적으로 무엇이 결정됐는지 흐름 중심으로 서술 (단순 요약 X, 대화 맥락과 결론 O). 줄바꿈은 \\n으로 이스케이프
+- summary: 핵심 내용을 마크다운 불릿 리스트(- 항목)로 정리. 결정사항·요청·논의 포인트를 항목별로 구분. 쉼표로 이어 쓰지 말고 항목 하나당 한 줄. 줄바꿈은 \\n으로 이스케이프
 - action_items: 명확한 할일/액션아이템 배열. 없으면 []
 
 중요: 모든 문자열 값 안에서 줄바꿈은 \\n으로, 큰따옴표는 \\"로 이스케이프하세요.
@@ -4382,7 +4958,8 @@ function _commCardMeta(c){
   const displayDate = date ? date.slice(5).replace('-','/') : '';
   const subject = c.subject || c.participants || '';
   const summary = c.summary || c.content || '';
-  const preview = summary.replace(/\n/g,' ').trim().slice(0,150);
+  const previewLines = summary.split('\n').map(l=>l.trim()).filter(Boolean);
+  const preview = previewLines.slice(0,3).join('\n').slice(0,250);
   return {ch, meta, date, displayDate, subject, preview};
 }
 
@@ -4411,7 +4988,7 @@ function renderCommCards(items, el){
       </div>
       <div class="comm-card-body">
         ${(subject||ownerInline)?`<div class="comm-title-row"><span class="comm-card-subject">${esc(subject||'')}</span>${ownerInline}</div>`:''}
-        ${preview?`<div class="comm-summary">${esc(preview)}</div>`:''}
+        ${preview?`<div class="comm-summary" style="white-space:pre-line">${esc(preview)}</div>`:''}
         ${actionHtml}
       </div>
     </div>`;
@@ -4472,6 +5049,7 @@ async function showCommModal(id){
     subject: item.subject||'',
     counterparty: item.counterparty||'',
     owner: item.owner||[],
+    participants: item.participants||'',
     summary: item.summary||item.content||'',
     action_items: item.actionItems||[],
     messages: item.messages||[],
@@ -4536,6 +5114,10 @@ AI가 발화자·날짜·담당자·요약·액션아이템을 자동으로 구�
         <div class="form-row" style="margin-bottom:10px">
           <label>제목 / 주제</label>
           <input type="text" id="f-subject" placeholder="커뮤니케이션 제목이나 주제" value="${esc(p?.subject||'')}">
+        </div>
+        <div class="form-row" style="margin-bottom:10px">
+          <label>참석자</label>
+          <input type="text" id="f-participants" placeholder="마케팅팀, IT팀, 홍길동 등 쉼표 구분" value="${esc(p?.participants||'')}">
         </div>
         <div class="form-row-2" style="margin-bottom:10px">
           <div class="form-row" style="margin:0">
@@ -4609,7 +5191,7 @@ AI가 발화자·날짜·담당자·요약·액션아이템을 자동으로 구�
         sourceUrl: savedSourceUrl,
         date: firstMsgDate||today2,
         type: document.getElementById('f-channel').value,
-        participants: ownerRaw, content: summary,
+        participants: document.getElementById('f-participants')?.value.trim()||'', content: summary,
         createdAt: item?.createdAt||Date.now(), loggedAt: Date.now(),
       };
       if(!isEdit){
@@ -4874,10 +5456,13 @@ async function deleteComm(id){
 async function renderFiles(){
   const el = document.getElementById('tab-content');
   el.innerHTML = `<div class="list-pane">
-    <div class="file-upload-zone" id="upload-zone">
-      <p>파일을 여기에 드래그하거나 클릭하여 업로드</p>
-      <span>PDF, Word, Excel, 이미지 등 모든 형식 지원</span>
-      <input type="file" id="file-input" multiple>
+    <div style="display:flex;gap:8px;align-items:stretch;margin-bottom:0">
+      <div class="file-upload-zone" id="upload-zone" style="flex:1;margin-bottom:0">
+        <p>파일을 여기에 드래그하거나 클릭하여 업로드</p>
+        <span>PDF, Word, Excel, 이미지 등 모든 형식 지원</span>
+        <input type="file" id="file-input" multiple>
+      </div>
+      <button class="btn-primary" id="add-link-btn" style="white-space:nowrap;align-self:center;padding:10px 16px">🔗 링크 추가</button>
     </div>
     <div class="tab-toolbar" style="margin-bottom:10px">
       <input type="text" id="file-search" placeholder="파일 이름 검색" value="${esc(fileSearch)}">
@@ -4900,6 +5485,8 @@ async function renderFiles(){
     handleFileUpload(e.dataTransfer.files);
   });
 
+  document.getElementById('add-link-btn').addEventListener('click', showLinkModal);
+
   document.getElementById('file-search').addEventListener('input', e=>{
     fileSearch = e.target.value;
     loadFiles();
@@ -4913,6 +5500,45 @@ async function renderFiles(){
   });
 
   await loadFiles();
+}
+
+function showLinkModal(){
+  const catOptions = FILE_CATS.map(c=>`<option>${esc(c)}</option>`).join('');
+  showModal('링크 추가', `
+    <div class="form-row">
+      <label>파일 이름</label>
+      <input type="text" id="f-link-name" placeholder="예: 솔타 킥오프 회의록.docx" style="width:100%">
+    </div>
+    <div class="form-row">
+      <label>URL</label>
+      <input type="url" id="f-link-url" placeholder="https://drive.google.com/..." style="width:100%">
+    </div>
+    <div class="form-row">
+      <label>카테고리</label>
+      <select id="f-link-cat">${catOptions}</select>
+    </div>
+  `,[
+    {label:'추가', cls:'btn-primary', action: async()=>{
+      const name = document.getElementById('f-link-name').value.trim();
+      const url  = document.getElementById('f-link-url').value.trim();
+      const cat  = document.getElementById('f-link-cat').value;
+      if(!name || !url){ showToast('이름과 URL을 모두 입력하세요'); return; }
+      await db.put('files',{
+        id: genId(),
+        projectId: PROJECT_ID,
+        name,
+        category: cat,
+        url,
+        mimeType: 'link',
+        size: 0,
+        uploadedAt: Date.now(),
+      });
+      closeModal();
+      renderTab('files');
+      showToast('링크 추가됨');
+    }},
+    {label:'취소', cls:'btn-ghost', action:()=>closeModal()},
+  ]);
 }
 
 async function handleFileUpload(fileList){
@@ -4985,19 +5611,24 @@ async function loadFiles(){
   }
   el.innerHTML = items.map(f=>{
     const m = FILE_CAT_META[f.category]||{cls:'fc-etc',icon:'📌'};
+    const isLink = f.mimeType === 'link';
+    const actionBtn = isLink
+      ? `<a href="${esc(f.url)}" target="_blank" rel="noopener" class="btn-ghost" style="text-decoration:none">🔗 열기</a>`
+      : `<button class="btn-ghost" onclick="downloadFile('${f.id}')">⬇ 다운로드</button>`;
+    const sizeStr = isLink ? '링크' : fmtSize(f.size);
     return `
     <div class="file-item fcat ${m.cls}">
-      <span class="file-icon">${fileIcon(f.mimeType)}</span>
+      <span class="file-icon">${isLink ? '🔗' : fileIcon(f.mimeType)}</span>
       <div class="file-info">
         <div class="file-name">${esc(f.name)}</div>
         <div class="file-meta">
           <span class="file-cat-badge fcat-badge ${m.cls}">${m.icon} ${esc(f.category)}</span>
-          <span>${fmtSize(f.size)}</span>
+          <span>${sizeStr}</span>
           <span>${new Date(f.uploadedAt).toLocaleDateString('ko-KR')}</span>
         </div>
       </div>
       <button class="btn-ghost" onclick="renameFile('${f.id}')"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg> 이름 변경</button>
-      <button class="btn-ghost" onclick="downloadFile('${f.id}')">⬇ 다운로드</button>
+      ${actionBtn}
       <button class="btn-ghost" onclick="deleteFile('${f.id}')" style="color:var(--red)"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/><path d="M10 11v6"/><path d="M14 11v6"/><path d="M9 6V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2"/></svg></button>
     </div>`;
   }).join('');
@@ -5078,9 +5709,9 @@ async function renderIssues(){
   });
   document.getElementById('btn-add-issue').addEventListener('click',()=>showIssueModal(null));
   document.getElementById('list-pane').addEventListener('click', e=>{
-    if(e.target.closest('.card-actions,.status-select')) return;
-    const h=e.target.closest('[data-thread-id]');
-    if(h) openThread(h.dataset.threadId, h.dataset.threadType);
+    if(e.target.closest('.ib-acts,.status-select')) return;
+    const h=e.target.closest('[data-issue-id]');
+    if(h) openThread(h.dataset.issueId, 'issue');
   });
   await loadIssues();
 }
@@ -5110,7 +5741,7 @@ async function loadIssues(){
     </tr></thead>
     <tbody>
     ${items.map((i,idx)=>`
-      <tr class="issue-row${selectedItem?.id===i.id?' card-selected':''}" data-thread-id="${i.id}" data-thread-type="issue">
+      <tr class="issue-row" data-issue-id="${i.id}" data-thread-id="${i.id}" data-thread-type="issue" style="cursor:pointer">
         <td class="col-num">${items.length-idx}</td>
         <td><div class="ib-title">
           <span class="thread-trigger">${esc(i.title)}</span>
@@ -5221,6 +5852,13 @@ function inlineFmt(s){
     .replace(/``([^`]+)``/g,'<code>$1</code>')
     .replace(/`([^`]+)`/g,'<code>$1</code>')
     .replace(/\[([^\]]+)\]\(([^)]+)\)/g,'<a href="$2" target="_blank" rel="noopener">$1</a>');
+}
+function renderSummaryAsBullets(text){
+  if(!text) return '';
+  const lines = text.split('\n').map(l=>l.trim()).filter(Boolean);
+  const hasMd = lines.some(l=>/^[-*] |^\d+\. |^#+\s/.test(l));
+  if(hasMd) return renderMarkdown(text);
+  return renderMarkdown(lines.map(l=>`- ${l}`).join('\n'));
 }
 function renderMarkdown(raw, opts={}){
   if(!raw) return '';
@@ -6043,7 +6681,10 @@ async function renderTodo(){
 
   const el = document.getElementById('tab-content');
   el.innerHTML = `<div class="todo-layout">
-    <div class="todo-cal-pane" id="todo-cal-pane" style="${todoView!=='daily'?'display:none':''}"></div>
+    <div class="todo-left-pane">
+      <div class="todo-cal-pane" id="todo-cal-pane" style="${todoView!=='daily'?'display:none':''}"></div>
+      <div class="todo-backlog-pane" id="todo-backlog-pane"></div>
+    </div>
     <div class="todo-list-pane" id="todo-list-pane">
       <div class="todo-view-toolbar">
         <button class="todo-view-btn${todoView==='daily'?' active':''}" data-view="daily">Daily</button>
@@ -6072,6 +6713,7 @@ async function renderTodo(){
   } else {
     await renderTodoMonthlyBody();
   }
+  await renderBacklog();
 }
 
 async function renderTodoCal(){
@@ -6134,11 +6776,17 @@ function todoDateLabel(dateStr){
   return `${d.getMonth()+1}/${d.getDate()}(${DAYS_KO[d.getDay()]})`;
 }
 
+function parseTodoTag(content){
+  const m = (content||'').match(/^\[([^\]]+)\]\s*/);
+  return m ? {tag:m[1], text:content.slice(m[0].length)} : {tag:'', text:content};
+}
 function todoItemHTML(t, extra=''){
+  const {tag, text} = parseTodoTag(t.content);
+  const badgeHTML = tag ? `<span class="backlog-badge" style="margin-right:4px">${esc(tag)}</span>` : '';
   return `<div class="todo-item${t.done?' done-item':''}" data-todo-id="${t.id}">
     <input type="checkbox" class="todo-checkbox" ${t.done?'checked':''} data-chk-id="${t.id}">
     <div class="todo-body">
-      <div class="todo-text">${esc(t.content)}</div>
+      <div class="todo-text">${badgeHTML}${esc(text)}</div>
       ${(t.time||t.assignee||t.deadline)?`
       <div class="todo-chips">
         ${t.time?`<span class="todo-chip">⏰ ${esc(t.time)}</span>`:''}
@@ -6243,7 +6891,7 @@ async function loadTodayTodos(){
 
   // 오늘 뷰일 때만 과거 미완료 이월 항목 수집
   const overdue = isToday
-    ? allTodos.filter(t=>!t.done && t.date < todayStr).sort((a,b)=>a.date.localeCompare(b.date))
+    ? allTodos.filter(t=>!t.done && t.date && t.date < todayStr).sort((a,b)=>a.date.localeCompare(b.date))
     : [];
 
   const d = new Date(todoSelectedDate+'T00:00:00');
@@ -6357,6 +7005,32 @@ async function loadTodayTodos(){
     const delBtn = e.target.closest('[data-del-id]');
     if(delBtn){ await deleteTodo(delBtn.dataset.delId); return; }
   });
+
+  // 백로그 → Daily 드롭존
+  const todoList = document.getElementById('todo-list');
+  if(todoList){
+    todoList.classList.add('todo-list-dropzone');
+    todoList.addEventListener('dragover',e=>{
+      if(!e.dataTransfer.types.includes('backlog-todo-id')) return;
+      e.preventDefault();
+      todoList.classList.add('drop-active');
+    });
+    todoList.addEventListener('dragleave',e=>{
+      if(!todoList.contains(e.relatedTarget)) todoList.classList.remove('drop-active');
+    });
+    todoList.addEventListener('drop',async e=>{
+      const id=e.dataTransfer.getData('backlog-todo-id');
+      if(!id) return;
+      e.preventDefault();
+      todoList.classList.remove('drop-active');
+      const t=await db.get('todos',id);
+      if(!t) return;
+      t.date=todoSelectedDate;
+      await db.put('todos',t);
+      await refreshTodoView();
+      await renderBacklog();
+    });
+  }
 }
 
 async function rolloverTodo(id){
@@ -6371,7 +7045,7 @@ async function rolloverTodo(id){
 async function rolloverAllTodos(){
   const todayStr = new Date().toISOString().slice(0,10);
   const all = await db.getByIndex('todos','projectId',PROJECT_ID);
-  const overdue = all.filter(t=>!t.done && t.date < todayStr);
+  const overdue = all.filter(t=>!t.done && t.date && t.date < todayStr);
   await Promise.all(overdue.map(t=>{
     t.originalDate = t.originalDate || t.date;
     t.date = todayStr;
@@ -6448,12 +7122,24 @@ async function editTodoModal(id){
 async function deleteTodo(id){
   const item = await db.get('todos', id);
   if(!item) return;
+  // 백로그 출처 항목이 날짜에 배정된 상태면 삭제 대신 백로그로 복귀
+  if(item.backlog && item.date){
+    item.date = '';
+    delete item.originalDate;
+    await db.put('todos', item);
+    closeModal();
+    showToast('백로그로 되돌렸습니다');
+    await refreshTodoView();
+    await renderBacklog();
+    return;
+  }
   confirmDelete(item.content||'할일', async()=>{
     pushUndo('todos', item, item.content||'할일', async()=>{closeModal();await refreshTodoView();});
     await db.delete('todos', id);
     closeModal();
     showToast('삭제됨 · Ctrl+Z로 실행 취소');
     await refreshTodoView();
+    await renderBacklog();
   });
 }
 
@@ -6464,6 +7150,93 @@ async function refreshTodoView(){
   else if(todoView==='weekly'){ await renderTodoWeeklyBody(); }
   else if(todoView==='deadline'){ await renderTodoDeadlineBody(); }
   else { await renderTodoMonthlyBody(); }
+}
+
+async function renderBacklog(){
+  const pane = document.getElementById('todo-backlog-pane');
+  if(!pane) return;
+  const all = await db.getByIndex('todos','projectId',PROJECT_ID);
+  const items = all.filter(t=>!t.date).sort((a,b)=>a.createdAt-b.createdAt);
+
+  // [태그] 파싱 후 그룹핑
+  const parseTag = content => {
+    const m = content.match(/^\[([^\]]+)\]\s*/);
+    return m ? {tag: m[1], text: content.slice(m[0].length)} : {tag: '', text: content};
+  };
+  const groups = {};
+  const groupOrder = [];
+  for(const t of items){
+    const {tag} = parseTag(t.content);
+    if(!groups[tag]){ groups[tag]=[]; groupOrder.push(tag); }
+    groups[tag].push(t);
+  }
+  const listHTML = items.length===0
+    ? `<div class="todo-backlog-empty">날짜 없는 할일을<br>여기 추가하세요<br><br>⠿ 드래그해서<br>날짜 배정</div>`
+    : groupOrder.map(tag=>{
+        const tagHeaderHTML = tag ? `<div class="backlog-group-header">${esc(tag)}</div>` : '';
+        // tag 안에서 group 필드로 2차 그룹핑
+        const subGroups = {};
+        const subOrder = [];
+        for(const t of groups[tag]){
+          const g = t.group||'';
+          if(!subGroups[g]){ subGroups[g]=[]; subOrder.push(g); }
+          subGroups[g].push(t);
+        }
+        const subHTML = subOrder.map(g=>{
+          const subHeaderHTML = g ? `<div class="backlog-step-header">${esc(g)}</div>` : '';
+          const itemsHTML = subGroups[g].map(t=>{
+            const {text} = parseTag(t.content);
+            const badgeHTML = tag ? `<span class="backlog-badge">${esc(tag)}</span>` : '';
+            return `<div class="todo-backlog-item" draggable="true" data-backlog-id="${t.id}">
+              <span class="backlog-drag-handle">⠿</span>
+              <span class="backlog-text">${esc(text)}</span>
+              ${badgeHTML}
+              <button class="backlog-del" data-backlog-del="${t.id}" title="삭제">×</button>
+            </div>`;
+          }).join('');
+          return subHeaderHTML + itemsHTML;
+        }).join('');
+        return tagHeaderHTML + subHTML;
+      }).join('');
+
+  pane.innerHTML = `
+    <div class="todo-backlog-add-row">
+      <input type="text" id="backlog-input" placeholder="할일 추가 (Enter)">
+      <button id="backlog-add-btn">+</button>
+    </div>
+    <div class="todo-backlog-list" id="backlog-list">${listHTML}</div>`;
+
+  const input = document.getElementById('backlog-input');
+  const addBtn = document.getElementById('backlog-add-btn');
+  const doAdd = async()=>{
+    const content = input.value.trim();
+    if(!content) return;
+    await db.put('todos',{id:genId(),projectId:PROJECT_ID,date:'',content,time:'',assignee:'',deadline:'',memo:'',done:false,backlog:true,createdAt:Date.now()});
+    input.value='';
+    await renderBacklog();
+  };
+  addBtn.addEventListener('click',doAdd);
+  input.addEventListener('keydown',e=>{if(e.key==='Enter'){e.preventDefault();doAdd();}});
+
+  pane.addEventListener('click',async e=>{
+    const delBtn=e.target.closest('[data-backlog-del]');
+    if(!delBtn) return;
+    await db.delete('todos',delBtn.dataset.backlogDel);
+    await renderBacklog();
+  });
+
+  const list = document.getElementById('backlog-list');
+  list.addEventListener('dragstart',e=>{
+    const item=e.target.closest('[data-backlog-id]');
+    if(!item) return;
+    e.dataTransfer.setData('backlog-todo-id',item.dataset.backlogId);
+    e.dataTransfer.effectAllowed='move';
+    setTimeout(()=>item.classList.add('is-dragging'),0);
+  });
+  list.addEventListener('dragend',e=>{
+    const item=e.target.closest('[data-backlog-id]');
+    if(item) item.classList.remove('is-dragging');
+  });
 }
 
 function localDateStr(d){
@@ -6525,7 +7298,7 @@ async function renderTodoWeeklyBody(){
 
   // 이번 주 보고 있을 때만 이월 섹션 표시
   const overdue = isCurrentWeek
-    ? allTodos.filter(t=>!t.done && t.date < weekDates[0]).sort((a,b)=>a.date.localeCompare(b.date))
+    ? allTodos.filter(t=>!t.done && t.date && t.date < weekDates[0]).sort((a,b)=>a.date.localeCompare(b.date))
     : [];
 
   const rolloverHTML = isCurrentWeek ? `
@@ -6629,14 +7402,29 @@ async function renderTodoWeeklyBody(){
     col.addEventListener('dragover', e=>{
       e.preventDefault();
       e.dataTransfer.dropEffect = 'move';
-      col.classList.add('drop-target');
+      const isBacklog = e.dataTransfer.types.includes('backlog-todo-id');
+      col.classList.add(isBacklog ? 'backlog-drop-target' : 'drop-target');
     });
     col.addEventListener('dragleave', e=>{
-      if(!col.contains(e.relatedTarget)) col.classList.remove('drop-target');
+      if(!col.contains(e.relatedTarget)){
+        col.classList.remove('drop-target');
+        col.classList.remove('backlog-drop-target');
+      }
     });
     col.addEventListener('drop', async e=>{
       e.preventDefault();
       col.classList.remove('drop-target');
+      col.classList.remove('backlog-drop-target');
+      // 백로그 → 날짜 배정
+      const backlogId = e.dataTransfer.getData('backlog-todo-id');
+      if(backlogId){
+        const t = await db.get('todos', backlogId);
+        if(t){ t.date = targetDate; await db.put('todos', t); }
+        await renderTodoWeeklyBody();
+        await renderBacklog();
+        return;
+      }
+      // 이월 항목 → 컬럼
       try{
         const data = JSON.parse(e.dataTransfer.getData('text/plain'));
         if(data.dir==='to-col') await rolloverTodoToDate(data.id, targetDate);
@@ -6803,7 +7591,12 @@ async function openThread(id, type){
   if(!pane) return;
   const savedW=parseInt(localStorage.getItem('thread-pane-width'))||420;
   pane.style.width=savedW+'px';
-  pane.classList.add('open');
+  if(type==='issue'){
+    pane.classList.add('open','overlay-mode');
+  } else {
+    pane.classList.remove('overlay-mode');
+    pane.classList.add('open');
+  }
 
   // 헤더 정보 로드
   let item, headerHtml='', metaHtml='';
@@ -6843,8 +7636,10 @@ async function openThread(id, type){
         </div>
         <div class="slack-msg-text">${slackToHtml(m.text||m.content||'')}</div>
       </div>`).join('')}`).join('');
+    const nextAction = item?.nextAction || '';
     origContent = `
-      ${summary?`<div style="margin-bottom:12px"><label style="font-size:11px;font-weight:600;color:var(--text3);display:block;margin-bottom:4px">요약</label><div class="note-rendered">${renderMarkdown(summary)}</div></div>`:''}
+      ${summary?`<div style="margin-bottom:12px"><label style="font-size:11px;font-weight:600;color:var(--text3);display:block;margin-bottom:4px">요약</label><div class="note-rendered">${renderSummaryAsBullets(summary)}</div></div>`:''}
+      ${nextAction?`<div style="margin-bottom:12px"><label style="font-size:11px;font-weight:600;color:var(--text3);display:block;margin-bottom:4px">다음 액션</label><div class="note-rendered">${renderSummaryAsBullets(nextAction)}</div></div>`:''}
       ${actionItems.length?`<div style="margin-bottom:12px"><label style="font-size:11px;font-weight:600;color:var(--text3);display:block;margin-bottom:4px">액션아이템</label>${actionItems.map(a=>`<div style="font-size:13px;color:var(--text2);padding:2px 0">· ${esc(a)}</div>`).join('')}</div>`:''}
       ${msgs.length?`<div><label style="font-size:11px;font-weight:600;color:var(--text3);display:block;margin-bottom:4px">메시지 (${msgs.length}건)</label><div class="slack-thread-preview" style="max-height:none">${msgsHtml}</div></div>`:''}
       ${item?.sourceUrl?`<a href="${esc(item.sourceUrl)}" target="_blank" rel="noopener" style="display:inline-flex;align-items:center;gap:5px;font-size:12px;color:var(--blue);text-decoration:none;margin-top:8px">↗ 원문 바로가기</a>`:''}
@@ -6969,7 +7764,7 @@ async function cancelThreadEdit(){
 function closeThread(){
   selectedItem=null;
   const pane=document.getElementById('thread-pane');
-  if(pane){pane.style.width='0';pane.classList.remove('open');pane.innerHTML='';}
+  if(pane){pane.style.width='0';pane.classList.remove('open','overlay-mode');pane.innerHTML='';}
   const resizer=document.getElementById('pane-resizer');
   if(resizer) resizer.classList.remove('visible');
 }
@@ -7521,6 +8316,7 @@ document.getElementById('btn-edit-proj').addEventListener('click',()=>showProjec
 document.getElementById('btn-agent-settings').addEventListener('click',openAgentSettings);
 document.getElementById('btn-export').addEventListener('click',exportData);
 document.getElementById('btn-import').addEventListener('click',()=>document.getElementById('import-input').click());
+document.getElementById('btn-import-queue').addEventListener('click',()=>importFromQueue());
 document.getElementById('import-input').addEventListener('change',e=>{
   importData(e.target.files[0]);
   e.target.value='';
