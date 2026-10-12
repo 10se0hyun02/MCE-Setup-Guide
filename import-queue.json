@@ -1,0 +1,17 @@
+{
+  "meetingTitle": "할일 추가",
+  "meetingDate": "2026-10-12",
+  "participants": "",
+  "todos": [
+    {
+      "content": "Revathi(Accenture) 연동 설계 확인 질문 5건 답변 회신",
+      "date": "2026-10-12",
+      "assignee": "",
+      "sourceCommId": "1a11b1d12a35bc34",
+      "memo": "타팀(내부) 답변 수합 후 이병문이 회신 예정. 질문 항목: ①오디언스 공유 방식(API/파일) ②발송결과·이력·수신거부 반환 방식 ③동의·수신설정 관리 주체 ④역할 분담 확인 ⑤API 문서·파일 스펙·테스트 환경·솔타향 비용 제공"
+    }
+  ],
+  "issues": [],
+  "communications": [],
+  "notes": []
+}

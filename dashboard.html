@@ -849,6 +849,8 @@ body{
 .todo-text{font-size:13px;color:var(--text);line-height:1.5;word-break:break-word}
 .todo-chips{display:flex;gap:8px;flex-wrap:wrap;margin-top:4px}
 .todo-chip{font-size:11px;color:var(--text3)}
+.todo-chip-comm{font-size:11px;color:var(--blue);cursor:pointer;text-decoration:underline;text-underline-offset:2px}
+.todo-chip-comm:hover{color:var(--proj-color)}
 .todo-memo-text{font-size:12px;color:var(--text2);margin-top:3px;line-height:1.5}
 .todo-item-actions{display:flex;gap:2px;flex-shrink:0}
 .todo-item-actions button{background:none;border:none;cursor:pointer;padding:3px 4px;border-radius:4px;color:var(--text3);display:flex;align-items:center;line-height:1}
@@ -1913,7 +1915,7 @@ async function importFromQueue(){
       let added={todos:0,issues:0,comms:0,notes:0,meetings:0};
       for(const [i,t] of (q.todos||[]).entries()){
         if(exTodos.some(e=>e.content===t.content&&e.date===t.date)) continue;
-        await db.put('todos',{id:genId(),projectId:PROJECT_ID,content:t.content||'',date:t.date||new Date().toISOString().slice(0,10),assignee:t.assignee||'',memo:t.memo||'',time:'',deadline:'',done:false,createdAt:now+i});
+        await db.put('todos',{id:genId(),projectId:PROJECT_ID,content:t.content||'',date:t.date||new Date().toISOString().slice(0,10),assignee:t.assignee||'',memo:t.memo||'',time:'',deadline:'',done:false,sourceCommId:t.sourceCommId||'',createdAt:now+i});
         added.todos++;
       }
       for(const [i,is] of (q.issues||[]).entries()){
@@ -6787,11 +6789,12 @@ function todoItemHTML(t, extra=''){
     <input type="checkbox" class="todo-checkbox" ${t.done?'checked':''} data-chk-id="${t.id}">
     <div class="todo-body">
       <div class="todo-text">${badgeHTML}${esc(text)}</div>
-      ${(t.time||t.assignee||t.deadline)?`
+      ${(t.time||t.assignee||t.deadline||t.sourceCommId)?`
       <div class="todo-chips">
         ${t.time?`<span class="todo-chip">⏰ ${esc(t.time)}</span>`:''}
         ${t.assignee?`<span class="todo-chip">${esc(t.assignee)}</span>`:''}
         ${t.deadline?`<span class="todo-chip">~${esc(t.deadline)}</span>`:''}
+        ${t.sourceCommId?`<span class="todo-chip-comm" data-src-comm-id="${esc(t.sourceCommId)}">📧 원본 메일 보기</span>`:''}
       </div>`:''}
       ${t.memo?`<div class="todo-memo-text">${esc(t.memo)}</div>`:''}
     </div>
@@ -6875,7 +6878,9 @@ async function renderTodoDeadlineBody(){
     const edit=e.target.closest('[data-edit-id]');
     if(edit){await editTodoModal(edit.dataset.editId);return;}
     const del=e.target.closest('[data-del-id]');
-    if(del){await deleteTodo(del.dataset.delId);}
+    if(del){await deleteTodo(del.dataset.delId);return;}
+    const commChip=e.target.closest('[data-src-comm-id]');
+    if(commChip){renderTab('comm');setTimeout(()=>openThread(commChip.dataset.srcCommId,'comm'),150);}
   });
 }
 
@@ -7004,6 +7009,8 @@ async function loadTodayTodos(){
     if(editBtn){ await editTodoModal(editBtn.dataset.editId); return; }
     const delBtn = e.target.closest('[data-del-id]');
     if(delBtn){ await deleteTodo(delBtn.dataset.delId); return; }
+    const commChip = e.target.closest('[data-src-comm-id]');
+    if(commChip){ renderTab('comm'); setTimeout(()=>openThread(commChip.dataset.srcCommId,'comm'),150); return; }
   });
 
   // 백로그 → Daily 드롭존
@@ -7971,12 +7978,13 @@ async function importGmailSync(file){
     {label:`${newEmails.length}개 모두 가져오기`, cls:'btn-primary', action: async()=>{
       for(const e of newEmails){
         await db.put('communications',{
-          id: genId(),
+          id: e.gmailThreadId || genId(),
           projectId: PROJECT_ID,
           date: e.date,
           type: '이메일',
           participants: e.participants||'',
           content: (e.subject?`**${e.subject}**\n\n`:'') + (e.summary||''),
+          subject: e.subject||'',
           gmailThreadId: e.gmailThreadId,
           createdAt: Date.now(),
         });
