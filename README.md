@@ -13,6 +13,7 @@ Project-Archive/
     _template/            새 프로젝트 템플릿
     {고객사}/
       project.md          성격(운영/구축/설계/컨설팅)·기간·역할·범위
+      workflow.md         업무 플로우 (사이클·처리 방식·자동 처리 허용 범위)
       history.md          날짜별 업무 로그 (최신이 위)
       meetings/           회의록 YYYY-MM-DD-제목.md
       docs/               산출물·받은 자료

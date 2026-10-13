@@ -19,6 +19,7 @@
 -
 
 ## 폴더 안내
+- `workflow.md` — 업무 플로우 (작업 시작 시 먼저 읽음)
 - `history.md` — 날짜별 업무 로그 (최신이 위)
 - `meetings/` — 회의록 (`YYYY-MM-DD-제목.md`)
 - `docs/` — 산출물·받은 자료
