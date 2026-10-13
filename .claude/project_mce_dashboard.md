@@ -9,12 +9,12 @@ metadata:
 ---
 
 ## 파일 위치
-- **메인 파일:** `${GDRIVE_ROOT}\Projects\MCE-Setup-Guide\dashboard.html` (단일 HTML, IndexedDB 저장)
-- **MCE 가이드 문서:** `${GDRIVE_ROOT}\Projects\MCE-Setup-Guide\docs\journey-builder-custom-activity.html`
+- **메인 파일:** `${GDRIVE_ROOT}\Projects\Project-Archive\dashboard.html` (단일 HTML, IndexedDB 저장)
+- **MCE 가이드 문서:** `${GDRIVE_ROOT}\Projects\MCE-Guide\docs\journey-builder-custom-activity.html` (별도 프로젝트로 분리)
 - **선오픈 공수 분석:** `${USER_HOME}\Desktop\MCE_선오픈_공수분석.txt`
 - 경로 변수는 [[user-work-environment]] 참고
-- **루틴 설명:** `agent-briefing-routine.md`, `agent-weekly-routine.md`
-- **Agent 출력 파일:** `briefing-data.json`, `weekly-data.json`, `dashboard-data.json`, `gmail-sync.json`
+- **루틴 설명:** `routines/agent-briefing-routine.md`, `agent-weekly-routine.md`
+- **Agent 출력 파일 (`_sync/`):** `briefing-data.json`, `weekly-data.json`, `dashboard-data.json`, `gmail-sync.json`
 
 **Why:** Salesforce MCE 구축 프로젝트 전용 대시보드, 백엔드 없이 단일 파일로 운영  
 **How to apply:** 기능 추가 요청 시 이 파일만 수정. DB_VERSION 현재 7.

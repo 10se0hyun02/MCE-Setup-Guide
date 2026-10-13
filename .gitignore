@@ -1,22 +1,8 @@
-# Agent 출력 파일 (자동 생성, 버전 추적 불필요)
-briefing-data.json
-weekly-data.json
-gmail-sync.json
-gmail-config.json
+# 대시보드 동기화 폴더 (IndexedDB 스냅샷·루틴 출력, 자동 생성)
+_sync/
 
-# 대시보드 데이터 (IndexedDB 스냅샷, 자주 변경됨)
-dashboard-data.json
-
-# Drive 백업 폴더
-backups/
-
-# 가이드 문서 (대용량 PDF, 추출 텍스트)
-Guide Document/
-_extracted/
-
-# 기타 작업 파일
-progress.md
-README.md
+# 브라우저 File System Access 임시 파일
+*.crswap
 
 # OS
 .DS_Store

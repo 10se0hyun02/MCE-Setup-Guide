@@ -1422,7 +1422,7 @@ body{
     <nav id="sidebar-nav"></nav>
     <!-- 하단: 설정 링크 -->
     <div id="sidebar-footer">
-      <a id="link-guide" class="sb-footer-btn" href="./index.html" target="_blank">MCE 가이드</a>
+      <a id="link-guide" class="sb-footer-btn" href="../MCE-Guide/index.html" target="_blank">MCE 가이드</a>
       <button id="btn-agent-settings" class="sb-footer-btn" title="Agent 설정">Agent 설정</button>
       <button id="btn-export" class="sb-footer-btn">내보내기</button>
       <button id="btn-import" class="sb-footer-btn">가져오기</button>
@@ -1950,16 +1950,20 @@ async function importFromQueue(){
 async function openAgentSettings(){
   const savedKey = await db.get('settings','anthropicApiKey');
   const savedSlack = await db.get('settings','slackToken');
+  const savedDir = await db.get('settings','syncDir');
+  const dirLabel = h => h ? `연결됨: <b>${esc(h.name)}</b>` : '연결된 폴더 없음';
   showModal('Agent 설정', `
     <p style="font-size:14px;color:var(--text2);margin-bottom:16px;line-height:1.6">
       Agent 루틴이 생성하는 파일을 업무 아카이브에서 읽으려면<br>프로젝트 폴더와 연결해야 합니다.
     </p>
     <div class="briefing-setup-banner" style="margin-bottom:16px">
       <span style="font-size:20px">📁</span>
-      <div>
-        <div style="font-size:13px;font-weight:600;color:var(--text)">프로젝트 폴더 선택</div>
-        <div style="font-size:12px;color:var(--text3);margin-top:3px">briefing-data.json, weekly-data.json, dashboard-data.json이 저장되는 위치</div>
+      <div style="flex:1;min-width:0">
+        <div style="font-size:13px;font-weight:600;color:var(--text)">동기화 폴더 (_sync)</div>
+        <div style="font-size:12px;color:var(--text3);margin-top:3px">Project-Archive/_sync 폴더를 선택 — dashboard-data.json, backups/, import-queue.json 등이 저장되는 위치</div>
+        <div id="sync-dir-status" style="font-size:12px;color:var(--text2);margin-top:6px">${dirLabel(savedDir?.handle)}</div>
       </div>
+      <button class="btn-ghost" id="btn-pick-sync-dir" style="flex-shrink:0">폴더 선택</button>
     </div>
     <div style="border-top:1px solid var(--border);padding-top:14px;display:flex;flex-direction:column;gap:12px">
       <div class="form-row" style="margin:0">
@@ -1978,11 +1982,14 @@ async function openAgentSettings(){
       const slackToken = document.getElementById('f-slack-token').value.replace(/[^\x20-\x7E]/g,'').trim();
       if(key) await db.put('settings',{key:'anthropicApiKey', value:key});
       if(slackToken) await db.put('settings',{key:'slackToken', value:slackToken});
-      try{ await setupSyncDir(); }catch(_){} // 폴더 선택은 선택사항
       closeModal();
       showToast('설정이 저장되었습니다');
     }},{label:'닫기', cls:'btn-ghost', action:()=>closeModal()}]
   );
+  document.getElementById('btn-pick-sync-dir').addEventListener('click', async()=>{
+    const handle = await setupSyncDir();
+    if(handle) document.getElementById('sync-dir-status').innerHTML = dirLabel(handle);
+  });
 }
 
 // ── BACKLOG SEED ──────────────────────────────────────────────────
@@ -3591,7 +3598,7 @@ async function renderSteps(){
         <button class="step-toggle" data-id="${s.id}" title="클릭하여 상태 변경">${STATUS_EMOJI[st]}</button>
         <span class="step-title">${esc(s.title)}</span>
         <span class="step-status-badge ${st}">${STATUS_LABEL[st]}</span>
-        <a class="step-guide-link" href="./index.html#${s.id}" target="_blank">가이드 →</a>
+        <a class="step-guide-link" href="../MCE-Guide/index.html#${s.id}" target="_blank">가이드 →</a>
       `;
       div.appendChild(item);
     });
@@ -7924,7 +7931,7 @@ function writeGmailConfig(proj){
     projectName: proj.clientName||proj.name||'MCE',
     domains: proj.gmailDomains||[],
     projectId: PROJECT_ID,
-    syncFilePath: 'G:\\내 드라이브\\Projects\\MCE-Setup-Guide\\gmail-sync.json',
+    syncFilePath: 'G:\\내 드라이브\\Projects\\Project-Archive\\_sync\\gmail-sync.json',
     updatedAt: new Date().toISOString(),
   };
   const blob = new Blob([JSON.stringify(cfg,null,2)],{type:'application/json'});
