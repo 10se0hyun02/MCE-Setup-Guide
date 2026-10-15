@@ -1,0 +1,599 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>초록우산 MCE 운영 온보딩 가이드</title>
+<link rel="preconnect" href="https://cdn.jsdelivr.net">
+<link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable.min.css">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --primary:#1B7F4B;
+  --primary-light:#E8F5EE;
+  --primary-dark:#145F37;
+  --text:#1a1a1a;
+  --text-sub:#555;
+  --text-muted:#888;
+  --border:#E0E0E0;
+  --bg:#F7F8FA;
+  --white:#fff;
+  --blue:#0070D2;--blue-bg:#EAF4FF;
+  --green:#0E7C59;--green-bg:#E6F5F0;
+  --amber:#8A5700;--amber-bg:#FFF4E0;
+  --red:#B91C1C;--red-bg:#FEF2F2;
+  --gray:#444;--gray-bg:#F3F4F6;
+  --sidebar-w:260px;
+  --font:'Pretendard Variable','Pretendard',system-ui,-apple-system,sans-serif;
+}
+body{font-family:var(--font);font-size:15.5px;line-height:1.8;color:var(--text);background:var(--bg)}
+a{color:var(--primary);text-decoration:none}
+a:hover{text-decoration:underline}
+
+/* LAYOUT */
+.layout{display:flex;min-height:100vh}
+
+/* SIDEBAR */
+.sidebar{
+  position:sticky;top:0;height:100vh;overflow-y:auto;
+  width:var(--sidebar-w);min-width:var(--sidebar-w);
+  background:var(--white);border-right:1px solid var(--border);
+  padding:0 0 32px;
+  scrollbar-width:thin;scrollbar-color:var(--border) transparent;
+}
+.sidebar-logo{
+  padding:24px 20px 20px;
+  border-bottom:1px solid var(--border);
+  margin-bottom:8px;
+}
+.sidebar-logo .brand-mark{
+  display:inline-flex;align-items:center;gap:8px;margin-bottom:10px;
+}
+.sidebar-logo .dot{
+  width:28px;height:28px;border-radius:7px;
+  background:var(--primary);
+  display:flex;align-items:center;justify-content:center;
+  font-size:14px;font-weight:700;color:#fff;flex-shrink:0;
+}
+.sidebar-logo h1{font-size:13px;font-weight:700;color:var(--text);line-height:1.4}
+.sidebar-logo .meta{font-size:11px;color:var(--text-muted);margin-top:4px}
+.sidebar-logo .badge{
+  display:inline-block;margin-top:8px;
+  font-size:10px;font-weight:600;letter-spacing:.04em;
+  padding:3px 10px;border-radius:20px;
+  background:var(--primary-light);color:var(--primary-dark);
+}
+.toc-label{
+  font-size:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;
+  color:var(--text-muted);padding:14px 20px 4px;
+}
+.toc-item{
+  display:block;padding:7px 20px;font-size:13px;
+  color:var(--text-sub);border-left:2px solid transparent;
+  transition:all .12s;cursor:pointer;
+}
+.toc-item:hover,.toc-item.active{
+  color:var(--primary);background:var(--primary-light);
+  border-left-color:var(--primary);text-decoration:none;
+}
+.toc-item .num{
+  display:inline-block;width:18px;height:18px;
+  font-size:10px;font-weight:700;border-radius:4px;
+  background:var(--gray-bg);color:var(--text-muted);
+  text-align:center;line-height:18px;margin-right:6px;
+  flex-shrink:0;
+}
+.toc-item.active .num{background:var(--primary-light);color:var(--primary)}
+.toc-sub{padding-left:38px;font-size:12px;color:var(--text-muted)}
+
+/* MAIN CONTENT */
+.content{flex:1;padding:56px 72px;background:var(--white)}
+@media(max-width:900px){
+  .sidebar{display:none}
+  .content{padding:32px 24px;max-width:100%}
+}
+
+/* HEADER */
+.doc-eyebrow{
+  font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;
+  color:var(--primary);margin-bottom:8px;
+}
+h1.doc-title{font-size:28px;font-weight:800;line-height:1.25;margin-bottom:12px;letter-spacing:-.02em}
+.doc-meta{
+  font-size:13px;color:var(--text-muted);
+  display:flex;align-items:center;gap:16px;flex-wrap:wrap;
+  padding-bottom:28px;border-bottom:1px solid var(--border);margin-bottom:44px;
+}
+.doc-meta span{display:flex;align-items:center;gap:5px}
+
+/* SECTIONS */
+.section{margin-bottom:60px;scroll-margin-top:28px}
+h2{
+  font-size:20px;font-weight:700;letter-spacing:-.02em;
+  margin:0 0 18px;padding:0 0 12px;
+  border-bottom:1.5px solid var(--border);
+  display:flex;align-items:center;gap:10px;
+}
+h2 .sec-num{
+  display:inline-flex;align-items:center;justify-content:center;
+  width:26px;height:26px;border-radius:7px;
+  background:var(--primary);color:#fff;
+  font-size:12px;font-weight:700;flex-shrink:0;
+}
+h3{font-size:15px;font-weight:700;margin:28px 0 10px;color:var(--text)}
+p{margin-bottom:14px}
+ul,ol{padding-left:20px;margin-bottom:14px}
+li{margin-bottom:5px}
+strong{font-weight:700}
+code{
+  background:#F1F5F9;color:#0F172A;
+  padding:1px 6px;border-radius:4px;
+  font-size:13.5px;font-family:'Consolas','Courier New',monospace;
+}
+
+/* PROJECT INFO TABLE */
+.info-card{
+  background:var(--bg);border:1px solid var(--border);
+  border-radius:10px;overflow:hidden;margin-bottom:20px;
+}
+.info-card table{width:100%;border-collapse:collapse}
+.info-card td{padding:11px 16px;font-size:14px;border-bottom:1px solid var(--border)}
+.info-card td:last-child{border-bottom:none}
+.info-card tr:last-child td{border-bottom:none}
+.info-card td:first-child{
+  width:120px;color:var(--text-muted);font-weight:600;font-size:12.5px;
+  background:rgba(0,0,0,.02);
+}
+.info-card td:last-child{color:var(--text)}
+
+/* APP CARDS */
+.app-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:12px;margin:16px 0}
+.app-card{
+  border:1px solid var(--border);border-radius:10px;padding:16px;
+  background:var(--white);transition:box-shadow .15s;
+}
+.app-card:hover{box-shadow:0 2px 12px rgba(0,0,0,.07)}
+.app-name{font-size:14px;font-weight:700;margin-bottom:6px;display:flex;align-items:center;gap:7px}
+.app-icon{font-size:16px}
+.app-desc{font-size:13px;color:var(--text-sub);line-height:1.6;margin-bottom:8px}
+.app-when{font-size:12px;color:var(--primary);background:var(--primary-light);padding:3px 8px;border-radius:4px;display:inline-block}
+
+/* TERM TABLE */
+.term-table{width:100%;border-collapse:collapse;margin:12px 0;font-size:14px}
+.term-table th{
+  text-align:left;padding:10px 14px;background:var(--gray-bg);
+  font-size:11.5px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;
+  color:var(--text-muted);border-bottom:1.5px solid var(--border);
+}
+.term-table td{padding:11px 14px;border-bottom:1px solid var(--border);vertical-align:top}
+.term-table tr:last-child td{border-bottom:none}
+.term-table td:first-child{font-weight:700;white-space:nowrap;width:200px;color:var(--text)}
+.term-table td:last-child{color:var(--text-sub);line-height:1.6}
+.term-abbr{font-size:11px;font-weight:600;color:var(--text-muted);display:block;margin-top:2px}
+
+/* TASK GROUPS */
+.task-group{margin-bottom:20px}
+.task-group-title{
+  font-size:12px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;
+  color:var(--text-muted);margin-bottom:8px;padding-bottom:6px;
+  border-bottom:1px dashed var(--border);
+}
+.task-list{list-style:none;padding:0}
+.task-list li{
+  padding:8px 12px;font-size:14px;
+  border-radius:6px;margin-bottom:4px;
+  border-left:3px solid var(--border);
+  background:var(--bg);color:var(--text-sub);line-height:1.6;
+}
+.task-list li.primary{border-left-color:var(--primary);background:var(--primary-light);color:var(--text)}
+.task-list li.blue{border-left-color:var(--blue);background:var(--blue-bg)}
+.task-list li.amber{border-left-color:#F59E0B;background:var(--amber-bg)}
+
+/* FOLDER STRUCTURE */
+.folder-box{
+  background:var(--bg);border:1px solid var(--border);
+  border-radius:10px;padding:20px 24px;margin:12px 0;font-size:13.5px;
+}
+.folder-row{display:flex;align-items:flex-start;gap:12px;padding:7px 0;border-bottom:1px solid var(--border)}
+.folder-row:last-child{border-bottom:none}
+.folder-name{font-weight:600;min-width:200px;color:var(--text);font-size:13.5px}
+.folder-desc{color:var(--text-sub);line-height:1.6;font-size:13.5px}
+.folder-icon{font-size:15px;flex-shrink:0;margin-top:1px}
+
+/* CHECKLIST */
+.check-section{margin-bottom:24px}
+.check-title{
+  font-size:13px;font-weight:700;color:var(--text);
+  margin-bottom:10px;display:flex;align-items:center;gap:6px;
+}
+.check-title::before{content:'';display:inline-block;width:10px;height:10px;border-radius:3px;background:var(--primary);flex-shrink:0}
+.check-list{list-style:none;padding:0}
+.check-list li{
+  display:flex;align-items:flex-start;gap:10px;
+  padding:7px 0;border-bottom:1px solid var(--border);
+  font-size:13.5px;color:var(--text-sub);
+}
+.check-list li:last-child{border-bottom:none}
+.check-list li::before{
+  content:'';display:block;width:17px;height:17px;
+  border:1.5px solid #CCC;border-radius:4px;flex-shrink:0;margin-top:2px;
+}
+
+/* CALLOUT */
+.callout{
+  display:flex;gap:12px;padding:14px 16px;border-radius:8px;
+  border-left:4px solid;margin:20px 0;font-size:13.5px;line-height:1.7;
+}
+.callout-icon{font-size:15px;flex-shrink:0;margin-top:2px}
+.callout.tip{background:var(--green-bg);border-color:#10B981;color:var(--green)}
+.callout.note{background:var(--blue-bg);border-color:var(--blue);color:#1E3A8A}
+.callout.warn{background:var(--amber-bg);border-color:#F59E0B;color:var(--amber)}
+
+/* FOOTER */
+.doc-footer{
+  margin-top:72px;padding-top:24px;border-top:1px solid var(--border);
+  font-size:12.5px;color:var(--text-muted);
+}
+</style>
+</head>
+<body>
+<div class="layout">
+
+  <!-- SIDEBAR -->
+  <aside class="sidebar">
+    <div class="sidebar-logo">
+      <div class="brand-mark">
+        <div class="dot">🌿</div>
+        <div>
+          <div style="font-size:12px;font-weight:700;color:var(--text)">초록우산 MCE 운영</div>
+          <div style="font-size:11px;color:var(--text-muted)">온보딩 가이드</div>
+        </div>
+      </div>
+      <div class="badge">운영 담당자용</div>
+    </div>
+
+    <div class="toc-label">목차</div>
+    <a class="toc-item active" href="#sec1" onclick="setActive(this)">
+      <span class="num">1</span>프로젝트 개요
+    </a>
+    <a class="toc-item" href="#sec2" onclick="setActive(this)">
+      <span class="num">2</span>MCE란?
+    </a>
+    <a class="toc-item" href="#sec3" onclick="setActive(this)">
+      <span class="num">3</span>주요 앱
+    </a>
+    <a class="toc-item" href="#sec4" onclick="setActive(this)">
+      <span class="num">4</span>핵심 용어
+    </a>
+    <a class="toc-item" href="#sec5" onclick="setActive(this)">
+      <span class="num">5</span>운영 담당자의 업무
+    </a>
+    <a class="toc-item" href="#sec6" onclick="setActive(this)">
+      <span class="num">6</span>업무 아카이브 구조
+    </a>
+    <a class="toc-item" href="#sec7" onclick="setActive(this)">
+      <span class="num">7</span>인수인계 체크리스트
+    </a>
+  </aside>
+
+  <!-- CONTENT -->
+  <main class="content">
+    <div class="doc-eyebrow">온보딩 가이드 · 인수인계 자료</div>
+    <h1 class="doc-title">초록우산 MCE 운영<br>온보딩 가이드</h1>
+    <div class="doc-meta">
+      <span>📅 2026-10-15 작성</span>
+      <span>🏢 밀버스</span>
+      <span>🎯 MCE 운영 담당자 대상</span>
+    </div>
+
+    <!-- SEC 1: 프로젝트 개요 -->
+    <div class="section" id="sec1">
+      <h2><span class="sec-num">1</span>프로젝트 개요</h2>
+      <div class="info-card">
+        <table>
+          <tr><td>고객사</td><td><strong>초록우산 어린이재단</strong></td></tr>
+          <tr><td>솔루션</td><td>Salesforce Marketing Cloud Engagement (MCE)</td></tr>
+          <tr><td>수행사</td><td>밀버스</td></tr>
+          <tr><td>운영 시작</td><td>2026년 9월 18일</td></tr>
+          <tr><td>담당 역할</td><td>MCE 운영 (이메일 발송·자동화·데이터 관리·성과 보고)</td></tr>
+        </table>
+      </div>
+      <p>초록우산 어린이재단이 기부자·후원자에게 이메일을 발송하고, 기부 여정을 자동화하기 위해 Salesforce MCE를 도입한 프로젝트입니다. 구축 완료 이후 밀버스가 상시 운영을 담당하고 있습니다.</p>
+    </div>
+
+    <!-- SEC 2: MCE란? -->
+    <div class="section" id="sec2">
+      <h2><span class="sec-num">2</span>MCE(Marketing Cloud Engagement)란?</h2>
+      <p>Salesforce가 제공하는 <strong>기업용 이메일 마케팅 + 마케팅 자동화 플랫폼</strong>입니다.</p>
+      <p>일반 이메일 서비스(Gmail 등)와 달리 MCE는 다음을 지원합니다.</p>
+      <ul>
+        <li><strong>대량 발송</strong>: 수십만 명에게 개인화된 이메일을 동시 발송</li>
+        <li><strong>전달률 관리</strong>: 전용 IP + 인증 도메인으로 스팸 분류 방지</li>
+        <li><strong>자동 여정(Journey)</strong>: "기부 완료 → 3일 후 감사 메일 → 30일 후 리마인드" 같은 흐름 자동화</li>
+        <li><strong>성과 측정</strong>: 오픈율·클릭율·이탈율 실시간 리포트</li>
+      </ul>
+      <div class="callout tip">
+        <span class="callout-icon">💡</span>
+        <div>초록우산 운영에서는 주로 <strong>이메일 발송 관리</strong>, <strong>Journey(자동 여정) 모니터링</strong>, <strong>데이터 동기화 확인</strong>, <strong>성과 보고</strong>가 핵심 업무입니다.</div>
+      </div>
+    </div>
+
+    <!-- SEC 3: 주요 앱 -->
+    <div class="section" id="sec3">
+      <h2><span class="sec-num">3</span>주요 앱 — 운영에서 자주 쓰는 것</h2>
+      <p>MCE는 용도별로 여러 앱으로 구성되어 있습니다. 운영 중 실제로 접하게 되는 앱 위주로 정리합니다.</p>
+      <div class="app-grid">
+        <div class="app-card">
+          <div class="app-name"><span class="app-icon">✉️</span>Email Studio</div>
+          <div class="app-desc">이메일 발송, 구독자 관리, 수신거부 처리, 발송 성과 확인</div>
+          <span class="app-when">발송 직전·직후, 이슈 처리 시</span>
+        </div>
+        <div class="app-card">
+          <div class="app-name"><span class="app-icon">🖼️</span>Content Builder</div>
+          <div class="app-desc">이메일 템플릿·이미지·HTML 블록 제작 및 라이브러리 관리</div>
+          <span class="app-when">발송물 제작·수정 시</span>
+        </div>
+        <div class="app-card">
+          <div class="app-name"><span class="app-icon">🗺️</span>Journey Builder</div>
+          <div class="app-desc">고객 행동 기반 자동 이메일 여정 설계·운영</div>
+          <span class="app-when">자동화 캠페인 모니터링·수정 시</span>
+        </div>
+        <div class="app-card">
+          <div class="app-name"><span class="app-icon">⚙️</span>Automation Studio</div>
+          <div class="app-desc">SQL 쿼리로 세그먼트 생성, FTP 데이터 가져오기, 정기 배치 자동화</div>
+          <span class="app-when">데이터 동기화·정기 처리 시</span>
+        </div>
+        <div class="app-card">
+          <div class="app-name"><span class="app-icon">🌐</span>CloudPages</div>
+          <div class="app-desc">수신거부 페이지·구독 페이지·랜딩 페이지 운영</div>
+          <span class="app-when">수신거부 처리, 캠페인 랜딩 시</span>
+        </div>
+        <div class="app-card">
+          <div class="app-name"><span class="app-icon">📊</span>Analytics Builder</div>
+          <div class="app-desc">발송 성과 리포트 및 대시보드</div>
+          <span class="app-when">주간·월간 보고 시</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- SEC 4: 핵심 용어 -->
+    <div class="section" id="sec4">
+      <h2><span class="sec-num">4</span>핵심 용어</h2>
+      <p>처음 접하면 낯선 약어들입니다. 회의나 문서 이해를 위해 먼저 읽어두세요.</p>
+      <table class="term-table">
+        <thead>
+          <tr>
+            <th>용어</th>
+            <th>설명</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>BU<span class="term-abbr">Business Unit</span></td>
+            <td>MCE의 독립 운영 단위. Parent BU(관리용)와 Child BU(실제 발송)로 나뉨. 브랜드·목적별로 분리</td>
+          </tr>
+          <tr>
+            <td>DE<span class="term-abbr">Data Extension</span></td>
+            <td>구독자·발송 데이터를 담는 테이블. DB 테이블과 동일한 개념. MCE에서 List 대신 DE를 씀</td>
+          </tr>
+          <tr>
+            <td>SAP<span class="term-abbr">Sender Authentication Package</span></td>
+            <td>전용 발신 도메인 + 전용 IP + DKIM 인증을 묶은 패키지. 이메일 도달률에 직결됨</td>
+          </tr>
+          <tr>
+            <td>IP Warming</td>
+            <td>신규 전용 IP의 발신 신뢰도를 쌓기 위해 소량(200건)부터 점진적으로 발송량을 늘리는 과정. ISP 스팸 분류 방지</td>
+          </tr>
+          <tr>
+            <td>Send Classification</td>
+            <td>Commercial(마케팅·뉴스레터)과 Transactional(주문확인·OTP)의 법적 구분. Transactional은 수신거부자에게도 발송 가능</td>
+          </tr>
+          <tr>
+            <td>AMPscript</td>
+            <td>MCE 전용 스크립팅 언어. 이메일 본문 내 이름·기부금액 등 개인화에 사용</td>
+          </tr>
+          <tr>
+            <td>FTP<span class="term-abbr">Enhanced FTP</span></td>
+            <td>고객사 DB → MCE로 구독자 파일을 올리는 파일 서버. Automation Studio와 연동해 자동 동기화</td>
+          </tr>
+          <tr>
+            <td>Bounce</td>
+            <td>이메일 발송 실패. Hard Bounce(영구 오류, 주소 없음)와 Soft Bounce(일시 오류, 수신함 가득 참) 구분</td>
+          </tr>
+          <tr>
+            <td>SPF / DKIM / DMARC</td>
+            <td>이메일 인증 DNS 레코드. SPF: 허가된 발송 서버 등록. DKIM: 위변조 방지 서명. DMARC: 인증 실패 시 정책</td>
+          </tr>
+          <tr>
+            <td>AS / JB</td>
+            <td>Automation Studio / Journey Builder 약칭</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- SEC 5: 운영 업무 -->
+    <div class="section" id="sec5">
+      <h2><span class="sec-num">5</span>운영 담당자의 주요 업무</h2>
+
+      <div class="task-group">
+        <div class="task-group-title">상시 모니터링</div>
+        <ul class="task-list">
+          <li class="primary">캠페인·Journey 발송 성과 확인 (오픈율·클릭율·이탈율·스팸 신고)</li>
+          <li>Automation Studio 스케줄 오류 점검</li>
+          <li>Journey Builder 흐름 이상 점검</li>
+          <li>DE 데이터 동기화 상태 확인</li>
+        </ul>
+      </div>
+
+      <div class="task-group">
+        <div class="task-group-title">캠페인 지원</div>
+        <ul class="task-list">
+          <li class="blue">고객사 요청 이메일 발송 (단발성 캠페인 실행)</li>
+          <li class="blue">Content Builder에서 템플릿 수정·신규 제작</li>
+          <li>발송 전 테스트 발송 및 렌더링 검수 (주요 클라이언트 기준)</li>
+        </ul>
+      </div>
+
+      <div class="task-group">
+        <div class="task-group-title">이슈 대응</div>
+        <ul class="task-list">
+          <li>발송 실패·Bounce 급증 원인 파악 및 처리</li>
+          <li>수신거부 요청 접수 및 반영 확인</li>
+          <li>IP 평판 모니터링</li>
+          <li>고객사 문의 대응 및 에러 리포트 작성</li>
+        </ul>
+      </div>
+
+      <div class="task-group">
+        <div class="task-group-title">보고</div>
+        <ul class="task-list">
+          <li class="amber">주간/월간 발송 성과 보고서 작성</li>
+          <li class="amber">고객사 보고 자료 준비 (Analytics Builder 데이터 기반)</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- SEC 6: 업무 아카이브 -->
+    <div class="section" id="sec6">
+      <h2><span class="sec-num">6</span>업무 아카이브 구조</h2>
+
+      <h3>폴더 구조</h3>
+      <p>업무 이력과 산출물은 아래 경로에 쌓입니다.</p>
+      <div class="folder-box">
+        <div class="folder-row">
+          <span class="folder-icon">📁</span>
+          <span class="folder-name"><code>projects/초록우산/</code></span>
+          <span class="folder-desc">프로젝트 루트 폴더</span>
+        </div>
+        <div class="folder-row">
+          <span class="folder-icon">📄</span>
+          <span class="folder-name"><code>project.md</code></span>
+          <span class="folder-desc">프로젝트 메타 정보 (고객사·솔루션·기간·담당자)</span>
+        </div>
+        <div class="folder-row">
+          <span class="folder-icon">📝</span>
+          <span class="folder-name"><code>history.md</code></span>
+          <span class="folder-desc">날짜별 업무 로그. 최신 항목이 위에 위치</span>
+        </div>
+        <div class="folder-row">
+          <span class="folder-icon">📁</span>
+          <span class="folder-name"><code>meetings/</code></span>
+          <span class="folder-desc">회의록 (<code>YYYY-MM-DD-제목.md</code> 형식)</span>
+        </div>
+        <div class="folder-row">
+          <span class="folder-icon">📁</span>
+          <span class="folder-name"><code>docs/</code></span>
+          <span class="folder-desc">고객사로부터 받은 자료·산출물</span>
+        </div>
+        <div class="folder-row">
+          <span class="folder-icon">📁</span>
+          <span class="folder-name"><code>reports/</code></span>
+          <span class="folder-desc">주간 보고서</span>
+        </div>
+      </div>
+
+      <h3>업무 대시보드</h3>
+      <p><code>dashboard.html</code>을 브라우저에서 열어 사용합니다. 할일·이슈·커뮤니케이션·회의록을 탭별로 관리합니다.</p>
+      <div class="folder-box">
+        <div class="folder-row">
+          <span class="folder-icon">📅</span>
+          <span class="folder-name">할일</span>
+          <span class="folder-desc">Daily/Weekly 업무 목록. 미완료 항목 이월 관리</span>
+        </div>
+        <div class="folder-row">
+          <span class="folder-icon">💬</span>
+          <span class="folder-name">커뮤니케이션</span>
+          <span class="folder-desc">고객사·내부 커뮤니케이션 이력 (카드·타임라인 뷰)</span>
+        </div>
+        <div class="folder-row">
+          <span class="folder-icon">⚠️</span>
+          <span class="folder-name">이슈</span>
+          <span class="folder-desc">발생한 이슈·트러블슈팅 이력. 우선순위·상태 관리</span>
+        </div>
+        <div class="folder-row">
+          <span class="folder-icon">🎙️</span>
+          <span class="folder-name">회의록</span>
+          <span class="folder-desc">회의 내용 기록. 좌측 목록 + 우측 에디터</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- SEC 7: 인수인계 체크리스트 -->
+    <div class="section" id="sec7">
+      <h2><span class="sec-num">7</span>인수인계 체크리스트</h2>
+      <p>신규 담당자가 업무를 시작하기 전에 확인해야 할 항목입니다.</p>
+
+      <div class="check-section">
+        <div class="check-title">접근 권한 확인</div>
+        <ul class="check-list">
+          <li>MCE 계정 발급 및 접근 가능한 BU 확인</li>
+          <li>Enhanced FTP 접근 정보 확인</li>
+          <li>Salesforce Support 포털 접근 권한</li>
+        </ul>
+      </div>
+
+      <div class="check-section">
+        <div class="check-title">운영 현황 파악</div>
+        <ul class="check-list">
+          <li>현재 활성화된 Journey 목록 및 트리거 조건 확인</li>
+          <li>Automation Studio 스케줄 목록 및 주기 확인</li>
+          <li>DE 목록 및 데이터 동기화 방식 파악</li>
+          <li>IP 평판 상태 확인</li>
+          <li>수신거부 처리 프로세스 파악</li>
+        </ul>
+      </div>
+
+      <div class="check-section">
+        <div class="check-title">고객사 커뮤니케이션</div>
+        <ul class="check-list">
+          <li>고객사 담당자 연락처 확인</li>
+          <li>정기 보고 일정·형식 파악</li>
+          <li>긴급 이슈 에스컬레이션 경로 확인</li>
+        </ul>
+      </div>
+
+      <div class="check-section">
+        <div class="check-title">업무 이력 파악</div>
+        <ul class="check-list">
+          <li><code>history.md</code> 최근 항목 읽기</li>
+          <li>대시보드 이슈 탭에서 열린 이슈 확인</li>
+          <li>대시보드 커뮤니케이션 탭에서 최근 내용 확인</li>
+        </ul>
+      </div>
+
+      <div class="callout note">
+        <span class="callout-icon">📌</span>
+        <div>인수인계 첫 날에는 전임 담당자와 함께 MCE 화면을 직접 보면서 활성 Journey 흐름과 Automation 스케줄을 확인하는 것을 권장합니다.</div>
+      </div>
+    </div>
+
+    <div class="doc-footer">
+      작성: 밀버스 · 초록우산 MCE 운영팀 · 2026-10-15
+    </div>
+  </main>
+</div>
+
+<script>
+function setActive(el){
+  document.querySelectorAll('.toc-item').forEach(i=>i.classList.remove('active'));
+  el.classList.add('active');
+}
+
+// 스크롤 위치에 따라 사이드바 활성 메뉴 자동 변경
+const sections = document.querySelectorAll('.section');
+const tocItems = document.querySelectorAll('.toc-item');
+const observer = new IntersectionObserver((entries)=>{
+  entries.forEach(e=>{
+    if(e.isIntersecting){
+      const id = e.target.id;
+      tocItems.forEach(t=>{
+        t.classList.toggle('active', t.getAttribute('href')==='#'+id);
+      });
+    }
+  });
+},{threshold:0.3,rootMargin:'-80px 0px -60% 0px'});
+sections.forEach(s=>observer.observe(s));
+</script>
+</body>
+</html>
